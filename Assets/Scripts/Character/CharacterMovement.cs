@@ -95,7 +95,6 @@ namespace Character
 			}
 			else if (move < 0 && m_FacingRight)
 			{
-				// ... flip the player.
 				Flip();
 			}
 			

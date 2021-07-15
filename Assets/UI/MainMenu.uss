@@ -1,0 +1,44 @@
+.menu-button {
+    height: 75px;
+    background-image: url('/Assets/UI/the-no-button-base.png');
+    left: auto;
+    top: auto;
+    bottom: auto;
+    position: relative;
+    width: 300px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-background-scale-mode: stretch-to-fill;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    flex-wrap: wrap-reverse;
+    flex-direction: column;
+    -unity-font: url('/Assets/UI/Pixeled.ttf');
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    font-size: 21px;
+    justify-content: center;
+}
+
+.menu-settings {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.71);
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 50px;
+    padding-right: 0;
+    padding-left: 120px;
+}
+
+.menu-settings-item {
+    flex-direction: row;
+    justify-content: space-between;
+}

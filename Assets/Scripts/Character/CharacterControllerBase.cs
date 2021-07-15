@@ -11,11 +11,12 @@ namespace Character
         private float horizontalMove = 0f;
         [SerializeField] private float generalSpeed = 40f;
         private bool jump = false;
-
         [SerializeField] private Animator characterAnimator;
+
 
         void Awake()
         {
+
             characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
             characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
@@ -25,6 +26,9 @@ namespace Character
 
         void Update()
         {
+            if (!GameManager.Instance.isInputEnabled)
+                return;
+
             horizontalMove = Input.GetAxisRaw("Horizontal") * generalSpeed;
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
