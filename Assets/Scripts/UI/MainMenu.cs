@@ -5,8 +5,6 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
-
-[RequireComponent(typeof(GameManager))]
 public class MainMenu : MonoBehaviour
 {
     private GameObject pnlSettings, pnlButtons;
@@ -29,6 +27,8 @@ public class MainMenu : MonoBehaviour
     void OnEnable()
     {
         // Registra los componentes del Canvas (UI) necesarios.
+        pnlButtons = GameObject.Find("PanelButtons");
+        
         pnlButtons = GameObject.Find("PanelButtons");
         pnlSettings = GameObject.Find("PanelSettings");
         dimmerCG = GameObject.Find("Dimmer").GetComponent<CanvasGroup>();
@@ -140,6 +140,7 @@ public class MainMenu : MonoBehaviour
     private void BtnPlayCallBack()
     {
         GameManager.Instance.SetInputEnabled(true);
+        GameManager.Instance.SetCameraOffsetX(0f);
 
         var panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
         var panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
