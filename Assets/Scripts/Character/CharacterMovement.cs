@@ -25,7 +25,8 @@ namespace Character
 		[Space]
 
 		public UnityEvent OnLandEvent;
-
+		public UnityEvent OnAirEvent;
+		
 		[System.Serializable]
 		public class BoolEvent : UnityEvent<bool> { }
 
@@ -50,7 +51,7 @@ namespace Character
 		}
 
 
-		public void Move(float move, bool crouch, bool jump)
+		public void Move(float moveH, bool crouch, bool jump)
 		{
 			if (!crouch)
 			{
@@ -68,8 +69,8 @@ namespace Character
 					m_wasCrouching = true;
 					OnCrouchEvent.Invoke(true);
 				}
-			
-				move *= m_CrouchSpeed;
+
+				moveH *= m_CrouchSpeed;
 			
 				if (m_CrouchDisableCollider != null)
 					m_CrouchDisableCollider.enabled = false;
@@ -85,15 +86,16 @@ namespace Character
 					OnCrouchEvent.Invoke(false);
 				}
 			}
-			
-			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+
+			Vector3 targetVelocity = new Vector2(moveH * 10f, m_Rigidbody2D.velocity.y);
+
 			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
-			
-			if (move > 0 && !m_FacingRight)
+
+			if (moveH > 0 && !m_FacingRight)
 			{
 				Flip();
 			}
-			else if (move < 0 && m_FacingRight)
+			else if (moveH < 0 && m_FacingRight)
 			{
 				Flip();
 			}
@@ -105,6 +107,9 @@ namespace Character
 				m_Grounded = false;
 				m_Rigidbody2D.AddForce(new Vector2(250f, m_JumpForce));
 			}
+
+			if(!m_Grounded)
+				OnAirEvent.Invoke();
 		}
 
 		private void Flip()
@@ -123,6 +128,9 @@ namespace Character
 
 			if (OnLandEvent == null)
 				OnLandEvent = new UnityEvent();
+
+			if (OnAirEvent == null)
+				OnAirEvent = new UnityEvent();
 
 			if (OnCrouchEvent == null)
 				OnCrouchEvent = new BoolEvent();

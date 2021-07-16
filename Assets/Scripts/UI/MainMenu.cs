@@ -7,12 +7,16 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    private GameObject pnlSettings, pnlButtons;
+    private GameObject pnlSettings, pnlButtons, pnlButtonsAnim;
     private CanvasGroup dimmerCG;
-    private Button btnPlay, btnSettings, btnApply, btnDiscard, btnQuit;
+    private Button btnPlay, btnPlayAnim, btnSettings, btnApply, btnDiscard, btnQuit;
     private Dropdown dpwResolutions, dpwScreenMode, dpwLanguages;
     private Slider sldFPS;
     private Toggle togVSYNC;
+
+    CanvasGroup panelButtonsGroup;
+    CanvasGroup panelButtonsAnimGroup;
+    CanvasGroup panelSettingsGroup;
 
     private List<Dropdown.OptionData> resolutionListDpw;
 
@@ -28,11 +32,15 @@ public class MainMenu : MonoBehaviour
     {
         // Registra los componentes del Canvas (UI) necesarios.
         pnlButtons = GameObject.Find("PanelButtons");
-        
-        pnlButtons = GameObject.Find("PanelButtons");
+        pnlButtonsAnim = GameObject.Find("PanelButtonsAnims");
         pnlSettings = GameObject.Find("PanelSettings");
+        panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
+        panelButtonsAnimGroup = pnlButtonsAnim.GetComponent<CanvasGroup>();
+        panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
+
         dimmerCG = GameObject.Find("Dimmer").GetComponent<CanvasGroup>();
         btnPlay = GameObject.Find("ButtonPlay").GetComponent<Button>();
+        btnPlayAnim = GameObject.Find("ButtonPlayAnim").GetComponent<Button>();
         btnSettings = GameObject.Find("ButtonSettings").GetComponent<Button>();
         btnApply = GameObject.Find("ButtonApply").GetComponent<Button>();
         btnDiscard = GameObject.Find("ButtonDiscard").GetComponent<Button>();
@@ -139,22 +147,24 @@ public class MainMenu : MonoBehaviour
     }
     private void BtnPlayCallBack()
     {
-        GameManager.Instance.SetInputEnabled(true);
-        GameManager.Instance.SetCameraOffsetX(0f);
+        btnPlay.GetComponent<Image>().enabled = false;
+        btnPlay.GetComponent<Button>().enabled = false;
+        btnSettings.GetComponent<Button>().enabled = false;
+        btnQuit.GetComponent<Button>().enabled = false;
+        StartCoroutine(DoFade(panelButtonsGroup, 1, 0, .3f));
+        StartCoroutine(DoFade(panelButtonsAnimGroup, 1, 0, .5f, 1f, OnPlay));
+    }
 
-        var panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
-        var panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
+    private void OnPlay()
+    {
         panelButtonsGroup.interactable = false;
         panelSettingsGroup.interactable = false;
-
-        StartCoroutine(DoFade(panelButtonsGroup, 1, 0, .3f));
+        GameManager.Instance.SetInputEnabled(true);
+        GameManager.Instance.SetCameraOffsetX(1.3f);
     }
 
     private void BtnSettingsCallBack()
     {
-        var panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
-        var panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
-
         panelButtonsGroup.interactable = false;
         panelSettingsGroup.interactable = true;
 
@@ -210,9 +220,6 @@ public class MainMenu : MonoBehaviour
 
     private void CloseSettingsPanel()
     {
-        var panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
-        var panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
-
         panelButtonsGroup.interactable = true;
         panelSettingsGroup.interactable = false;
 
@@ -248,12 +255,11 @@ public class MainMenu : MonoBehaviour
         Application.targetFrameRate = newFPS;
     }
 
-    public IEnumerator DoFade(CanvasGroup cg, float start, float end, float duration, float delay = 0.0f)
+    public IEnumerator DoFade(CanvasGroup cg, float start, float end, float duration, float delay = 0.0f, Action callback = null)
     {
         float counter = 0f;
 
-        if (delay > 0.0f)
-            yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
 
         while (counter < duration)
         {
@@ -262,5 +268,9 @@ public class MainMenu : MonoBehaviour
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(1f);
+        if (callback != null)
+            callback();
     }
 }

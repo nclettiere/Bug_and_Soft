@@ -9,11 +9,13 @@ namespace Character
         protected CharacterMovement characterMovement;
         protected SpriteRenderer characterSprite;
         private float horizontalMove = 0f;
+        private float verticalMove = 0f;
         [SerializeField] private float generalSpeed = 40f;
         private bool jump = false;
         [SerializeField] private Animator characterAnimator;
 
-        private void Start() {
+        private void Start()
+        {
             AnimStartPrayingEvt();
         }
 
@@ -23,7 +25,7 @@ namespace Character
             characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
             characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
-            if(characterSprite.sprite == null)
+            if (characterSprite.sprite == null)
                 characterSprite.sprite = Resources.Load<Sprite>("Checker");
         }
 
@@ -32,7 +34,7 @@ namespace Character
             if (!GameManager.Instance.isInputEnabled)
                 return;
 
-            if(characterAnimator.GetBool("Praying"))
+            if (characterAnimator.GetBool("Praying"))
             {
                 AnimStoppedPrayingEvt();
             }
@@ -56,8 +58,12 @@ namespace Character
 
         public void LandEvt()
         {
-            Debug.Log("LANDED");
-            characterAnimator.SetBool("Jump", false);
+            characterAnimator.SetBool("OnLand", true);
+        }
+
+        public void OnAirEvt()
+        {
+            characterAnimator.SetBool("OnLand", false);
         }
 
         // ============================

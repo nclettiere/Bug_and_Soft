@@ -42,7 +42,7 @@ public class GameManager
 
     public void SetInputEnabled(bool isEnabled)
     {
-        if (DynCamera != null && isEnabled) DynCamera.UpdateSize(8f, 0.3f);
+        if (DynCamera != null && isEnabled) DynCamera.UpdateSize(10f, 0.3f);
 
         if (instance != null) instance.isInputEnabled = isEnabled;
     }
