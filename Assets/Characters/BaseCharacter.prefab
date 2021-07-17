@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5629790822863349703}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6322619229848560861
 MonoBehaviour:
@@ -45,8 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 3
   m_BlendStyleIndex: 2
-  m_FalloffIntensity: 0.4
-  m_Color: {r: 1, g: 0.8820755, b: 0.9695363, a: 1}
+  m_FalloffIntensity: 0
+  m_Color: {r: 0.99636734, g: 1, b: 0, a: 1}
   m_Intensity: 0.1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
@@ -58,8 +58,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 1.52
-  m_PointLightOuterRadius: 2.65
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 250
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 6908863193124527391}
   m_Layer: 6
   m_Name: BaseCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,6 +138,7 @@ Transform:
   m_Children:
   - {fileID: 5241946527090777466}
   - {fileID: 571285732247951436}
+  - {fileID: 428328781159782775}
   - {fileID: 8225234678264035520}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -168,16 +169,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0a654fd0a066d40a068624f4ab2850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 1000
-  m_CrouchSpeed: 0.36
-  m_MovementSmoothing: 0.008
-  m_WhatIsGround:
+  JumpForce: 400
+  CrouchSpeed: 0.36
+  MovementSmoothing: 0.05
+  WhatIsGround:
     serializedVersion: 2
     m_Bits: 24
-  m_GroundCheck: {fileID: 571285732247951436}
-  m_CeilingCheck: {fileID: 5241946527090777466}
-  m_CrouchDisableCollider: {fileID: 0}
-  m_ShouldPlayerFlip: 1
+  GroundCheck: {fileID: 571285732247951436}
+  CeilingCheck: {fileID: 5241946527090777466}
+  WallCheck: {fileID: 428328781159782775}
+  CrouchDisableCollider: {fileID: 0}
+  ShouldPlayerFlip: 1
+  WallCheckDistance: 1
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -332,6 +335,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 614379705672527369}
   characterAnimator: {fileID: 5223729173480044969}
+--- !u!1 &4529466276496813127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 428328781159782775}
+  m_Layer: 6
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &428328781159782775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4529466276496813127}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.13, y: 0.024, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5629790822863349703}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4572036953013962958
 GameObject:
   m_ObjectHideFlags: 0

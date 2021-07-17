@@ -10,12 +10,20 @@ namespace Character
         protected SpriteRenderer characterSprite;
         private float horizontalMove = 0f;
         private float verticalMove = 0f;
-        [SerializeField] private float generalSpeed = 40f;
         private bool jump = false;
+
+        [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private Animator characterAnimator;
+
+        private bool recentlyRespawned = true;
+
+        private int deathCount = 0;
 
         private void Start()
         {
+            GameObject SpawnPoint = GameObject.Find("SpawnPoint");
+            transform.position = SpawnPoint.transform.position;
+            recentlyRespawned = true;
             AnimStartPrayingEvt();
         }
 
@@ -31,15 +39,23 @@ namespace Character
 
         void Update()
         {
+            if(!GameManager.Instance.IsPlayerAlive &&
+                GameManager.Instance.PlayerDeathCount > 0) {
+                Respawn();
+                horizontalMove = 0f;
+                AnimStartPrayingEvt();
+                return;
+            }
             if (!GameManager.Instance.isInputEnabled)
                 return;
 
-            if (characterAnimator.GetBool("Praying"))
+            horizontalMove = Input.GetAxisRaw("Horizontal") * generalSpeed;
+
+            if(recentlyRespawned && horizontalMove > 0f)
             {
                 AnimStoppedPrayingEvt();
+                recentlyRespawned = false;
             }
-
-            horizontalMove = Input.GetAxisRaw("Horizontal") * generalSpeed;
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
@@ -48,6 +64,8 @@ namespace Character
                 jump = true;
                 characterAnimator.SetBool("Jump", true);
             }
+
+            
         }
 
         void FixedUpdate()
@@ -83,6 +101,14 @@ namespace Character
         {
             characterAnimator.SetBool("StartPraying", false);
             characterAnimator.SetBool("Praying", false);
+        }
+
+        public void Respawn()
+        {
+            GameObject SpawnPoint = GameObject.Find("SpawnPoint");
+            transform.position = SpawnPoint.transform.position;
+            recentlyRespawned = true;
+            GameManager.Instance.RespawnPlayer();
         }
     }
 }

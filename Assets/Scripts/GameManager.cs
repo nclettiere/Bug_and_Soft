@@ -8,8 +8,10 @@ public class GameManager
     private static GameManager instance;
 
     public bool isInputEnabled;
-
     public bool isInputEnabledUI;
+
+    public bool IsPlayerAlive {get; set;} = false; // Siempre respawner al jugador on start!
+    public int PlayerDeathCount = 0;
 
     public Camera CameraMain;
 
@@ -38,6 +40,20 @@ public class GameManager
 
             return instance;
         }
+    }
+
+    public void KillPlayer()
+    {
+        PlayerDeathCount++;
+        SetInputEnabled(false);
+        IsPlayerAlive = false;
+    }
+
+    public void RespawnPlayer(bool isFirstRespawn = false)
+    {
+        if(!isFirstRespawn)
+            SetInputEnabled(true);
+        IsPlayerAlive = true;
     }
 
     public void SetInputEnabled(bool isEnabled)

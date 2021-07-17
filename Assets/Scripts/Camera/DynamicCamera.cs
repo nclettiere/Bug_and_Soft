@@ -161,6 +161,5 @@ namespace CameraManagement
             }
             cameraOffset.x = endValue;
         }
-
     }
 }

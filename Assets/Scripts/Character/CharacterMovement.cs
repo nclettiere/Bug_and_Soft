@@ -5,21 +5,25 @@ namespace Character
 {
 	public class CharacterMovement : MonoBehaviour
 	{
-		[SerializeField] private float m_JumpForce = 400f;                        
-		[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;        
-		[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;
-		[SerializeField] private LayerMask m_WhatIsGround;                        
-		[SerializeField] private Transform m_GroundCheck;                         
-		[SerializeField] private Transform m_CeilingCheck;                        
-		[SerializeField] private Collider2D m_CrouchDisableCollider;
-		[SerializeField] private bool m_ShouldPlayerFlip = true;
-
-		const float k_GroundedRadius = .2f;
-		private bool m_Grounded;
-		const float k_CeilingRadius = .2f;
-		private Rigidbody2D m_Rigidbody2D;
-		private bool m_FacingRight = true;
-		private Vector3 m_Velocity = Vector3.zero;
+		[SerializeField] private float JumpForce = 400f;                        
+		[Range(0, 1)] [SerializeField] private float CrouchSpeed = .36f;        
+		[Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;
+		[SerializeField] private LayerMask WhatIsGround;                        
+		[SerializeField] private Transform GroundCheck;                         
+		[SerializeField] private Transform CeilingCheck;                        
+		[SerializeField] private Transform WallCheck;                        
+		[SerializeField] private Collider2D CrouchDisableCollider;
+		[SerializeField] private bool ShouldPlayerFlip = true;
+		[SerializeField] private float WallCheckDistance;
+		
+		const float GroundedRadius = .2f;
+		private bool Grounded;
+		const float CeilingRadius = .2f;
+		private Rigidbody2D Rigidbody2D;
+		private bool FacingRight = true;
+		private Vector3 Velocity = Vector3.zero;
+		
+        private bool IsTouchingWall;
 
 		[Header("Events")]
 		[Space]
@@ -31,31 +35,42 @@ namespace Character
 		public class BoolEvent : UnityEvent<bool> { }
 
 		public BoolEvent OnCrouchEvent;
-		private bool m_wasCrouching = false;
+		private bool wasCrouching = false;
 
 		private void FixedUpdate()
 		{
-			bool wasGrounded = m_Grounded;
-			m_Grounded = false;
+			CheckSurroundings();
+		}
 
-			Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+		/// <summary>
+		/// Checkea si se esta en el ground, si se esta contra una pared, etc
+		/// </summary>
+		private void CheckSurroundings()
+		{
+			// GroundCheck
+			bool wasGrounded = Grounded;
+			Grounded = false;
+
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(GroundCheck.position, GroundedRadius, WhatIsGround);
 			for (int i = 0; i < colliders.Length; i++)
 			{
 				if (colliders[i].gameObject != gameObject)
 				{
-					m_Grounded = true;
+					Grounded = true;
 					if (!wasGrounded)
 						OnLandEvent.Invoke();
 				}
 			}
-		}
 
+			// WallCheck : Raycast
+			IsTouchingWall = Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance, WhatIsGround);
+		}
 
 		public void Move(float moveH, bool crouch, bool jump)
 		{
 			if (!crouch)
 			{
-				if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+				if (Physics2D.OverlapCircle(CeilingCheck.position, CeilingRadius, WhatIsGround))
 				{
 					crouch = true;
 				}
@@ -64,58 +79,58 @@ namespace Character
 			// If crouching
 			if (crouch)
 			{
-				if (!m_wasCrouching)
+				if (!wasCrouching)
 				{
-					m_wasCrouching = true;
+					wasCrouching = true;
 					OnCrouchEvent.Invoke(true);
 				}
 
-				moveH *= m_CrouchSpeed;
+				moveH *= CrouchSpeed;
 			
-				if (m_CrouchDisableCollider != null)
-					m_CrouchDisableCollider.enabled = false;
+				if (CrouchDisableCollider != null)
+					CrouchDisableCollider.enabled = false;
 			}
 			else
 			{
-				if (m_CrouchDisableCollider != null)
-					m_CrouchDisableCollider.enabled = true;
+				if (CrouchDisableCollider != null)
+					CrouchDisableCollider.enabled = true;
 			
-				if (m_wasCrouching)
+				if (wasCrouching)
 				{
-					m_wasCrouching = false;
+					wasCrouching = false;
 					OnCrouchEvent.Invoke(false);
 				}
 			}
 
-			Vector3 targetVelocity = new Vector2(moveH * 10f, m_Rigidbody2D.velocity.y);
+			Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
 
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+			Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
 
-			if (moveH > 0 && !m_FacingRight)
+			if (moveH > 0 && !FacingRight)
 			{
 				Flip();
 			}
-			else if (moveH < 0 && m_FacingRight)
+			else if (moveH < 0 && FacingRight)
 			{
 				Flip();
 			}
 			
 			// If the player should jump...
-			if (m_Grounded && jump)
+			if (Grounded && jump)
 			{
 				// Add a vertical force to the player.
-				m_Grounded = false;
-				m_Rigidbody2D.AddForce(new Vector2(250f, m_JumpForce));
+				Grounded = false;
+				Rigidbody2D.AddForce(new Vector2(250f, JumpForce));
 			}
 
-			if(!m_Grounded)
+			if(!Grounded)
 				OnAirEvent.Invoke();
 		}
 
 		private void Flip()
 		{
-			if (!m_ShouldPlayerFlip) return;
-			m_FacingRight = !m_FacingRight;
+			if (!ShouldPlayerFlip) return;
+			FacingRight = !FacingRight;
 
 			Vector3 theScale = transform.localScale;
 			theScale.x *= -1;
@@ -124,7 +139,7 @@ namespace Character
 
 		private void Awake()
 		{
-			m_Rigidbody2D = GetComponent<Rigidbody2D>();
+			Rigidbody2D = GetComponent<Rigidbody2D>();
 
 			if (OnLandEvent == null)
 				OnLandEvent = new UnityEvent();
@@ -134,6 +149,10 @@ namespace Character
 
 			if (OnCrouchEvent == null)
 				OnCrouchEvent = new BoolEvent();
+		}
+
+		private void OnDrawGizmos() {
+			Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
 		}
 	}
 }
