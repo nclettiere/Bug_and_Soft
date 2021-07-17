@@ -14,6 +14,7 @@ namespace CameraManagement
         private Transform target; // el target puede ser un jugador/NPC/objeto; totalmente dinamico.
 
         [Header("(Optional) Camera options")]
+
         [SerializeField]
         private Vector3 cameraOffset = new Vector3(10f, 3.5f, -1f);
 
@@ -32,16 +33,22 @@ namespace CameraManagement
 
         private Vector3 newCameraPosition; // La posicion a la que se movera la camara;
 
+        public bool FollowTarget { get; set; } = true;
+
         /// <summary>
         /// Utiliza FixedUpdate para esperar al movimiento del jugador/NPC/objeto.
         /// Define la variable newCameraPosition y si es necesario, agrega los extras (bound limit y smoothing)
         /// </summary>
         private void FixedUpdate()
         {
-            if (target == null) return;
-
             // Base position of the camera : posicion inicial de la camara
-            newCameraPosition = target.position + cameraOffset;
+            // Allow the camera to add offset even if target is null
+            if (target == null || !FollowTarget)
+                newCameraPosition = transform.position + cameraOffset;
+            else
+                newCameraPosition = target.position + cameraOffset;
+
+            if (target == null || !FollowTarget) return;
 
             // [Extras]
             // [Section][Bounds]
@@ -92,7 +99,7 @@ namespace CameraManagement
         /// Metodo para cambiar el target de la camara
         /// </summary>
         /// <param name="target">Un Transform de cualquier objeto instanciado en el juego.</param>
-        private void ChangeTarget(Transform target)
+        internal void ChangeTarget(Transform target)
         {
             this.target = target;
         }
@@ -110,7 +117,11 @@ namespace CameraManagement
         /// </summary>
         internal void UpdateOffsetX(float offsetX)
         {
-            cameraOffset.x = offsetX;
+           StartCoroutine(UpdateCameraOffsetX(offsetX));
+        }
+        internal Vector2 GetOffsets()
+        {
+            return new Vector2(cameraOffset.x, cameraOffset.y);
         }
 
         /// <summary>
@@ -118,7 +129,7 @@ namespace CameraManagement
         /// </summary>
         internal void UpdateOffsetY(float offsetY)
         {
-            cameraOffset.y = offsetY;
+            StartCoroutine(UpdateCameraOffsetY(offsetY));
         }
 
         /// <summary>
@@ -160,6 +171,22 @@ namespace CameraManagement
                 yield return null;
             }
             cameraOffset.x = endValue;
+        }
+
+        private IEnumerator UpdateCameraOffsetY(float endValue, float duration = 0.3f)
+        {
+            float time = 0;
+            float startValue = cameraOffset.y;
+
+            while (time < duration)
+            {
+                cameraOffset.y =
+                    Mathf.Lerp(startValue, endValue, time / duration);
+
+                time += Time.deltaTime;
+                yield return null;
+            }
+            cameraOffset.y = endValue;
         }
     }
 }

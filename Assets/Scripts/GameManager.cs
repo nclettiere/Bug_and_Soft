@@ -47,6 +47,7 @@ public class GameManager
         PlayerDeathCount++;
         SetInputEnabled(false);
         IsPlayerAlive = false;
+        SetCameraFollowTarget(false);
     }
 
     public void RespawnPlayer(bool isFirstRespawn = false)
@@ -54,6 +55,7 @@ public class GameManager
         if(!isFirstRespawn)
             SetInputEnabled(true);
         IsPlayerAlive = true;
+        SetCameraFollowTarget(true);
     }
 
     public void SetInputEnabled(bool isEnabled)
@@ -66,6 +68,11 @@ public class GameManager
     public void SetInputEnabledUI(bool isEnabled)
     {
         if (instance != null) instance.isInputEnabledUI = isEnabled;
+    }
+
+    public void SetCameraTarget(Transform target)
+    {
+        if (DynCamera != null) DynCamera.ChangeTarget(target);
     }
 
     public void SetCameraOffset(Vector2 offset)
@@ -86,5 +93,17 @@ public class GameManager
     public void SetCameraSize(float size)
     {
         if (DynCamera != null) DynCamera.UpdateSize(size);
+    }
+
+    public Vector2 GetCameraOffset()
+    {
+        if (DynCamera != null)
+            return DynCamera.GetOffsets();
+        return Vector2.zero;
+    }
+    public void SetCameraFollowTarget(bool follow)
+    {
+        if (DynCamera != null)
+            DynCamera.FollowTarget = follow;
     }
 }

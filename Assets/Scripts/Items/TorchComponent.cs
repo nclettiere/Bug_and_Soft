@@ -5,8 +5,10 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class TorchComponent : MonoBehaviour
 {
-    [SerializeField] private bool lighten;
+    private bool lighten = false;
     [SerializeField] private Light2D torchFire;
+
+    private bool routineRunning;
 
     AudioSource audioData;
 
@@ -15,11 +17,19 @@ public class TorchComponent : MonoBehaviour
         audioData = GetComponent<AudioSource>();
     }
 
+    private void Update()
+    {
+        if(lighten && !routineRunning)
+        {
+            StartCoroutine(UpdateLightIntensity(Random.Range(1f, 1.5f)));
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player") && torchFire != null && !lighten) 
         {
             lighten = true;
-            audioData.Play(0);
+            AudioSource.PlayClipAtPoint(audioData.clip, transform.position);
             StartCoroutine(UpdateLightIntensity(1f));
         }
     }
@@ -29,6 +39,7 @@ public class TorchComponent : MonoBehaviour
         float time = 0;
         float startValue = torchFire.intensity;
 
+        routineRunning = true;
         while (time < duration)
         {
             torchFire.intensity =
@@ -38,5 +49,6 @@ public class TorchComponent : MonoBehaviour
             yield return null;
         }
         torchFire.intensity = endValue;
+        routineRunning = false;
     }
 }

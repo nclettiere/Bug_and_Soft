@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5629790822863349703}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6322619229848560861
 MonoBehaviour:
@@ -139,6 +139,7 @@ Transform:
   - {fileID: 5241946527090777466}
   - {fileID: 571285732247951436}
   - {fileID: 428328781159782775}
+  - {fileID: 3819478794032992146}
   - {fileID: 8225234678264035520}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -169,18 +170,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0a654fd0a066d40a068624f4ab2850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpForce: 400
+  JumpForce: 1000
   CrouchSpeed: 0.36
   MovementSmoothing: 0.05
-  WhatIsGround:
+  GroundLayers:
     serializedVersion: 2
     m_Bits: 24
+  ClimableLayers:
+    serializedVersion: 2
+    m_Bits: 128
   GroundCheck: {fileID: 571285732247951436}
   CeilingCheck: {fileID: 5241946527090777466}
   WallCheck: {fileID: 428328781159782775}
+  LedgeCheck: {fileID: 3819478794032992146}
   CrouchDisableCollider: {fileID: 0}
+  characterAnimator: {fileID: 5223729173480044969}
   ShouldPlayerFlip: 1
-  WallCheckDistance: 1
+  WallCheckDistance: 0.8
+  LedgeClimbXOffset1: 0
+  LedgeClimbYOffset1: 0
+  LedgeClimbXOffset2: 0
+  LedgeClimbYOffset2: 0
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -359,7 +369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4529466276496813127}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.13, y: 0.024, z: 0}
+  m_LocalPosition: {x: 0.13, y: -0.171, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5629790822863349703}
@@ -394,4 +404,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5629790822863349703}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8615221234322796336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3819478794032992146}
+  m_Layer: 6
+  m_Name: LedgeCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3819478794032992146
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8615221234322796336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.102, y: 0.757, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5629790822863349703}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

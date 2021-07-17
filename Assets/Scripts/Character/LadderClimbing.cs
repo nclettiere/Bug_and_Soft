@@ -14,6 +14,13 @@ public class LadderClimbing : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator characterAnimator;
 
+    PlayerControls playerControls;
+
+    private void Awake()
+    {
+        playerControls = new PlayerControls();
+    }
+
     private void Start()
     {
         normalGravity = rb.gravityScale;
@@ -22,12 +29,21 @@ public class LadderClimbing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        vertical = Input.GetAxis("Vertical");
+        vertical = playerControls.Gameplay.Vertical.ReadValue<float>();
 
-        if(isLadder && Mathf.Abs(vertical) > 0f)
+        if (isLadder && Mathf.Abs(vertical) > 0f)
         {
             isClimbing = true;
         }
+    }
+    private void OnEnable()
+    {
+        playerControls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Disable();
     }
 
     private void FixedUpdate()

@@ -17,7 +17,8 @@ namespace Character
 
         private bool recentlyRespawned = true;
 
-        private int deathCount = 0;
+        PlayerControls playerControls;
+
 
         private void Start()
         {
@@ -29,6 +30,7 @@ namespace Character
 
         void Awake()
         {
+            playerControls = new PlayerControls();
 
             characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
             characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
@@ -37,21 +39,32 @@ namespace Character
                 characterSprite.sprite = Resources.Load<Sprite>("Checker");
         }
 
+        private void OnEnable()
+        {
+            playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerControls.Disable();
+        }
+
         void Update()
         {
             if(!GameManager.Instance.IsPlayerAlive &&
                 GameManager.Instance.PlayerDeathCount > 0) {
-                Respawn();
+                StartCoroutine(Respawn());
                 horizontalMove = 0f;
-                AnimStartPrayingEvt();
                 return;
             }
             if (!GameManager.Instance.isInputEnabled)
                 return;
 
-            horizontalMove = Input.GetAxisRaw("Horizontal") * generalSpeed;
+            // Input.GetAxisRaw("Horizontal") * generalSpeed;
+            horizontalMove = playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
+            verticalMove = playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
 
-            if(recentlyRespawned && horizontalMove > 0f)
+            if (recentlyRespawned && horizontalMove > 0f)
             {
                 AnimStoppedPrayingEvt();
                 recentlyRespawned = false;
@@ -59,18 +72,17 @@ namespace Character
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-            if (Input.GetButtonDown("Jump"))
+            playerControls.Gameplay.Jump.performed += ctx =>
             {
                 jump = true;
                 characterAnimator.SetBool("Jump", true);
-            }
-
+            };
             
         }
 
         void FixedUpdate()
         {
-            characterMovement.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
+            characterMovement.Move(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime, false, jump);
             jump = false;
         }
 
@@ -103,10 +115,16 @@ namespace Character
             characterAnimator.SetBool("Praying", false);
         }
 
-        public void Respawn()
+        private IEnumerator Respawn()
         {
+            yield return new WaitForSeconds(1);
+
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
             transform.position = SpawnPoint.transform.position;
+            AnimStartPrayingEvt();
+
+            yield return new WaitForSeconds(3);
+
             recentlyRespawned = true;
             GameManager.Instance.RespawnPlayer();
         }
