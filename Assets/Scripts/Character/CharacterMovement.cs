@@ -124,7 +124,7 @@ namespace Character
 
         }
 
-        public void Move(float moveH, float moveV, bool crouch, bool jump)
+        public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll)
         {
 
             if (!GameManager.Instance.isInputEnabled)
@@ -154,6 +154,23 @@ namespace Character
                 return;
             }
 
+            // If roll on idle
+            if(roll && moveH < 0.01f)
+            {
+                if (FacingRight)
+                    Rigidbody2D.AddForce(new Vector2(2000f, 100f));
+                else
+                    Rigidbody2D.AddForce(new Vector2(-2000f, 100f));
+            }
+
+            // If roll on running
+            if(roll && moveH > 0.01f)
+            {
+                if (FacingRight)
+                    Rigidbody2D.AddForce(new Vector2(700f, 10f));
+                else
+                    Rigidbody2D.AddForce(new Vector2(-700f, 10f));
+            }
 
             if (!crouch)
             {

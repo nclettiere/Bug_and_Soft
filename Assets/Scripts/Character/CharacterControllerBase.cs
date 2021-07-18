@@ -11,6 +11,7 @@ namespace Character
         private float horizontalMove = 0f;
         private float verticalMove = 0f;
         private bool jump = false;
+        private bool roll = false;
 
         [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private Animator characterAnimator;
@@ -18,7 +19,6 @@ namespace Character
         private bool recentlyRespawned = true;
 
         PlayerControls playerControls;
-
 
         private void Start()
         {
@@ -77,13 +77,25 @@ namespace Character
                 jump = true;
                 characterAnimator.SetBool("Jump", true);
             };
+
+            playerControls.Gameplay.Roll.performed += ctx =>
+            {
+                roll = true;
+                characterAnimator.SetBool("Roll", true);
+            };
             
         }
 
         void FixedUpdate()
         {
-            characterMovement.Move(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime, false, jump);
+            characterMovement.Move(
+                horizontalMove * Time.fixedDeltaTime, 
+                verticalMove * Time.fixedDeltaTime, 
+                false, 
+                jump, 
+                roll);
             jump = false;
+            roll = false;
         }
 
         public void LandEvt()
@@ -113,6 +125,12 @@ namespace Character
         {
             characterAnimator.SetBool("StartPraying", false);
             characterAnimator.SetBool("Praying", false);
+        }
+
+        public void AnimRollEndEvt()
+        {
+            roll = false;
+            characterAnimator.SetBool("Roll", false);
         }
 
         private IEnumerator Respawn()
