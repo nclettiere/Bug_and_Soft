@@ -68,7 +68,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   distance:
     m_OverrideState: 1
-    m_Value: 0.162
+    m_Value: 0.02
     min: 0
     max: 1
   cropToFit:

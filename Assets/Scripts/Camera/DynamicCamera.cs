@@ -34,8 +34,10 @@ namespace CameraManagement
         [Range(0, 10)]
         [SerializeField]
         private float cameraMoveMultiplier = 2.5f; // Cuanto se mueve la camara cuando se usa el joystick
-
+        
         private Vector3 newCameraPosition; // La posicion a la que se movera la camara;
+        private Vector3 lastCameraPosition;
+        private string lastTargetTag;
 
         public bool FollowTarget { get; set; } = true;
 
@@ -72,12 +74,18 @@ namespace CameraManagement
         {
             // Base position of the camera : posicion inicial de la camara
             // Allow the camera to add offset even if target is null
-            if (target == null || !FollowTarget)
-                newCameraPosition = transform.position + cameraOffset + cameraMoveOffset;
+            if (target == null || !FollowTarget)  
+            {
+                if(lastTargetTag.Equals("Player"))
+                    newCameraPosition = (GameManager.Instance.LastDeathPosition - new Vector3(0f, 5f)) + cameraOffset + cameraMoveOffset;
+            }
             else
                 newCameraPosition = target.position + cameraOffset + cameraMoveOffset;
 
-            if (target == null || !FollowTarget) return;
+            if (target != null) {
+                lastCameraPosition = target.position;
+                lastTargetTag = target.tag;
+            }
 
             // [Extras]
             // [Section][Bounds]
@@ -85,7 +93,7 @@ namespace CameraManagement
             {
                 // Checkea si se esta dentro de los limites o no.
                 // deltaX de la posicion de la camara y el target
-                float deltaX = target.position.x - transform.position.x;
+                float deltaX = lastCameraPosition.x - transform.position.x;
 
                 // if(camara dentro de limites)
                 if (Mathf.Abs(deltaX) > bounds)
@@ -95,19 +103,19 @@ namespace CameraManagement
                     {
                         // Alinea la pos. de la camara hacia la derecha de la pantalla
                         newCameraPosition.x =
-                            target.position.x - bounds + cameraOffset.x;
+                            lastCameraPosition.x - bounds + cameraOffset.x;
                     }
                     else
                     {
                         // Izquierda
                         newCameraPosition.x =
-                            target.position.x + bounds + cameraOffset.x;
+                            lastCameraPosition.x + bounds + cameraOffset.x;
                     }
                 }
                 else
                 {
                     newCameraPosition.x =
-                        target.position.x - deltaX + cameraOffset.x;      
+                        lastCameraPosition.x - deltaX + cameraOffset.x;      
                 }
             }
 

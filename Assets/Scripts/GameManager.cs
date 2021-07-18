@@ -9,19 +9,19 @@ public class GameManager
 
     public bool isInputEnabled;
     public bool isInputEnabledUI;
-
     public bool IsPlayerAlive {get; set;} = false; // Siempre respawner al jugador on start!
     public int PlayerDeathCount = 0;
-
     public Camera CameraMain;
 
-    private DynamicCamera DynCamera;
+    private DynamicCamera dynCamera;
+
+    internal Vector3 LastDeathPosition {get; set;}
 
     private GameManager()
     {
         CameraMain = Camera.main;
         if (CameraMain != null)
-            DynCamera =
+            dynCamera =
                 CameraMain.GetComponent(typeof (DynamicCamera)) as
                 DynamicCamera;
 
@@ -42,8 +42,9 @@ public class GameManager
         }
     }
 
-    public void KillPlayer()
+    public void KillPlayer(Transform deathTransf)
     {
+        LastDeathPosition = deathTransf.position;
         PlayerDeathCount++;
         SetInputEnabled(false);
         IsPlayerAlive = false;
@@ -60,7 +61,7 @@ public class GameManager
 
     public void SetInputEnabled(bool isEnabled)
     {
-        if (DynCamera != null && isEnabled) DynCamera.UpdateSize(10f, 0.3f);
+        if (dynCamera != null && isEnabled) dynCamera.UpdateSize(10f, 0.3f);
 
         if (instance != null) instance.isInputEnabled = isEnabled;
     }
@@ -72,38 +73,38 @@ public class GameManager
 
     public void SetCameraTarget(Transform target)
     {
-        if (DynCamera != null) DynCamera.ChangeTarget(target);
+        if (dynCamera != null) dynCamera.ChangeTarget(target);
     }
 
     public void SetCameraOffset(Vector2 offset)
     {
-        if (DynCamera != null) DynCamera.UpdateOffset(offset);
+        if (dynCamera != null) dynCamera.UpdateOffset(offset);
     }
 
     public void SetCameraOffsetX(float offsetX)
     {
-        if (DynCamera != null) DynCamera.UpdateOffsetX(offsetX);
+        if (dynCamera != null) dynCamera.UpdateOffsetX(offsetX);
     }
 
     public void SetCameraOffsetY(float offsetY)
     {
-        if (DynCamera != null) DynCamera.UpdateOffsetY(offsetY);
+        if (dynCamera != null) dynCamera.UpdateOffsetY(offsetY);
     }
 
     public void SetCameraSize(float size)
     {
-        if (DynCamera != null) DynCamera.UpdateSize(size);
+        if (dynCamera != null) dynCamera.UpdateSize(size);
     }
 
     public Vector2 GetCameraOffset()
     {
-        if (DynCamera != null)
-            return DynCamera.GetOffsets();
+        if (dynCamera != null)
+            return dynCamera.GetOffsets();
         return Vector2.zero;
     }
     public void SetCameraFollowTarget(bool follow)
     {
-        if (DynCamera != null)
-            DynCamera.FollowTarget = follow;
+        if (dynCamera != null)
+            dynCamera.FollowTarget = follow;
     }
 }

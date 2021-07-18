@@ -227,6 +227,13 @@ namespace Character
                 OnAirEvent.Invoke();
         }
 
+        internal void PrepareRespawn(Transform SpawnPoint)
+        {
+            if(!FacingRight)
+                Flip();
+            transform.position = SpawnPoint.position;
+        }
+
         private void Flip()
         {
             if (!ShouldPlayerFlip) return;
