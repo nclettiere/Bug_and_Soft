@@ -31,9 +31,38 @@ namespace CameraManagement
         [SerializeField]
         private float smoothingAmount = 10f; // En un rango de (0 - 10), especifica la cantidad de suavizado de la camara.
 
+        [Range(0, 10)]
+        [SerializeField]
+        private float cameraMoveMultiplier = 2.5f; // Cuanto se mueve la camara cuando se usa el joystick
+
         private Vector3 newCameraPosition; // La posicion a la que se movera la camara;
 
         public bool FollowTarget { get; set; } = true;
+
+        PlayerControls playerControls;
+        private Vector3 cameraMoveOffset = Vector3.zero;
+
+        void Awake()
+        {
+            playerControls = new PlayerControls();
+
+            playerControls.Gameplay.Camera.performed += ctx =>
+            {
+                var value = ctx.ReadValue<Vector2>();
+                cameraMoveOffset = new Vector3(value.x, value.y) * cameraMoveMultiplier;
+            };
+            playerControls.Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
+        }
+
+        private void OnEnable()
+        {
+            playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerControls.Disable();
+        }
 
         /// <summary>
         /// Utiliza FixedUpdate para esperar al movimiento del jugador/NPC/objeto.
@@ -44,9 +73,9 @@ namespace CameraManagement
             // Base position of the camera : posicion inicial de la camara
             // Allow the camera to add offset even if target is null
             if (target == null || !FollowTarget)
-                newCameraPosition = transform.position + cameraOffset;
+                newCameraPosition = transform.position + cameraOffset + cameraMoveOffset;
             else
-                newCameraPosition = target.position + cameraOffset;
+                newCameraPosition = target.position + cameraOffset + cameraMoveOffset;
 
             if (target == null || !FollowTarget) return;
 

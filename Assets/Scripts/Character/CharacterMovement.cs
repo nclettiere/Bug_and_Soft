@@ -53,6 +53,8 @@ namespace Character
         public BoolEvent OnCrouchEvent;
         private bool wasCrouching = false;
 
+        private float beforeLedgeClimbOffsetY;
+
         private void FixedUpdate()
         {
             CheckSurroundings();
@@ -97,9 +99,9 @@ namespace Character
             if (IsTouchingLedge && !LedgeDetected)
             {
                 if (FacingRight)
-                    LedgePos1 = LedgeHit.collider.transform.position - new Vector3(0.5f, 1f, 0f);
+                    LedgePos1 = LedgeHit.collider.transform.position - new Vector3(0.7f, 1.2f, 0f);
                 else
-                    LedgePos1 = LedgeHit.collider.transform.position + new Vector3(0.8f, -1f, 0f);
+                    LedgePos1 = LedgeHit.collider.transform.position + new Vector3(0.7f, -1.2f, 0f);
                 LedgeDetected = true;
                 LedgePosBott = LedgeCheck.position;
             }
@@ -113,15 +115,13 @@ namespace Character
 
                 ShouldPlayerFlip = false;
                 characterAnimator.SetBool("CanClimbLedge", true);
-                //Rigidbody2D.MovePosition(LedgePos1);
+
+                beforeLedgeClimbOffsetY = GameManager.Instance.GetCameraOffset().y;
+                GameManager.Instance.SetCameraOffsetY(beforeLedgeClimbOffsetY + 4f);
+
                 transform.position = LedgePos1;
                 Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
             }
-        }
-
-        public void FinishLedgeClimb()
-        {
-
         }
 
         public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll)
@@ -139,6 +139,7 @@ namespace Character
                     transform.position = LedgePos1 + new Vector2(0f, 1f);
                     Rigidbody2D.AddForce(new Vector2(250f, 1000f));
                     characterAnimator.SetBool("CanClimbLedge", false);
+                    GameManager.Instance.SetCameraOffsetY(beforeLedgeClimbOffsetY);
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }
@@ -148,28 +149,23 @@ namespace Character
                     ShouldPlayerFlip = true;
                     transform.position = LedgePos1 - new Vector2(0f, 1.2f);
                     characterAnimator.SetBool("CanClimbLedge", false);
+                    GameManager.Instance.SetCameraOffsetY(beforeLedgeClimbOffsetY);
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }
                 return;
             }
 
-            // If roll on idle
-            if(roll && moveH < 0.01f)
+            if (Grounded)
             {
-                if (FacingRight)
-                    Rigidbody2D.AddForce(new Vector2(2000f, 100f));
-                else
-                    Rigidbody2D.AddForce(new Vector2(-2000f, 100f));
-            }
-
-            // If roll on running
-            if(roll && moveH > 0.01f)
-            {
-                if (FacingRight)
-                    Rigidbody2D.AddForce(new Vector2(700f, 10f));
-                else
-                    Rigidbody2D.AddForce(new Vector2(-700f, 10f));
+                // Only roll if moving right/left
+                if (roll)
+                {
+                    if (FacingRight)
+                        Rigidbody2D.AddForce(new Vector2(1000f, 100f));
+                    else
+                        Rigidbody2D.AddForce(new Vector2(-1000f, 100f));
+                }
             }
 
             if (!crouch)

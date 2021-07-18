@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 
 namespace Character
 {
@@ -12,9 +13,17 @@ namespace Character
         private float verticalMove = 0f;
         private bool jump = false;
         private bool roll = false;
+        private bool praying = true;
+        private bool attacking = false;
+        private bool awaitingAttack = true;
+        private bool requestedAttack;
+        private int attackN = 0;
 
         [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private Animator characterAnimator;
+
+        [SerializeField] private AudioSource footStep1;
+        [SerializeField] private AudioSource footStep2;
 
         private bool recentlyRespawned = true;
 
@@ -35,8 +44,44 @@ namespace Character
             characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
             characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
-            if (characterSprite.sprite == null)
-                characterSprite.sprite = Resources.Load<Sprite>("Checker");
+            playerControls.Gameplay.Roll.performed += ctxRoll =>
+            {
+                if (horizontalMove != 0f)
+                {
+                    roll = true;
+                    characterAnimator.SetBool("Roll", true);
+                }
+            };
+
+            playerControls.Gameplay.Jump.performed += ctxRoll =>
+            {
+                jump = true;
+                characterAnimator.SetBool("Jump", true);
+            };
+
+            playerControls.Gameplay.Attack.performed += ctx =>
+            {
+                if (!praying && !roll)
+                {
+                    if (awaitingAttack)
+                    {
+                        requestedAttack = false;
+                        attacking = true;
+                        attackN++;
+
+                        characterAnimator.SetBool("Attacking", true);
+                        characterAnimator.SetInteger("AttackN", attackN);
+
+                        awaitingAttack = false;
+
+                        StartCoroutine(ResetAttack(attackN));
+                    }
+                    else
+                    {
+                        requestedAttack = true;
+                    }
+                }
+            };
         }
 
         private void OnEnable()
@@ -51,8 +96,9 @@ namespace Character
 
         void Update()
         {
-            if(!GameManager.Instance.IsPlayerAlive &&
-                GameManager.Instance.PlayerDeathCount > 0) {
+            if (!GameManager.Instance.IsPlayerAlive &&
+                GameManager.Instance.PlayerDeathCount > 0)
+            {
                 StartCoroutine(Respawn());
                 horizontalMove = 0f;
                 return;
@@ -72,27 +118,15 @@ namespace Character
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-            playerControls.Gameplay.Jump.performed += ctx =>
-            {
-                jump = true;
-                characterAnimator.SetBool("Jump", true);
-            };
-
-            playerControls.Gameplay.Roll.performed += ctx =>
-            {
-                roll = true;
-                characterAnimator.SetBool("Roll", true);
-            };
-            
         }
 
         void FixedUpdate()
         {
             characterMovement.Move(
-                horizontalMove * Time.fixedDeltaTime, 
-                verticalMove * Time.fixedDeltaTime, 
-                false, 
-                jump, 
+                horizontalMove * Time.fixedDeltaTime,
+                verticalMove * Time.fixedDeltaTime,
+                false,
+                jump,
                 roll);
             jump = false;
             roll = false;
@@ -123,6 +157,7 @@ namespace Character
 
         public void AnimStoppedPrayingEvt()
         {
+            praying = false;
             characterAnimator.SetBool("StartPraying", false);
             characterAnimator.SetBool("Praying", false);
         }
@@ -131,6 +166,31 @@ namespace Character
         {
             roll = false;
             characterAnimator.SetBool("Roll", false);
+        }
+
+        public void AnimFootStep1Evt()
+        {
+            footStep1.Play();
+        }
+
+        public void AnimFootStep2Evt()
+        {
+            footStep2.Play();
+        }
+
+        public void AnimAttackEndEvt()
+        {
+            attacking = false;
+            awaitingAttack = true;
+        }
+
+        public void AnimAttackEllapsedEvt()
+        {
+            //awaitingAttack = true;
+            //attacking = false;
+            //attackN = 0;
+            //characterAnimator.SetBool("Attacking", false);
+            //characterAnimator.SetInteger("AttackN", attackN);
         }
 
         private IEnumerator Respawn()
@@ -145,6 +205,26 @@ namespace Character
 
             recentlyRespawned = true;
             GameManager.Instance.RespawnPlayer();
+        }
+
+        /// <summary>
+        /// Resetea el ataque del jugador si no hace un combo completo !!!
+        /// </summary>
+        private IEnumerator ResetAttack(int initialAttackN)
+        {
+            /// Se le da un delay al jugador para que responda
+            yield return new WaitForSeconds(0.3f);
+
+            // Si ha transcurrido el tiempo y no se ha accionado ningun attack,
+            // se resetea el ataque
+            if (!requestedAttack)
+            {
+                attacking = false;
+                attackN = 0;
+                characterAnimator.SetBool("Attacking", false);
+                characterAnimator.SetInteger("AttackN", attackN);
+            }
+            awaitingAttack = true;
         }
     }
 }

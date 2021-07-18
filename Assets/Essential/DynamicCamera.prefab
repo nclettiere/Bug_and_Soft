@@ -50,7 +50,7 @@ MonoBehaviour:
   CameraObject: {fileID: 4780498666552327795}
   target: {fileID: 0}
   cameraOffset: {x: 6, y: 2.5, z: -1}
-  allowBounds: 1
+  allowBounds: 0
   allowSmoothing: 1
   bounds: 0.5
   smoothingAmount: 4.21

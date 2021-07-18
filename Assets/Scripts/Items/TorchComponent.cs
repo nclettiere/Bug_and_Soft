@@ -29,7 +29,7 @@ public class TorchComponent : MonoBehaviour
         if (other.CompareTag("Player") && torchFire != null && !lighten) 
         {
             lighten = true;
-            AudioSource.PlayClipAtPoint(audioData.clip, transform.position);
+            audioData.Play();
             StartCoroutine(UpdateLightIntensity(1f));
         }
     }
