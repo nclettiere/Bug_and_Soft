@@ -124,7 +124,7 @@ namespace Character
             }
         }
 
-        public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll)
+        public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll, bool attacking, int attackN)
         {
 
             if (!GameManager.Instance.isInputEnabled)
@@ -154,6 +154,14 @@ namespace Character
                     LedgeDetected = false;
                 }
                 return;
+            }
+
+            if (attacking)
+            {
+                if (FacingRight)
+                    Rigidbody2D.AddForce(new Vector2(300f * attackN, 100f));
+                else
+                    Rigidbody2D.AddForce(new Vector2((300f * attackN) * -1, -100f));
             }
 
             if (Grounded)

@@ -15,15 +15,21 @@ namespace Character
         private bool roll = false;
         private bool praying = true;
         private bool attacking = false;
+        private bool attackingMov = false; // Used in CharacterMovement
         private bool awaitingAttack = true;
         private bool requestedAttack;
         private int attackN = 0;
+
+        [Range(0.15f, 1f)] public float WaitTimeForAttack = 0.75f;
+        public int UnlockedAttacksCount = 2;
 
         [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private Animator characterAnimator;
 
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
+
+        [SerializeField] private AudioSource[] swordSwingSFX;
 
         private bool recentlyRespawned = true;
 
@@ -56,7 +62,6 @@ namespace Character
             playerControls.Gameplay.Jump.performed += ctxRoll =>
             {
                 jump = true;
-                characterAnimator.SetBool("Jump", true);
             };
 
             playerControls.Gameplay.Attack.performed += ctx =>
@@ -65,16 +70,18 @@ namespace Character
                 {
                     if (awaitingAttack)
                     {
+                        StopAllCoroutines();
                         requestedAttack = false;
                         attacking = true;
                         attackN++;
 
                         characterAnimator.SetBool("Attacking", true);
+                        characterAnimator.SetBool("AwaitingAttack", false);
                         characterAnimator.SetInteger("AttackN", attackN);
 
-                        awaitingAttack = false;
+                        attackingMov = true;
 
-                        StartCoroutine(ResetAttack(attackN));
+                        awaitingAttack = false;
                     }
                     else
                     {
@@ -127,9 +134,12 @@ namespace Character
                 verticalMove * Time.fixedDeltaTime,
                 false,
                 jump,
-                roll);
+                roll,
+                attackingMov,
+                attackN * 2);
             jump = false;
             roll = false;
+            attackingMov = false;
         }
 
         public void LandEvt()
@@ -178,25 +188,37 @@ namespace Character
             footStep2.Play();
         }
 
+        /// <summary>
+        /// Accionado cuando la animacion del ataque termina
+        /// Se pasa a esperar al siguiente ataque en el combo loco (awaitingAttack)
+        /// </summary>
         public void AnimAttackEndEvt()
         {
-            attacking = false;
             awaitingAttack = true;
-        }
+            characterAnimator.SetBool("AwaitingAttack", true);
 
-        public void AnimAttackEllapsedEvt()
+            if (attackN + 1 > UnlockedAttacksCount)
+            {
+                ResetAttackNow();
+                return;
+            }
+
+            StartCoroutine(ResetAttack());
+        }
+        
+        /// <summary>
+        /// Accionado cuando la animacion de la espada hace un 'swing'
+        /// </summary>
+        public void AnimAttackSwingEvt()
         {
-            //awaitingAttack = true;
-            //attacking = false;
-            //attackN = 0;
-            //characterAnimator.SetBool("Attacking", false);
-            //characterAnimator.SetInteger("AttackN", attackN);
+            if((attackN - 1) >= 0 && (attackN - 1) <= swordSwingSFX.Length)
+                swordSwingSFX[attackN - 1].Play();
         }
 
         private IEnumerator Respawn()
         {
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
-            
+            ResetAttackNow();
             yield return new WaitForSeconds(1f);
             characterMovement.PrepareRespawn(SpawnPoint.transform);
             yield return new WaitForSeconds(2f);
@@ -210,21 +232,26 @@ namespace Character
         /// <summary>
         /// Resetea el ataque del jugador si no hace un combo completo !!!
         /// </summary>
-        private IEnumerator ResetAttack(int initialAttackN)
+        private IEnumerator ResetAttack()
         {
             /// Se le da un delay al jugador para que responda
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(WaitTimeForAttack);
 
             // Si ha transcurrido el tiempo y no se ha accionado ningun attack,
             // se resetea el ataque
-            if (!requestedAttack)
-            {
-                attacking = false;
-                attackN = 0;
-                characterAnimator.SetBool("Attacking", false);
-                characterAnimator.SetInteger("AttackN", attackN);
-            }
-            awaitingAttack = true;
+        
+                ResetAttackNow();
+            
+        }
+
+        private void ResetAttackNow()
+        {
+
+            attacking = false;
+            attackN = 0;
+            characterAnimator.SetBool("Attacking", false);
+            characterAnimator.SetInteger("AttackN", attackN);
+
         }
     }
 }

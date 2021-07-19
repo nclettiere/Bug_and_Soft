@@ -23,23 +23,13 @@ AnimationClip:
       value: {fileID: -1368667520356147063, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
     - time: 0.083333336
       value: {fileID: -2487155654839665781, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.16666667
-      value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.25
-      value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.33333334
-      value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.41666666
-      value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.5
-      value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - time: 0.5833333
+    - time: 0.20833333
       value: {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 12
+  m_SampleRate: 24
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -57,17 +47,12 @@ AnimationClip:
     - {fileID: -1368667520356147063, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
     - {fileID: -2487155654839665781, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
     - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
-    - {fileID: 2493715834204586930, guid: 316d6fd5fa60026448f69acc170bf3c6, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -87,15 +72,15 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.16666667
-    functionName: AnimAttackEndEvt
+  - time: 0
+    functionName: AnimAttackSwingEvt
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5833333
-    functionName: AnimAttackEllapsedEvt
+  - time: 0.20833333
+    functionName: AnimAttackEndEvt
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
