@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -156,14 +157,6 @@ namespace Character
                 return;
             }
 
-            if (attacking)
-            {
-                if (FacingRight)
-                    Rigidbody2D.AddForce(new Vector2(300f * attackN, 100f));
-                else
-                    Rigidbody2D.AddForce(new Vector2((300f * attackN) * -1, -100f));
-            }
-
             if (Grounded)
             {
                 // Only roll if moving right/left
@@ -242,6 +235,15 @@ namespace Character
             transform.position = SpawnPoint.position;
         }
 
+        private void DisableFlip()
+        {
+            ShouldPlayerFlip = false;
+        }
+        private void EnableFlip()
+        {
+            ShouldPlayerFlip = true;
+        }
+
         private void Flip()
         {
             if (!ShouldPlayerFlip) return;
@@ -250,6 +252,17 @@ namespace Character
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
+        }
+
+        internal void Attacking(int attackN)
+        {
+            float forceX = 1500f * attackN;
+            if (FacingRight)
+                Rigidbody2D.AddForce(new Vector2(forceX, 250f));
+            else
+            {
+                Rigidbody2D.AddForce(new Vector2(forceX * -1, 250f));
+            }
         }
 
         private void Awake()

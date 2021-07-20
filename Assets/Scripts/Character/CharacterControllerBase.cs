@@ -8,17 +8,16 @@ namespace Character
     public class CharacterControllerBase : MonoBehaviour
     {
         protected CharacterMovement characterMovement;
-        protected SpriteRenderer characterSprite;
         private float horizontalMove = 0f;
         private float verticalMove = 0f;
-        private bool jump = false;
-        private bool roll = false;
-        private bool praying = true;
-        private bool attacking = false;
-        private bool attackingMov = false; // Used in CharacterMovement
-        private bool awaitingAttack = true;
-        private bool requestedAttack;
-        private int attackN = 0;
+        internal bool jump = false;
+        internal bool roll = false;
+        internal bool praying = true;
+        internal bool attacking = false;
+        internal bool attackingMov = false; // Used in CharacterMovement
+        internal bool awaitingAttack = true;
+        internal bool requestedAttack;
+        internal int attackN = 0;
 
         [Range(0.15f, 1f)] public float WaitTimeForAttack = 0.75f;
         public int UnlockedAttacksCount = 2;
@@ -29,11 +28,8 @@ namespace Character
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
 
-        [SerializeField] private AudioSource[] swordSwingSFX;
-
         private bool recentlyRespawned = true;
 
-        PlayerControls playerControls;
 
         private void Start()
         {
@@ -45,12 +41,9 @@ namespace Character
 
         void Awake()
         {
-            playerControls = new PlayerControls();
+            characterMovement = GetComponent<CharacterMovement>();
 
-            characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
-            characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-
-            playerControls.Gameplay.Roll.performed += ctxRoll =>
+            GameManager.Instance.playerControls.Gameplay.Roll.performed += ctxRoll =>
             {
                 if (horizontalMove != 0f)
                 {
@@ -59,46 +52,56 @@ namespace Character
                 }
             };
 
-            playerControls.Gameplay.Jump.performed += ctxRoll =>
+            GameManager.Instance.playerControls.Gameplay.Jump.performed += ctxRoll =>
             {
                 jump = true;
             };
 
-            playerControls.Gameplay.Attack.performed += ctx =>
-            {
-                if (!praying && !roll)
-                {
-                    if (awaitingAttack)
-                    {
-                        StopAllCoroutines();
-                        requestedAttack = false;
-                        attacking = true;
-                        attackN++;
-
-                        characterAnimator.SetBool("Attacking", true);
-                        characterAnimator.SetBool("AwaitingAttack", false);
-                        characterAnimator.SetInteger("AttackN", attackN);
-
-                        attackingMov = true;
-
-                        awaitingAttack = false;
-                    }
-                    else
-                    {
-                        requestedAttack = true;
-                    }
-                }
-            };
+            //playerControls.Gameplay.Attack.performed += ctx =>
+            //{
+            //    if (!praying && !roll)
+            //    {
+            //        if (awaitingAttack)
+            //        {
+            //            StopAllCoroutines();
+            //            requestedAttack = false;
+            //            attacking = true;
+            //            attackN++;
+            //
+            //            switch (attackN)
+            //            {
+            //                case 0:
+            //                    footStep1.Play();
+            //                    break;
+            //                case 1:
+            //                    footStep2.Play();
+            //                    break;
+            //            }
+            //
+            //            characterAnimator.SetBool("Attacking", true);
+            //            characterAnimator.SetBool("AwaitingAttack", false);
+            //            characterAnimator.SetInteger("AttackN", attackN);
+            //
+            //            attackingMov = true;
+            //
+            //            awaitingAttack = false;
+            //        }
+            //        else
+            //        {
+            //            requestedAttack = true;
+            //        }
+            //    }
+            //};
         }
 
         private void OnEnable()
         {
-            playerControls.Enable();
+            GameManager.Instance.playerControls.Enable();
         }
 
         private void OnDisable()
         {
-            playerControls.Disable();
+            GameManager.Instance.playerControls.Disable();
         }
 
         void Update()
@@ -114,8 +117,8 @@ namespace Character
                 return;
 
             // Input.GetAxisRaw("Horizontal") * generalSpeed;
-            horizontalMove = playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
-            verticalMove = playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
+            horizontalMove = GameManager.Instance.playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
+            verticalMove = GameManager.Instance.playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
 
             if (recentlyRespawned && horizontalMove > 0f)
             {
@@ -180,12 +183,12 @@ namespace Character
 
         public void AnimFootStep1Evt()
         {
-            footStep1.Play();
+            //footStep1.Play();
         }
 
         public void AnimFootStep2Evt()
         {
-            footStep2.Play();
+            //footStep2.Play();
         }
 
         /// <summary>
@@ -199,26 +202,17 @@ namespace Character
 
             if (attackN + 1 > UnlockedAttacksCount)
             {
-                ResetAttackNow();
+                //ResetAttackNow();
                 return;
             }
 
-            StartCoroutine(ResetAttack());
-        }
-        
-        /// <summary>
-        /// Accionado cuando la animacion de la espada hace un 'swing'
-        /// </summary>
-        public void AnimAttackSwingEvt()
-        {
-            if((attackN - 1) >= 0 && (attackN - 1) <= swordSwingSFX.Length)
-                swordSwingSFX[attackN - 1].Play();
+            //StartCoroutine(ResetAttack());
         }
 
         private IEnumerator Respawn()
         {
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
-            ResetAttackNow();
+            //ResetAttackNow();
             yield return new WaitForSeconds(1f);
             characterMovement.PrepareRespawn(SpawnPoint.transform);
             yield return new WaitForSeconds(2f);
@@ -227,31 +221,6 @@ namespace Character
 
             recentlyRespawned = true;
             GameManager.Instance.RespawnPlayer();
-        }
-
-        /// <summary>
-        /// Resetea el ataque del jugador si no hace un combo completo !!!
-        /// </summary>
-        private IEnumerator ResetAttack()
-        {
-            /// Se le da un delay al jugador para que responda
-            yield return new WaitForSeconds(WaitTimeForAttack);
-
-            // Si ha transcurrido el tiempo y no se ha accionado ningun attack,
-            // se resetea el ataque
-        
-                ResetAttackNow();
-            
-        }
-
-        private void ResetAttackNow()
-        {
-
-            attacking = false;
-            attackN = 0;
-            characterAnimator.SetBool("Attacking", false);
-            characterAnimator.SetInteger("AttackN", attackN);
-
         }
     }
 }

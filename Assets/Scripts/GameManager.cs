@@ -15,6 +15,8 @@ public class GameManager
 
     private DynamicCamera dynCamera;
 
+    internal PlayerControls playerControls;
+
     internal Vector3 LastDeathPosition {get; set;}
 
     private GameManager()
@@ -24,6 +26,8 @@ public class GameManager
             dynCamera =
                 CameraMain.GetComponent(typeof (DynamicCamera)) as
                 DynamicCamera;
+
+        playerControls = new PlayerControls();
 
         isInputEnabled = false;
         isInputEnabledUI = true;
