@@ -11,13 +11,13 @@ namespace Character
         [Range(0.15f, 1f)] public float NextAttackMaxTime = 0.75f;
         [SerializeField]
         private int UnlockedAttacksCount = 2;
-        [SerializeField] 
+        [SerializeField]
         private float generalSpeed = 40f;
-        [SerializeField] 
+        [SerializeField]
         private Animator characterAnimator;
-        [SerializeField] 
+        [SerializeField]
         private AudioSource footStep1;
-        [SerializeField] 
+        [SerializeField]
         private AudioSource footStep2;
         [SerializeField]
         private AudioSource[] swordSwingSFX;
@@ -39,6 +39,7 @@ namespace Character
         private bool hasAttackAnimationStarted = false;
         private int attackN = 0;
         private float lastInputTime = float.NegativeInfinity;
+        private float lastPrayDelay = float.NegativeInfinity;
 
         PlayerControls playerControls;
 
@@ -102,10 +103,6 @@ namespace Character
 
         void Update()
         {
-            Debug.Log("respawning = " + respawning +
-                      "\npraying  = " + praying +
-                      "\nroll     = " + roll +
-                      "\ncharacterMovement.IsTouchingLedge = " + characterMovement.IsTouchingLedge);
             if (!GameManager.Instance.IsPlayerAlive &&
                 GameManager.Instance.PlayerDeathCount > 0)
             {
@@ -116,19 +113,20 @@ namespace Character
             if (!GameManager.Instance.isInputEnabled)
                 return;
 
+            if (respawning || praying)
+            {
+                if (horizontalMove > 0.01f)
+                {
+                    praying = false;
+                    characterAnimator.SetBool("Praying", false);
+                    respawning = false;
+                }
+            }
+
             horizontalMove = playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
             verticalMove = playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
 
-            if (respawning && horizontalMove > 0f)
-            {
-                AnimStoppedPrayingEvt();
-                respawning = false;
-            }
-
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-
-            //if(characterMovement.IsTouchingLedge && attacking)
-            //    ResetAttackNow();
         }
 
         void FixedUpdate()
@@ -141,6 +139,7 @@ namespace Character
                 roll,
                 attackingMov,
                 attackN * 2);
+
             jump = false;
             roll = false;
             attackingMov = false;
@@ -161,19 +160,8 @@ namespace Character
         // ==================
         public void AnimStartPrayingEvt()
         {
-            characterAnimator.SetBool("StartPraying", true);
-        }
-
-        public void AnimStartPrayingEndEvt()
-        {
+            praying = true;
             characterAnimator.SetBool("Praying", true);
-        }
-
-        public void AnimStoppedPrayingEvt()
-        {
-            praying = false;
-            characterAnimator.SetBool("StartPraying", false);
-            characterAnimator.SetBool("Praying", false);
         }
 
         public void AnimRollEndEvt()
@@ -198,7 +186,6 @@ namespace Character
         /// </summary>
         public void AnimAttackEndEvt()
         {
-            Debug.Log("AnimAttackEndEvt");
             attacking = false;
             awaitingAttack = true;
             hasAttackAnimationStarted = false;
@@ -238,14 +225,14 @@ namespace Character
         {
             this.OnDisable();
 
+            AnimStartPrayingEvt();
+
             respawning = true;
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
             ResetAttackNow();
             yield return new WaitForSeconds(1f);
             characterMovement.PrepareRespawn(SpawnPoint.transform);
             yield return new WaitForSeconds(2f);
-
-            AnimStartPrayingEvt();
 
             GameManager.Instance.RespawnPlayer();
             respawning = false;
@@ -263,7 +250,6 @@ namespace Character
 
             // Si ha transcurrido el tiempo y no se ha accionado ningun attack,
             // se resetea el ataque
-            Debug.Log("Times up");
             ResetAttackNow();
         }
 

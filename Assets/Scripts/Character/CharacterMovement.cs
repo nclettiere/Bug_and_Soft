@@ -20,7 +20,7 @@ namespace Character
         [SerializeField] private float WallCheckDistance;
 
         const float GroundedRadius = .2f;
-        private bool Grounded;
+        internal bool Grounded;
         const float CeilingRadius = .2f;
         private Rigidbody2D Rigidbody2D;
         private bool FacingRight = true;
