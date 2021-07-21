@@ -79,8 +79,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: DisableFlip
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.20833333
     functionName: AnimAttackEndEvt
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.20833333
+    functionName: EnableFlip
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

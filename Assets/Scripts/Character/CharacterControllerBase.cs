@@ -7,8 +7,26 @@ namespace Character
 {
     public class CharacterControllerBase : MonoBehaviour
     {
+        [SerializeField]
+        [Range(0.15f, 1f)] public float NextAttackMaxTime = 0.75f;
+        [SerializeField]
+        private int UnlockedAttacksCount = 2;
+        [SerializeField] 
+        private float generalSpeed = 40f;
+        [SerializeField] 
+        private Animator characterAnimator;
+        [SerializeField] 
+        private AudioSource footStep1;
+        [SerializeField] 
+        private AudioSource footStep2;
+        [SerializeField]
+        private AudioSource[] swordSwingSFX;
+        [SerializeField]
+        private float inputCooldown;
+
         protected CharacterMovement characterMovement;
-        protected SpriteRenderer characterSprite;
+        private bool climbLadderMechanicEnabled;
+        private LadderClimbing ladderClimbing;
         private float horizontalMove = 0f;
         private float verticalMove = 0f;
         private bool jump = false;
@@ -17,21 +35,10 @@ namespace Character
         private bool attacking = false;
         private bool attackingMov = false; // Used in CharacterMovement
         private bool awaitingAttack = true;
-        private bool requestedAttack;
+        private bool respawning = false;
+        private bool hasAttackAnimationStarted = false;
         private int attackN = 0;
-
-        [Range(0.15f, 1f)] public float WaitTimeForAttack = 0.75f;
-        public int UnlockedAttacksCount = 2;
-
-        [SerializeField] private float generalSpeed = 40f;
-        [SerializeField] private Animator characterAnimator;
-
-        [SerializeField] private AudioSource footStep1;
-        [SerializeField] private AudioSource footStep2;
-
-        [SerializeField] private AudioSource[] swordSwingSFX;
-
-        private bool recentlyRespawned = true;
+        private float lastInputTime = float.NegativeInfinity;
 
         PlayerControls playerControls;
 
@@ -39,16 +46,14 @@ namespace Character
         {
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
             transform.position = SpawnPoint.transform.position;
-            recentlyRespawned = true;
+            respawning = true;
             AnimStartPrayingEvt();
         }
 
         void Awake()
         {
             playerControls = new PlayerControls();
-
             characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
-            characterSprite = gameObject.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
             playerControls.Gameplay.Roll.performed += ctxRoll =>
             {
@@ -58,34 +63,28 @@ namespace Character
                     characterAnimator.SetBool("Roll", true);
                 }
             };
-
             playerControls.Gameplay.Jump.performed += ctxRoll =>
             {
                 jump = true;
             };
-
             playerControls.Gameplay.Attack.performed += ctx =>
             {
-                if (!praying && !roll)
+                if (!respawning && !praying && !roll && !characterMovement.IsTouchingLedge)
                 {
-                    if (awaitingAttack)
+                    if (awaitingAttack)// && Time.time >= lastInputTime)
                     {
                         StopAllCoroutines();
-                        requestedAttack = false;
+
                         attacking = true;
                         attackN++;
-
-                        characterAnimator.SetBool("Attacking", true);
-                        characterAnimator.SetBool("AwaitingAttack", false);
-                        characterAnimator.SetInteger("AttackN", attackN);
-
+                        awaitingAttack = false;
                         attackingMov = true;
 
-                        awaitingAttack = false;
-                    }
-                    else
-                    {
-                        requestedAttack = true;
+                        characterAnimator.SetBool("AwaitingAttack", false);
+                        characterAnimator.SetBool("Attacking", true);
+                        characterAnimator.SetInteger("AttackN", attackN);
+
+                        lastInputTime = Time.time + inputCooldown;
                     }
                 }
             };
@@ -103,6 +102,10 @@ namespace Character
 
         void Update()
         {
+            Debug.Log("respawning = " + respawning +
+                      "\npraying  = " + praying +
+                      "\nroll     = " + roll +
+                      "\ncharacterMovement.IsTouchingLedge = " + characterMovement.IsTouchingLedge);
             if (!GameManager.Instance.IsPlayerAlive &&
                 GameManager.Instance.PlayerDeathCount > 0)
             {
@@ -113,18 +116,19 @@ namespace Character
             if (!GameManager.Instance.isInputEnabled)
                 return;
 
-            // Input.GetAxisRaw("Horizontal") * generalSpeed;
             horizontalMove = playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
             verticalMove = playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
 
-            if (recentlyRespawned && horizontalMove > 0f)
+            if (respawning && horizontalMove > 0f)
             {
                 AnimStoppedPrayingEvt();
-                recentlyRespawned = false;
+                respawning = false;
             }
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
+            //if(characterMovement.IsTouchingLedge && attacking)
+            //    ResetAttackNow();
         }
 
         void FixedUpdate()
@@ -194,8 +198,13 @@ namespace Character
         /// </summary>
         public void AnimAttackEndEvt()
         {
+            Debug.Log("AnimAttackEndEvt");
+            attacking = false;
             awaitingAttack = true;
-            characterAnimator.SetBool("AwaitingAttack", true);
+            hasAttackAnimationStarted = false;
+            characterAnimator.SetBool("Attacking", false);
+            characterAnimator.SetBool("AwaitingAttack", awaitingAttack);
+            characterAnimator.SetBool("HasAttackAnimationStarted", false);
 
             if (attackN + 1 > UnlockedAttacksCount)
             {
@@ -205,18 +214,31 @@ namespace Character
 
             StartCoroutine(ResetAttack());
         }
-        
+
         /// <summary>
         /// Accionado cuando la animacion de la espada hace un 'swing'
         /// </summary>
         public void AnimAttackSwingEvt()
         {
-            if((attackN - 1) >= 0 && (attackN - 1) <= swordSwingSFX.Length)
+            if ((attackN - 1) >= 0 && (attackN - 1) <= swordSwingSFX.Length)
                 swordSwingSFX[attackN - 1].Play();
+
+            hasAttackAnimationStarted = true;
+            characterAnimator.SetBool("HasAttackAnimationStarted", hasAttackAnimationStarted);
+        }
+
+
+        public void AnimHasAttackAnimationStartedEvt()
+        {
+            hasAttackAnimationStarted = true;
+            characterAnimator.SetBool("HasAttackAnimationStarted", hasAttackAnimationStarted);
         }
 
         private IEnumerator Respawn()
         {
+            this.OnDisable();
+
+            respawning = true;
             GameObject SpawnPoint = GameObject.Find("SpawnPoint");
             ResetAttackNow();
             yield return new WaitForSeconds(1f);
@@ -225,8 +247,10 @@ namespace Character
 
             AnimStartPrayingEvt();
 
-            recentlyRespawned = true;
             GameManager.Instance.RespawnPlayer();
+            respawning = false;
+
+            this.OnEnable();
         }
 
         /// <summary>
@@ -235,13 +259,12 @@ namespace Character
         private IEnumerator ResetAttack()
         {
             /// Se le da un delay al jugador para que responda
-            yield return new WaitForSeconds(WaitTimeForAttack);
+            yield return new WaitForSeconds(NextAttackMaxTime);
 
             // Si ha transcurrido el tiempo y no se ha accionado ningun attack,
             // se resetea el ataque
-        
-                ResetAttackNow();
-            
+            Debug.Log("Times up");
+            ResetAttackNow();
         }
 
         private void ResetAttackNow()
@@ -249,6 +272,9 @@ namespace Character
 
             attacking = false;
             attackN = 0;
+            hasAttackAnimationStarted = false;
+            characterAnimator.SetBool("AwaitingAttack", true);
+            characterAnimator.SetBool("HasAttackAnimationStarted", false);
             characterAnimator.SetBool("Attacking", false);
             characterAnimator.SetInteger("AttackN", attackN);
 

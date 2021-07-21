@@ -24,10 +24,10 @@ namespace Character
         const float CeilingRadius = .2f;
         private Rigidbody2D Rigidbody2D;
         private bool FacingRight = true;
-        private Vector3 Velocity = Vector3.zero;
+        internal Vector3 Velocity = Vector3.zero;
 
-        private bool IsTouchingWall;
-        private bool IsTouchingLedge;
+        internal bool IsTouchingWall;
+        internal bool IsTouchingLedge;
 
         private bool CanClimbLedge = false;
         private bool LedgeDetected;
@@ -159,9 +159,9 @@ namespace Character
             if (attacking)
             {
                 if (FacingRight)
-                    Rigidbody2D.AddForce(new Vector2(300f * attackN, 100f));
+                    Rigidbody2D.AddForce(new Vector2(700f * attackN, 100f));
                 else
-                    Rigidbody2D.AddForce(new Vector2((300f * attackN) * -1, -100f));
+                    Rigidbody2D.AddForce(new Vector2((700f * attackN) * -1, 100f));
             }
 
             if (Grounded)
@@ -210,9 +210,17 @@ namespace Character
                 }
             }
 
-            Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
+            if (!attacking)
+            {
+                Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
+                Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
+            }
+            else
+            {
+                Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
+                Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
 
-            Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
+            }
 
             if (moveH > 0 && !FacingRight)
             {
@@ -237,9 +245,19 @@ namespace Character
 
         internal void PrepareRespawn(Transform SpawnPoint)
         {
-            if(!FacingRight)
+            if (!FacingRight)
                 Flip();
             transform.position = SpawnPoint.position;
+        }
+
+        private void EnableFlip()
+        {
+            ShouldPlayerFlip = true;
+        }
+
+        private void DisableFlip()
+        {
+            ShouldPlayerFlip = false;
         }
 
         private void Flip()
