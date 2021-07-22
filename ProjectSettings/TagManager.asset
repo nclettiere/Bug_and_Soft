@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Ladder
   - Platform
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Player
   - Climbables
   - Ladders
-  - 
-  - 
+  - Dead
+  - Damageable
   - 
   - 
   - 
@@ -43,4 +44,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2502320187
+    locked: 0
+  - name: Decoration
+    uniqueID: 1421180149
+    locked: 0
+  - name: Platforms
+    uniqueID: 1574535919
+    locked: 0
+  - name: Usables
+    uniqueID: 1834650217
+    locked: 0
+  - name: NPCandEnemies
+    uniqueID: 2961693717
+    locked: 0
+  - name: Player
+    uniqueID: 3169735723
     locked: 0
