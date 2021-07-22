@@ -2,78 +2,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LadderClimbing : MonoBehaviour
+namespace Character
 {
-    private float vertical;
-    private float speed = 8f;
-    private bool isLadder;
-    private bool isClimbing;
-
-    private float normalGravity;
-
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Animator characterAnimator;
-
-    PlayerControls playerControls;
-
-    private void Awake()
+    public class LadderClimbing : MonoBehaviour
     {
-        playerControls = new PlayerControls();
-    }
+        private float vertical;
+        private float speed = 8f;
+        private bool isLadder;
+        internal bool isClimbing;
 
-    private void Start()
-    {
-        normalGravity = rb.gravityScale;
-    }
+        private float normalGravity;
 
-    // Update is called once per frame
-    void Update()
-    {
-        vertical = playerControls.Gameplay.Vertical.ReadValue<float>();
+        [SerializeField] private Rigidbody2D rb;
+        [SerializeField] private Animator characterAnimator;
 
-        if (isLadder && Mathf.Abs(vertical) > 0f)
+        private PlayerControls playerControls;
+        private CharacterControllerBase characterController;
+
+        private void Awake()
         {
-            isClimbing = true;
+            playerControls = new PlayerControls();
+            characterController = GetComponent<CharacterControllerBase>();
         }
-    }
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
 
-    private void OnDisable()
-    {
-        playerControls.Disable();
-    }
-
-    private void FixedUpdate()
-    {
-        if (isClimbing)
+        private void Start()
         {
-            characterAnimator.SetBool("Climbing", true);
-            rb.gravityScale = 0f;
-            rb.velocity = new Vector2(rb.velocity.x, vertical * speed);
-        }else
-        {
-            rb.gravityScale = normalGravity;
+            normalGravity = rb.gravityScale;
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Ladder"))
+        // Update is called once per frame
+        void Update()
         {
-            isLadder = true;
+            vertical = playerControls.Gameplay.Vertical.ReadValue<float>();
+
+            if (isLadder && !characterController.attacking && Mathf.Abs(vertical) > 0f)
+            {
+                isClimbing = true;
+            }
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Ladder"))
+        private void OnEnable()
         {
-            isLadder = false;
-            isClimbing = false;
-            characterAnimator.SetBool("Climbing", false);
+            playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerControls.Disable();
+        }
+
+        private void FixedUpdate()
+        {
+            if (isClimbing)
+            {
+                characterAnimator.SetBool("Climbing", true);
+                rb.gravityScale = 0f;
+                rb.velocity = new Vector2(rb.velocity.x, vertical * speed);
+            }else
+            {
+                rb.gravityScale = normalGravity;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.CompareTag("Ladder"))
+            {
+                isLadder = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Ladder"))
+            {
+                isLadder = false;
+                isClimbing = false;
+                characterAnimator.SetBool("Climbing", false);
+            }
         }
     }
 }

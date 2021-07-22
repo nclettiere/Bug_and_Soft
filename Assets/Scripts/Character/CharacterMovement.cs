@@ -250,12 +250,12 @@ namespace Character
             transform.position = SpawnPoint.position;
         }
 
-        private void EnableFlip()
+        public void EnableFlip()
         {
             ShouldPlayerFlip = true;
         }
 
-        private void DisableFlip()
+        public void DisableFlip()
         {
             ShouldPlayerFlip = false;
         }

@@ -25,16 +25,15 @@ namespace Character
         private float inputCooldown;
 
         protected CharacterMovement characterMovement;
-        private bool climbLadderMechanicEnabled;
         private LadderClimbing ladderClimbing;
         private float horizontalMove = 0f;
         private float verticalMove = 0f;
         private bool jump = false;
         private bool roll = false;
         private bool praying = true;
-        private bool attacking = false;
+        internal bool attacking = false;
         private bool attackingMov = false; // Used in CharacterMovement
-        private bool awaitingAttack = true;
+        internal bool awaitingAttack = true;
         private bool respawning = false;
         private bool hasAttackAnimationStarted = false;
         private int attackN = 0;
@@ -54,7 +53,8 @@ namespace Character
         void Awake()
         {
             playerControls = new PlayerControls();
-            characterMovement = gameObject.GetComponent(typeof(CharacterMovement)) as CharacterMovement;
+            characterMovement = GetComponent<CharacterMovement>();
+            ladderClimbing = GetComponent<LadderClimbing>();
 
             playerControls.Gameplay.Roll.performed += ctxRoll =>
             {
@@ -72,20 +72,22 @@ namespace Character
             {
                 if (!respawning && !praying && !roll && !characterMovement.IsTouchingLedge)
                 {
-                    if (awaitingAttack)// && Time.time >= lastInputTime)
-                    {
-                        StopAllCoroutines();
+                    if(ladderClimbing != null && !ladderClimbing.isClimbing) {
+                        if (awaitingAttack && Time.time >= lastInputTime)
+                        {
+                            StopAllCoroutines();
 
-                        attacking = true;
-                        attackN++;
-                        awaitingAttack = false;
-                        attackingMov = true;
+                            attacking = true;
+                            attackN++;
+                            awaitingAttack = false;
+                            attackingMov = true;
 
-                        characterAnimator.SetBool("AwaitingAttack", false);
-                        characterAnimator.SetBool("Attacking", true);
-                        characterAnimator.SetInteger("AttackN", attackN);
+                            characterAnimator.SetBool("AwaitingAttack", false);
+                            characterAnimator.SetBool("Attacking", true);
+                            characterAnimator.SetInteger("AttackN", attackN);
 
-                        lastInputTime = Time.time + inputCooldown;
+                            lastInputTime = Time.time + inputCooldown;
+                        }
                     }
                 }
             };
@@ -115,7 +117,7 @@ namespace Character
 
             if (respawning || praying)
             {
-                if (horizontalMove > 0.01f)
+                if (horizontalMove > 0.01f || horizontalMove < 0.01f)
                 {
                     praying = false;
                     characterAnimator.SetBool("Praying", false);
@@ -192,6 +194,7 @@ namespace Character
             characterAnimator.SetBool("Attacking", false);
             characterAnimator.SetBool("AwaitingAttack", awaitingAttack);
             characterAnimator.SetBool("HasAttackAnimationStarted", false);
+            characterMovement.EnableFlip();
 
             if (attackN + 1 > UnlockedAttacksCount)
             {
