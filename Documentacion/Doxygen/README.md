@@ -3,10 +3,8 @@
 ### A version actual 0.0.9
 ![Diagrama con dependencias del codigo](ClassDiagram.png)
 
-## ... TODO
-
 ### Objetivos del codigo
-#### 1. Ser consizo y leible.
+#### 1. Ser conciso y legible.
 &emsp; Usando la convencion de nombres y sintaxis [recomenda por Unity](https://learn.unity.com/tutorial/conventions-and-syntax#).
 #### 2. Organizado
 &emsp; Uso de namespaces y buen uso de carpetas en la solucion

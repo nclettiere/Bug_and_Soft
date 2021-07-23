@@ -12,4 +12,6 @@ echo #  Documentacion generada en ..\BugAndSoftDoxyGENERATED  #
 echo #  Formatos: PDF(LatEx) y HTML                           #
 echo ##########################################################
 
+pause
+
 start ..\BugAndSoftDoxyGENERATED\html\index.html
