@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CameraManagement;
@@ -15,8 +16,8 @@ public class GameManager
 {
     private static GameManager instance;
 
-    public bool isInputEnabled;
-    public bool isInputEnabledUI;
+    private bool isInputEnabled;
+    private bool isMainMenuOn = true;
     public bool IsPlayerAlive {get; set;} = false; // Siempre respawner al jugador on start!
     public int PlayerDeathCount = 0;
     public Camera CameraMain;
@@ -27,6 +28,8 @@ public class GameManager
 
     internal Vector3 LastDeathPosition {get; set;}
 
+    private int mainMenuPhase = 0;
+
     private GameManager()
     {
         CameraMain = Camera.main;
@@ -36,9 +39,7 @@ public class GameManager
                 DynamicCamera;
 
         playerControls = new PlayerControls();
-
         isInputEnabled = false;
-        isInputEnabledUI = true;
     }
 
     public static GameManager Instance
@@ -50,6 +51,16 @@ public class GameManager
 
             return instance;
         }
+    }
+
+    public bool GetMainMenuOn()
+    {
+        return isMainMenuOn;
+    }
+
+    public void SetMainMenuOn(bool isMainMenuOn)
+    {
+        this.isMainMenuOn = isMainMenuOn;
     }
 
     public void KillPlayer(Transform deathTransf)
@@ -76,11 +87,6 @@ public class GameManager
         if (instance != null) instance.isInputEnabled = isEnabled;
     }
 
-    public void SetInputEnabledUI(bool isEnabled)
-    {
-        if (instance != null) instance.isInputEnabledUI = isEnabled;
-    }
-
     public void SetCameraTarget(Transform target)
     {
         if (dynCamera != null) dynCamera.ChangeTarget(target);
@@ -94,6 +100,11 @@ public class GameManager
     public void SetCameraOffsetX(float offsetX)
     {
         if (dynCamera != null) dynCamera.UpdateOffsetX(offsetX);
+    }
+
+    public bool GetIsInputEnabled()
+    {
+        return isInputEnabled;
     }
 
     public void SetCameraOffsetY(float offsetY)
@@ -116,5 +127,14 @@ public class GameManager
     {
         if (dynCamera != null)
             dynCamera.FollowTarget = follow;
+    }
+
+    public int GetMainMenuPhase()
+    {
+        return mainMenuPhase;
+    }
+    public void SetMainMenuPhase(int mainMenuPhase)
+    {
+        this.mainMenuPhase = mainMenuPhase;
     }
 }

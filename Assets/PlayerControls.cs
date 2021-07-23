@@ -65,6 +65,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MenuMovement"",
+                    ""type"": ""Value"",
+                    ""id"": ""8ce0e394-af37-4b26-8b7e-ebd0fdc0518e"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MenuInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""2478ce14-5b57-47ee-85ab-159c139370e8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -430,6 +446,127 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""DPad"",
+                    ""id"": ""bcb9bd5d-8391-4a90-b467-bd69a2c4bf52"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""293143f4-9ac2-4864-9d61-cef1b174d852"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""27b71077-ceed-4649-805b-ae1fdbc09677"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""10f888ad-5c06-430c-8b59-28d66e26c09e"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e960cf05-efb0-43ae-a286-a40f1df90421"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Joystick"",
+                    ""id"": ""140af464-429f-4d1c-a66e-8761efc31489"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6652a038-7c33-40b1-8671-f5797826778c"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d2b24631-447f-41a8-a8c0-60f2d1330c14"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""27975d01-3764-43eb-bf30-8be38ff194ef"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""223b37a1-d10e-433f-80ec-e676384b03ec"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cad26ce2-f508-4145-b283-cff82298c8e5"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -444,6 +581,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Roll = m_Gameplay.FindAction("Roll", throwIfNotFound: true);
         m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
+        m_Gameplay_MenuMovement = m_Gameplay.FindAction("MenuMovement", throwIfNotFound: true);
+        m_Gameplay_MenuInteract = m_Gameplay.FindAction("MenuInteract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -499,6 +638,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Roll;
     private readonly InputAction m_Gameplay_Attack;
     private readonly InputAction m_Gameplay_Camera;
+    private readonly InputAction m_Gameplay_MenuMovement;
+    private readonly InputAction m_Gameplay_MenuInteract;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -509,6 +650,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Roll => m_Wrapper.m_Gameplay_Roll;
         public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
+        public InputAction @MenuMovement => m_Wrapper.m_Gameplay_MenuMovement;
+        public InputAction @MenuInteract => m_Wrapper.m_Gameplay_MenuInteract;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -536,6 +679,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Camera.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCamera;
                 @Camera.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCamera;
                 @Camera.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCamera;
+                @MenuMovement.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuMovement;
+                @MenuMovement.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuMovement;
+                @MenuMovement.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuMovement;
+                @MenuInteract.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
+                @MenuInteract.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
+                @MenuInteract.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -558,6 +707,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Camera.started += instance.OnCamera;
                 @Camera.performed += instance.OnCamera;
                 @Camera.canceled += instance.OnCamera;
+                @MenuMovement.started += instance.OnMenuMovement;
+                @MenuMovement.performed += instance.OnMenuMovement;
+                @MenuMovement.canceled += instance.OnMenuMovement;
+                @MenuInteract.started += instance.OnMenuInteract;
+                @MenuInteract.performed += instance.OnMenuInteract;
+                @MenuInteract.canceled += instance.OnMenuInteract;
             }
         }
     }
@@ -570,5 +725,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnRoll(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
+        void OnMenuMovement(InputAction.CallbackContext context);
+        void OnMenuInteract(InputAction.CallbackContext context);
     }
 }

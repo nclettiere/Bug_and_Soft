@@ -136,7 +136,7 @@ namespace Player
         public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll, bool attacking)
         {
 
-            if (!GameManager.Instance.isInputEnabled)
+            if (!GameManager.Instance.GetIsInputEnabled())
                 return;
 
             if (CanClimbLedge)

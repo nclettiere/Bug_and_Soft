@@ -96,6 +96,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.083333336
+    functionName: AnimFootStep1Evt
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.25
     functionName: AnimAttackEndEvt
     data: 
@@ -105,6 +112,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.25
     functionName: EnableFlip
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.25
+    functionName: AnimFootStep2Evt
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

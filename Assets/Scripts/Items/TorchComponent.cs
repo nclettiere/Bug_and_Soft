@@ -6,25 +6,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 namespace Items
 {
     /// <summary>
-    ///     Clase : Item : Antorcha
-    ///     <list type="table">
-    ///         <listheader>
-    ///             <term>Feature</term>
-    ///             <description>Descripcion</description>
-    ///         </listheader>
-    ///         <item>
-    ///             <term>Dinamica</term>
-    ///             <description>Tanto el Player como los NPCs/Enemigos/Objetos pueden poseer esta camara.</description>
-    ///         </item>
-    ///         <item>
-    ///             <term>Responsible</term>
-    ///             <description>Puede ser accionada a traves del input o automaticamente.</description>
-    ///         </item>
-    ///         <item>
-    ///             <term>Customizable</term>
-    ///             <description>Se puede modificar la cantidad de smoothing, la velocidad, lockear axis.</description>
-    ///         </item>
-    ///     </list>
+    ///     Script para las antorchas
     /// </summary>
     /// <remarks>
     ///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
@@ -34,16 +16,20 @@ namespace Items
         MonoBehaviour
     /// @endcond
     {
+        [SerializeField]
         private bool lighten = false;
-        [SerializeField] private Light2D torchFire;
+        [SerializeField] 
+        private Light2D torchFire;
 
         private bool routineRunning;
-
-        AudioSource audioData;
+        private AudioSource audioData;
+        private Animator anim;
 
         private void Start() 
         {
+            anim = GetComponent<Animator>();
             audioData = GetComponent<AudioSource>();
+            anim.SetBool("Lighten", lighten);
         }
 
         private void Update()
@@ -58,6 +44,7 @@ namespace Items
             if (other.CompareTag("Player") && torchFire != null && !lighten) 
             {
                 lighten = true;
+                anim.SetBool("Lighten", true);
                 audioData.Play();
                 StartCoroutine(UpdateLightIntensity(1f));
             }

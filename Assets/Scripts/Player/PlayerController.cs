@@ -82,7 +82,7 @@ namespace Player
                 horizontalMove = 0f;
                 return;
             }
-            if (!GameManager.Instance.isInputEnabled)
+            if (!GameManager.Instance.GetIsInputEnabled())
                 return;
 
             if (respawning || praying)
