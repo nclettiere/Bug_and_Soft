@@ -6,7 +6,21 @@ using Player;
 
 namespace Controllers
 {
-    public class BaseController : MonoBehaviour, IDamageable
+    /// <summary>
+    ///     <para>Controller basico para todos los NPCs/Enemigos/Neutrals.</para>
+    ///     <para>Esta clase debe ser heredada por clases especificas para cada NPC.</para>
+    /// </summary>
+    /// <example>
+    ///     <para>Vease la clase DummyController</para>
+    /// </example>
+    /// <remarks>
+    ///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
+    /// </remarks>
+    public class BaseController : 
+    /// @cond SKIP_THIS
+        MonoBehaviour, 
+    /// @endcond
+        IDamageable
     {
         #region UserVariables
         [SerializeField]
@@ -38,18 +52,28 @@ namespace Controllers
         private float damagedTimeCD = float.NegativeInfinity;
         #endregion
 
+        /// <summary>
+        ///     <para>Este metodo se ejecuta en el Start() del MonoBehaviour luego inicializar las variables necesarias.</para>
+        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
+        /// </summary>
         protected virtual void OnStart()
         {
-            // Debe ser llenado en una clase heredada
-            // Ej: DummyController.cs
         }
 
+        /// <summary>
+        ///     <para>Este metodo se ejecuta en el Update() del MonoBehaviour luego inicializar las variables necesarias.</para>
+        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
+        /// </summary>
         protected virtual void OnUpdate()
         {
             // Debe ser llenado en una clase heredada
             // Ej: DummyController.cs
         }
 
+        /// <summary>
+        ///     <para>Este metodo se ejecuta en el FixedUpdate() del MonoBehaviour luego inicializar las variables necesarias.</para>
+        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
+        /// </summary>
         protected virtual void OnFixedUpdate()
         {
             // Debe ser llenado en una clase heredada
@@ -88,17 +112,26 @@ namespace Controllers
             OnFixedUpdate();
         }
 
-        private void MoveOnAttack(int attackN)
+        /// <summary>
+        ///     Calcula y adiciona el movimiento necesario para dat un efecto de movimento cuando recibe danio
+        /// </summary>
+        /// <param name="multiplier">
+        ///     Multiplicador del movimiento. Se recomienda utilizar el attackN del player.
+        /// </param>
+        private void MoveOnAttack(int multiplier)
         {
             movedOnAttack = true;
             moveOnAttackStart = Time.time;
 
             if (playerFacingDirection)
-                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * attackN), moveOnAttackSpeed.y);
+                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * multiplier), moveOnAttackSpeed.y);
             else
-                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * attackN) * -1, moveOnAttackSpeed.y);
+                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * multiplier) * -1, moveOnAttackSpeed.y);
         }
 
+        /// <summary>
+        /// Checkea si es necesario mover al personaje mientras es atacado.
+        /// </summary>
         private void CheckMoveOnAttack()
         {
             if(Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)

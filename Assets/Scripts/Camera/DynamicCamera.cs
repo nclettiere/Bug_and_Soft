@@ -4,7 +4,34 @@ using UnityEngine;
 
 namespace CameraManagement
 {
-    public class DynamicCamera : MonoBehaviour
+    /// <summary>
+    ///     Clase para la camara dinamica.
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Feature</term>
+    ///             <description>Descripcion</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>Dinamica</term>
+    ///             <description>Tanto el Player como los NPCs/Enemigos/Objetos pueden poseer esta camara.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Responsible</term>
+    ///             <description>Puede ser accionada a traves del input o automaticamente.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Customizable</term>
+    ///             <description>Se puede modificar la cantidad de smoothing, la velocidad, lockear axis.</description>
+    ///         </item>
+    ///     </list>
+    /// </summary>
+    /// <remarks>
+    ///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
+    /// </remarks>
+    public class DynamicCamera : 
+    /// @cond SKIP_THIS
+        MonoBehaviour
+    /// @endcond
     {
         [Header("(Required) Camera object and target")]
 
@@ -22,7 +49,7 @@ namespace CameraManagement
         private bool allowBounds = true; // Limites de la camara (No sigue al jugador hasta que haya pasado cierto punto)
 
         [SerializeField]
-        private bool allowSmoothing = true; // Permite o no el suavizado de la camara; ***SMOTHIEEEEE LET'S GOOOOOOOO***
+        private bool allowSmoothing = true; // Permite o no el suavizado de la camara
 
         [SerializeField]
         private float bounds = 3f; // Distancia a la que empieza moverse la camara.
@@ -41,29 +68,16 @@ namespace CameraManagement
 
         public bool FollowTarget { get; set; } = true;
 
-        PlayerControls playerControls;
         private Vector3 cameraMoveOffset = Vector3.zero;
 
         void Awake()
         {
-            playerControls = new PlayerControls();
-
-            playerControls.Gameplay.Camera.performed += ctx =>
+            GameManager.Instance.playerControls.Gameplay.Camera.performed += ctx =>
             {
                 var value = ctx.ReadValue<Vector2>();
                 cameraMoveOffset = new Vector3(value.x, value.y) * cameraMoveMultiplier;
             };
-            playerControls.Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
-        }
-
-        private void OnEnable()
-        {
-            playerControls.Enable();
-        }
-
-        private void OnDisable()
-        {
-            playerControls.Disable();
+            GameManager.Instance.playerControls.Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
         }
 
         /// <summary>
@@ -133,51 +147,57 @@ namespace CameraManagement
         }
 
         /// <summary>
-        /// Metodo para cambiar el target de la camara
+        ///     Metodo para cambiar el target de la camara
         /// </summary>
         /// <param name="target">Un Transform de cualquier objeto instanciado en el juego.</param>
-        internal void ChangeTarget(Transform target)
+        public void ChangeTarget(Transform target)
         {
             this.target = target;
         }
 
         /// <summary>
-        /// Metodo para actualizar el offset de la camara
+        ///     Metodo para actualizar el offset de la camara
         /// </summary>
-        internal void UpdateOffset(Vector2 offset)
+        public void UpdateOffset(Vector2 offset)
         {
             cameraOffset = new Vector3(offset.x, offset.y, -1f);
         }
 
         /// <summary>
-        /// Metodo para actualizar el offset X de la camara
+        ///     Metodo para actualizar el offset X de la camara
         /// </summary>
-        internal void UpdateOffsetX(float offsetX)
+        public void UpdateOffsetX(float offsetX)
         {
            StartCoroutine(UpdateCameraOffsetX(offsetX));
         }
-        internal Vector2 GetOffsets()
+
+        public Vector2 GetOffsets()
         {
             return new Vector2(cameraOffset.x, cameraOffset.y);
         }
 
         /// <summary>
-        /// Metodo para actualizar el offset Y de la camara
+        ///     Metodo para actualizar el offset Y de la camara
         /// </summary>
-        internal void UpdateOffsetY(float offsetY)
+        public void UpdateOffsetY(float offsetY)
         {
             StartCoroutine(UpdateCameraOffsetY(offsetY));
         }
 
         /// <summary>
-        /// Metodo para actualizar el size del lente de la camara.
+        ///     Metodo para actualizar el size del lente de la camara.
         /// </summary>
-        internal void UpdateSize(float size, float duration = 3f)
+        public void UpdateSize(float size, float duration = 3f)
         {
             if(CameraObject != null)
                 StartCoroutine(UpdateCameraSize(size, duration));
         }
 
+        /// <summary>
+        ///     Metodo para actualizar el tamanio del lente con effecto 'suavizado'
+        /// </summary>
+        /// <param name="endValue">El valor al que se quiere suavizar</param>
+        /// <param name="duration">Por cuanto tiempo se debe suavizar.</param>
         private IEnumerator UpdateCameraSize(float endValue, float duration)
         {
             float time = 0;

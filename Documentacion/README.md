@@ -1,9 +1,7 @@
 # Bug&Soft Documentation
 
-### A version actual 0.0.8
+### A version actual 0.0.9
 ![Diagrama con dependencias del codigo](https://github.com/DrAsin/Bug_and_Soft/blob/master/Documentacion/0.0.8/ClassDiagram.png)
-
-## ... TODO
 
 ### Objetivos del codigo
 #### 1. Ser consizo y leible.
