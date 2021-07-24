@@ -6,6 +6,7 @@ namespace Controllers
 {
     public enum ECharacterKind
     {
-        Dummy = 1
+        Dummy = 1,
+        Njord
     }
 }

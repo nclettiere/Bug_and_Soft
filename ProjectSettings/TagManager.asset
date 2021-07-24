@@ -8,6 +8,7 @@ TagManager:
   - Ladder
   - Platform
   - Enemy
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Ladders
   - Dead
   - Damageable
-  - 
+  - NPC
   - 
   - 
   - 
@@ -60,6 +61,12 @@ TagManager:
   - name: NPCandEnemies
     uniqueID: 2961693717
     locked: 0
+  - name: InteractionBubbles
+    uniqueID: 3186118869
+    locked: 0
   - name: Player
     uniqueID: 3169735723
+    locked: 0
+  - name: Dialogues
+    uniqueID: 1918018393
     locked: 0

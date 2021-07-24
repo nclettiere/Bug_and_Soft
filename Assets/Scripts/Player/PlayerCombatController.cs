@@ -151,12 +151,12 @@ namespace Player
                 if (attackN <= 0)
                     return;
 
-                Collider2D[] detectedObjs = Physics2D.OverlapCircleAll(attacksHitboxPositions[attackN - 1].position, attacksHitboxRadius[attackN - 1], whatCanBeDamaged);
+                RaycastHit2D[] detectedObjs = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 1f, new Vector2(0f, 0f));
 
-                foreach (Collider2D collider in detectedObjs)
+                foreach (RaycastHit2D raycast in detectedObjs)
                 {
                     // Check si implementa la interface IDamageable
-                    BaseController bctrl = collider.transform.GetComponent<BaseController>();
+                    BaseController bctrl = raycast.transform.GetComponent<BaseController>();
                     if (bctrl != null && (bctrl is IDamageable))
                     {
                         bctrl.Damage(attacksDamage[attackN - 1], attackN);

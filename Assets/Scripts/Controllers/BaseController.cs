@@ -16,15 +16,17 @@ namespace Controllers
     /// <remarks>
     ///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
     /// </remarks>
-    public class BaseController : 
-    /// @cond SKIP_THIS
-        MonoBehaviour, 
-    /// @endcond
+    public class BaseController :
+        /// @cond SKIP_THIS
+        MonoBehaviour,
+        /// @endcond
         IDamageable
     {
         #region UserVariables
         [SerializeField]
         protected EControllerKind controllerKind = EControllerKind.NPC;
+        [SerializeField]
+        protected float interactionRadius = 4f;
         [SerializeField]
         protected float maxHealth, moveOnAttackDuration, generalSpeed = 40f;
         [SerializeField]
@@ -37,6 +39,8 @@ namespace Controllers
         protected AudioSource hitAttackSFX1;
         [SerializeField]
         protected AudioSource hitAttackSFX2;
+        [SerializeField]
+        protected GameObject dialogueBubble;
         #endregion
 
         #region Variables
@@ -44,12 +48,13 @@ namespace Controllers
         protected Animator characterAnimator;
         protected Rigidbody2D RigidBdy;
         private float currentHealth, moveOnAttackStart;
-        protected ECharacterKind  characterKind;
+        protected ECharacterKind characterKind;
         protected PlayerController playerController;
         protected bool playerFacingDirection;
         protected bool playerOnLeft;
         private bool firstAttack2;
         private float damagedTimeCD = float.NegativeInfinity;
+        private bool canPlayerInteract = false;
         #endregion
 
         /// <summary>
@@ -81,14 +86,15 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Obtiene el controller de moviemento del personaje especificando que tipo de moviemnto usa en T
+        ///     <para>Este metodo se ejecuta en el OnDrawGizmos() del MonoBehaviour luego inicializar las variables necesarias.</para>
+        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
         /// </summary>
-        /// <typeparam name="T">Clase derivada de BaseMovementController</typeparam>
-        /// <returns>Un objeto de clase T que hereda de BaseMovementController almacenado en el BaseController.</returns>
-        public T GetMovementController<T>() where T : BaseMovementController
+        protected virtual void DrawGizmos()
         {
-            return (T) baseMovementController;
+            // Debe ser llenado en una clase heredada
+            // Ej: DummyController.cs
         }
+
 
         private void Start()
         {
@@ -103,13 +109,53 @@ namespace Controllers
             OnStart();
         }
 
-        private void Update() {
+        private void Update()
+        {
+            CheckInteractions();
             CheckMoveOnAttack();
             OnUpdate();
         }
 
-        private void FixedUpdate() {
+        private void FixedUpdate()
+        {
             OnFixedUpdate();
+        }
+
+        private void OnDrawGizmos()
+        {
+            // Interaction gizmo
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, interactionRadius);
+            // other ...
+            DrawGizmos();
+        }
+
+        /// <summary>
+        ///     Obtiene el controller de moviemento del personaje especificando que tipo de moviemnto usa en T
+        /// </summary>
+        /// <typeparam name="T">Clase derivada de BaseMovementController</typeparam>
+        /// <returns>Un objeto de clase T que hereda de BaseMovementController almacenado en el BaseController.</returns>
+        public T GetMovementController<T>() where T : BaseMovementController
+        {
+            return (T)baseMovementController;
+        }
+
+        /// <summary>
+        ///     Obtiene el animator del character
+        /// </summary>
+        /// <returns>El animator del character</returns>
+        public Animator GetAnimator()
+        {
+            return characterAnimator;
+        }
+
+        /// <summary>
+        ///     Obtiene el animator del character
+        /// </summary>
+        /// <returns>El animator del character</returns>
+        public GameObject GetDialogueBubble()
+        {
+            return dialogueBubble;
         }
 
         /// <summary>
@@ -130,11 +176,35 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Checkea si es necesario mover al personaje mientras es atacado.
+        ///     Metodo para checkear si el jugador puede interactual con este personaje 
+        /// </summary>
+        private void CheckInteractions()
+        {
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRadius, new Vector2(0f, 0f));
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider.tag == "Player")
+                {
+                    canPlayerInteract = true;
+                    // Show interaction bubbles
+                    if (dialogueBubble != null)
+                        dialogueBubble.gameObject.SetActive(true);
+                    return;
+                }
+            }
+            canPlayerInteract = false;
+            // Hide interaction bubbles
+            if (dialogueBubble != null)
+                dialogueBubble.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        ///     Checkea si es necesario mover al personaje mientras es atacado.
         /// </summary>
         private void CheckMoveOnAttack()
         {
-            if(Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)
+            if (Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)
             {
                 movedOnAttack = false;
                 RigidBdy.velocity = new Vector2(0.0f, RigidBdy.velocity.y);

@@ -1,7 +1,7 @@
 # Bug&Soft Documentation
 
-### A version actual 0.0.9
-![Diagrama con dependencias del codigo](https://github.com/DrAsin/Bug_and_Soft/blob/master/Documentacion/0.0.8/ClassDiagram.png)
+### A version actual 0.1.9
+[Ver historial de clases](https://github.com/DrAsin/Bug_and_Soft/blob/master/Documentacion/Historial.md)
 
 ### Objetivos del codigo
 #### 1. Ser conciso y legible.
