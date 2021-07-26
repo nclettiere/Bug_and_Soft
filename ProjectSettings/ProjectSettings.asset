@@ -132,6 +132,8 @@ PlayerSettings:
   - {fileID: 11400000, guid: 0dc11a964d871a746ab2f0588eb2ff0e, type: 2}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -548,11 +550,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: ESIGAME
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: C:\Users\Nicolini\Documents\Projects\Bug_and_Soft\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: Bug_Soft
+  metroCertificateIssuer: Bug_Soft
+  metroCertificateNotAfter: 804a30bf769fd801
   metroApplicationDescription: ESIGAME
   wsaImages: {}
   metroTileShortName: ESIGAME
