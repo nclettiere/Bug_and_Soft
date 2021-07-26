@@ -16,15 +16,16 @@ public class GameManager
 {
     private static GameManager instance;
 
-    private bool isInputEnabled;
+    private bool isInputEnabled = true;
     private bool isMainMenuOn = true;
-    public bool IsPlayerAlive {get; set;} = false; // Siempre respawner al jugador on start!
-    public int PlayerDeathCount = 0;
-    public Camera CameraMain;
+    private bool isGamePaused = false;
+    private bool isPlayerAlive = false; // Siempre respawner al jugador on start!
+    private int playerDeathCount = 0;
+    private Camera cameraMain;
 
     private DynamicCamera dynCamera;
 
-    public PlayerControls playerControls;
+    private PlayerControls playerControls;
 
     internal Vector3 LastDeathPosition {get; set;}
 
@@ -32,14 +33,20 @@ public class GameManager
 
     private GameManager()
     {
-        CameraMain = Camera.main;
-        if (CameraMain != null)
-            dynCamera =
-                CameraMain.GetComponent(typeof (DynamicCamera)) as
-                DynamicCamera;
+        cameraMain = Camera.main;
+        if (cameraMain != null)
+            dynCamera = cameraMain.GetComponent<DynamicCamera>();
 
         playerControls = new PlayerControls();
         isInputEnabled = false;
+        
+        playerControls.Gameplay.Pause.performed += ctx => 
+        {
+            if(isGamePaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
     }
 
     public static GameManager Instance
@@ -53,6 +60,25 @@ public class GameManager
         }
     }
 
+    public void PauseGame() 
+    {
+        Time.timeScale = 0f;
+
+        isGamePaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 0f;
+        
+        isGamePaused = false;
+    }
+    
+    public bool IsGamePaused() 
+    {
+        return isGamePaused;
+    }
+
     public bool GetMainMenuOn()
     {
         return isMainMenuOn;
@@ -61,6 +87,11 @@ public class GameManager
     public void SetMainMenuOn(bool isMainMenuOn)
     {
         this.isMainMenuOn = isMainMenuOn;
+    }
+
+    public PlayerControls GetPlayerControls()
+    {
+        return playerControls;
     }
 
     public void KillPlayer(Transform deathTransf)

@@ -72,12 +72,12 @@ namespace CameraManagement
 
         void Awake()
         {
-            GameManager.Instance.playerControls.Gameplay.Camera.performed += ctx =>
+            GameManager.Instance.GetPlayerControls().Gameplay.Camera.performed += ctx =>
             {
                 var value = ctx.ReadValue<Vector2>();
                 cameraMoveOffset = new Vector3(value.x, value.y) * cameraMoveMultiplier;
             };
-            GameManager.Instance.playerControls.Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
+            GameManager.Instance.GetPlayerControls().Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
         }
 
         /// <summary>
