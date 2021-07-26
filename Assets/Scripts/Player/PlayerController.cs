@@ -1,115 +1,149 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField]
-        [Range(0.15f, 1f)] public float NextAttackMaxTime = 0.75f;
-        [SerializeField]
-        private int UnlockedAttacksCount = 2;
-        [SerializeField]
-        private float generalSpeed = 40f;
-        [SerializeField]
-        private Animator characterAnimator;
-        [SerializeField]
-        private AudioSource footStep1;
-        [SerializeField]
-        private AudioSource footStep2;
-        [SerializeField]
-        private AudioSource[] swordSwingSFX;
-        [SerializeField]
-        private float inputCooldown;
+        internal bool awaitingAttack = true;
+
+        [SerializeField] private Animator characterAnimator;
+
+        private PlayerCombatController combatCtrl;
+
+        [SerializeField] private AudioSource footStep1;
+
+        [SerializeField] private AudioSource footStep2;
+
+        [SerializeField] private float generalSpeed = 40f;
+
+        private float horizontalMove;
+
+        [SerializeField] private float inputCooldown;
+
+        private bool jump;
+        private PlayerLadderClimbingController ladderClimbing;
+        private float lastAngularVelocity;
+        private Vector2 lastVelocity;
+
+        [SerializeField] [Range(0.15f, 1f)] public float NextAttackMaxTime = 0.75f;
 
         protected PlayerMovementController playerMovementCtrl;
-        private PlayerLadderClimbingController ladderClimbing;
-        private PlayerCombatController combatCtrl;
-        private float horizontalMove = 0f; 
-        private float verticalMove = 0f;
-        private bool jump = false;
-        internal bool roll = false;
         internal bool praying = true;
-        internal bool awaitingAttack = true;
-        internal bool respawning = false;
+        internal bool respawning;
+        private Rigidbody2D rigidbody2D;
+        internal bool roll;
+        private bool savedRigidData;
+
+        [SerializeField] private AudioSource[] swordSwingSFX;
+
+        [SerializeField] private int UnlockedAttacksCount = 2;
+
+        private float verticalMove;
 
         private void Start()
         {
-            GameObject SpawnPoint = GameObject.Find("SpawnPoint");
+            var SpawnPoint = GameObject.Find("SpawnPoint");
+            rigidbody2D = GetComponent<Rigidbody2D>();
             transform.position = SpawnPoint.transform.position;
             respawning = true;
             AnimStartPrayingEvt();
         }
 
-        void Awake()
+        private void Awake()
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();
             combatCtrl = GetComponent<PlayerCombatController>();
             ladderClimbing = GetComponent<PlayerLadderClimbingController>();
 
-            GameManager.Instance.playerControls.Gameplay.Roll.performed += ctxRoll =>
+            GameManager.Instance.GetPlayerControls().Gameplay.Roll.performed += ctxRoll =>
             {
-                if (horizontalMove != 0f)
+                if (horizontalMove != 0f && !GameManager.Instance.IsGamePaused())
                 {
                     roll = true;
                     characterAnimator.SetBool("Roll", true);
                 }
             };
-            GameManager.Instance.playerControls.Gameplay.Jump.performed += ctxRoll =>
+            GameManager.Instance.GetPlayerControls().Gameplay.Jump.performed += ctxRoll =>
             {
-                jump = true;
+                if (!GameManager.Instance.IsGamePaused())
+                    jump = true;
             };
         }
 
         internal void OnEnable()
         {
-            GameManager.Instance.playerControls.Enable();
+            GameManager.Instance.GetPlayerControls().Enable();
         }
 
         internal void OnDisable()
         {
-            GameManager.Instance.playerControls.Disable();
+            GameManager.Instance.GetPlayerControls().Disable();
         }
 
-        void Update()
+        private void Update()
         {
-            if (!GameManager.Instance.IsPlayerAlive &&
-                GameManager.Instance.PlayerDeathCount > 0)
+            if (GameManager.Instance.IsGamePaused())
+            {
+                if (!savedRigidData)
+                {
+                    lastVelocity = rigidbody2D.velocity;
+                    lastAngularVelocity = rigidbody2D.angularVelocity;
+                    rigidbody2D.bodyType = RigidbodyType2D.Static;
+                    rigidbody2D.Sleep();
+
+                    savedRigidData = true;
+                }
+
+                return;
+            }
+
+            if (savedRigidData)
+            {
+                rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                rigidbody2D.velocity = lastVelocity;
+                rigidbody2D.angularVelocity = lastAngularVelocity;
+                rigidbody2D.WakeUp();
+                savedRigidData = false;
+            }
+
+            if (!GameManager.Instance.IsPlayerAlive() &&
+                GameManager.Instance.GetPlayerDeathCount() > 0)
             {
                 StartCoroutine(Respawn());
                 horizontalMove = 0f;
                 return;
             }
+
             if (!GameManager.Instance.GetIsInputEnabled())
                 return;
 
             if (respawning || praying)
-            {
                 if (horizontalMove > 0.01f || horizontalMove < 0.01f)
                 {
                     praying = false;
                     characterAnimator.SetBool("Praying", false);
                     respawning = false;
                 }
-            }
 
-            horizontalMove = GameManager.Instance.playerControls.Gameplay.Horizontal.ReadValue<float>() * generalSpeed;
-            verticalMove = GameManager.Instance.playerControls.Gameplay.Vertical.ReadValue<float>() * generalSpeed;
+            horizontalMove = GameManager.Instance.GetPlayerControls().Gameplay.Horizontal.ReadValue<float>() *
+                             generalSpeed;
+            verticalMove = GameManager.Instance.GetPlayerControls().Gameplay.Vertical.ReadValue<float>() * generalSpeed;
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             playerMovementCtrl.Move(
-                horizontalMove * Time.fixedDeltaTime,
-                verticalMove * Time.fixedDeltaTime,
+                horizontalMove * GameManager.Instance.DeltaTime, //Time.fixedDeltaTime,
+                verticalMove * GameManager.Instance.DeltaTime, //Time.fixedDeltaTime,
                 false,
                 jump,
                 roll,
                 combatCtrl.attacking);
+
+            if (GameManager.Instance.IsGamePaused()) return;
 
             jump = false;
             roll = false;
@@ -130,7 +164,27 @@ namespace Player
             return playerMovementCtrl.IsFacingRight();
         }
 
+        private IEnumerator Respawn()
+        {
+            OnDisable();
+
+            AnimStartPrayingEvt();
+
+            respawning = true;
+            var SpawnPoint = GameObject.Find("SpawnPoint");
+            combatCtrl.ResetAttackNow();
+            yield return new WaitForSeconds(1f);
+            playerMovementCtrl.PrepareRespawn(SpawnPoint.transform);
+            yield return new WaitForSeconds(2f);
+
+            GameManager.Instance.RespawnPlayer();
+            respawning = false;
+
+            OnEnable();
+        }
+
         #region AnimationCallbacks
+
         public void AnimStartPrayingEvt()
         {
             praying = true;
@@ -152,25 +206,7 @@ namespace Player
         {
             footStep2.Play();
         }
+
         #endregion
-
-        private IEnumerator Respawn()
-        {
-            this.OnDisable();
-
-            AnimStartPrayingEvt();
-
-            respawning = true;
-            GameObject SpawnPoint = GameObject.Find("SpawnPoint");
-            combatCtrl.ResetAttackNow();
-            yield return new WaitForSeconds(1f);
-            playerMovementCtrl.PrepareRespawn(SpawnPoint.transform);
-            yield return new WaitForSeconds(2f);
-
-            GameManager.Instance.RespawnPlayer();
-            respawning = false;
-
-            this.OnEnable();
-        }
     }
 }

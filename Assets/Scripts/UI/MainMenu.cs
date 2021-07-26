@@ -132,7 +132,7 @@ public class MainMenu : MonoBehaviour
         });
 
         // Input del menu
-        GameManager.Instance.playerControls.Gameplay.MenuMovement.performed += ctx =>
+        GameManager.Instance.GetPlayerControls().Gameplay.MenuMovement.performed += ctx =>
         {
             if (Time.time >= inputCooldown && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
             {
@@ -162,7 +162,7 @@ public class MainMenu : MonoBehaviour
                 inputCooldown = Time.time + 0.1f;
             }
         };
-        GameManager.Instance.playerControls.Gameplay.MenuInteract.performed += ctx =>
+        GameManager.Instance.GetPlayerControls().Gameplay.MenuInteract.performed += ctx =>
         {
             if (selectedButton != null && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
             {
@@ -307,13 +307,12 @@ public class MainMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// Cambia el locale actual del juego.
+    ///     Cambia el locale actual del juego.
     /// </summary>
     /// <param name="index">0 = en | 1 = es | 2 = it</param>
     /// <returns></returns>
     public IEnumerator OnLocaleSelected(int index)
     {
-        Debug.Log("Locale seleccionado = " + index);
         yield return LocalizationSettings.InitializationOperation;
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }

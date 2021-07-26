@@ -44,8 +44,10 @@ namespace Player
             pLadderCtrl = GetComponent<PlayerLadderClimbingController>();
             pAnimator = GetComponent<Animator>();
 
-            GameManager.Instance.playerControls.Gameplay.Attack.performed += ctx =>
+            GameManager.Instance.GetPlayerControls().Gameplay.Attack.performed += ctx =>
             {
+                if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
+                
                 if (!pCtrl.respawning && !pCtrl.praying && !pCtrl.roll && !pMovCtrl.IsTouchingLedge)
                 {
                     if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
@@ -75,6 +77,8 @@ namespace Player
 
         private void Update()
         {
+            if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
+            
             CheckAttackHitBox();
         }
 

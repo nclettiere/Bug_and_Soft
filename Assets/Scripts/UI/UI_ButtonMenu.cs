@@ -15,12 +15,19 @@ public class UI_ButtonMenu :
     private GameObject selector;
 
     [SerializeField]
+    private bool isMainMenu;
+    
+    [SerializeField]
     private AudioSource selectorChangeSFX;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (GameManager.Instance.GetMainMenuOn())
+        if (isMainMenu && GameManager.Instance.GetMainMenuOn() && !GameManager.Instance.IsGamePaused())
         {
+            selector.transform.position = transform.position;
+            selectorChangeSFX.Play();
+        }else if (!isMainMenu && !GameManager.Instance.GetMainMenuOn() && GameManager.Instance.IsGamePaused())
+        {  
             selector.transform.position = transform.position;
             selectorChangeSFX.Play();
         }

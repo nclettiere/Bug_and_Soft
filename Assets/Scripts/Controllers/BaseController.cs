@@ -46,7 +46,7 @@ namespace Controllers
         #region Variables
         protected BaseMovementController baseMovementController;
         protected Animator characterAnimator;
-        protected Rigidbody2D RigidBdy;
+        protected Rigidbody2D rigidbody2D;
         private float currentHealth, moveOnAttackStart;
         protected ECharacterKind characterKind;
         protected PlayerController playerController;
@@ -55,6 +55,9 @@ namespace Controllers
         private bool firstAttack2;
         private float damagedTimeCD = float.NegativeInfinity;
         private bool canPlayerInteract = false;
+        private float lastAngularVelocity;
+        private Vector2 lastVelocity;
+        private bool savedRigidData;
         #endregion
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace Controllers
         {
             baseMovementController = GetComponent<BaseMovementController>();
             characterAnimator = GetComponent<Animator>();
-            RigidBdy = GetComponent<Rigidbody2D>();
+            rigidbody2D = GetComponent<Rigidbody2D>();
 
             playerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
@@ -111,6 +114,30 @@ namespace Controllers
 
         private void Update()
         {
+            if (GameManager.Instance.IsGamePaused())
+            {
+                if (!savedRigidData)
+                {
+                    lastVelocity = rigidbody2D.velocity;
+                    lastAngularVelocity = rigidbody2D.angularVelocity;
+                    rigidbody2D.bodyType = RigidbodyType2D.Static;
+                    rigidbody2D.Sleep();
+
+                    savedRigidData = true;
+                }
+
+                return;
+            }
+
+            if (savedRigidData)
+            {
+                rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                rigidbody2D.velocity = lastVelocity;
+                rigidbody2D.angularVelocity = lastAngularVelocity;
+                rigidbody2D.WakeUp();
+                savedRigidData = false;
+            }
+            
             CheckInteractions();
             CheckMoveOnAttack();
             OnUpdate();
@@ -118,6 +145,8 @@ namespace Controllers
 
         private void FixedUpdate()
         {
+            if (GameManager.Instance.IsGamePaused()) return;
+            
             OnFixedUpdate();
         }
 
@@ -170,9 +199,9 @@ namespace Controllers
             moveOnAttackStart = Time.time;
 
             if (playerFacingDirection)
-                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * multiplier), moveOnAttackSpeed.y);
+                rigidbody2D.velocity = new Vector2((moveOnAttackSpeed.x * multiplier), moveOnAttackSpeed.y);
             else
-                RigidBdy.velocity = new Vector2((moveOnAttackSpeed.x * multiplier) * -1, moveOnAttackSpeed.y);
+                rigidbody2D.velocity = new Vector2((moveOnAttackSpeed.x * multiplier) * -1, moveOnAttackSpeed.y);
         }
 
         /// <summary>
@@ -207,7 +236,7 @@ namespace Controllers
             if (Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)
             {
                 movedOnAttack = false;
-                RigidBdy.velocity = new Vector2(0.0f, RigidBdy.velocity.y);
+                rigidbody2D.velocity = new Vector2(0.0f, rigidbody2D.velocity.y);
             }
         }
 

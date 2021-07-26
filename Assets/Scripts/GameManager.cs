@@ -22,10 +22,10 @@ public class GameManager
     private bool isPlayerAlive = false; // Siempre respawner al jugador on start!
     private int playerDeathCount = 0;
     private Camera cameraMain;
-
     private DynamicCamera dynCamera;
-
     private PlayerControls playerControls;
+    
+    public float DeltaTime { get { return isGamePaused ? 0 : Time.deltaTime; } }
 
     internal Vector3 LastDeathPosition {get; set;}
 
@@ -34,19 +34,21 @@ public class GameManager
     private GameManager()
     {
         cameraMain = Camera.main;
-        if (cameraMain != null)
+        if (!ReferenceEquals(cameraMain, null)) // is not null
             dynCamera = cameraMain.GetComponent<DynamicCamera>();
 
         playerControls = new PlayerControls();
         isInputEnabled = false;
-        
-        playerControls.Gameplay.Pause.performed += ctx => 
+
+        playerControls.Gameplay.Pause.performed += ctx =>
         {
-            if(isGamePaused)
+            if (isMainMenuOn) return;
+
+            if (isGamePaused)
                 ResumeGame();
             else
                 PauseGame();
-        }
+        };
     }
 
     public static GameManager Instance
@@ -62,15 +64,11 @@ public class GameManager
 
     public void PauseGame() 
     {
-        Time.timeScale = 0f;
-
         isGamePaused = true;
     }
 
     public void ResumeGame()
     {
-        Time.timeScale = 0f;
-        
         isGamePaused = false;
     }
     
@@ -97,9 +95,9 @@ public class GameManager
     public void KillPlayer(Transform deathTransf)
     {
         LastDeathPosition = deathTransf.position;
-        PlayerDeathCount++;
+        playerDeathCount++;
         SetInputEnabled(false);
-        IsPlayerAlive = false;
+        isPlayerAlive = false;
         SetCameraFollowTarget(false);
     }
 
@@ -107,15 +105,14 @@ public class GameManager
     {
         if(!isFirstRespawn)
             SetInputEnabled(true);
-        IsPlayerAlive = true;
+        isPlayerAlive = true;
         SetCameraFollowTarget(true);
     }
 
     public void SetInputEnabled(bool isEnabled)
     {
-        if (dynCamera != null && isEnabled) dynCamera.UpdateSize(10f, 0.3f);
-
-        if (instance != null) instance.isInputEnabled = isEnabled;
+        if (!ReferenceEquals(dynCamera, null) && isEnabled) dynCamera.UpdateSize(10f, 0.3f);
+        if (!ReferenceEquals(dynCamera, null)) instance.isInputEnabled = isEnabled;
     }
 
     public void SetCameraTarget(Transform target)
@@ -130,7 +127,7 @@ public class GameManager
 
     public void SetCameraOffsetX(float offsetX)
     {
-        if (dynCamera != null) dynCamera.UpdateOffsetX(offsetX);
+        if (!ReferenceEquals(dynCamera, null)) dynCamera.UpdateOffsetX(offsetX);
     }
 
     public bool GetIsInputEnabled()
@@ -140,7 +137,7 @@ public class GameManager
 
     public void SetCameraOffsetY(float offsetY)
     {
-        if (dynCamera != null) dynCamera.UpdateOffsetY(offsetY);
+        if (!ReferenceEquals(dynCamera, null)) dynCamera.UpdateOffsetY(offsetY);
     }
 
     public void SetCameraSize(float size)
@@ -150,13 +147,13 @@ public class GameManager
 
     public Vector2 GetCameraOffset()
     {
-        if (dynCamera != null)
+        if (!ReferenceEquals(dynCamera, null))
             return dynCamera.GetOffsets();
         return Vector2.zero;
     }
     public void SetCameraFollowTarget(bool follow)
     {
-        if (dynCamera != null)
+        if (!ReferenceEquals(dynCamera, null))
             dynCamera.FollowTarget = follow;
     }
 
@@ -167,5 +164,15 @@ public class GameManager
     public void SetMainMenuPhase(int mainMenuPhase)
     {
         this.mainMenuPhase = mainMenuPhase;
+    }
+
+    public bool IsPlayerAlive()
+    {
+        return isPlayerAlive;
+    }
+
+    public int GetPlayerDeathCount()
+    {
+        return playerDeathCount;
     }
 }
