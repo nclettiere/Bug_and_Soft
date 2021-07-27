@@ -48,7 +48,7 @@ namespace Player
             {
                 if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
                 
-                if (!pCtrl.respawning && !pCtrl.praying && !pCtrl.roll && !pMovCtrl.IsTouchingLedge)
+                if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll && !pMovCtrl.IsTouchingLedge)
                 {
                     if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
                     {

@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Controllers.Movement;
+using Dialogues;
 using Player;
+using Interactions.Enums;
+using Interactions.Interfaces;
 
 namespace Controllers
 {
@@ -20,7 +23,8 @@ namespace Controllers
         /// @cond SKIP_THIS
         MonoBehaviour,
         /// @endcond
-        IDamageable
+        IDamageable,
+        IInteractive
     {
         #region UserVariables
         [SerializeField]
@@ -58,6 +62,8 @@ namespace Controllers
         private float lastAngularVelocity;
         private Vector2 lastVelocity;
         private bool savedRigidData;
+        private IInteractive _interactiveImplementation;
+
         #endregion
 
         /// <summary>
@@ -104,9 +110,7 @@ namespace Controllers
             baseMovementController = GetComponent<BaseMovementController>();
             characterAnimator = GetComponent<Animator>();
             rigidbody2D = GetComponent<Rigidbody2D>();
-
             playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-
             currentHealth = maxHealth;
 
             OnStart();
@@ -138,7 +142,7 @@ namespace Controllers
                 savedRigidData = false;
             }
             
-            CheckInteractions();
+            //CheckInteractions();
             CheckMoveOnAttack();
             OnUpdate();
         }
@@ -268,6 +272,37 @@ namespace Controllers
 
                 damagedTimeCD = Time.time + 0.15f;
             }
+        }
+
+        public bool Interact(BaseController controller, EInteractionKind interactionKind)
+        {
+            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
+            return true;
+        }
+
+        public bool Interact(PlayerController controller, EInteractionKind interactionKind)
+        {
+            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
+            // disables the interaction bubble !!
+            dialogueBubble.gameObject.SetActive(false);
+            
+            // Open the dialogue canvas
+            DialogueManager.Instance.ShowDialogues();
+            
+            return true;
+        }
+
+        public void ReadyToInteract(PlayerController controller, bool isReady)
+        {
+            if (isReady && dialogueBubble != null)
+                dialogueBubble.gameObject.SetActive(true);
+            else
+                dialogueBubble.gameObject.SetActive(false);
+        }
+
+        public void ReadyToInteract(BaseController controller, bool isReady)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

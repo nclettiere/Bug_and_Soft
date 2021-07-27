@@ -140,9 +140,9 @@ public class GameManager
         if (!ReferenceEquals(dynCamera, null)) dynCamera.UpdateOffsetY(offsetY);
     }
 
-    public void SetCameraSize(float size)
+    public void SetCameraSize(float size, float duration = 3f)
     {
-        if (dynCamera != null) dynCamera.UpdateSize(size);
+        if (dynCamera != null) dynCamera.UpdateSize(size, duration);
     }
 
     public Vector2 GetCameraOffset()
