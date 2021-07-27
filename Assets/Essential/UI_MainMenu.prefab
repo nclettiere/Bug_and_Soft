@@ -1421,6 +1421,7 @@ GameObject:
   - component: {fileID: 6384325764599165274}
   - component: {fileID: 6384325764599165253}
   - component: {fileID: 4415852833223351908}
+  - component: {fileID: 2884972869313087772}
   - component: {fileID: 8556169767589333594}
   - component: {fileID: 7452505009368560234}
   m_Layer: 5
@@ -1539,6 +1540,30 @@ MonoBehaviour:
   - {x: 0, y: 2}
   selectorChangeSFX: {fileID: 8556169767589333594}
   onPlaySFX: {fileID: 7452505009368560234}
+--- !u!114 &2884972869313087772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6384325764599165252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d8890a049637e41a9083b4103850c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ButtonSelector: {fileID: 3352841631816733057}
+  OrderedButtonsTransfroms:
+  - {fileID: 5431046028703835396}
+  - {fileID: 6384325766011932515}
+  - {fileID: 6384325764405321925}
+  OrderedButtonsLocalPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  SelectorChangeSFX: {fileID: 8556169767589333594}
+  IsMainMenu: 1
+  MainMenuPhase: 0
 --- !u!82 &8556169767589333594
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6871,13 +6896,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7be08083c6a83341b16547e39c86c7e, type: 3}
---- !u!224 &3312364321263993370 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2900082973061260130, guid: e7be08083c6a83341b16547e39c86c7e, type: 3}
-  m_PrefabInstance: {fileID: 416807084104343928}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3352841631816733057 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3120823458715676921, guid: e7be08083c6a83341b16547e39c86c7e, type: 3}
+  m_PrefabInstance: {fileID: 416807084104343928}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3312364321263993370 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2900082973061260130, guid: e7be08083c6a83341b16547e39c86c7e, type: 3}
   m_PrefabInstance: {fileID: 416807084104343928}
   m_PrefabAsset: {fileID: 0}

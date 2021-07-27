@@ -132,36 +132,36 @@ public class MainMenu : MonoBehaviour
         });
 
         // Input del menu
-        GameManager.Instance.GetPlayerControls().Gameplay.MenuMovement.performed += ctx =>
-        {
-            if (Time.time >= inputCooldown && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
-            {
-                Vector2 requestedPos = ctx.ReadValue<Vector2>();
-                float newX = UIControlPosition.x + requestedPos.x;
-                float newY = UIControlPosition.y + requestedPos.y;
-                if (newX <= -1) newX = 0;
-                if (newY <= -1) newY = 0;
-
-                if (newX >= OrderedButtonsTransfroms.Length) newX = OrderedButtonsTransfroms.Length - 1;
-                if (newY >= OrderedButtonsTransfroms.Length) newY = OrderedButtonsTransfroms.Length - 1;
-
-                Vector2 tempNewSelectorPos = new Vector2(newX, newY);
-
-                for (int i = 0; i < OrderedButtonsTransfroms.Length; i++)
-                {
-                    if (OrderedButtonsLocalPositions[i] == tempNewSelectorPos)
-                    {
-                        selectedButton = OrderedButtonsTransfroms[i];
-                        buttonSelector.transform.position = OrderedButtonsTransfroms[i].transform.position;
-                        UIControlPosition = tempNewSelectorPos;
-                        selectorChangeSFX.Play();
-                        break;
-                    }
-                }
-
-                inputCooldown = Time.time + 0.1f;
-            }
-        };
+        // GameManager.Instance.GetPlayerControls().Gameplay.MenuMovement.performed += ctx =>
+        // {
+        //     if (Time.time >= inputCooldown && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
+        //     {
+        //         Vector2 requestedPos = ctx.ReadValue<Vector2>();
+        //         float newX = UIControlPosition.x + requestedPos.x;
+        //         float newY = UIControlPosition.y + requestedPos.y;
+        //         if (newX <= -1) newX = 0;
+        //         if (newY <= -1) newY = 0;
+// 
+        //         if (newX >= OrderedButtonsTransfroms.Length) newX = OrderedButtonsTransfroms.Length - 1;
+        //         if (newY >= OrderedButtonsTransfroms.Length) newY = OrderedButtonsTransfroms.Length - 1;
+// 
+        //         Vector2 tempNewSelectorPos = new Vector2(newX, newY);
+// 
+        //         for (int i = 0; i < OrderedButtonsTransfroms.Length; i++)
+        //         {
+        //             if (OrderedButtonsLocalPositions[i] == tempNewSelectorPos)
+        //             {
+        //                 selectedButton = OrderedButtonsTransfroms[i];
+        //                 buttonSelector.transform.position = OrderedButtonsTransfroms[i].transform.position;
+        //                 UIControlPosition = tempNewSelectorPos;
+        //                 selectorChangeSFX.Play();
+        //                 break;
+        //             }
+        //         }
+// 
+        //         inputCooldown = Time.time + 0.1f;
+        //     }
+        // };
         GameManager.Instance.GetPlayerControls().Gameplay.MenuInteract.performed += ctx =>
         {
             if (selectedButton != null && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
