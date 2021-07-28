@@ -3,6 +3,7 @@ namespace Controllers
     public enum ECharacterKind
     {
         Dummy = 1,
-        Njord
+        Njord,
+        Froggy
     }
 }

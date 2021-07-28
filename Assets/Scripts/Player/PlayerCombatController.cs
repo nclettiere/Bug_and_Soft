@@ -24,6 +24,8 @@ namespace Player
         private LayerMask whatCanBeDamaged;
         [SerializeField]
         private AudioSource[] swordSwingSFX;
+        [SerializeField]
+        private Material playerMaterial;
 
         protected PlayerController pCtrl;
         protected PlayerMovementController pMovCtrl;
@@ -61,6 +63,11 @@ namespace Player
                             awaitingAttack = false;
 
                             damagedApplied = false;
+                            
+                            // WACHIN Aumentamos el HDR del color del shader para que se vea
+                            // mas brillante CACHINN
+                            // ARTE     A  R  T  E
+                            playerMaterial.SetFloat("EmmisiveIntensity", 0.25f);
 
                             pAnimator.SetBool("AwaitingAttack", false);
                             pAnimator.SetBool("Attacking", true);
@@ -95,6 +102,10 @@ namespace Player
             pAnimator.SetBool("AwaitingAttack", awaitingAttack);
             pAnimator.SetBool("HasAttackAnimationStarted", false);
             pMovCtrl.EnableFlip();
+            
+            // Reseteamos la intensidad de la espada
+            playerMaterial.SetFloat("EmmisiveIntensity", 0.04f);
+            
             if (attackN + 1 > UnlockedAttacksCount)
             {
                 ResetAttackNow();
