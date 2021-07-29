@@ -15,7 +15,6 @@ namespace Controllers
         protected override void OnStart()
         {
             controllerKind = EControllerKind.Enemy;
-            characterKind = ECharacterKind.Dummy;
         }
     }
 }

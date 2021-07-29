@@ -17,6 +17,12 @@ namespace Controllers
         /// </summary>
         /// <param name="amount">La cantidad de danio a inflingir</param>
         /// <param name="attackN">Numero del ataque en el combo.</param>
-        void Damage(float amount, int attackN);
+        void Damage(float amount, int attackN);        
+        
+        
+        /// <summary>
+        ///     Metodo utilizado para matar a un personaje
+        /// </summary>
+        void Kill();
     }
 }

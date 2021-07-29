@@ -7,12 +7,27 @@ namespace Controllers.Froggy
 {
     public class FroggyController : BaseController
     {
+        [Header("Froggy Specific Values")]
+        [SerializeField] private float jumpCooldownTime = 4f;
+        private float lastJumpTime = float.NegativeInfinity;
+        
         protected override void OnStart()
         {
             controllerKind = EControllerKind.Enemy;
-            characterKind = ECharacterKind.Froggy;
+
+            SwitchStates(ECharacterState.Jumping);
 
             InvokeRepeating("MoveCejas", 0f, 7f);
+        }
+
+        protected override bool OnUpdateJumpingStateStart()
+        {
+            return (Time.time >= lastJumpTime);
+        }
+
+        protected override void OnUpdateJumpingStateEnd()
+        {
+            lastJumpTime = Time.time + jumpCooldownTime;
         }
 
         /// <summary>

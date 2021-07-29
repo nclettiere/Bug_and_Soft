@@ -272,7 +272,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15e9ab7d2a438a4184eb854a8d68fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerKind: 1
+  controllerKind: 2
+  characterKind: 1
+  interactionRadius: 4
   maxHealth: 50
   moveOnAttackDuration: 0.1
   generalSpeed: 40
@@ -284,6 +286,17 @@ MonoBehaviour:
   hitParticles: {fileID: 2921739069942501901, guid: d7aaf33d4b24c8e4280a5e3703540943, type: 3}
   hitAttackSFX1: {fileID: 5707441329136417492}
   hitAttackSFX2: {fileID: 1984927763591958713}
+  dialogueBubble: {fileID: 0}
+  canWalk: 0
+  canJump: 0
+  canBeDamaged: 0
+  groundCheckDistance: 0
+  wallCheckDistance: 0
+  groundCheck: {fileID: 0}
+  wallCheck: {fileID: 0}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &6487321250209749333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +320,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -366,7 +380,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &6487321250209749332
 BoxCollider2D:

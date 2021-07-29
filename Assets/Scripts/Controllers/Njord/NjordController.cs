@@ -9,7 +9,6 @@ namespace Controllers
         protected override void OnStart()
         {
             controllerKind = EControllerKind.Neutral;
-            characterKind = ECharacterKind.Njord;
 
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
