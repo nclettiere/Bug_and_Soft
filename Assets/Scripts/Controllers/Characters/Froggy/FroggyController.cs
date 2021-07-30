@@ -8,12 +8,18 @@ namespace Controllers.Froggy
     public class FroggyController : BaseController
     {
         [Header("Froggy Specific Values")]
-        [SerializeField] private float jumpCooldownTime = 4f;
+        [SerializeField] private AudioSource jumpSFX;
+        [SerializeField] private AudioSource landSFX;
+        
         private float lastJumpTime = float.NegativeInfinity;
+        private float jumpCooldownTime;
+        private bool canFroggyDie = false;
         
         protected override void OnStart()
         {
             controllerKind = EControllerKind.Enemy;
+
+            jumpCooldownTime = Random.Range(2.5f, 5f);
 
             SwitchStates(ECharacterState.Jumping);
 
@@ -22,12 +28,39 @@ namespace Controllers.Froggy
 
         protected override bool OnUpdateJumpingStateStart()
         {
-            return (Time.time >= lastJumpTime);
+            if (Time.time >= lastJumpTime)
+            {
+                // SFX de saltar !!!
+                jumpSFX.Play();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void OnFroggyLanded()
+        {
+            landSFX.Play();
         }
 
         protected override void OnUpdateJumpingStateEnd()
         {
             lastJumpTime = Time.time + jumpCooldownTime;
+        }
+
+        protected override void OnEnterDeadStateStart()
+        {
+            rigidbody2D.constraints = RigidbodyConstraints2D.None;
+            rigidbody2D.AddForce(new Vector2(3f * -facingDirection, 3f), ForceMode2D.Impulse);
+            rigidbody2D.AddTorque(10f * -facingDirection, ForceMode2D.Impulse);
+
+            StartCoroutine(DeathTiming());
+        }
+        
+        private IEnumerator DeathTiming()
+        {
+            yield return new WaitForSeconds(2.5f);
+            canCharacterDie = true;
         }
 
         /// <summary>
