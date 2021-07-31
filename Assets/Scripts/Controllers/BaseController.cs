@@ -8,6 +8,7 @@ using Dialogues;
 using Player;
 using Interactions.Enums;
 using Interactions.Interfaces;
+using Misc;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
@@ -44,18 +45,17 @@ namespace Controllers
         [SerializeField] private AudioSource hitAttackSFX2;
         [SerializeField] private AudioSource deathSFX;
         [SerializeField] private GameObject dialogueBubble;
-
+        [SerializeField] private GameObject lapida;
+        
+        
         [Header("State Options")] [SerializeField]
         private bool canWalk;
-
         [SerializeField] private bool canJump;
         [SerializeField] private bool canBeDamaged;
 
-        [Header("World Checks")] [SerializeField]
-        private float groundCheckDistance;
-
-        [SerializeField] private float wallCheckDistance;
-        [SerializeField] private Transform groundCheck, wallCheck;
+        [Header("World Checks")]
+        [SerializeField] private float wallCheckDistance, groundCheckDistance, topCheckDistance;
+        [SerializeField] private Transform groundCheck, wallCheck, topCheck;
         [SerializeField] private LayerMask whatIsGround;
 
                 
@@ -82,9 +82,10 @@ namespace Controllers
         private bool savedRigidData;
         private SpriteRenderer renderer;
         private ECharacterState currentState;
-        private bool groundDetected, wallDetected, lastGroundDetected;
+        private bool groundDetected, wallDetected, topDetected, lastGroundDetected;
         private Vector2 movement;
         protected private bool canCharacterDie = false;
+        private bool lapidaIntance = false;
         #endregion
 
         /// <summary>
@@ -191,8 +192,9 @@ namespace Controllers
                     Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
                 if (!wasGrounded && groundDetected)
                     OnLandEvent.Invoke();
-
+                
                 wallDetected = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+                topDetected = Physics2D.Raycast(topCheck.position, Vector2.up, topCheckDistance, whatIsGround);
 
                 characterAnimator.SetBool("OnLand", groundDetected);
 
@@ -239,6 +241,8 @@ namespace Controllers
                     new Vector2(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
                 Gizmos.DrawLine(wallCheck.position,
                     new Vector2(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+                Gizmos.DrawLine(topCheck.position,
+                    new Vector2(topCheck.position.x, topCheck.position.y + topCheckDistance));
             }
 
             // Interaction gizmo ...
@@ -352,7 +356,16 @@ namespace Controllers
         private void UpdateDeadState()
         {
             if (!canCharacterDie) return;
-            Destroy(gameObject);
+
+            if (groundDetected || topDetected)
+            {
+                if (lapida != null && !lapidaIntance)
+                {
+                    Instantiate(lapida, transform.position, Quaternion.Euler(0f, 0f, 0f));
+                    renderer.enabled = false;
+                    lapidaIntance = true;
+                }
+            }
         }
 
         private void ExitDeadState()
@@ -509,7 +522,6 @@ namespace Controllers
                 playerFacingDirection = playerController.IsFacingRight();
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-
                 if (firstAttack)
                     hitAttackSFX1.Play();
                 else

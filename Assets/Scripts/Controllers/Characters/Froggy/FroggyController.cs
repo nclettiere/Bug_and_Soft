@@ -31,7 +31,7 @@ namespace Controllers.Froggy
             if (Time.time >= lastJumpTime)
             {
                 // SFX de saltar !!!
-                jumpSFX.Play();
+                AudioSource.PlayClipAtPoint(jumpSFX.clip, transform.position);
                 return true;
             }
 
@@ -40,7 +40,7 @@ namespace Controllers.Froggy
 
         public void OnFroggyLanded()
         {
-            landSFX.Play();
+            AudioSource.PlayClipAtPoint(landSFX.clip, transform.position);
         }
 
         protected override void OnUpdateJumpingStateEnd()
