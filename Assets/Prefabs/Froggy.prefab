@@ -599,9 +599,12 @@ MonoBehaviour:
   interactionRadius: 0
   maxHealth: 50
   moveOnAttackDuration: 0.1
+  touchDamageCooldown: 0.75
   generalSpeed: 3
+  touchDamage: 12
   isInvencible: 0
   canBeStunned: 1
+  canDamageOnTouch: 1
   canBeMovedOnAttack: 1
   movedOnAttack: 1
   moveOnAttackSpeed: {x: 10, y: 10}
@@ -617,12 +620,18 @@ MonoBehaviour:
   wallCheckDistance: 0.1
   groundCheckDistance: 0.5
   topCheckDistance: 0.5
+  touchDamageWidth: 1.15
+  touchDamageHeight: 1.2
   groundCheck: {fileID: 242146971993299171}
   wallCheck: {fileID: 242146970851519633}
   topCheck: {fileID: 582886039612455387}
+  touchDamageCheck: {fileID: 4159019222238835228}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -808,8 +817,39 @@ Transform:
   - {fileID: 242146971993299171}
   - {fileID: 242146970851519633}
   - {fileID: 582886039612455387}
+  - {fileID: 4159019222238835228}
   m_Father: {fileID: 242146971895896512}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1419587561185994889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4159019222238835228}
+  m_Layer: 10
+  m_Name: TouchDamageCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4159019222238835228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419587561185994889}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 242146972406056933}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5926173922429296521
 GameObject:

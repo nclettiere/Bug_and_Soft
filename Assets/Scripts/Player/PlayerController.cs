@@ -13,21 +13,24 @@ namespace Player
         /// @endcond
         IDamageable
     {
-        internal bool awaitingAttack = true;
-
         [SerializeField] private Animator characterAnimator;
+
         private PlayerCombatController combatCtrl;
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
         [SerializeField] private float generalSpeed = 40f;
-
         private float horizontalMove;
-
         private bool jump;
         private float lastAngularVelocity;
         private Vector2 lastVelocity;
 
-        protected PlayerMovementController playerMovementCtrl;
+        [SerializeField] private int maxHealth = 150, currentHealth;
+
+        internal bool moveOnDamaged;
+        [SerializeField] private Vector2 moveOnDamagedSpeed;
+        private float moveOnDamagedStartTime;
+        [SerializeField] private float moveOnDamageDuration = 1f;
+        private PlayerMovementController playerMovementCtrl;
         internal bool praying = true;
         internal bool respawning;
         private Rigidbody2D rigidbody2D;
@@ -35,14 +38,28 @@ namespace Player
         private bool savedRigidData;
         private float verticalMove;
 
-        #region Interaction
+        public void Damage(float amount, int attackN)
+        {
+            // old
+        }
 
-        [SerializeField] protected float interactionRadius = 3f;
-        private bool canPlayerInteract = false;
-        private BaseController lastInteractiveController;
-        public bool isEnrolledInDialogue = false;
+        public void Damage(BaseController controller, DamageInfo damageInfo)
+        {
+            if (!roll)
+            {
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
 
-        #endregion
+                currentHealth -= damageInfo.DamageAmount;
+
+                MoveOnDamaged(direction);
+            }
+        }
+
+        public void Kill()
+        {
+            // old
+        }
 
         private void Start()
         {
@@ -51,6 +68,9 @@ namespace Player
             transform.position = SpawnPoint.transform.position;
             respawning = true;
             AnimStartPrayingEvt();
+
+
+            currentHealth = maxHealth;
 
             GameManager.Instance.GetPlayerControls().Gameplay.Roll.performed += ctxRoll =>
             {
@@ -131,6 +151,7 @@ namespace Player
             }
 
             CheckInteractions();
+            CheckMoveOnDamaged();
 
             horizontalMove = GameManager.Instance.GetPlayerControls().Gameplay.Horizontal.ReadValue<float>() *
                              generalSpeed;
@@ -141,7 +162,7 @@ namespace Player
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.IsGamePaused() || isEnrolledInDialogue) return;
+            if (GameManager.Instance.IsGamePaused() || isEnrolledInDialogue || moveOnDamaged) return;
 
             playerMovementCtrl.Move(
                 horizontalMove * GameManager.Instance.DeltaTime, //Time.fixedDeltaTime,
@@ -188,6 +209,22 @@ namespace Player
             canPlayerInteract = false;
             if (lastInteractiveController != null)
                 lastInteractiveController.ReadyToInteract(this, false);
+        }
+
+        private void MoveOnDamaged(int direction)
+        {
+            moveOnDamaged = true;
+            moveOnDamagedStartTime = Time.time;
+            rigidbody2D.velocity = new Vector2(moveOnDamagedSpeed.x * direction, moveOnDamagedSpeed.y);
+        }
+
+        void CheckMoveOnDamaged()
+        {
+            if (moveOnDamaged && Time.time >= moveOnDamagedStartTime + moveOnDamageDuration)
+            {
+                moveOnDamaged = false;
+                rigidbody2D.velocity = new Vector2(0.0f, rigidbody2D.velocity.y);
+            }
         }
 
         private void FreezePlayer()
@@ -249,6 +286,15 @@ namespace Player
             OnEnable();
         }
 
+        #region Interaction
+
+        [SerializeField] protected float interactionRadius = 3f;
+        private bool canPlayerInteract = false;
+        private BaseController lastInteractiveController;
+        public bool isEnrolledInDialogue = false;
+
+        #endregion
+
         #region AnimationCallbacks
 
         public void AnimStartPrayingEvt()
@@ -274,19 +320,5 @@ namespace Player
         }
 
         #endregion
-
-        public void Damage(float amount, int attackN)
-        {
-            // old
-        }
-
-        public void Damage(BaseController controller, DamageInfo damageInfo)
-        {
-        }
-
-        public void Kill()
-        {
-            // old
-        }
     }
 }

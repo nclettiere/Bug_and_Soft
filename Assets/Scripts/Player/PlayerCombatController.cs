@@ -7,37 +7,41 @@ namespace Player
 {
     public class PlayerCombatController : MonoBehaviour
     {
-        [SerializeField]
-        private float generalInputCooldown;
-        [SerializeField]
-        [Range(0.15f, 1f)]
-        private float WaitForNextAttackMaxTime = 0.75f;
-        [SerializeField]
-        private int UnlockedAttacksCount = 2;
-        [SerializeField]
-        private Transform[] attacksHitboxPositions;
-        [SerializeField]
-        private float[] attacksHitboxRadius;
-        [SerializeField]
-        private float[] attacksDamage;
-        [SerializeField]
-        private LayerMask whatCanBeDamaged;
-        [SerializeField]
-        private AudioSource[] swordSwingSFX;
-        [SerializeField]
-        private Material playerMaterial;
+        internal bool attacking = false,
+            awaitingAttack = true,
+            respawning = false,
+            hasAttackAnimationStarted = false,
+            damagedApplied = false;
 
-        protected PlayerController pCtrl;
-        protected PlayerMovementController pMovCtrl;
-        protected PlayerLadderClimbingController pLadderCtrl;
-
-        internal bool attacking = false, awaitingAttack = true, respawning = false, hasAttackAnimationStarted = false, damagedApplied = false;
         private int attackN = 0;
-        private float lastInputTime = float.NegativeInfinity;
+
+        [SerializeField] private float[] attacksDamage;
+
+        [SerializeField] private Transform[] attacksHitboxPositions;
+
+        [SerializeField] private float[] attacksHitboxRadius;
+
+        [SerializeField] private float generalInputCooldown;
 
         private Color[] gizmosColors;
+        private float lastInputTime = float.NegativeInfinity;
 
         private Animator pAnimator;
+
+        private PlayerController pCtrl;
+        private PlayerLadderClimbingController pLadderCtrl;
+
+        [SerializeField] private Material playerMaterial;
+
+        private PlayerMovementController pMovCtrl;
+
+        [SerializeField] private AudioSource[] swordSwingSFX;
+
+        [SerializeField] private int UnlockedAttacksCount = 2;
+
+        [SerializeField] [Range(0.15f, 1f)] private float WaitForNextAttackMaxTime = 0.75f;
+
+        [SerializeField] private LayerMask whatCanBeDamaged;
 
         private void Awake()
         {
@@ -49,8 +53,9 @@ namespace Player
             GameManager.Instance.GetPlayerControls().Gameplay.Attack.performed += ctx =>
             {
                 if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
-                
-                if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll && !pMovCtrl.IsTouchingLedge)
+
+                if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll &&
+                    !pMovCtrl.IsTouchingLedge)
                 {
                     if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
                     {
@@ -63,7 +68,7 @@ namespace Player
                             awaitingAttack = false;
 
                             damagedApplied = false;
-                            
+
                             // WACHIN Aumentamos el HDR del color del shader para que se vea
                             // mas brillante CACHINN
                             // ARTE     A  R  T  E
@@ -85,7 +90,7 @@ namespace Player
         private void Update()
         {
             if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
-            
+
             CheckAttackHitBox();
         }
 
@@ -102,15 +107,16 @@ namespace Player
             pAnimator.SetBool("AwaitingAttack", awaitingAttack);
             pAnimator.SetBool("HasAttackAnimationStarted", false);
             pMovCtrl.EnableFlip();
-            
+
             // Reseteamos la intensidad de la espada
             playerMaterial.SetFloat("EmmisiveIntensity", 0.04f);
-            
+
             if (attackN + 1 > UnlockedAttacksCount)
             {
                 ResetAttackNow();
                 return;
             }
+
             StartCoroutine(ResetAttack());
         }
 
@@ -156,7 +162,6 @@ namespace Player
             pAnimator.SetBool("HasAttackAnimationStarted", false);
             pAnimator.SetBool("Attacking", false);
             pAnimator.SetInteger("AttackN", attackN);
-
         }
 
         private void CheckAttackHitBox()
@@ -166,7 +171,9 @@ namespace Player
                 if (attackN <= 0)
                     return;
 
-                RaycastHit2D[] detectedObjs = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 1f, new Vector2(0f, 0f));
+                RaycastHit2D[] detectedObjs =
+                    Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 1f,
+                        new Vector2(0f, 0f));
 
                 foreach (RaycastHit2D raycast in detectedObjs)
                 {
@@ -177,6 +184,7 @@ namespace Player
                         bctrl.Damage(attacksDamage[attackN - 1], attackN);
                     }
                 }
+
                 damagedApplied = true;
             }
         }

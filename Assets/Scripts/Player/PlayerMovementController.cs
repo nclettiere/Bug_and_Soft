@@ -6,55 +6,56 @@ namespace Player
 {
     public class PlayerMovementController : MonoBehaviour
     {
-        [SerializeField] private float JumpForce = 400f;
-        [Range(0, 1)] [SerializeField] private float CrouchSpeed = .36f;
-        [Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;
-        [SerializeField] private LayerMask GroundLayers;
-        [SerializeField] private LayerMask ClimableLayers;
-        [SerializeField] private Transform GroundCheck;
-        [SerializeField] private Transform CeilingCheck;
-        [SerializeField] private Transform WallCheck;
-        [SerializeField] private Transform LedgeCheck;
-        [SerializeField] private Collider2D CrouchDisableCollider;
-        [SerializeField] private Animator characterAnimator;
-        [SerializeField] private bool ShouldPlayerFlip = true;
-        [SerializeField] private float WallCheckDistance;
-
         const float GroundedRadius = .2f;
-        internal bool Grounded;
         const float CeilingRadius = .2f;
-        private Rigidbody2D Rigidbody2D;
-        private bool FacingRight = true;
-        internal Vector3 Velocity = Vector3.zero;
 
-        internal bool IsTouchingWall;
-        internal bool IsTouchingLedge;
+        private float beforeLedgeClimbOffsetY;
 
         private bool CanClimbLedge = false;
-        private bool LedgeDetected;
+        [SerializeField] private Transform CeilingCheck;
+        [SerializeField] private Animator characterAnimator;
+        [SerializeField] private LayerMask ClimableLayers;
+        [SerializeField] private Collider2D CrouchDisableCollider;
+        [Range(0, 1)] [SerializeField] private float CrouchSpeed = .36f;
+        private bool FacingRight = true;
+        [SerializeField] private Transform GroundCheck;
+        internal bool Grounded;
+        [SerializeField] private LayerMask GroundLayers;
+        internal bool IsTouchingLedge;
 
-        private Vector2 LedgePosBott;
+        internal bool IsTouchingWall;
+
+        [SerializeField] private float JumpForce = 400f;
+        [SerializeField] private Transform LedgeCheck;
+
+        public float LedgeClimbXOffset1;
+        public float LedgeClimbXOffset2;
+        public float LedgeClimbYOffset1;
+        public float LedgeClimbYOffset2;
+        private bool LedgeDetected;
         private Vector2 LedgePos1;
         private Vector2 LedgePos2;
 
-        public float LedgeClimbXOffset1;
-        public float LedgeClimbYOffset1;
-        public float LedgeClimbXOffset2;
-        public float LedgeClimbYOffset2;
-
-        [Header("Events")]
-        [Space]
-
-        public UnityEvent OnLandEvent;
+        private Vector2 LedgePosBott;
+        [Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;
         public UnityEvent OnAirEvent;
 
-        [System.Serializable]
-        public class BoolEvent : UnityEvent<bool> { }
-
         public BoolEvent OnCrouchEvent;
+
+        [Header("Events")] [Space] public UnityEvent OnLandEvent;
+
+        private PlayerController pCtrl;
+        private Rigidbody2D Rigidbody2D;
+        [SerializeField] private bool ShouldPlayerFlip = true;
+        internal Vector3 Velocity = Vector3.zero;
+        [SerializeField] private Transform WallCheck;
+        [SerializeField] private float WallCheckDistance;
         private bool wasCrouching = false;
 
-        private float beforeLedgeClimbOffsetY;
+        private void Start()
+        {
+            pCtrl = GetComponent<PlayerController>();
+        }
 
         private void FixedUpdate()
         {
@@ -86,13 +87,16 @@ namespace Player
             RaycastHit2D LedgeHit;
             if (FacingRight)
             {
-                IsTouchingWall = Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance, GroundLayers);
+                IsTouchingWall =
+                    Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance, GroundLayers);
                 LedgeHit = Physics2D.Raycast(LedgeCheck.position, transform.right, WallCheckDistance, ClimableLayers);
             }
             else
             {
-                IsTouchingWall = Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance * -1, GroundLayers);
-                LedgeHit = Physics2D.Raycast(LedgeCheck.position, transform.right, WallCheckDistance * -1, ClimableLayers);
+                IsTouchingWall = Physics2D.Raycast(WallCheck.position, transform.right, WallCheckDistance * -1,
+                    GroundLayers);
+                LedgeHit = Physics2D.Raycast(LedgeCheck.position, transform.right, WallCheckDistance * -1,
+                    ClimableLayers);
             }
 
             IsTouchingLedge = LedgeHit;
@@ -135,7 +139,6 @@ namespace Player
 
         public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll, bool attacking)
         {
-
             if (!GameManager.Instance.GetIsInputEnabled())
                 return;
 
@@ -152,6 +155,7 @@ namespace Player
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }
+
                 if (moveV < 0f)
                 {
                     Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -162,6 +166,7 @@ namespace Player
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }
+
                 return;
             }
 
@@ -214,7 +219,8 @@ namespace Player
             if (!attacking)
             {
                 Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
-                Rigidbody2D.velocity = Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
+                Rigidbody2D.velocity =
+                    Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
             }
 
             if (moveH > 0 && !FacingRight)
@@ -262,7 +268,7 @@ namespace Player
 
         private void Flip()
         {
-            if (!ShouldPlayerFlip) return;
+            if (!ShouldPlayerFlip || pCtrl.moveOnDamaged) return;
             FacingRight = !FacingRight;
 
             Vector3 theScale = transform.localScale;
@@ -286,8 +292,15 @@ namespace Player
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
-            Gizmos.DrawLine(LedgeCheck.position, new Vector3(LedgeCheck.position.x + WallCheckDistance, LedgeCheck.position.y, LedgeCheck.position.z));
+            Gizmos.DrawLine(WallCheck.position,
+                new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
+            Gizmos.DrawLine(LedgeCheck.position,
+                new Vector3(LedgeCheck.position.x + WallCheckDistance, LedgeCheck.position.y, LedgeCheck.position.z));
+        }
+
+        [System.Serializable]
+        public class BoolEvent : UnityEvent<bool>
+        {
         }
     }
 }
