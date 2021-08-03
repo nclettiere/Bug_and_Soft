@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Controllers.Damage;
 using UnityEngine;
 
 namespace Controllers
@@ -17,9 +18,15 @@ namespace Controllers
         /// </summary>
         /// <param name="amount">La cantidad de danio a inflingir</param>
         /// <param name="attackN">Numero del ataque en el combo.</param>
-        void Damage(float amount, int attackN);        
-        
-        
+        void Damage(float amount, int attackN);
+
+        /// <summary>
+        ///  Metodo utilizado para inflingir danio utilizando el struct DamageInfo.
+        /// </summary>
+        /// <param name="controller">Controlador del que inflinge damage.</param>
+        /// <param name="damageInfo">La informacion del damage.</param>
+        void Damage(BaseController controller, DamageInfo damageInfo);
+
         /// <summary>
         ///     Metodo utilizado para matar a un personaje
         /// </summary>

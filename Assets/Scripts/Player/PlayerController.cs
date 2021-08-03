@@ -1,27 +1,25 @@
 using System.Collections;
 using Controllers;
+using Controllers.Damage;
 using Interactions.Enums;
 using Interactions.Interfaces;
 using UnityEngine;
 
 namespace Player
 {
-    public class PlayerController : 
+    public class PlayerController :
         /// @cond SKIP_THIS
-        MonoBehaviour
+        MonoBehaviour,
         /// @endcond
+        IDamageable
     {
         internal bool awaitingAttack = true;
 
-        [SerializeField] 
-        private Animator characterAnimator;
+        [SerializeField] private Animator characterAnimator;
         private PlayerCombatController combatCtrl;
-        [SerializeField] 
-        private AudioSource footStep1;
-        [SerializeField] 
-        private AudioSource footStep2;
-        [SerializeField] 
-        private float generalSpeed = 40f;
+        [SerializeField] private AudioSource footStep1;
+        [SerializeField] private AudioSource footStep2;
+        [SerializeField] private float generalSpeed = 40f;
 
         private float horizontalMove;
 
@@ -38,11 +36,12 @@ namespace Player
         private float verticalMove;
 
         #region Interaction
-        [SerializeField]
-        protected float interactionRadius = 3f;
+
+        [SerializeField] protected float interactionRadius = 3f;
         private bool canPlayerInteract = false;
         private BaseController lastInteractiveController;
         public bool isEnrolledInDialogue = false;
+
         #endregion
 
         private void Start()
@@ -52,7 +51,7 @@ namespace Player
             transform.position = SpawnPoint.transform.position;
             respawning = true;
             AnimStartPrayingEvt();
-            
+
             GameManager.Instance.GetPlayerControls().Gameplay.Roll.performed += ctxRoll =>
             {
                 if (horizontalMove != 0f && !GameManager.Instance.IsGamePaused())
@@ -66,7 +65,7 @@ namespace Player
                 if (!GameManager.Instance.IsGamePaused())
                     jump = true;
             };
-            
+
             // Interaction input
             GameManager.Instance.GetPlayerControls().Gameplay.Interact.performed += ctx =>
             {
@@ -130,7 +129,7 @@ namespace Player
                     respawning = false;
                 }
             }
-            
+
             CheckInteractions();
 
             horizontalMove = GameManager.Instance.GetPlayerControls().Gameplay.Horizontal.ReadValue<float>() *
@@ -143,7 +142,7 @@ namespace Player
         private void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused() || isEnrolledInDialogue) return;
-            
+
             playerMovementCtrl.Move(
                 horizontalMove * GameManager.Instance.DeltaTime, //Time.fixedDeltaTime,
                 verticalMove * GameManager.Instance.DeltaTime, //Time.fixedDeltaTime,
@@ -157,14 +156,14 @@ namespace Player
             jump = false;
             roll = false;
         }
-        
+
         private void OnDrawGizmos()
         {
             // Interaction gizmo
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, interactionRadius);
         }
-        
+
         private void CheckInteractions()
         {
             RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRadius, new Vector2(0f, 0f));
@@ -179,13 +178,15 @@ namespace Player
                         lastInteractiveController = bctrl;
                         bctrl.ReadyToInteract(this, true);
                     }
+
                     canPlayerInteract = true;
                     return;
                 }
             }
+
             // Cancel all ReadyToInteract events
             canPlayerInteract = false;
-            if(lastInteractiveController != null)
+            if (lastInteractiveController != null)
                 lastInteractiveController.ReadyToInteract(this, false);
         }
 
@@ -197,17 +198,17 @@ namespace Player
             rigidbody2D.Sleep();
 
             savedRigidData = true;
-        }        
-        
+        }
+
         private void UnfreezePlayer()
         {
             rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             rigidbody2D.velocity = lastVelocity;
             rigidbody2D.angularVelocity = lastAngularVelocity;
             rigidbody2D.WakeUp();
-            savedRigidData = false; 
+            savedRigidData = false;
         }
-        
+
         public void EnterInteractionMode()
         {
             isEnrolledInDialogue = true;
@@ -273,5 +274,19 @@ namespace Player
         }
 
         #endregion
+
+        public void Damage(float amount, int attackN)
+        {
+            // old
+        }
+
+        public void Damage(BaseController controller, DamageInfo damageInfo)
+        {
+        }
+
+        public void Kill()
+        {
+            // old
+        }
     }
 }

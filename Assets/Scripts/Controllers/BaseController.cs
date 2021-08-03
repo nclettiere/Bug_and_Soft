@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Controllers.Damage;
 using UnityEngine;
 using Controllers.Movement;
 using Dialogues;
@@ -38,7 +39,7 @@ namespace Controllers
         [SerializeField] private ECharacterKind characterKind;
         [SerializeField] private float interactionRadius = 4f;
         [SerializeField] private float maxHealth, moveOnAttackDuration, generalSpeed = 40f;
-        [SerializeField] private bool isInvencible, canBeStunned, canBeMovedOnAttack, movedOnAttack;
+        [SerializeField] private bool isInvencible, canBeStunned, canDamageOnTouch, canBeMovedOnAttack, movedOnAttack;
         [SerializeField] private Vector2 moveOnAttackSpeed;
         [SerializeField] private GameObject hitParticles;
         [SerializeField] private AudioSource hitAttackSFX1;
@@ -46,46 +47,74 @@ namespace Controllers
         [SerializeField] private AudioSource deathSFX;
         [SerializeField] private GameObject dialogueBubble;
         [SerializeField] private GameObject lapida;
-        
-        
+
+
         [Header("State Options")] [SerializeField]
         private bool canWalk;
+
         [SerializeField] private bool canJump;
         [SerializeField] private bool canBeDamaged;
 
-        [Header("World Checks")]
-        [SerializeField] private float wallCheckDistance, groundCheckDistance, topCheckDistance;
-        [SerializeField] private Transform groundCheck, wallCheck, topCheck;
-        [SerializeField] private LayerMask whatIsGround;
+        [Header("World Checks")] [SerializeField]
+        private float wallCheckDistance,
+            groundCheckDistance,
+            topCheckDistance;
 
-                
-        [Header("Events Zone")]
-        public UnityEvent OnLandEvent;
-        
+        [SerializeField] private Transform
+            groundCheck,
+            wallCheck,
+            topCheck,
+            touchDamageCheck;
+
+        [SerializeField] private LayerMask whatIsGround, whatIsPlayer;
+
+
+        [Header("Events Zone")] public UnityEvent OnLandEvent;
+
         #endregion
-        public int facingDirection { get; private set; } = 1; // Solo se puede modificar en el runtime por el codigo, por eso el private set; xd
+
+        public int facingDirection { get; private set; } =
+            1; // Solo se puede modificar en el codigo, por eso el private set; xd
 
         #region Variables
 
         protected BaseMovementController baseMovementController;
         protected Animator characterAnimator;
         protected Rigidbody2D rigidbody2D;
-        private float currentHealth, moveOnAttackStart;
         protected PlayerController playerController;
-        protected bool playerFacingDirection;
-        protected bool playerOnLeft;
-        private bool firstAttack;
-        private float damagedTimeCD = float.NegativeInfinity;
-        private bool canPlayerInteract = false;
-        private float lastAngularVelocity;
-        private Vector2 lastVelocity;
-        private bool savedRigidData;
         private SpriteRenderer renderer;
         private ECharacterState currentState;
-        private bool groundDetected, wallDetected, topDetected, lastGroundDetected;
-        private Vector2 movement;
+        protected bool playerFacingDirection;
         protected private bool canCharacterDie = false;
-        private bool lapidaIntance = false;
+
+        private bool
+            groundDetected,
+            wallDetected,
+            topDetected,
+            lastGroundDetected,
+            lapidaIntance = false,
+            firstAttack,
+            canPlayerInteract = false,
+            savedRigidData;
+
+        private Vector2
+            movement,
+            lastVelocity,
+            touchDamageBottomLeft,
+            touchDamageTopRight;
+
+        private float
+            currentHealth,
+            moveOnAttackStart,
+            damagedTimeCD = float.NegativeInfinity,
+            lastAngularVelocity,
+            lastTouchDamageTime,
+            touchDamageCooldown,
+            touchDamageWidth,
+            touchDamageHeight;
+
+        private int touchDamage = 12;
+
         #endregion
 
         /// <summary>
@@ -125,7 +154,7 @@ namespace Controllers
             // Debe ser llenado en una clase heredada
             // Ej: DummyController.cs
         }
-        
+
         /// <summary>
         ///     <para>Este metodo se ejecuta en el Awake() del MonoBehaviour luego inicializar las variables necesarias.</para>
         ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
@@ -140,7 +169,7 @@ namespace Controllers
         {
             if (OnLandEvent == null)
                 OnLandEvent = new UnityEvent();
-            
+
             OnAwake();
         }
 
@@ -185,14 +214,13 @@ namespace Controllers
 
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
-                
                 // Llamamos al evento OnLandEvent si es necesario!
                 bool wasGrounded = groundDetected;
                 groundDetected =
                     Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
                 if (!wasGrounded && groundDetected)
                     OnLandEvent.Invoke();
-                
+
                 wallDetected = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
                 topDetected = Physics2D.Raycast(topCheck.position, Vector2.up, topCheckDistance, whatIsGround);
 
@@ -220,6 +248,7 @@ namespace Controllers
             }
 
             //CheckInteractions();
+            CheckTouchDamage();
             CheckMoveOnAttack();
             OnUpdate();
         }
@@ -347,8 +376,8 @@ namespace Controllers
             deathSFX.Play();
             characterAnimator.SetBool("Dead", true);
         }
-        
-        
+
+
         protected virtual void OnEnterDeadStateStart()
         {
         }
@@ -509,6 +538,38 @@ namespace Controllers
             }
         }
 
+        private void CheckTouchDamage()
+        {
+            if (canDamageOnTouch &&
+                Time.time >= lastTouchDamageTime + touchDamageCooldown)
+            {
+                touchDamageBottomLeft.Set(
+                    touchDamageCheck.position.x - (touchDamageWidth / 2),
+                    touchDamageCheck.position.y - (touchDamageHeight / 2));
+
+                touchDamageTopRight.Set(
+                    touchDamageCheck.position.x + (touchDamageWidth / 2),
+                    touchDamageCheck.position.y + (touchDamageHeight / 2));
+
+                Collider2D hit = Physics2D.OverlapArea(
+                    touchDamageBottomLeft,
+                    touchDamageTopRight,
+                    whatIsPlayer);
+
+                if (hit != null)
+                {
+                    lastTouchDamageTime = Time.time;
+                    DamageInfo dInfo = new DamageInfo(touchDamage, transform.position.x);
+
+                    PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+                    if (bctrl != null && (bctrl is IDamageable))
+                    {
+                        bctrl.Damage(this, dInfo);
+                    }
+                }
+            }
+        }
+
         public virtual void Damage(float amount, int attackN)
         {
             if (controllerKind == EControllerKind.NPC ||
@@ -543,6 +604,11 @@ namespace Controllers
 
                 damagedTimeCD = Time.time + 0.15f;
             }
+        }
+
+        public void Damage(ref BaseController controller, DamageInfo damageInfo)
+        {
+            // Not for Enemies ...
         }
 
         private IEnumerator DamageEffect()
