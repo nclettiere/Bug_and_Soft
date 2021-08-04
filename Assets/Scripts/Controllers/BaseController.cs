@@ -5,6 +5,8 @@ using System.Diagnostics;
 using Controllers.Damage;
 using UnityEngine;
 using Controllers.Movement;
+using Controllers.StateMachine;
+using Controllers.StateMachine.States.Data;
 using Dialogues;
 using Player;
 using Interactions.Enums;
@@ -33,144 +35,100 @@ namespace Controllers
         IDamageable,
         IInteractive
     {
-        public int facingDirection { get; private set; } =
-            1; // Solo se puede modificar en el codigo, por eso el private set; xd
+       
+        #region UserVariables
+        public int facingDirection { get; private set; } = 1; // Solo se puede modificar en el codigo, por eso el private set; xd
+        
+        public ControllerStateMachine StateMachine = new ControllerStateMachine();
+        
+        public ControllerData ctrlData;
+        
+        [SerializeField] private protected EControllerKind controllerKind = EControllerKind.NPC;
+        [SerializeField] private ECharacterKind characterKind;
+        [SerializeField] private float interactionRadius = 4f;
+        [SerializeField] private float maxHealth, moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
+        [SerializeField] private int touchDamage = 12;
+        [SerializeField] private bool isInvencible, canBeStunned, canDamageOnTouch, canBeMovedOnAttack, movedOnAttack;
+        [SerializeField] private Vector2 moveOnAttackSpeed;
+        [SerializeField] private GameObject hitParticles;
+        [SerializeField] private AudioSource hitAttackSFX1;
+        [SerializeField] private AudioSource hitAttackSFX2;
+        [SerializeField] private AudioSource deathSFX;
+        [SerializeField] private GameObject dialogueBubble;
+        [SerializeField] private GameObject lapida;
 
-        public virtual void Damage(float amount, int attackN)
-        {
-            if (controllerKind == EControllerKind.NPC ||
-                controllerKind == EControllerKind.Neutral)
-                return;
+        [Header("State Options")] [SerializeField]
+        private bool canWalk;
 
-            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
-            {
-                StopAllCoroutines();
+        [SerializeField] private bool canJump;
+        [SerializeField] private bool canBeDamaged;
+        
+        [SerializeField] private float
+            touchDamageWidth,
+            touchDamageHeight;
 
-                playerFacingDirection = playerController.IsFacingRight();
+        [SerializeField] private Transform
+            groundCheck,
+            wallCheck,
+            topCheck,
+            ledgeCheck,
+            touchDamageCheck;
 
-                Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-                if (firstAttack)
-                    hitAttackSFX1.Play();
-                else
-                    hitAttackSFX2.Play();
-                firstAttack = !firstAttack;
+        [SerializeField] private LayerMask whatIsGround, whatIsPlayer;
 
-                if (!isInvencible)
-                    currentHealth -= amount;
 
-                if (canBeMovedOnAttack && currentHealth >= 0.0f)
-                {
-                    MoveOnAttack(attackN);
-                }
+        [Header("Events Zone")] public UnityEvent OnLandEvent;
 
-                StartCoroutine(DamageEffect());
+        #endregion
 
-                if (currentHealth <= 0f)
-                    SwitchStates(ECharacterState.Dead);
+        #region Variables
+        protected BaseMovementController baseMovementController;
+        protected Animator characterAnimator;
+        protected Rigidbody2D rigidbody2D;
+        protected PlayerController playerController;
+        private SpriteRenderer renderer;
+        private ECharacterState currentState;
+        protected bool playerFacingDirection;
+        protected private bool canCharacterDie = false;
 
-                damagedTimeCD = Time.time + 0.15f;
-            }
-        }
+        public bool wallDetected { get; private set; }
+        public bool groundDetected { get; private set; }
+        public bool topDetected { get; private set; }
+        
+        private bool
+            lastGroundDetected,
+            lapidaIntance = false,
+            firstAttack,
+            canPlayerInteract = false,
+            savedRigidData;
 
-        public void Damage(BaseController controller, DamageInfo damageInfo)
-        {
-            // Not for Enemies ...
-        }
+        private Vector2
+            movement,
+            lastVelocity,
+            touchDamageBottomLeft,
+            touchDamageTopRight,
+            velocityStorage,
+            forceStorage;
 
-        public void Kill()
-        {
-            Debug.Log("This enemy is dead xd");
-        }
+        private float
+            currentHealth,
+            moveOnAttackStart,
+            damagedTimeCD = float.NegativeInfinity,
+            lastAngularVelocity,
+            lastTouchDamageTime;
 
-        public bool Interact(BaseController controller, EInteractionKind interactionKind)
-        {
-            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
-            return true;
-        }
+        #endregion
 
-        public bool Interact(PlayerController controller, EInteractionKind interactionKind)
-        {
-            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
-            // disables the interaction bubble !!
-            dialogueBubble.gameObject.SetActive(false);
 
-            // Open the dialogue canvas
-            DialogueManager.Instance.ShowDialogues();
-
-            return true;
-        }
-
-        public void ReadyToInteract(PlayerController controller, bool isReady)
-        {
-            if (isReady && dialogueBubble != null)
-                dialogueBubble.gameObject.SetActive(true);
-            else
-                dialogueBubble.gameObject.SetActive(false);
-        }
-
-        public void ReadyToInteract(BaseController controller, bool isReady)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        ///     <para>Este metodo se ejecuta en el Start() del MonoBehaviour luego inicializar las variables necesarias.</para>
-        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
-        /// </summary>
-        protected virtual void OnStart()
-        {
-        }
-
-        /// <summary>
-        ///     <para>Este metodo se ejecuta en el Update() del MonoBehaviour luego inicializar las variables necesarias.</para>
-        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
-        /// </summary>
-        protected virtual void OnUpdate()
-        {
-            // Debe ser llenado en una clase heredada
-            // Ej: DummyController.cs
-        }
-
-        /// <summary>
-        ///     <para>Este metodo se ejecuta en el FixedUpdate() del MonoBehaviour luego inicializar las variables necesarias.</para>
-        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
-        /// </summary>
-        protected virtual void OnFixedUpdate()
-        {
-            // Debe ser llenado en una clase heredada
-            // Ej: DummyController.cs
-        }
-
-        /// <summary>
-        ///     <para>Este metodo se ejecuta en el OnDrawGizmos() del MonoBehaviour luego inicializar las variables necesarias.</para>
-        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
-        /// </summary>
-        protected virtual void DrawGizmos()
-        {
-            // Debe ser llenado en una clase heredada
-            // Ej: DummyController.cs
-        }
-
-        /// <summary>
-        ///     <para>Este metodo se ejecuta en el Awake() del MonoBehaviour luego inicializar las variables necesarias.</para>
-        ///     <para>Al ser un metodo virtual, se encuentra vacio para que los super class lo implementen.</para>
-        /// </summary>
-        protected virtual void OnAwake()
-        {
-            // Debe ser llenado en una clase heredada
-            // Ej: DummyController.cs
-        }
 
         private void Awake()
         {
             if (OnLandEvent == null)
                 OnLandEvent = new UnityEvent();
-
-            OnAwake();
         }
 
 
-        private void Start()
+        protected virtual void Start()
         {
             baseMovementController = GetComponent<BaseMovementController>();
             characterAnimator = GetComponent<Animator>();
@@ -179,7 +137,7 @@ namespace Controllers
             playerController = GameObject.Find("Player").GetComponent<PlayerController>();
             currentHealth = maxHealth;
 
-            OnStart();
+            StateMachine = new ControllerStateMachine();
         }
 
         private void Update()
@@ -209,65 +167,32 @@ namespace Controllers
             }
 
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
-            {
-                // Llamamos al evento OnLandEvent si es necesario!
-                bool wasGrounded = groundDetected;
-                groundDetected =
-                    Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-                if (!wasGrounded && groundDetected)
-                    OnLandEvent.Invoke();
-
-                wallDetected = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
-                topDetected = Physics2D.Raycast(topCheck.position, Vector2.up, topCheckDistance, whatIsGround);
-
-                characterAnimator.SetBool("OnLand", groundDetected);
-
-                // State Machine
-                switch (currentState)
-                {
-                    case ECharacterState.Idle:
-                        UpdateIdleState();
-                        break;
-                    case ECharacterState.Walking:
-                        UpdateWalkingState();
-                        break;
-                    case ECharacterState.Jumping:
-                        UpdateJumpingState();
-                        break;
-                    case ECharacterState.Hit:
-                        UpdateHitState();
-                        break;
-                    case ECharacterState.Dead:
-                        UpdateDeadState();
-                        break;
-                }
-            }
-
-            //CheckInteractions();
-            CheckTouchDamage();
-            CheckMoveOnAttack();
-            OnUpdate();
+                StateMachine.CurrentState.UpdateState();
         }
 
         private void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused()) return;
-
-            OnFixedUpdate();
+            
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+                StateMachine.CurrentState.UpdatePhysics();
         }
 
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             // World Checks gizmoes ...
             Gizmos.color = Color.yellow;
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
+                // General World Checks
                 Gizmos.DrawLine(groundCheck.position,
-                    new Vector2(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+                    new Vector2(groundCheck.position.x, groundCheck.position.y - ctrlData.groundCheckDistance));
                 Gizmos.DrawLine(wallCheck.position,
-                    new Vector2(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
+                    new Vector2(wallCheck.position.x + ctrlData.wallCheckDistance, wallCheck.position.y));
                 Gizmos.DrawLine(topCheck.position,
-                    new Vector2(topCheck.position.x, topCheck.position.y + topCheckDistance));
+                    new Vector2(topCheck.position.x, topCheck.position.y + ctrlData.topCheckDistance));
+                Gizmos.DrawLine(ledgeCheck.position,
+                    new Vector2(ledgeCheck.position.x, ledgeCheck.position.y - ctrlData.ledgeCheckDistacne));
 
                 // Touch Damage
                 Vector2 botLeft = new Vector2(
@@ -296,15 +221,29 @@ namespace Controllers
                 Gizmos.color = Color.green;
                 Gizmos.DrawWireSphere(transform.position, interactionRadius);
             }
-
-            // other ...
-            DrawGizmos();
         }
 
-        private void Flip()
+        public void Flip()
         {
             facingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+
+        public void SetVelocity(float velocity)
+        {
+            velocityStorage.Set(velocity * facingDirection, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = velocityStorage;
+        }
+        
+        public void AddForce(Vector2 newForce, bool isImpulse)
+        {
+            forceStorage.Set(newForce.x * facingDirection, newForce.y);
+            rigidbody2D.AddForce(forceStorage, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
+        }
+        
+        public void AddTorque(float newTorque, bool isImpulse)
+        {
+            rigidbody2D.AddTorque(newTorque * facingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
         }
 
         /// <summary>
@@ -325,14 +264,30 @@ namespace Controllers
         {
             return characterAnimator;
         }
+        
+        public Transform GetTransfrom()
+        {
+            return transform;
+        }
 
-        /// <summary>
-        ///     Obtiene el animator del character
-        /// </summary>
-        /// <returns>El animator del character</returns>
         public GameObject GetDialogueBubble()
         {
             return dialogueBubble;
+        }
+
+        public bool CheckWall()
+        {
+            return Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.wallCheckDistance, ctrlData.whatIsGround);
+        }
+
+        public bool CheckLedge()
+        {
+            return Physics2D.Raycast(ledgeCheck.position, Vector2.down, ctrlData.ledgeCheckDistacne, ctrlData.whatIsGround);
+        }
+
+        public bool CheckGround()
+        {
+            return Physics2D.Raycast(groundCheck.position, Vector2.down, ctrlData.groundCheckDistance, ctrlData.whatIsGround);
         }
 
         /// <summary>
@@ -428,173 +383,7 @@ namespace Controllers
             renderer.color = Color.white;
         }
 
-        #region UserVariables
-
-        [SerializeField] private protected EControllerKind controllerKind = EControllerKind.NPC;
-        [SerializeField] private ECharacterKind characterKind;
-        [SerializeField] private float interactionRadius = 4f;
-        [SerializeField] private float maxHealth, moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
-        [SerializeField] private int touchDamage = 12;
-        [SerializeField] private bool isInvencible, canBeStunned, canDamageOnTouch, canBeMovedOnAttack, movedOnAttack;
-        [SerializeField] private Vector2 moveOnAttackSpeed;
-        [SerializeField] private GameObject hitParticles;
-        [SerializeField] private AudioSource hitAttackSFX1;
-        [SerializeField] private AudioSource hitAttackSFX2;
-        [SerializeField] private AudioSource deathSFX;
-        [SerializeField] private GameObject dialogueBubble;
-        [SerializeField] private GameObject lapida;
-
-        [Header("State Options")] [SerializeField]
-        private bool canWalk;
-
-        [SerializeField] private bool canJump;
-        [SerializeField] private bool canBeDamaged;
-
-        [Header("World Checks")] [SerializeField]
-        private float wallCheckDistance,
-            groundCheckDistance,
-            topCheckDistance;
-
-        [SerializeField] private float
-            touchDamageWidth,
-            touchDamageHeight;
-
-        [SerializeField] private Transform
-            groundCheck,
-            wallCheck,
-            topCheck,
-            touchDamageCheck;
-
-        [SerializeField] private LayerMask whatIsGround, whatIsPlayer;
-
-
-        [Header("Events Zone")] public UnityEvent OnLandEvent;
-
-        #endregion
-
-        #region Variables
-
-        protected BaseMovementController baseMovementController;
-        protected Animator characterAnimator;
-        protected Rigidbody2D rigidbody2D;
-        protected PlayerController playerController;
-        private SpriteRenderer renderer;
-        private ECharacterState currentState;
-        protected bool playerFacingDirection;
-        protected private bool canCharacterDie = false;
-
-        private bool
-            groundDetected,
-            wallDetected,
-            topDetected,
-            lastGroundDetected,
-            lapidaIntance = false,
-            firstAttack,
-            canPlayerInteract = false,
-            savedRigidData;
-
-        private Vector2
-            movement,
-            lastVelocity,
-            touchDamageBottomLeft,
-            touchDamageTopRight;
-
-        private float
-            currentHealth,
-            moveOnAttackStart,
-            damagedTimeCD = float.NegativeInfinity,
-            lastAngularVelocity,
-            lastTouchDamageTime;
-
-        #endregion
-
         #region IAStates
-
-        // IDLE STATE -------------------------------------------------------
-        private void EnterIdleState()
-        {
-        }
-
-        private void UpdateIdleState()
-        {
-        }
-
-        private void ExitIdleState()
-        {
-        }
-
-        // WALKING STATE -------------------------------------------------------
-        private void EnterWalkingState()
-        {
-        }
-
-        private void UpdateWalkingState()
-        {
-            if (!groundDetected || wallDetected)
-            {
-                Flip();
-            }
-            else
-            {
-                // Moves character
-                movement.Set(generalSpeed * facingDirection, rigidbody2D.velocity.y);
-                rigidbody2D.velocity = movement;
-            }
-        }
-
-        private void ExitWalkingState()
-        {
-        }
-
-        // JUMPING STATE -------------------------------------------------------
-        private void EnterJumpingState()
-        {
-        }
-
-        private void UpdateJumpingState()
-        {
-            if (!OnUpdateJumpingStateStart()) return;
-
-            if (wallDetected)
-            {
-                Flip();
-            }
-            else
-            {
-                // El personaje salta en la direccion que mira.
-                //rigidbody2D.velocity = new Vector2(10f, 0f);
-                rigidbody2D.AddForce(new Vector2(3f * facingDirection, 5f), ForceMode2D.Impulse);
-            }
-
-            OnUpdateJumpingStateEnd();
-        }
-
-
-        protected virtual bool OnUpdateJumpingStateStart()
-        {
-            return true;
-        }
-
-        protected virtual void OnUpdateJumpingStateEnd()
-        {
-        }
-
-        private void ExitJumpingState()
-        {
-        }
-
-        // HIT STATE -------------------------------------------------------
-        private void EnterHitState()
-        {
-        }
-
-        private void UpdateHitState()
-        {
-        }
-
-        private void ExitHitState()
-        {
-        }
 
         // DEAD STATE -------------------------------------------------------
         private void EnterDeadState()
@@ -636,18 +425,6 @@ namespace Controllers
         {
             switch (currentState)
             {
-                case ECharacterState.Idle:
-                    ExitIdleState();
-                    break;
-                case ECharacterState.Walking:
-                    ExitWalkingState();
-                    break;
-                case ECharacterState.Jumping:
-                    ExitJumpingState();
-                    break;
-                case ECharacterState.Hit:
-                    ExitHitState();
-                    break;
                 case ECharacterState.Dead:
                     ExitDeadState();
                     break;
@@ -655,18 +432,6 @@ namespace Controllers
 
             switch (nextState)
             {
-                case ECharacterState.Idle:
-                    EnterIdleState();
-                    break;
-                case ECharacterState.Walking:
-                    EnterWalkingState();
-                    break;
-                case ECharacterState.Jumping:
-                    EnterJumpingState();
-                    break;
-                case ECharacterState.Hit:
-                    EnterHitState();
-                    break;
                 case ECharacterState.Dead:
                     EnterDeadState();
                     break;
@@ -674,7 +439,83 @@ namespace Controllers
 
             currentState = nextState;
         }
-
         #endregion
+        
+                public virtual void Damage(float amount, int attackN)
+        {
+            if (controllerKind == EControllerKind.NPC ||
+                controllerKind == EControllerKind.Neutral)
+                return;
+
+            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
+            {
+                StopAllCoroutines();
+
+                playerFacingDirection = playerController.IsFacingRight();
+
+                Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
+                if (firstAttack)
+                    hitAttackSFX1.Play();
+                else
+                    hitAttackSFX2.Play();
+                firstAttack = !firstAttack;
+
+                if (!isInvencible)
+                    currentHealth -= amount;
+
+                if (canBeMovedOnAttack && currentHealth >= 0.0f)
+                {
+                    MoveOnAttack(attackN);
+                }
+
+                StartCoroutine(DamageEffect());
+
+                if (currentHealth <= 0f)
+                    SwitchStates(ECharacterState.Dead);
+
+                damagedTimeCD = Time.time + 0.15f;
+            }
+        }
+
+        public void Damage(BaseController controller, DamageInfo damageInfo)
+        {
+            // Not for Enemies ...
+        }
+
+        public void Kill()
+        {
+            Debug.Log("This enemy is dead xd");
+        }
+
+        public bool Interact(BaseController controller, EInteractionKind interactionKind)
+        {
+            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
+            return true;
+        }
+
+        public bool Interact(PlayerController controller, EInteractionKind interactionKind)
+        {
+            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
+            // disables the interaction bubble !!
+            dialogueBubble.gameObject.SetActive(false);
+
+            // Open the dialogue canvas
+            DialogueManager.Instance.ShowDialogues();
+
+            return true;
+        }
+
+        public void ReadyToInteract(PlayerController controller, bool isReady)
+        {
+            if (isReady && dialogueBubble != null)
+                dialogueBubble.gameObject.SetActive(true);
+            else
+                dialogueBubble.gameObject.SetActive(false);
+        }
+
+        public void ReadyToInteract(BaseController controller, bool isReady)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

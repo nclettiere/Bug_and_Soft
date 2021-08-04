@@ -12,8 +12,10 @@ namespace Controllers
     /// </remarks>
     public class DummyController : BaseController
     {
-        protected override void OnStart()
+        protected override void Start()
         {
+            base.Start();
+            
             controllerKind = EControllerKind.Enemy;
         }
     }

@@ -6,10 +6,11 @@ namespace Controllers
 {
     public class NjordController : BaseController
     {
-        protected override void OnStart()
+        protected override void Start()
         {
+            base.Start();
+            
             controllerKind = EControllerKind.Neutral;
-
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
 

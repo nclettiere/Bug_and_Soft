@@ -1,51 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using Controllers.StateMachine.States;
+using Controllers.StateMachine.States.Data;
 using UnityEngine;
 
 namespace Controllers.Froggy
 {
     public class FroggyController : BaseController
     {
-        [Header("Froggy Specific Values")]
-        [SerializeField] private AudioSource jumpSFX;
-        [SerializeField] private AudioSource landSFX;
+        [Header("Froggy Specific Values")] 
+        
+        [SerializeField] private IdleStateData _idleStateData;
+        [SerializeField] private JumpStateData _jumpStateData;
+
+        public Froggy_IdleState _idleState { get; private set; }
+        public JumpState _jumpState { get; private set; }
         
         private float lastJumpTime = float.NegativeInfinity;
         private float jumpCooldownTime;
         private bool canFroggyDie = false;
-        
-        protected override void OnStart()
+
+        protected override void Start()
         {
+            base.Start();
+            
             controllerKind = EControllerKind.Enemy;
-
             jumpCooldownTime = Random.Range(2.5f, 5f);
-
-            SwitchStates(ECharacterState.Jumping);
-
+            
+            _jumpState = new JumpState(this, StateMachine, "Jumping", _jumpStateData, this);
+            _idleState = new Froggy_IdleState(this, StateMachine, "Idle", _idleStateData, this);
+            
+            StateMachine.Initialize(_idleState);
+            
             InvokeRepeating("MoveCejas", 0f, 7f);
-        }
-
-        protected override bool OnUpdateJumpingStateStart()
-        {
-            if (Time.time >= lastJumpTime)
-            {
-                // SFX de saltar !!!
-                AudioSource.PlayClipAtPoint(jumpSFX.clip, transform.position);
-                return true;
-            }
-
-            return false;
-        }
-
-        public void OnFroggyLanded()
-        {
-            AudioSource.PlayClipAtPoint(landSFX.clip, transform.position);
-        }
-
-        protected override void OnUpdateJumpingStateEnd()
-        {
-            lastJumpTime = Time.time + jumpCooldownTime;
         }
 
         protected override void OnEnterDeadStateStart()

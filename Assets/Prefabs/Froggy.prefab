@@ -594,6 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7ab9a1af0c89e4ca4b976e48bf176f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ctrlData: {fileID: 11400000, guid: a8ee0834b9cbeb24faf7be25e34232d1, type: 2}
   controllerKind: 2
   characterKind: 3
   interactionRadius: 0
@@ -604,7 +605,7 @@ MonoBehaviour:
   touchDamage: 12
   isInvencible: 0
   canBeStunned: 1
-  canDamageOnTouch: 1
+  canDamageOnTouch: 0
   canBeMovedOnAttack: 1
   movedOnAttack: 1
   moveOnAttackSpeed: {x: 10, y: 10}
@@ -617,14 +618,12 @@ MonoBehaviour:
   canWalk: 0
   canJump: 1
   canBeDamaged: 1
-  wallCheckDistance: 0.1
-  groundCheckDistance: 0.5
-  topCheckDistance: 0.5
   touchDamageWidth: 1.15
   touchDamageHeight: 1.2
   groundCheck: {fileID: 242146971993299171}
   wallCheck: {fileID: 242146970851519633}
   topCheck: {fileID: 582886039612455387}
+  ledgeCheck: {fileID: 2522869384934606953}
   touchDamageCheck: {fileID: 4159019222238835228}
   whatIsGround:
     serializedVersion: 2
@@ -634,21 +633,9 @@ MonoBehaviour:
     m_Bits: 64
   OnLandEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 242146971895896516}
-        m_TargetAssemblyTypeName: Controllers.Froggy.FroggyController, Assembly-CSharp
-        m_MethodName: OnFroggyLanded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  jumpSFX: {fileID: 242146970908857845}
-  landSFX: {fileID: 242146970908857842}
+      m_Calls: []
+  _idleStateData: {fileID: 11400000, guid: d10b11051f389c442a26a034c8497a7a, type: 2}
+  _jumpStateData: {fileID: 11400000, guid: f83e9cda744aed943a0f811463f6b7e1, type: 2}
 --- !u!212 &242146971895896517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -781,7 +768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242146971993299168}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.002, y: -0.158, z: 0}
+  m_LocalPosition: {x: -0.002, y: -0.184, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}
@@ -818,6 +805,7 @@ Transform:
   - {fileID: 242146970851519633}
   - {fileID: 582886039612455387}
   - {fileID: 4159019222238835228}
+  - {fileID: 2522869384934606953}
   m_Father: {fileID: 242146971895896512}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -851,6 +839,36 @@ Transform:
   m_Father: {fileID: 242146972406056933}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3068694512305279587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2522869384934606953}
+  m_Layer: 10
+  m_Name: LedgeCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2522869384934606953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3068694512305279587}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.314, y: -0.186, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 242146972406056933}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5926173922429296521
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5926173922429296521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.129, z: 0}
+  m_LocalPosition: {x: -0.001, y: 0.187, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}

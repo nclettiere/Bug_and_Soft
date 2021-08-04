@@ -91,10 +91,10 @@ MonoBehaviour:
   footStep1: {fileID: 4655116080529571681}
   footStep2: {fileID: 8288947571317503232}
   generalSpeed: 70
-  moveOnDamageDuration: 0.2
-  moveOnDamagedSpeed: {x: 5, y: 10}
   maxHealth: 150
   currentHealth: 150
+  moveOnDamagedSpeed: {x: 5, y: 10}
+  moveOnDamageDuration: 0.2
   interactionRadius: 3
   isEnrolledInDialogue: 0
 --- !u!114 &1627404402562284199
@@ -109,42 +109,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b0a654fd0a066d40a068624f4ab2850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpForce: 1000
-  CrouchSpeed: 0.36
-  MovementSmoothing: 0.05
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 24
+  CeilingCheck: {fileID: 5241946527090777466}
+  characterAnimator: {fileID: 5223729173480044969}
   ClimableLayers:
     serializedVersion: 2
     m_Bits: 128
-  GroundCheck: {fileID: 571285732247951436}
-  CeilingCheck: {fileID: 5241946527090777466}
-  WallCheck: {fileID: 428328781159782775}
-  LedgeCheck: {fileID: 3819478794032992146}
   CrouchDisableCollider: {fileID: 0}
-  characterAnimator: {fileID: 5223729173480044969}
-  ShouldPlayerFlip: 1
-  WallCheckDistance: 0.8
+  CrouchSpeed: 0.36
+  GroundCheck: {fileID: 571285732247951436}
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 24
+  JumpForce: 1000
+  LedgeCheck: {fileID: 3819478794032992146}
   LedgeClimbXOffset1: 0
-  LedgeClimbYOffset1: 0
   LedgeClimbXOffset2: 0
+  LedgeClimbYOffset1: 0
   LedgeClimbYOffset2: 0
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3252577169487483709}
-        m_TargetAssemblyTypeName: Character.CharacterControllerBase, Assembly-CSharp
-        m_MethodName: LandEvt
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  MovementSmoothing: 0.05
   OnAirEvent:
     m_PersistentCalls:
       m_Calls:
@@ -163,6 +145,24 @@ MonoBehaviour:
   OnCrouchEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3252577169487483709}
+        m_TargetAssemblyTypeName: Character.CharacterControllerBase, Assembly-CSharp
+        m_MethodName: LandEvt
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  ShouldPlayerFlip: 1
+  WallCheck: {fileID: 428328781159782775}
+  WallCheckDistance: 0.8
 --- !u!114 &6908863193124527391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,25 +187,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b75ceb31d696dc429c5831079345328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generalInputCooldown: 0.25
-  WaitForNextAttackMaxTime: 0.75
-  UnlockedAttacksCount: 2
+  attacksDamage:
+  - 10
+  - 15
   attacksHitboxPositions:
   - {fileID: 793994489199759561}
   - {fileID: 7247856217225659150}
   attacksHitboxRadius:
-  - 1.3
-  - 1.3
-  attacksDamage:
-  - 10
-  - 15
-  whatCanBeDamaged:
-    serializedVersion: 2
-    m_Bits: 512
+  - 1.72
+  - 1.72
+  generalInputCooldown: 0.25
+  playerMaterial: {fileID: 0}
   swordSwingSFX:
   - {fileID: 7483959277019260712}
   - {fileID: 1933699133503109566}
-  playerMaterial: {fileID: 0}
+  UnlockedAttacksCount: 2
+  WaitForNextAttackMaxTime: 0.75
+  whatCanBeDamaged:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!212 &2763728245634197116
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -244,8 +244,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1125231573
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 978942612559604503, guid: 5c94c6310352b9b4e88331d929c2610d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -398,7 +398,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4956304256614261857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.148, y: 0.029, z: 0}
+  m_LocalPosition: {x: 0.395, y: 0.029, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 673237495818489437}
@@ -428,7 +428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5303966332710600800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.218, y: 0.017, z: 0}
+  m_LocalPosition: {x: 0.395, y: 0.017, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 673237495818489437}
