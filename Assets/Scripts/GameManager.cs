@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CameraManagement;
+using Player;
 using UnityEngine;
 
 /// <summary>
@@ -23,6 +24,7 @@ public class GameManager
     private int playerDeathCount = 0;
     private Camera cameraMain;
     private DynamicCamera dynCamera;
+    public  PlayerController PlayerController { get; private set; }
     private PlayerControls playerControls;
     
     public float DeltaTime { get { return isGamePaused ? 0 : Time.deltaTime; } }
@@ -39,6 +41,8 @@ public class GameManager
 
         playerControls = new PlayerControls();
         isInputEnabled = false;
+
+        PlayerController = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
 
         playerControls.Gameplay.Pause.performed += ctx =>
         {
@@ -90,6 +94,11 @@ public class GameManager
     public PlayerControls GetPlayerControls()
     {
         return playerControls;
+    }
+    
+    public Transform GetPlayerTransform()
+    {
+        return PlayerController.transform;
     }
 
     public void KillPlayer(Transform deathTransf)

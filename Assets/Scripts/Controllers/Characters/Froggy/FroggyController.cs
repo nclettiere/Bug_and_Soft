@@ -13,9 +13,13 @@ namespace Controllers.Froggy
         
         [SerializeField] private IdleStateData _idleStateData;
         [SerializeField] private JumpStateData _jumpStateData;
+        [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
+        [SerializeField] private AttackStateData _attackStateData;
 
         public Froggy_IdleState _idleState { get; private set; }
         public JumpState _jumpState { get; private set; }
+        public Froggy_PrepareAttackState _prepareAttackState { get; private set; }
+        public Froggy_AttackState _attackState { get; private set; }
         
         private float lastJumpTime = float.NegativeInfinity;
         private float jumpCooldownTime;
@@ -30,6 +34,9 @@ namespace Controllers.Froggy
             
             _jumpState = new JumpState(this, StateMachine, "Jumping", _jumpStateData, this);
             _idleState = new Froggy_IdleState(this, StateMachine, "Idle", _idleStateData, this);
+            _prepareAttackState = new Froggy_PrepareAttackState(this, StateMachine, "PreparingAttack", _prepareAttackStateData, this);
+            _attackState = new Froggy_AttackState(this, StateMachine, "Attacking", _attackStateData, this);
+            
             
             StateMachine.Initialize(_idleState);
             
@@ -39,8 +46,8 @@ namespace Controllers.Froggy
         protected override void OnEnterDeadStateStart()
         {
             rigidbody2D.constraints = RigidbodyConstraints2D.None;
-            rigidbody2D.AddForce(new Vector2(3f * -facingDirection, 3f), ForceMode2D.Impulse);
-            rigidbody2D.AddTorque(10f * -facingDirection, ForceMode2D.Impulse);
+            rigidbody2D.AddForce(new Vector2(3f * -FacingDirection, 3f), ForceMode2D.Impulse);
+            rigidbody2D.AddTorque(10f * -FacingDirection, ForceMode2D.Impulse);
 
             StartCoroutine(DeathTiming());
         }

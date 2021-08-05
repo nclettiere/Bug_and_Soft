@@ -44,11 +44,16 @@ namespace Controllers.StateMachine.States
         public override void Exit()
         {
             base.Exit();
+            
+            controller.GetAnimator().SetBool(animBoolName, false);
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
+            
+            if (controller.CheckPlayerInRange())
+                stateMachine.ChangeState(froggyController._prepareAttackState);
             
             if (Time.time >= lastJumpTime)
             {
@@ -61,26 +66,23 @@ namespace Controllers.StateMachine.States
                 lastJumpTime = Time.time + jumpCooldownTime;
             }
             
+            // Ledge or Wall detected !
             if (controller.CheckWall() || !controller.CheckLedge())
             {
                 controller.Flip();
-                //stateMachine.ChangeState(froggyController._idleState);
+                stateMachine.ChangeState(froggyController._idleState);
             }
-        }
-
-        public override void UpdatePhysics()
-        {
-            base.UpdatePhysics();
-
+            
             // OnLand
             if (!isDetectingGround && controller.CheckGround())
             {
                 AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
                 controller.GetAnimator().SetBool(animBoolName, false);
             }
-
+            
             isDetectingWall = controller.CheckWall();
             isDetectingLedge = controller.CheckLedge();
+            isDetectingGround = controller.CheckGround();
         }
     }
 }

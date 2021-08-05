@@ -37,7 +37,8 @@ namespace Controllers
     {
        
         #region UserVariables
-        public int facingDirection { get; private set; } = 1; // Solo se puede modificar en el codigo, por eso el private set; xd
+        public int FacingDirection { get; private set; } = 1; // Solo se puede modificar en el codigo, por eso el private set; xd
+        public bool IsReadyToAttack { get; set; }
         
         public ControllerStateMachine StateMachine = new ControllerStateMachine();
         
@@ -73,8 +74,6 @@ namespace Controllers
             topCheck,
             ledgeCheck,
             touchDamageCheck;
-
-        [SerializeField] private LayerMask whatIsGround, whatIsPlayer;
 
 
         [Header("Events Zone")] public UnityEvent OnLandEvent;
@@ -118,8 +117,6 @@ namespace Controllers
             lastTouchDamageTime;
 
         #endregion
-
-
 
         private void Awake()
         {
@@ -167,7 +164,10 @@ namespace Controllers
             }
 
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+            {
+                CheckPlayerInRange();
                 StateMachine.CurrentState.UpdateState();
+            }
         }
 
         private void FixedUpdate()
@@ -213,6 +213,13 @@ namespace Controllers
                 Gizmos.DrawLine(botRight, topRight);
                 Gizmos.DrawLine(topRight, topLeft);
                 Gizmos.DrawLine(topLeft, botLeft);
+                
+                
+                // Player Detection
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(wallCheck.position,
+                    new Vector2((wallCheck.position.x + (ctrlData.playerDetectionDistance * FacingDirection)), transform.position.y));
+                
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -225,25 +232,25 @@ namespace Controllers
 
         public void Flip()
         {
-            facingDirection *= -1;
+            FacingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
 
         public void SetVelocity(float velocity)
         {
-            velocityStorage.Set(velocity * facingDirection, rigidbody2D.velocity.y);
+            velocityStorage.Set(velocity * FacingDirection, rigidbody2D.velocity.y);
             rigidbody2D.velocity = velocityStorage;
         }
         
         public void AddForce(Vector2 newForce, bool isImpulse)
         {
-            forceStorage.Set(newForce.x * facingDirection, newForce.y);
+            forceStorage.Set(newForce.x * FacingDirection, newForce.y);
             rigidbody2D.AddForce(forceStorage, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
         }
         
         public void AddTorque(float newTorque, bool isImpulse)
         {
-            rigidbody2D.AddTorque(newTorque * facingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
+            rigidbody2D.AddTorque(newTorque * FacingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
         }
 
         /// <summary>
@@ -288,6 +295,18 @@ namespace Controllers
         public bool CheckGround()
         {
             return Physics2D.Raycast(groundCheck.position, Vector2.down, ctrlData.groundCheckDistance, ctrlData.whatIsGround);
+        }
+        
+        public bool CheckPlayerInRange()
+        {
+            RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.playerDetectionDistance, ctrlData.whatIsPlayer);
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Player"))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -346,34 +365,34 @@ namespace Controllers
 
         private void CheckTouchDamage()
         {
-            if (canDamageOnTouch &&
-                Time.time >= lastTouchDamageTime + touchDamageCooldown)
-            {
-                touchDamageBottomLeft.Set(
-                    touchDamageCheck.position.x - (touchDamageWidth / 2),
-                    touchDamageCheck.position.y - (touchDamageHeight / 2));
-
-                touchDamageTopRight.Set(
-                    touchDamageCheck.position.x + (touchDamageWidth / 2),
-                    touchDamageCheck.position.y + (touchDamageHeight / 2));
-
-                Collider2D hit = Physics2D.OverlapArea(
-                    touchDamageBottomLeft,
-                    touchDamageTopRight,
-                    whatIsPlayer);
-
-                if (hit != null)
-                {
-                    lastTouchDamageTime = Time.time;
+            //if (canDamageOnTouch &&
+            //    Time.time >= lastTouchDamageTime + touchDamageCooldown)
+            //{
+            //    touchDamageBottomLeft.Set(
+            //        touchDamageCheck.position.x - (touchDamageWidth / 2),
+            //        touchDamageCheck.position.y - (touchDamageHeight / 2));
+//
+            //    touchDamageTopRight.Set(
+            //        touchDamageCheck.position.x + (touchDamageWidth / 2),
+            //        touchDamageCheck.position.y + (touchDamageHeight / 2));
+//
+            //    Collider2D hit = Physics2D.OverlapArea(
+            //        touchDamageBottomLeft,
+            //        touchDamageTopRight,
+            //        whatIsPlayer);
+//
+            //    if (hit != null)
+            //    {
+            //        lastTouchDamageTime = Time.time;
                     DamageInfo dInfo = new DamageInfo(touchDamage, transform.position.x);
-
-                    PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
-                    if (bctrl != null && (bctrl is IDamageable))
-                    {
-                        bctrl.Damage(this, dInfo);
-                    }
-                }
-            }
+//
+            //        PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+            //        if (bctrl != null && (bctrl is IDamageable))
+            //        {
+            //            bctrl.Damage(this, dInfo);
+            //        }
+            //    }
+            //}
         }
 
         private IEnumerator DamageEffect()
@@ -440,8 +459,17 @@ namespace Controllers
             currentState = nextState;
         }
         #endregion
+
+        #region AnimCallbacks
+
+        public void Anim_PreparingAttackFinished()
+        {
+            IsReadyToAttack = true;
+        }
         
-                public virtual void Damage(float amount, int attackN)
+        #endregion
+        
+        public virtual void Damage(float amount, int attackN)
         {
             if (controllerKind == EControllerKind.NPC ||
                 controllerKind == EControllerKind.Neutral)

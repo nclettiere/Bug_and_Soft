@@ -252,6 +252,11 @@ namespace Player
             GameManager.Instance.SetCameraSize(6.5f, 0.5f);
         }
 
+        public int GetFacingDirection()
+        {
+            return (playerMovementCtrl.IsFacingRight() ? 1 : -1);
+        }
+
         public void LandEvt()
         {
             characterAnimator.SetBool("OnLand", true);
