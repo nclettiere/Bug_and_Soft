@@ -22,8 +22,6 @@ namespace Controllers.Froggy
                 
                 controller.GetAnimator().SetBool(animBoolName, true);
 
-                if (controller.IsReadyToAttack)
-                {
                     if (!attackRequested)
                     {
                         controller.GetAnimator().SetBool("IsReadyToAttack", true);
@@ -39,7 +37,6 @@ namespace Controllers.Froggy
                             stateMachine.ChangeState(froggyController._attackState);
                         }
                     }
-                }
 
                 attackCooldown = Time.time + 2f;
             }

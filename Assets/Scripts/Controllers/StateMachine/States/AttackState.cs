@@ -1,4 +1,5 @@
 ﻿using Controllers.StateMachine.States.Data;
+using UnityEngine;
 
 namespace Controllers.StateMachine.States
 {
@@ -21,6 +22,7 @@ namespace Controllers.StateMachine.States
         public override void Exit()
         {
             base.Exit();
+            controller.GetAnimator().SetBool(animBoolName, false);
         }
 
         public override void UpdateState()

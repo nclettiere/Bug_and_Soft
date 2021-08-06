@@ -25,6 +25,8 @@ namespace Controllers.StateMachine.States
         public override void Exit()
         {
             base.Exit();
+            attackWaitTime = float.NegativeInfinity;
+            attackRequested = false;
             controller.IsReadyToAttack = false;
             controller.GetAnimator().SetBool("IsReadyToAttack", false);
             controller.GetAnimator().SetBool("IsReadyToAttack", false);

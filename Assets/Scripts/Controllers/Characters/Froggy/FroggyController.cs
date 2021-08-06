@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Controllers;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Controllers.Froggy
 {
@@ -15,6 +17,8 @@ namespace Controllers.Froggy
         [SerializeField] private JumpStateData _jumpStateData;
         [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
         [SerializeField] private AttackStateData _attackStateData;
+        
+        public GameObject _froggyTongue;
 
         public Froggy_IdleState _idleState { get; private set; }
         public JumpState _jumpState { get; private set; }
@@ -42,6 +46,12 @@ namespace Controllers.Froggy
             
             InvokeRepeating("MoveCejas", 0f, 7f);
         }
+        
+        
+        public void Anim_OnAttackingAnimStarted()
+        {
+            _attackState.attackStarted = true;
+        }
 
         protected override void OnEnterDeadStateStart()
         {
@@ -50,6 +60,16 @@ namespace Controllers.Froggy
             rigidbody2D.AddTorque(10f * -FacingDirection, ForceMode2D.Impulse);
 
             StartCoroutine(DeathTiming());
+        }
+
+        /// <summary>
+        /// Ataque especial de Froggy => Lengua suculenta
+        /// </summary>
+        public void SpecialAttack()
+        {
+            float rotationZ = (FacingDirection == 1 ? 0f : 180f);
+            Instantiate(_froggyTongue, transform.position, Quaternion.Inverse(this.transform.rotation))
+                .GetComponent<FroggyTongueController>().SetProps(this, _attackState);
         }
         
         private IEnumerator DeathTiming()
