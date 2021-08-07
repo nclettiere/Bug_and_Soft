@@ -93,7 +93,6 @@ MonoBehaviour:
   generalSpeed: 70
   maxHealth: 150
   currentHealth: 150
-  moveOnDamagedSpeed: {x: 5, y: 10}
   moveOnDamageDuration: 0.2
   interactionRadius: 3
   isEnrolledInDialogue: 0

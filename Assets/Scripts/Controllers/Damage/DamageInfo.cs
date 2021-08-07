@@ -1,4 +1,6 @@
-﻿namespace Controllers.Damage
+﻿using UnityEngine;
+
+namespace Controllers.Damage
 {
     /// <summary>
     /// Struct que contiene la informacion de un ataque.
@@ -7,16 +9,25 @@
     {
         private int damageAmount;
         private float attackXPosition;
+        private bool moveOnAttack;
+        private bool stun;
+        private bool slow;
+        private Vector2 moveOnAttackForce;
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="damageAmount">La cantidad de danio a inflingir.</param>
         /// <param name="attackXPosition">La posicion X del ataque.</param>
-        public DamageInfo(int damageAmount, float attackXPosition) : this()
+        public DamageInfo(int damageAmount, float attackXPosition, bool moveOnAttack, bool stun, bool slow) : this()
         {
             DamageAmount = damageAmount;
-            this.AttackXPosition = attackXPosition;
+            AttackXPosition = attackXPosition;
+            MoveOnAttack = moveOnAttack;
+            Stun = stun;
+            Slow = slow;
+            
+            MoveOnAttackForce = new Vector2(10f, 10f);
         }
 
         /// <summary>
@@ -40,6 +51,30 @@
         {
             get => attackXPosition;
             set => attackXPosition = value;
+        }
+
+        public bool MoveOnAttack
+        {
+            get => moveOnAttack;
+            set => moveOnAttack = value;
+        }
+
+        public bool Stun
+        {
+            get => stun;
+            set => stun = value;
+        }
+
+        public bool Slow
+        {
+            get => slow;
+            set => slow = value;
+        }
+
+        public Vector2 MoveOnAttackForce
+        {
+            get => moveOnAttackForce;
+            set => moveOnAttackForce = value;
         }
     }
 }

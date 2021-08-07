@@ -384,7 +384,7 @@ namespace Controllers
             //    if (hit != null)
             //    {
             //        lastTouchDamageTime = Time.time;
-                    DamageInfo dInfo = new DamageInfo(touchDamage, transform.position.x);
+                    //DamageInfo dInfo = new DamageInfo(touchDamage, transform.position.x);
 //
             //        PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
             //        if (bctrl != null && (bctrl is IDamageable))

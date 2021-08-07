@@ -27,7 +27,6 @@ namespace Player
         [SerializeField] private int maxHealth = 150, currentHealth;
 
         internal bool moveOnDamaged;
-        [SerializeField] private Vector2 moveOnDamagedSpeed;
         private float moveOnDamagedStartTime;
         [SerializeField] private float moveOnDamageDuration = 1f;
         private PlayerMovementController playerMovementCtrl;
@@ -38,28 +37,6 @@ namespace Player
         private bool savedRigidData;
         private float verticalMove;
 
-        public void Damage(float amount, int attackN)
-        {
-            // old
-        }
-
-        public void Damage(BaseController controller, DamageInfo damageInfo)
-        {
-            if (!roll)
-            {
-                // Obtenemos la posicion del ataque
-                int direction = damageInfo.GetAttackDirection(transform.position.x);
-
-                currentHealth -= damageInfo.DamageAmount;
-
-                MoveOnDamaged(direction);
-            }
-        }
-
-        public void Kill()
-        {
-            // old
-        }
 
         private void Start()
         {
@@ -211,11 +188,12 @@ namespace Player
                 lastInteractiveController.ReadyToInteract(this, false);
         }
 
-        private void MoveOnDamaged(int direction)
+        private void MoveOnDamaged(int direction, Vector2 moveOnDamagedForce)
         {
             moveOnDamaged = true;
             moveOnDamagedStartTime = Time.time;
-            rigidbody2D.velocity = new Vector2(moveOnDamagedSpeed.x * direction, moveOnDamagedSpeed.y);
+            rigidbody2D.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
+            //rigidbody2D.velocity = new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y);
         }
 
         void CheckMoveOnDamaged()
@@ -325,5 +303,30 @@ namespace Player
         }
 
         #endregion
+        
+        
+        public void Damage(float amount, int attackN)
+        {
+            // old
+        }
+
+        public void Damage(BaseController controller, DamageInfo damageInfo)
+        {
+            if (!roll)
+            {
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
+
+                currentHealth -= damageInfo.DamageAmount;
+
+                if(damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
+            }
+        }
+
+        public void Kill()
+        {
+            // old
+        }
     }
 }
