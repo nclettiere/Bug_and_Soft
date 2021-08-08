@@ -22,11 +22,11 @@ public class UI_ButtonMenu :
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (isMainMenu && GameManager.Instance.GetMainMenuOn() && !GameManager.Instance.IsGamePaused())
+        if (isMainMenu && GameManager.Instance.GetMainMenuOn())
         {
             selector.transform.position = transform.position;
             selectorChangeSFX.Play();
-        }else if (!isMainMenu && !GameManager.Instance.GetMainMenuOn() && GameManager.Instance.IsGamePaused())
+        }else if (!isMainMenu && !GameManager.Instance.GetMainMenuOn())
         {  
             selector.transform.position = transform.position;
             selectorChangeSFX.Play();

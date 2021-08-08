@@ -19,24 +19,23 @@ public class GameManager
 
     private bool isInputEnabled = true;
     private bool isMainMenuOn = true;
-    private bool isGamePaused = false;
-    private bool isPlayerAlive = false; // Siempre respawner al jugador on start!
-    private int playerDeathCount = 0;
+    private bool isGamePaused;
+    private bool isPlayerAlive;
+    private int playerDeathCount;
     private Camera cameraMain;
     private DynamicCamera dynCamera;
-    public  PlayerController PlayerController { get; private set; }
+    public  PlayerController PlayerController { get; }
     private PlayerControls playerControls;
-    
     public float DeltaTime { get { return isGamePaused ? 0 : Time.deltaTime; } }
+    public Vector3 LastDeathPosition;
+    private int mainMenuPhase;
 
-    internal Vector3 LastDeathPosition {get; set;}
-
-    private int mainMenuPhase = 0;
+    public bool IsFirstStart = true;
 
     private GameManager()
     {
         cameraMain = Camera.main;
-        if (!ReferenceEquals(cameraMain, null)) // is not null
+        if (!ReferenceEquals(cameraMain, null))
             dynCamera = cameraMain.GetComponent<DynamicCamera>();
 
         playerControls = new PlayerControls();
@@ -53,6 +52,8 @@ public class GameManager
             else
                 PauseGame();
         };
+        
+        PauseGame();
     }
 
     public static GameManager Instance
@@ -74,6 +75,8 @@ public class GameManager
     public void ResumeGame()
     {
         isGamePaused = false;
+        if (!IsFirstStart)
+            IsFirstStart = true;
     }
     
     public bool IsGamePaused() 

@@ -32,17 +32,8 @@ public class MainMenu : MonoBehaviour
     public ScreenOpts screenOpts;
 
     public Button selectedButton;
-    public Button[] OrderedButtonsTransfroms;
-    public Vector2[] OrderedButtonsLocalPositions;
-
-    private Vector2 UIControlPosition;
-
-    private GameObject buttonSelector;
 
     private float inputCooldown = float.NegativeInfinity;
-
-    [SerializeField]
-    private AudioSource selectorChangeSFX;
     [SerializeField]
     private AudioSource onPlaySFX;
 
@@ -52,7 +43,6 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetMainMenuOn(true);
         // Registra los componentes del Canvas (UI) necesarios.
         pnlButtons = GameObject.Find("PanelButtons");
-        buttonSelector = GameObject.Find("ButtonSelector");
         pnlButtonsAnim = GameObject.Find("PanelButtonsAnims");
         pnlSettings = GameObject.Find("PanelSettings");
         panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
@@ -72,12 +62,7 @@ public class MainMenu : MonoBehaviour
         sldFPS = GameObject.Find("SliderFPS").GetComponent<Slider>();
         togVSYNC = GameObject.Find("ToggleVSYNC").GetComponent<Toggle>();
 
-        selectorChangeSFX = GetComponent<AudioSource>();
-
         // DEFAULT 
-
-        // posicion del cursor por defecto = (0,0) (JOYSTICK)
-        UIControlPosition = new Vector2(0f, 0f);
 
         // Setea la lista del dpwResolutions con las resoluciones soportadas por
         // el monitor (vease el metodo Start).
@@ -131,37 +116,6 @@ public class MainMenu : MonoBehaviour
             needToUpdateVSYNC = true;
         });
 
-        // Input del menu
-        // GameManager.Instance.GetPlayerControls().Gameplay.MenuMovement.performed += ctx =>
-        // {
-        //     if (Time.time >= inputCooldown && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
-        //     {
-        //         Vector2 requestedPos = ctx.ReadValue<Vector2>();
-        //         float newX = UIControlPosition.x + requestedPos.x;
-        //         float newY = UIControlPosition.y + requestedPos.y;
-        //         if (newX <= -1) newX = 0;
-        //         if (newY <= -1) newY = 0;
-// 
-        //         if (newX >= OrderedButtonsTransfroms.Length) newX = OrderedButtonsTransfroms.Length - 1;
-        //         if (newY >= OrderedButtonsTransfroms.Length) newY = OrderedButtonsTransfroms.Length - 1;
-// 
-        //         Vector2 tempNewSelectorPos = new Vector2(newX, newY);
-// 
-        //         for (int i = 0; i < OrderedButtonsTransfroms.Length; i++)
-        //         {
-        //             if (OrderedButtonsLocalPositions[i] == tempNewSelectorPos)
-        //             {
-        //                 selectedButton = OrderedButtonsTransfroms[i];
-        //                 buttonSelector.transform.position = OrderedButtonsTransfroms[i].transform.position;
-        //                 UIControlPosition = tempNewSelectorPos;
-        //                 selectorChangeSFX.Play();
-        //                 break;
-        //             }
-        //         }
-// 
-        //         inputCooldown = Time.time + 0.1f;
-        //     }
-        // };
         GameManager.Instance.GetPlayerControls().Gameplay.MenuInteract.performed += ctx =>
         {
             if (selectedButton != null && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
@@ -172,10 +126,10 @@ public class MainMenu : MonoBehaviour
         };
     }
 
-    /*
-     * Setea la lista resolutionListDpw que sera usada por el Dropdown de resoluciones
-     * Retorna el indice en el que se encuentra la resolucion que se esta usando en el momento.
-     */
+    /// <summary>
+    /// Setea la lista resolutionListDpw que sera usada por el Dropdown de resoluciones
+    /// </summary>
+    /// <returns>Retorna el indice en el que se encuentra la resolucion que se esta usando en el momento.</returns>
     private int PopulateResolutions()
     {
         // Llena la lista de resoluciuones a usar por el Dropdown de res.
@@ -227,6 +181,7 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetMainMenuOn(false);
         GameManager.Instance.SetInputEnabled(true);
         GameManager.Instance.SetCameraOffsetX(1.3f);
+        GameManager.Instance.ResumeGame();
     }
 
     public void BtnSettingsCallBack()
@@ -307,7 +262,7 @@ public class MainMenu : MonoBehaviour
     }
 
     /// <summary>
-    ///     Cambia el locale actual del juego.
+    /// Cambia el locale actual del juego.
     /// </summary>
     /// <param name="index">0 = en | 1 = es | 2 = it</param>
     /// <returns></returns>
