@@ -47,6 +47,9 @@ namespace Player
         private PlayerController pCtrl;
         private Rigidbody2D Rigidbody2D;
         [SerializeField] private bool ShouldPlayerFlip = true;
+
+
+        private float slowDownPenalty;
         internal Vector3 Velocity = Vector3.zero;
         [SerializeField] private Transform WallCheck;
         [SerializeField] private float WallCheckDistance;
@@ -182,43 +185,14 @@ namespace Player
                 }
             }
 
-            if (!crouch)
-            {
-                if (Physics2D.OverlapCircle(CeilingCheck.position, CeilingRadius, GroundLayers))
-                {
-                    crouch = true;
-                }
-            }
-
-            // If crouching
-            if (crouch)
-            {
-                if (!wasCrouching)
-                {
-                    wasCrouching = true;
-                    OnCrouchEvent.Invoke(true);
-                }
-
-                moveH *= CrouchSpeed;
-
-                if (CrouchDisableCollider != null)
-                    CrouchDisableCollider.enabled = false;
-            }
-            else
-            {
-                if (CrouchDisableCollider != null)
-                    CrouchDisableCollider.enabled = true;
-
-                if (wasCrouching)
-                {
-                    wasCrouching = false;
-                    OnCrouchEvent.Invoke(false);
-                }
-            }
-
             if (!attacking)
             {
-                Vector3 targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
+                Vector3 targetVelocity;
+                if (Time.time >= slowDownPenalty)
+                    targetVelocity = new Vector2(moveH * 10f, Rigidbody2D.velocity.y);
+                else
+                    targetVelocity = new Vector2(moveH * 3f, Rigidbody2D.velocity.y);
+
                 Rigidbody2D.velocity =
                     Vector3.SmoothDamp(Rigidbody2D.velocity, targetVelocity, ref Velocity, MovementSmoothing);
             }
@@ -296,6 +270,11 @@ namespace Player
                 new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
             Gizmos.DrawLine(LedgeCheck.position,
                 new Vector3(LedgeCheck.position.x + WallCheckDistance, LedgeCheck.position.y, LedgeCheck.position.z));
+        }
+
+        public void AddSpeedPenalty(float lifetime)
+        {
+            slowDownPenalty = Time.time + lifetime;
         }
 
         [System.Serializable]

@@ -9,9 +9,8 @@ namespace Controllers.Damage
     {
         private int damageAmount;
         private float attackXPosition;
-        private bool moveOnAttack;
-        private bool stun;
-        private bool slow;
+        private bool moveOnAttack, stun, slow;
+        public float stunDuration, slowDuration;
         private Vector2 moveOnAttackForce;
 
         /// <summary>
@@ -26,7 +25,7 @@ namespace Controllers.Damage
             MoveOnAttack = moveOnAttack;
             Stun = stun;
             Slow = slow;
-            
+
             MoveOnAttackForce = new Vector2(10f, 10f);
         }
 

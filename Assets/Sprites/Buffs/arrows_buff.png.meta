@@ -11,6 +11,9 @@ TextureImporter:
   - first:
       213: 5016808527608031938
     second: arrows_buff_2
+  - first:
+      213: 2358895302024158518
+    second: arrows_buff_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -158,6 +161,27 @@ TextureImporter:
       bones: []
       spriteID: 2ca2a3296c84f9540800000000000000
       internalID: 5016808527608031938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arrows_buff_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63ddc7b77ca7cb020800000000000000
+      internalID: 2358895302024158518
       vertices: []
       indices: 
       edges: []

@@ -10,14 +10,14 @@ namespace Controllers.Froggy
 {
     public class FroggyTongueController : MonoBehaviour
     {
-        public ContactFilter2D whatCanBeDamaged;
         private Froggy_AttackState attackState;
-        private FroggyController froggyController;
-        private GameObject tongueEnd;
         private BoxCollider2D coll;
 
         private List<Transform> damagedObjects;
         private DamageInfo damageInfo;
+        private FroggyController froggyController;
+        private GameObject tongueEnd;
+        public ContactFilter2D whatCanBeDamaged;
 
         private void Start()
         {
@@ -26,6 +26,7 @@ namespace Controllers.Froggy
             coll = GetComponent<BoxCollider2D>();
             damageInfo = new DamageInfo(15, transform.position.x, true, false, true);
             damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
+            damageInfo.slowDuration = 3f;
         }
 
         private void FixedUpdate()
@@ -55,7 +56,7 @@ namespace Controllers.Froggy
             {
                 if (hit.collider != null)
                 {
-                    if (hit.collider.transform != froggyController.transform && 
+                    if (hit.collider.transform != froggyController.transform &&
                         !damagedObjects.Contains(hit.collider.transform))
                     {
                         if (hit.collider.CompareTag("Enemy"))
@@ -63,13 +64,14 @@ namespace Controllers.Froggy
                             BaseController bctrl = hit.transform.GetComponent<BaseController>();
                             if (bctrl != null && (bctrl is IDamageable))
                                 bctrl.Damage(froggyController, damageInfo);
-                        }else if (hit.collider.CompareTag("Player"))
+                        }
+                        else if (hit.collider.CompareTag("Player"))
                         {
                             PlayerController pctrl = hit.transform.GetComponent<PlayerController>();
                             if (pctrl != null && (pctrl is IDamageable))
                                 pctrl.Damage(froggyController, damageInfo);
                         }
-                        
+
                         damagedObjects.Add(hit.collider.transform);
                     }
                 }

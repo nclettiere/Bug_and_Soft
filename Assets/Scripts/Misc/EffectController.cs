@@ -5,81 +5,112 @@ namespace Misc
 {
     public class EffectController : MonoBehaviour
     {
-        [SerializeField] private GameObject effectDown;
+        private int activeEffects;
         [SerializeField] private GameObject effectBuff;
-        [SerializeField] private GameObject effectSpeedUp;
+        private float effectBuffLifetime;
+
+        [Header("Effects Indicators")] [SerializeField]
+        private GameObject effectDown;
+
+        private float effectDownLifetime;
         [SerializeField] private GameObject effectSlowDown;
+        private float effectSlowDownLifetime;
+        [SerializeField] private GameObject effectSpeedUp;
+        private float effectSpeedUpLifetime;
         [SerializeField] private GameObject effectStun;
-        
-        [SerializeField] private bool isEffectDownActive;
-        [SerializeField] private bool isEffectBuffActive;
-        [SerializeField] private bool isEffectSpeedUpActive;
-        [SerializeField] private bool isEffectSlowDownActive;
-        [SerializeField] private bool isEffectStunActive;
+        private float effectStunLifetime;
 
         private void Update()
         {
-            float effectOffset = -30f;
-
-            if (isEffectDownActive && effectDown != null)
-            {
-                effectDown.transform.position = 
-                    new Vector2(effectDown.transform.position.x + effectOffset, effectDown.transform.position.y);
-                effectOffset += 15f;   
-            }
-            
-            if (isEffectBuffActive && effectBuff != null)
-            {
-                effectBuff.transform.position = 
-                    new Vector2(effectBuff.transform.position.x + effectOffset, effectBuff.transform.position.y);
-                effectOffset += 15f;   
-            }
-            
-            if (isEffectSlowDownActive && effectSlowDown != null)
-            {
-                effectSlowDown.transform.position = 
-                    new Vector2(effectSlowDown.transform.position.x + effectOffset, effectSlowDown.transform.position.y);
-                effectOffset += 15f;   
-            }
-            
-            if (isEffectStunActive && effectStun != null)
-            {
-                effectStun.transform.position = 
-                    new Vector2(effectStun.transform.position.x + effectOffset, effectStun.transform.position.y);
-                effectOffset += 15f;   
-            }
-            
-            if (isEffectSpeedUpActive && effectSpeedUp != null)
-            {
-                effectSpeedUp.transform.position = 
-                    new Vector2(effectSpeedUp.transform.position.x + effectOffset, effectSpeedUp.transform.position.y);
-                effectOffset += 15f;   
-            }
+            if (effectDown.activeSelf && Time.time >= effectDownLifetime)
+                EndEffect(effectDown);
+            if (effectBuff.activeSelf && Time.time >= effectBuffLifetime)
+                EndEffect(effectBuff);
+            if (effectSpeedUp.activeSelf && Time.time >= effectSpeedUpLifetime)
+                EndEffect(effectSpeedUp);
+            if (effectSlowDown.activeSelf && Time.time >= effectSlowDownLifetime)
+                EndEffect(effectSlowDown);
+            if (effectStun.activeSelf && Time.time >= effectStunLifetime)
+                EndEffect(effectStun);
         }
 
-        public void SetEffectDownActive(bool isActive)
+        private void EndEffect(GameObject go)
         {
-            isEffectDownActive = isActive;
+            go.SetActive(false);
+            activeEffects--;
+
+            // Recalculate other effects position
+            effectDown.transform.localPosition = new Vector2(0f, effectDown.transform.localPosition.y - 1f);
+            effectBuff.transform.localPosition = new Vector2(0f, effectBuff.transform.localPosition.y - 1f);
+            effectSpeedUp.transform.localPosition = new Vector2(0f, effectSpeedUp.transform.localPosition.y - 1f);
+            effectSlowDown.transform.localPosition = new Vector2(0f, effectSlowDown.transform.localPosition.y - 1f);
+            effectStun.transform.localPosition = new Vector2(0f, effectStun.transform.localPosition.y - 1f);
         }
-        
-        public void SetEffectBuffActive(bool isActive)
+
+        public void SetEffectDownActive(float lifeTime = 0f)
         {
-            isEffectBuffActive = isActive;
+            if (Time.time >= effectDownLifetime)
+            {
+                effectDown.SetActive(true);
+                effectDown.transform.localPosition = GetEffectPosition(effectDown.transform);
+                activeEffects++;
+            }
+
+            effectDownLifetime = Time.time + lifeTime;
         }
-        
-        public void SetEffectSpeedUpActive(bool isActive)
+
+        public void SetEffectBuffActive(float lifeTime = 0f)
         {
-            isEffectSpeedUpActive = isActive;
+            if (Time.time >= effectBuffLifetime)
+            {
+                effectBuff.SetActive(true);
+                effectBuff.transform.localPosition = GetEffectPosition(effectBuff.transform);
+                activeEffects++;
+            }
+
+            effectBuffLifetime = Time.time + lifeTime;
         }
-        
-        public void SetEffectSlowDownActive(bool isActive)
+
+        public void SetEffectSpeedUpActive(float lifeTime = 0f)
         {
-            isEffectSlowDownActive = isActive;
+            if (Time.time >= effectSpeedUpLifetime)
+            {
+                effectSpeedUp.SetActive(true);
+                effectSpeedUp.transform.localPosition = GetEffectPosition(effectSpeedUp.transform);
+                activeEffects++;
+            }
+
+            effectSpeedUpLifetime = Time.time + lifeTime;
         }
-        
-        public void SetEffectStunActive(bool isActive)
+
+        public void SetEffectSlowDownActive(float lifeTime = 0f)
         {
-            isEffectStunActive = isActive;
+            if (Time.time >= effectSlowDownLifetime)
+            {
+                effectSlowDown.SetActive(true);
+                effectSlowDown.transform.localPosition = GetEffectPosition(effectSlowDown.transform);
+                activeEffects++;
+            }
+
+            effectSlowDownLifetime = Time.time + lifeTime;
+        }
+
+        public void SetEffectStunActive(float lifeTime = 0f)
+        {
+            if (Time.time >= effectStunLifetime)
+            {
+                effectStun.SetActive(true);
+                effectStun.transform.localPosition = GetEffectPosition(effectStun.transform);
+                activeEffects++;
+            }
+
+            effectStunLifetime = Time.time + lifeTime;
+        }
+
+        private Vector2 GetEffectPosition(Transform transform)
+        {
+            Debug.Log("activeEffects" + activeEffects);
+            return new Vector2(transform.localPosition.x, transform.localPosition.y + activeEffects);
         }
     }
 }

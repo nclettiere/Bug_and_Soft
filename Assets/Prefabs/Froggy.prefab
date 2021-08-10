@@ -595,6 +595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ctrlData: {fileID: 11400000, guid: a8ee0834b9cbeb24faf7be25e34232d1, type: 2}
+  deadMaxWait: 5
   controllerKind: 2
   characterKind: 3
   interactionRadius: 0
@@ -614,7 +615,6 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 242146970908857840}
   deathSFX: {fileID: 242146970908857844}
   dialogueBubble: {fileID: 0}
-  lapida: {fileID: 1185056716335366503, guid: ab75ade4c48b42a4a89493cd5ea4bea1, type: 3}
   canWalk: 0
   canJump: 1
   canBeDamaged: 1
@@ -628,10 +628,12 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
+  canCharacterDie: 0
   _idleStateData: {fileID: 11400000, guid: d10b11051f389c442a26a034c8497a7a, type: 2}
   _jumpStateData: {fileID: 11400000, guid: f83e9cda744aed943a0f811463f6b7e1, type: 2}
   _prepareAttackStateData: {fileID: 11400000, guid: 4eddd5094a827664fa86c88e9121633d, type: 2}
   _attackStateData: {fileID: 11400000, guid: 07bb7250f9abb0d4b9f957e706a4c3e7, type: 2}
+  _deadStateData: {fileID: 11400000, guid: 93d2ed74cc5fdcd4fbd638be62e8f68f, type: 2}
   _froggyTongue: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
 --- !u!212 &242146971895896517
 SpriteRenderer:

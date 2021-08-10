@@ -1,8 +1,10 @@
 using System.Collections;
 using Controllers;
 using Controllers.Damage;
+using Enums;
 using Interactions.Enums;
 using Interactions.Interfaces;
+using Misc;
 using UnityEngine;
 
 namespace Player
@@ -13,6 +15,7 @@ namespace Player
         /// @endcond
         IDamageable
     {
+        private EffectController _effectController;
         [SerializeField] private Animator characterAnimator;
 
         private PlayerCombatController combatCtrl;
@@ -37,15 +40,45 @@ namespace Player
         private bool savedRigidData;
         private float verticalMove;
 
+        public void Damage(float amount, int attackN)
+        {
+            // old
+        }
+
+        public void Damage(BaseController controller, DamageInfo damageInfo)
+        {
+            if (!roll)
+            {
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
+
+                currentHealth -= damageInfo.DamageAmount;
+
+                if (damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
+
+                if (damageInfo.Slow)
+                {
+                    AddEffect(EEffectKind.SLOWDOWN, damageInfo.slowDuration);
+                    _effectController.SetEffectSlowDownActive(damageInfo.slowDuration);
+                }
+            }
+        }
+
+        public void Kill()
+        {
+            // old
+        }
+
 
         private void Start()
         {
             var SpawnPoint = GameObject.Find("SpawnPoint");
             rigidbody2D = GetComponent<Rigidbody2D>();
+            _effectController = GetComponent<EffectController>();
             transform.position = SpawnPoint.transform.position;
             respawning = true;
             AnimStartPrayingEvt();
-
 
             currentHealth = maxHealth;
 
@@ -269,6 +302,17 @@ namespace Player
             OnEnable();
         }
 
+
+        public void AddEffect(EEffectKind kind, float lifetime)
+        {
+            switch (kind)
+            {
+                case EEffectKind.SLOWDOWN:
+                    playerMovementCtrl.AddSpeedPenalty(lifetime);
+                    break;
+            }
+        }
+
         #region Interaction
 
         [SerializeField] protected float interactionRadius = 3f;
@@ -303,30 +347,5 @@ namespace Player
         }
 
         #endregion
-        
-        
-        public void Damage(float amount, int attackN)
-        {
-            // old
-        }
-
-        public void Damage(BaseController controller, DamageInfo damageInfo)
-        {
-            if (!roll)
-            {
-                // Obtenemos la posicion del ataque
-                int direction = damageInfo.GetAttackDirection(transform.position.x);
-
-                currentHealth -= damageInfo.DamageAmount;
-
-                if(damageInfo.MoveOnAttack)
-                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
-            }
-        }
-
-        public void Kill()
-        {
-            // old
-        }
     }
 }

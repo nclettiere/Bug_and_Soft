@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 885c55e7d0f94b56ada4e350de4d194e, type: 3}
+  m_Name: Froggy_DeadState
+  m_EditorClassIdentifier: 
+  applyTorque: 1
+  showLapida: 1
+  lapida: {fileID: 1185056716335366503, guid: ab75ade4c48b42a4a89493cd5ea4bea1, type: 3}
