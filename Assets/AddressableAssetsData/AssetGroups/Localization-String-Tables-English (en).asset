@@ -22,6 +22,16 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
+  - m_GUID: fb6f2c4343c8b514681e0acf998c497f
+    m_Address: Dialogues_Njord_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+  - m_GUID: 17b401a4a8cf08b4f8d7b1c8c51643b8
+    m_Address: Dialogues_Njord_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: dac00cbf13a36cc4a860be303f5402e2, type: 2}
   m_SchemaSet:

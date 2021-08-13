@@ -24,9 +24,14 @@ public class GameManager
     private int playerDeathCount;
     private Camera cameraMain;
     private DynamicCamera dynCamera;
-    public  PlayerController PlayerController { get; }
+    public PlayerController PlayerController { get; }
     private PlayerControls playerControls;
-    public float DeltaTime { get { return isGamePaused ? 0 : Time.deltaTime; } }
+
+    public float DeltaTime
+    {
+        get { return isGamePaused ? 0 : Time.deltaTime; }
+    }
+
     public Vector3 LastDeathPosition;
     private int mainMenuPhase;
 
@@ -52,7 +57,7 @@ public class GameManager
             else
                 PauseGame();
         };
-        
+
         PauseGame();
     }
 
@@ -67,7 +72,7 @@ public class GameManager
         }
     }
 
-    public void PauseGame() 
+    public void PauseGame()
     {
         isGamePaused = true;
     }
@@ -78,8 +83,8 @@ public class GameManager
         if (!IsFirstStart)
             IsFirstStart = true;
     }
-    
-    public bool IsGamePaused() 
+
+    public bool IsGamePaused()
     {
         return isGamePaused;
     }
@@ -98,7 +103,7 @@ public class GameManager
     {
         return playerControls;
     }
-    
+
     public Transform GetPlayerTransform()
     {
         return PlayerController.transform;
@@ -115,7 +120,7 @@ public class GameManager
 
     public void RespawnPlayer(bool isFirstRespawn = false)
     {
-        if(!isFirstRespawn)
+        if (!isFirstRespawn)
             SetInputEnabled(true);
         isPlayerAlive = true;
         SetCameraFollowTarget(true);
@@ -163,6 +168,7 @@ public class GameManager
             return dynCamera.GetOffsets();
         return Vector2.zero;
     }
+
     public void SetCameraFollowTarget(bool follow)
     {
         if (!ReferenceEquals(dynCamera, null))
@@ -173,6 +179,7 @@ public class GameManager
     {
         return mainMenuPhase;
     }
+
     public void SetMainMenuPhase(int mainMenuPhase)
     {
         this.mainMenuPhase = mainMenuPhase;
@@ -186,5 +193,10 @@ public class GameManager
     public int GetPlayerDeathCount()
     {
         return playerDeathCount;
+    }
+
+    public void PlayerExitInteractionMode()
+    {
+        PlayerController.ExitInteractionMode();
     }
 }

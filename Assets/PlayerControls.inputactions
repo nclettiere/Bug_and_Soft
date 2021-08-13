@@ -74,17 +74,25 @@
                     "type": "Button",
                     "id": "46c3b3ab-4557-4e85-886d-51ab520e42ed",
                     "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
+                  "processors": "",
+                  "interactions": ""
                 },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "1c00ebf7-d511-4797-994a-56a2a856da3c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                }
+              {
+                "name": "Interact",
+                "type": "Button",
+                "id": "1c00ebf7-d511-4797-994a-56a2a856da3c",
+                "expectedControlType": "Button",
+                "processors": "",
+                "interactions": ""
+              },
+              {
+                "name": "MenuInteractMouse",
+                "type": "Button",
+                "id": "7d172ee7-1469-42f5-9c63-3ea688e56b9f",
+                "expectedControlType": "Button",
+                "processors": "",
+                "interactions": ""
+              }
             ],
             "bindings": [
                 {
@@ -604,17 +612,28 @@
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
-                {
-                    "name": "",
-                    "id": "c327cb9a-6292-4122-92bb-496f642bbee2",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
+              {
+                "name": "",
+                "id": "c327cb9a-6292-4122-92bb-496f642bbee2",
+                "path": "<Gamepad>/buttonNorth",
+                "interactions": "",
+                "processors": "",
+                "groups": "",
+                "action": "Interact",
+                "isComposite": false,
+                "isPartOfComposite": false
+              },
+              {
+                "name": "",
+                "id": "34b54d77-5419-4ba7-9680-2cd678d5b58f",
+                "path": "<Mouse>/leftButton",
+                "interactions": "",
+                "processors": "",
+                "groups": "",
+                "action": "MenuInteractMouse",
+                "isComposite": false,
+                "isPartOfComposite": false
+              }
             ]
         }
     ],

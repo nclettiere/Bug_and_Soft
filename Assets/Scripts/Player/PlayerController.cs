@@ -111,6 +111,12 @@ namespace Player
             };
         }
 
+        public void ExitInteractionMode()
+        {
+            isEnrolledInDialogue = false;
+            GameManager.Instance.SetCameraSize(10f, 0.3f);
+        }
+
         private void Awake()
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();

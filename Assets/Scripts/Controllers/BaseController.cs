@@ -88,15 +88,8 @@ namespace Controllers
             return true;
         }
 
-        public bool Interact(PlayerController controller, EInteractionKind interactionKind)
+        public virtual bool Interact(PlayerController controller, EInteractionKind interactionKind)
         {
-            Debug.Log("Interaction of kind '" + interactionKind + "' received.");
-            // disables the interaction bubble !!
-            dialogueBubble.gameObject.SetActive(false);
-
-            // Open the dialogue canvas
-            DialogueManager.Instance.ShowDialogues();
-
             return true;
         }
 
@@ -440,7 +433,7 @@ namespace Controllers
         [SerializeField] private AudioSource hitAttackSFX1;
         [SerializeField] private AudioSource hitAttackSFX2;
         [SerializeField] private AudioSource deathSFX;
-        [SerializeField] private GameObject dialogueBubble;
+        [SerializeField] private protected GameObject dialogueBubble;
 
         [Header("State Options")] [SerializeField]
         private bool canWalk;

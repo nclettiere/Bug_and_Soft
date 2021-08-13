@@ -1,15 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Dialogues;
+using Interactions.Enums;
+using Player;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
 
 namespace Controllers
 {
     public class NjordController : BaseController
     {
+        [Header("Njord : Dialogue Options")] [SerializeField]
+        private DialogueGroup dialogues;
+
         protected override void Start()
         {
             base.Start();
-            
+
             controllerKind = EControllerKind.Neutral;
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
@@ -31,6 +39,16 @@ namespace Controllers
         private void AnimCejasEnded()
         {
             GetAnimator().SetBool("EyebrowsMovement", false);
+        }
+
+        public override bool Interact(PlayerController controller, EInteractionKind interactionKind)
+        {
+            // disables the interaction bubble !!
+            dialogueBubble.gameObject.SetActive(false);
+            // Open the dialogue canvas
+            DialogueManager.Instance.ShowDialogues(dialogues);
+
+            return true;
         }
     }
 }

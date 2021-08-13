@@ -1,16 +1,20 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace Dialogues
 {
     public class DialogueManager
     {
         private static DialogueManager instance;
-        private GameObject dialogueCanvas;
-        
+        private Canvas dialogueCanvas;
+        private DialogueTextEffector dialogueEffector;
+
         private DialogueManager()
         {
-            dialogueCanvas = GameObject.Find("/UI/UI_Dialogues");
+            dialogueCanvas = GameObject.Find("/UI/UI_Dialogues").GetComponent<Canvas>();
+            dialogueEffector = GameObject.Find("/UI/UI_Dialogues/Content/DialogueText")
+                .GetComponent<DialogueTextEffector>();
         }
 
         public static DialogueManager Instance
@@ -24,16 +28,21 @@ namespace Dialogues
             }
         }
 
-        public void ShowDialogues()
+        public void ShowDialogues(DialogueGroup dialogues)
         {
-            dialogueCanvas.GetComponent<Canvas>().enabled = true;
-            //dialogueCanvas.SetActive(true);
+            dialogueCanvas.enabled = true;
+            dialogueEffector.SetDialogues(dialogues);
+            dialogueEffector.DisplayDialogues();
         }
-        
+
         public void HideDialogues()
         {
-            dialogueCanvas.GetComponent<Canvas>().enabled = false;
-            //dialogueCanvas.SetActive(false);
+            dialogueCanvas.enabled = false;
+        }
+
+        public void ChooseOption(int i)
+        {
+            dialogueEffector.ChooseOption(i);
         }
     }
 }

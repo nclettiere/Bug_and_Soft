@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 public class @PlayerControls : IInputActionCollection, IDisposable
 {
     public InputActionAsset asset { get; }
+
     public @PlayerControls()
     {
         asset = InputActionAsset.FromJson(@"{
@@ -94,6 +95,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""1c00ebf7-d511-4797-994a-56a2a856da3c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MenuInteractMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d172ee7-1469-42f5-9c63-3ea688e56b9f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -627,6 +636,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34b54d77-5419-4ba7-9680-2cd678d5b58f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MenuInteractMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -645,6 +665,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_MenuInteract = m_Gameplay.FindAction("MenuInteract", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_MenuInteractMouse = m_Gameplay.FindAction("MenuInteractMouse", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -704,10 +725,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_MenuInteract;
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_MenuInteractMouse;
+
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
-        public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+
+        public GameplayActions(@PlayerControls wrapper)
+        {
+            m_Wrapper = wrapper;
+        }
+
         public InputAction @Horizontal => m_Wrapper.m_Gameplay_Horizontal;
         public InputAction @Vertical => m_Wrapper.m_Gameplay_Vertical;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
@@ -718,11 +746,30 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @MenuInteract => m_Wrapper.m_Gameplay_MenuInteract;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
-        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
+        public InputAction @MenuInteractMouse => m_Wrapper.m_Gameplay_MenuInteractMouse;
+
+        public InputActionMap Get()
+        {
+            return m_Wrapper.m_Gameplay;
+        }
+
+        public void Enable()
+        {
+            Get().Enable();
+        }
+
+        public void Disable()
+        {
+            Get().Disable();
+        }
+
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
+
+        public static implicit operator InputActionMap(GameplayActions set)
+        {
+            return set.Get();
+        }
+
         public void SetCallbacks(IGameplayActions instance)
         {
             if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
@@ -757,7 +804,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @MenuInteractMouse.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
+                @MenuInteractMouse.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
+                @MenuInteractMouse.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
             }
+
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
             {
@@ -791,10 +842,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @MenuInteractMouse.started += instance.OnMenuInteractMouse;
+                @MenuInteractMouse.performed += instance.OnMenuInteractMouse;
+                @MenuInteractMouse.canceled += instance.OnMenuInteractMouse;
             }
         }
     }
+
     public GameplayActions @Gameplay => new GameplayActions(this);
+
     public interface IGameplayActions
     {
         void OnHorizontal(InputAction.CallbackContext context);
@@ -807,5 +863,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMenuInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnMenuInteractMouse(InputAction.CallbackContext context);
     }
 }
