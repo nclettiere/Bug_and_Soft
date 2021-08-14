@@ -1,9 +1,8 @@
 # Bug&Soft
 
-# Atenção do cidadão segue os seguintes passos antes de clonar [kkk](https://www.youtube.com/watch?v=h0EvPJRp_N4)
-### ANTES DE CLONAR INSTALAR [GIT LFS](https://github.com/git-lfs/git-lfs/releases/download/v2.13.3/git-lfs-windows-v2.13.3.exe)
-### Y EN UNA CONSOLA O GIT BASH PONER: ```git lfs install```
-### DESCARGAR EN ZIP NO FUNCA (AVISO)
+# (Aviso) 
+### Quite el git LFS, asi se puede clonar directamente o descargar como zip xd
+
 ---
 
 ### Codigo fuente del proyecto final para 3BD videojuegos
