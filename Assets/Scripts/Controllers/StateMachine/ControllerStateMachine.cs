@@ -24,6 +24,7 @@ namespace Controllers.StateMachine
 
         public void ChangeState(State nextState)
         {
+            Debug.Log("changing state to " + nextState.ToString());
             CurrentState.Exit();
             CurrentState = nextState;
             CurrentState.Enter();

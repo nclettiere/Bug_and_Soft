@@ -106,6 +106,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SpecialMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""2515f7ee-30fa-4c26-af47-c5ba12e8a81b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -647,6 +655,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""MenuInteractMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89095ac8-7acb-4a38-bbd1-2084dbd624e4"",
+                    ""path"": ""<DualShockGamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b61fd912-ccd2-42bc-afb5-90d11d52ba26"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -666,6 +696,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_MenuInteractMouse = m_Gameplay.FindAction("MenuInteractMouse", throwIfNotFound: true);
+        m_Gameplay_SpecialMove = m_Gameplay.FindAction("SpecialMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -726,6 +757,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Pause;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_MenuInteractMouse;
+    private readonly InputAction m_Gameplay_SpecialMove;
 
     public struct GameplayActions
     {
@@ -747,6 +779,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @MenuInteractMouse => m_Wrapper.m_Gameplay_MenuInteractMouse;
+        public InputAction @SpecialMove => m_Wrapper.m_Gameplay_SpecialMove;
 
         public InputActionMap Get()
         {
@@ -807,6 +840,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MenuInteractMouse.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
                 @MenuInteractMouse.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
                 @MenuInteractMouse.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteractMouse;
+                @SpecialMove.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
+                @SpecialMove.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
+                @SpecialMove.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
             }
 
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
@@ -845,6 +881,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MenuInteractMouse.started += instance.OnMenuInteractMouse;
                 @MenuInteractMouse.performed += instance.OnMenuInteractMouse;
                 @MenuInteractMouse.canceled += instance.OnMenuInteractMouse;
+                @SpecialMove.started += instance.OnSpecialMove;
+                @SpecialMove.performed += instance.OnSpecialMove;
+                @SpecialMove.canceled += instance.OnSpecialMove;
             }
         }
     }
@@ -864,5 +903,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMenuInteractMouse(InputAction.CallbackContext context);
+        void OnSpecialMove(InputAction.CallbackContext context);
     }
 }

@@ -15,23 +15,26 @@ namespace Player
         /// @endcond
         IDamageable
     {
-        private EffectController _effectController;
         [SerializeField] private Animator characterAnimator;
 
         private PlayerCombatController combatCtrl;
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
         [SerializeField] private float generalSpeed = 40f;
+        [SerializeField] private float specialMoveCooldownTime = 5f;
+        [SerializeField] private int maxHealth = 150, currentHealth;
+        [SerializeField] private float moveOnDamageDuration = 1f;
+        [SerializeField] private GameObject onActivateWarpEffect;
+        [SerializeField] private GameObject onWarpEffectParticle;
+        [SerializeField] private AudioSource onWarpActionedSFX;
+        [SerializeField] private AudioSource onWarpedSFX;
+
         private float horizontalMove;
         private bool jump;
         private float lastAngularVelocity;
         private Vector2 lastVelocity;
-
-        [SerializeField] private int maxHealth = 150, currentHealth;
-
         internal bool moveOnDamaged;
         private float moveOnDamagedStartTime;
-        [SerializeField] private float moveOnDamageDuration = 1f;
         private PlayerMovementController playerMovementCtrl;
         internal bool praying = true;
         internal bool respawning;
@@ -39,11 +42,10 @@ namespace Player
         internal bool roll;
         private bool savedRigidData;
         private float verticalMove;
-
-        public void Damage(float amount, int attackN)
-        {
-            // old
-        }
+        private float specialMoveWaitTime;
+        private bool warpActioned;
+        private Vector2 warpPosition;
+        private EffectController effectController;
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -60,22 +62,16 @@ namespace Player
                 if (damageInfo.Slow)
                 {
                     AddEffect(EEffectKind.SLOWDOWN, damageInfo.slowDuration);
-                    _effectController.SetEffectSlowDownActive(damageInfo.slowDuration);
+                    effectController.SetEffectSlowDownActive(damageInfo.slowDuration);
                 }
             }
         }
-
-        public void Kill()
-        {
-            // old
-        }
-
 
         private void Start()
         {
             var SpawnPoint = GameObject.Find("SpawnPoint");
             rigidbody2D = GetComponent<Rigidbody2D>();
-            _effectController = GetComponent<EffectController>();
+            effectController = GetComponent<EffectController>();
             transform.position = SpawnPoint.transform.position;
             respawning = true;
             AnimStartPrayingEvt();
@@ -95,7 +91,6 @@ namespace Player
                 if (!GameManager.Instance.IsGamePaused())
                     jump = true;
             };
-
             // Interaction input
             GameManager.Instance.GetPlayerControls().Gameplay.Interact.performed += ctx =>
             {
@@ -106,6 +101,37 @@ namespace Player
                     {
                         EnterInteractionMode();
                         lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
+                    }
+                }
+            };
+
+            // SpecialMove input (SOLO PARA EL WARP MOVE, LOS DEMAS MOVES PARA EL 2 SPRINT)
+            GameManager.Instance.GetPlayerControls().Gameplay.SpecialMove.performed += ctx =>
+            {
+                if (Time.time >= specialMoveWaitTime)
+                {
+                    warpActioned = false;
+                }
+
+                if (!isEnrolledInDialogue && !GameManager.Instance.IsGamePaused())
+                {
+                    if (!warpActioned)
+                    {
+                        if (Time.time >= specialMoveWaitTime)
+                        {
+                            warpPosition = transform.position;
+                            warpActioned = true;
+                            Instantiate(onActivateWarpEffect, transform.position, Quaternion.Euler(0f, 0f, 0f));
+                            specialMoveWaitTime = Time.time + specialMoveCooldownTime;
+                            onWarpActionedSFX.Play();
+                        }
+                    }
+                    else
+                    {
+                        transform.position = warpPosition;
+                        warpActioned = false;
+                        onWarpedSFX.Play();
+                        Instantiate(onWarpEffectParticle, transform.position, Quaternion.Euler(0f, 0f, 0f));
                     }
                 }
             };

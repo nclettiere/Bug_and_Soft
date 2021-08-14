@@ -151,16 +151,17 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (!dead && characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
-                CheckPlayerInRange();
+                if (!dead)
+                    CheckPlayerInRange();
                 StateMachine.CurrentState.UpdateState();
             }
         }
 
         private void FixedUpdate()
         {
-            if (GameManager.Instance.IsGamePaused()) return;
+            if (GameManager.Instance.IsGamePaused() || dead) return;
 
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
                 StateMachine.CurrentState.UpdatePhysics();
@@ -285,6 +286,12 @@ namespace Controllers
         public bool CheckGround()
         {
             return Physics2D.Raycast(groundCheck.position, Vector2.down, ctrlData.groundCheckDistance,
+                ctrlData.whatIsGround);
+        }
+
+        public bool CheckTop()
+        {
+            return Physics2D.Raycast(topCheck.position, Vector2.up, ctrlData.topCheckDistance,
                 ctrlData.whatIsGround);
         }
 

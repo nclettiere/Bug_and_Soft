@@ -38,26 +38,17 @@ namespace Controllers.StateMachine.States
 
         public override void UpdateState()
         {
-            controller.DestroyNow();
-            base.UpdateState();
-
             if (Time.time < deadWaitTime)
             {
-                Debug.Log("Not in dead time");
                 return;
             }
 
             if (stateData.showLapida)
             {
-                Debug.Log("Waiting to ground");
-                if (controller.groundDetected || controller.topDetected)
-                    controller.DestroyNow(stateData.lapida);
+                controller.DestroyNow(stateData.lapida);
             }
             else
                 controller.DestroyNow();
-
-
-            Debug.Log("Final Reached");
         }
 
         public override void UpdatePhysics()
