@@ -56,7 +56,7 @@ namespace Controllers
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
-                    currentHealth -= amount;
+                    currentHealth -= (int) amount;
 
                 if (canBeMovedOnAttack && currentHealth >= 0.0f)
                 {
@@ -272,7 +272,7 @@ namespace Controllers
 
         public bool CheckWall()
         {
-            return Physics2D.Raycast(transform.position, transform.right, ctrlData.wallCheckDistance,
+            return Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.wallCheckDistance,
                 ctrlData.whatIsGround);
         }
 
@@ -314,7 +314,7 @@ namespace Controllers
         /// <param name="multiplier">
         ///     Multiplicador del movimiento. Se recomienda utilizar el attackN del player.
         /// </param>
-        private void MoveOnAttack(int multiplier)
+        private protected void MoveOnAttack(int multiplier)
         {
             movedOnAttack = true;
             moveOnAttackStart = Time.time;
@@ -394,7 +394,7 @@ namespace Controllers
             //}
         }
 
-        private IEnumerator DamageEffect()
+        private protected IEnumerator DamageEffect()
         {
             renderer.color = new Color(1f, 0.334f, 0.305f);
             yield return new WaitForSeconds(0.5f);
@@ -409,14 +409,12 @@ namespace Controllers
         public void DestroyNow()
         {
             StopAllCoroutines();
-            GameManager.Instance.AddPlayerKrowns(KrownReward);
             Destroy(gameObject);
         }
 
         public void DestroyNow(GameObject lapida)
         {
             StopAllCoroutines();
-            GameManager.Instance.AddPlayerKrowns(KrownReward);
             renderer.enabled = false;
             Instantiate(lapida, transform.position, Quaternion.Euler(0f, 0f, 0f));
             Destroy(gameObject);
@@ -436,19 +434,24 @@ namespace Controllers
         public ControllerStateMachine StateMachine = new ControllerStateMachine();
         public ControllerData ctrlData;
         public float deadMaxWait = 5f;
-        
+        public int maxHealth = 50;
+        public int currentHealth;
+
         public int KrownReward = 5;
 
         [SerializeField] private protected EControllerKind controllerKind = EControllerKind.NPC;
         [SerializeField] private ECharacterKind characterKind;
         [SerializeField] private float interactionRadius = 4f;
-        [SerializeField] private float maxHealth, moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
+        [SerializeField] private float moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
         [SerializeField] private int touchDamage = 12;
-        [SerializeField] private bool isInvencible, canBeStunned, canDamageOnTouch, canBeMovedOnAttack, movedOnAttack;
+
+        [SerializeField]
+        private protected bool isInvencible, canBeStunned, canDamageOnTouch, canBeMovedOnAttack, movedOnAttack;
+
         [SerializeField] private Vector2 moveOnAttackSpeed;
-        [SerializeField] private GameObject hitParticles;
-        [SerializeField] private AudioSource hitAttackSFX1;
-        [SerializeField] private AudioSource hitAttackSFX2;
+        [SerializeField] protected GameObject hitParticles;
+        [SerializeField] private protected AudioSource hitAttackSFX1;
+        [SerializeField] private protected AudioSource hitAttackSFX2;
         [SerializeField] private AudioSource deathSFX;
         [SerializeField] private protected GameObject dialogueBubble;
 
@@ -476,13 +479,13 @@ namespace Controllers
 
         #region Variables
 
-        private bool dead;
+        protected bool dead;
         protected BaseMovementController baseMovementController;
         protected Animator characterAnimator;
         protected internal Rigidbody2D rBody;
         protected PlayerController playerController;
         private SpriteRenderer renderer;
-        private ECharacterState currentState;
+        protected ECharacterState currentState;
         protected bool playerFacingDirection;
         protected bool canInteract = true;
 
@@ -490,7 +493,7 @@ namespace Controllers
         public bool groundDetected { get; private set; }
         public bool topDetected { get; private set; }
 
-        private bool
+        protected bool
             lastGroundDetected,
             lapidaIntance = false,
             firstAttack,
@@ -505,13 +508,17 @@ namespace Controllers
             velocityStorage,
             forceStorage;
 
-        private float
-            currentHealth,
+        protected float
             moveOnAttackStart,
             damagedTimeCD = float.NegativeInfinity,
             lastAngularVelocity,
             lastTouchDamageTime;
 
         #endregion
+
+        public bool IsDead()
+        {
+            return dead;
+        }
     }
 }

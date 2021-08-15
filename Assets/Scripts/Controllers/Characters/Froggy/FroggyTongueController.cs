@@ -17,6 +17,7 @@ namespace Controllers.Froggy
         private DamageInfo damageInfo;
         private FroggyController froggyController;
         private GameObject tongueEnd;
+        private bool firstSlap;
         public ContactFilter2D whatCanBeDamaged;
 
         private void Start()
@@ -42,6 +43,11 @@ namespace Controllers.Froggy
             Destroy(gameObject);
         }
 
+        public void Anim_FirstSlapEnded()
+        {
+            firstSlap = true;
+        }
+
         public void SetProps(FroggyController froggyController, Froggy_AttackState attackState)
         {
             this.froggyController = froggyController;
@@ -50,32 +56,40 @@ namespace Controllers.Froggy
 
         private void CheckDamage()
         {
-            RaycastHit2D[] hits = new RaycastHit2D[10];
-            coll.Cast(Vector2.right, whatCanBeDamaged, hits);
-            foreach (var hit in hits)
+            if (!firstSlap)
             {
-                if (hit.collider != null)
+                RaycastHit2D[] hits = new RaycastHit2D[10];
+                coll.Cast(transform.right, whatCanBeDamaged, hits);
+                foreach (var hit in hits)
                 {
-                    if (hit.collider.transform != froggyController.transform &&
-                        !damagedObjects.Contains(hit.collider.transform))
+                    if (hit.collider != null)
                     {
-                        if (hit.collider.CompareTag("Enemy"))
+                        if (hit.collider.transform != froggyController.transform &&
+                            !damagedObjects.Contains(hit.collider.transform))
                         {
-                            BaseController bctrl = hit.transform.GetComponent<BaseController>();
-                            if (bctrl != null && (bctrl is IDamageable))
-                                bctrl.Damage(froggyController, damageInfo);
-                        }
-                        else if (hit.collider.CompareTag("Player"))
-                        {
-                            PlayerController pctrl = hit.transform.GetComponent<PlayerController>();
-                            if (pctrl != null && (pctrl is IDamageable))
-                                pctrl.Damage(froggyController, damageInfo);
-                        }
+                            if (hit.collider.CompareTag("Enemy"))
+                            {
+                                BaseController bctrl = hit.transform.GetComponent<BaseController>();
+                                if (bctrl != null && (bctrl is IDamageable))
+                                    bctrl.Damage(froggyController, damageInfo);
+                            }
+                            else if (hit.collider.CompareTag("Player"))
+                            {
+                                PlayerController pctrl = hit.transform.GetComponent<PlayerController>();
+                                if (pctrl != null && (pctrl is IDamageable))
+                                    pctrl.Damage(froggyController, damageInfo);
+                            }
 
-                        damagedObjects.Add(hit.collider.transform);
+                            damagedObjects.Add(hit.collider.transform);
+                        }
                     }
                 }
             }
+        }
+
+        public void Cancel()
+        {
+            Destroy(gameObject);
         }
     }
 }

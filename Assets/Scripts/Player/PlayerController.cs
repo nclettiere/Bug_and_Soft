@@ -22,12 +22,15 @@ namespace Player
         [SerializeField] private AudioSource footStep2;
         [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private float specialMoveCooldownTime = 5f;
+        [SerializeField] private float rollCooldown = 0.5f;
         [SerializeField] private int maxHealth = 150, currentHealth;
         [SerializeField] private float moveOnDamageDuration = 1f;
         [SerializeField] private GameObject onActivateWarpEffect;
         [SerializeField] private GameObject onWarpEffectParticle;
         [SerializeField] private AudioSource onWarpActionedSFX;
         [SerializeField] private AudioSource onWarpedSFX;
+        [SerializeField] private AudioSource onRewardAdded;
+        [SerializeField] private AudioSource onKrownRemove;
 
         private float horizontalMove;
         private bool jump;
@@ -40,6 +43,7 @@ namespace Player
         internal bool respawning;
         private Rigidbody2D rigidbody2D;
         internal bool roll;
+        internal bool rollAnim;
         private bool savedRigidData;
         private float verticalMove;
         private float specialMoveWaitTime;
@@ -47,10 +51,11 @@ namespace Player
         private Vector2 warpPosition;
         private EffectController effectController;
         private bool canUseSpecialMove;
+        private float rollCooldownWait = float.NegativeInfinity;
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
-            if (!roll)
+            if (!rollAnim)
             {
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
@@ -83,8 +88,13 @@ namespace Player
             {
                 if (horizontalMove != 0f && !GameManager.Instance.IsGamePaused())
                 {
+                    //if (Time.time >= rollCooldownWait)
+                    //{
                     roll = true;
+                    rollAnim = true;
                     characterAnimator.SetBool("Roll", true);
+                    //rollCooldownWait = Time.time + rollCooldown;
+                    //}
                 }
             };
             GameManager.Instance.GetPlayerControls().Gameplay.Jump.performed += ctxRoll =>
@@ -98,7 +108,8 @@ namespace Player
                 if (canPlayerInteract && playerMovementCtrl.Grounded)
                 {
                     //    Si el jugador puede interactuar llama a la interfaz del jugador
-                    if (lastInteractiveController != null && canPlayerInteract && lastInteractiveController.CanCharacterInteract())
+                    if (lastInteractiveController != null && canPlayerInteract &&
+                        lastInteractiveController.CanCharacterInteract())
                     {
                         EnterInteractionMode();
                         lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
@@ -218,9 +229,8 @@ namespace Player
                 combatCtrl.attacking);
 
             if (GameManager.Instance.IsGamePaused()) return;
-
-            jump = false;
             roll = false;
+            jump = false;
         }
 
         private void OnDrawGizmos()
@@ -347,7 +357,7 @@ namespace Player
                     break;
             }
         }
-        
+
         public void AddPowerUp(EPowerUpKind kind)
         {
             switch (kind)
@@ -377,7 +387,7 @@ namespace Player
 
         public void AnimRollEndEvt()
         {
-            roll = false;
+            rollAnim = false;
             characterAnimator.SetBool("Roll", false);
         }
 
@@ -392,5 +402,15 @@ namespace Player
         }
 
         #endregion
+
+        public void KrownsAdded()
+        {
+            onRewardAdded.Play();
+        }
+
+        public void KrownsRemoved()
+        {
+            onKrownRemove.Play();
+        }
     }
 }

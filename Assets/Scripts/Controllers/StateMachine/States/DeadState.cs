@@ -18,14 +18,16 @@ namespace Controllers.StateMachine.States
         {
             base.Enter();
 
+            GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
+
             controller.GetAnimator().SetBool(animBoolName, true);
 
             controller.rBody.constraints = RigidbodyConstraints2D.None;
 
             if (stateData.applyTorque)
             {
-                controller.rBody.AddForce(new Vector2(3f * -controller.FacingDirection, 3f), ForceMode2D.Impulse);
-                controller.rBody.AddTorque(10f * -controller.FacingDirection, ForceMode2D.Impulse);
+                controller.AddForce(new Vector2(3f * -controller.FacingDirection, 3f), true);
+                controller.AddTorque(10f * -controller.FacingDirection, true);
             }
 
             deadWaitTime = Time.time + controller.deadMaxWait;

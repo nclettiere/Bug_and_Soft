@@ -10,8 +10,9 @@ using UnityEngine;
 public class Froggy_IdleState : IdleState
 {
     private FroggyController _froggyController;
-    
-    public Froggy_IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, IdleStateData stateData, FroggyController froggyController) 
+
+    public Froggy_IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
+        IdleStateData stateData, FroggyController froggyController)
         : base(controller, stateMachine, animBoolName, stateData)
     {
         _froggyController = froggyController;
@@ -20,7 +21,12 @@ public class Froggy_IdleState : IdleState
     public override void UpdateState()
     {
         base.UpdateState();
-        
+
+        if (controller.CheckPlayerInRange())
+        {
+            stateMachine.ChangeState(_froggyController._prepareAttackState);
+        }
+
         if (isIdleTimeOver)
             stateMachine.ChangeState(_froggyController._jumpState);
     }
@@ -33,13 +39,5 @@ public class Froggy_IdleState : IdleState
     public override void Exit()
     {
         base.Exit();
-    }
-
-    public override void UpdatePhysics()
-    {
-        if (controller.CheckPlayerInRange())
-        {
-            stateMachine.ChangeState(_froggyController._prepareAttackState);
-        }
     }
 }

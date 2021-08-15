@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CameraManagement;
+using Controllers;
+using Controllers.Froggy;
 using Player;
+using UI;
 using UnityEngine;
 
 /// <summary>
 ///     <para>Esta clase controla el estado del juego.</para>
-///     <para>Funciona como helper para todas las clases, ya que controla el UI, las camaras, la muerte del jugador, el guardado y la carga de savegames, entre otros.</para>
+///     <para>Funciona como helper para todas las clases, ya que controla el UI, las camaras, la muerte del jugador, el guardado y la carga de savegames (no implementado), entre otros.</para>
 ///     <para>Se debe instanciar antes de usar <code>GameManager.Instance</code></para>
 /// </summary>
 /// <remarks>
@@ -24,12 +27,13 @@ public class GameManager
     private int playerDeathCount;
     private Camera cameraMain;
     private DynamicCamera dynCamera;
-    private Canvas HUD;
+    private UI_HUD HUD;
+    private Canvas HUDCanvas;
     public PlayerController PlayerController { get; }
     private PlayerControls playerControls;
 
     public int PlayerKrowns { get; private set; }
-    
+
     public float DeltaTime
     {
         get { return isGamePaused ? 0 : Time.deltaTime; }
@@ -50,7 +54,8 @@ public class GameManager
         isInputEnabled = false;
 
         PlayerController = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
-        HUD = GameObject.Find("UI_HUD").GetComponent<Canvas>();
+        HUD = GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
+        HUDCanvas = GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
 
         playerControls.Gameplay.Pause.performed += ctx =>
         {
@@ -85,7 +90,10 @@ public class GameManager
     {
         isGamePaused = false;
         if (!IsFirstStart)
+        {
+            HUDCanvas.enabled = true;
             IsFirstStart = true;
+        }
     }
 
     public bool IsGamePaused()
@@ -206,17 +214,30 @@ public class GameManager
 
     public bool AddPlayerKrowns(int amount)
     {
+        PlayerController.KrownsAdded();
         PlayerKrowns += amount;
-            return true;
+        return true;
     }
-    
+
     public bool RemovePlayerKrowns(int amount)
     {
         if (PlayerKrowns >= amount)
         {
+            PlayerController.KrownsRemoved();
             PlayerKrowns -= amount;
             return true;
         }
+
         return false;
+    }
+
+    public void ShowBossHealth(string bossName, BaseController controller)
+    {
+        HUD.ShowBossHealth(bossName, controller);
+    }
+
+    public void HideBossHealth()
+    {
+        HUD.HideBossHealth();
     }
 }

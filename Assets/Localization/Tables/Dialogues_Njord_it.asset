@@ -27,10 +27,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: Ricorda di premere Q o R1 per attivarlo!
+    m_Localized: TI PERMETTE DI TELEFONARTI IN QUALSIASI POSIZIONE VUOI!
     m_Metadata:
       m_Items: []
   - m_Id: 641822951305216
+    m_Localized: Ricorda di premere Q o R1 per attivarlo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705612781539328
     m_Localized: SALVA TUO PADRE, PACO!
     m_Metadata:
       m_Items: []

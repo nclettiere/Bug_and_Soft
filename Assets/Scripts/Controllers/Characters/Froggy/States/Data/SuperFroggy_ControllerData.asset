@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec42f9dbfcf54c74683b6cb5142125ff, type: 3}
   m_Name: SuperFroggy_ControllerData
   m_EditorClassIdentifier: 
-  wallCheckDistance: 0.2
+  wallCheckDistance: 1.95
   ledgeCheckDistacne: 5
   groundCheckDistance: 0.5
   topCheckDistance: 0.5

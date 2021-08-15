@@ -50,7 +50,7 @@ namespace Dialogues
 
         public int GetDialogueCount()
         {
-            return (to - from);
+            return locales.Length;
         }
 
         public DialogueData GetDialogueLocale(int index)

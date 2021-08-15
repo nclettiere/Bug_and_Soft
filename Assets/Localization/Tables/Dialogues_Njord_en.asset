@@ -23,14 +23,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: HERE, TAKE THIS POWERUP, IT WILL HELP YOU THOUGH YOUR ADVENTURE
+    m_Localized: HERE, TAKE THIS POWERUP, IT WILL HELP YOU TROUGH YOUR ADVENTURE
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: Remember to press Q or R1 to actionate it!
+    m_Localized: IT ALLOWS YOU TO TELEPORT TO ANY LOCATION YOU WANT!
     m_Metadata:
       m_Items: []
   - m_Id: 641822951305216
+    m_Localized: Remember to press Q or R1 to activate it!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705612781539328
     m_Localized: SAVE YOUR FATHER, PACO!
     m_Metadata:
       m_Items: []
