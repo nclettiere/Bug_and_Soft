@@ -30,6 +30,7 @@ namespace Dialogues
 
         public void ShowDialogues(DialogueGroup dialogues)
         {
+            GameManager.Instance.PauseGame();
             dialogueCanvas.enabled = true;
             dialogueEffector.SetDialogues(dialogues);
             dialogueEffector.DisplayDialogues();

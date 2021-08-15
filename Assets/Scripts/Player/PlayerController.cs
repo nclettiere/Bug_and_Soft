@@ -46,6 +46,7 @@ namespace Player
         private bool warpActioned;
         private Vector2 warpPosition;
         private EffectController effectController;
+        private bool canUseSpecialMove;
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -97,7 +98,7 @@ namespace Player
                 if (canPlayerInteract && playerMovementCtrl.Grounded)
                 {
                     //    Si el jugador puede interactuar llama a la interfaz del jugador
-                    if (lastInteractiveController != null && canPlayerInteract)
+                    if (lastInteractiveController != null && canPlayerInteract && lastInteractiveController.CanCharacterInteract())
                     {
                         EnterInteractionMode();
                         lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
@@ -108,6 +109,8 @@ namespace Player
             // SpecialMove input (SOLO PARA EL WARP MOVE, LOS DEMAS MOVES PARA EL 2 SPRINT)
             GameManager.Instance.GetPlayerControls().Gameplay.SpecialMove.performed += ctx =>
             {
+                if (!canUseSpecialMove)
+                    return;
                 if (Time.time >= specialMoveWaitTime)
                 {
                     warpActioned = false;
@@ -341,6 +344,16 @@ namespace Player
             {
                 case EEffectKind.SLOWDOWN:
                     playerMovementCtrl.AddSpeedPenalty(lifetime);
+                    break;
+            }
+        }
+        
+        public void AddPowerUp(EPowerUpKind kind)
+        {
+            switch (kind)
+            {
+                case EPowerUpKind.TELEPORT:
+                    canUseSpecialMove = true;
                     break;
             }
         }

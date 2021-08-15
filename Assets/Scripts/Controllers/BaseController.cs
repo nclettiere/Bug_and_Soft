@@ -95,7 +95,7 @@ namespace Controllers
 
         public void ReadyToInteract(PlayerController controller, bool isReady)
         {
-            if (isReady && dialogueBubble != null)
+            if (canInteract && isReady && dialogueBubble != null)
                 dialogueBubble.gameObject.SetActive(true);
             else
                 dialogueBubble.gameObject.SetActive(false);
@@ -103,7 +103,6 @@ namespace Controllers
 
         public void ReadyToInteract(BaseController controller, bool isReady)
         {
-            throw new System.NotImplementedException();
         }
 
         private void Awake()
@@ -419,6 +418,11 @@ namespace Controllers
             Destroy(gameObject);
         }
 
+        public bool CanCharacterInteract()
+        {
+            return canInteract;
+        }
+
         #region UserVariables
 
         public int FacingDirection { get; private set; } =
@@ -474,6 +478,7 @@ namespace Controllers
         private SpriteRenderer renderer;
         private ECharacterState currentState;
         protected bool playerFacingDirection;
+        protected bool canInteract = true;
         public bool canCharacterDie = false;
 
         public bool wallDetected { get; private set; }

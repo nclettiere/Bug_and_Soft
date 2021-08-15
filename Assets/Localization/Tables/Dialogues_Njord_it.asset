@@ -19,15 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 8718995456
-    m_Localized: HEY PACO! VOGLIO UN PO' DI POWER UPS?
+    m_Localized: "IO, PACO! \xC8 TROPPO PERICOLOSO ANDARE COS"
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: "\rSCEGLI UNO SAGGEZZA, PUOI UTILIZZARLO SOLO UNA VOLTA PER LIVELLO."
+    m_Localized: ECCO, PRENDI QUESTO POWERUP TI AIUTERA' NELLA TUA AVVENTURA
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: SCELTA SAGGIA!
+    m_Localized: Ricorda di premere Q o R1 per attivarlo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 641822951305216
+    m_Localized: SALVA TUO PADRE, PACO!
     m_Metadata:
       m_Items: []
   references:
