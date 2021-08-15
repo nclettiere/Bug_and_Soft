@@ -25,6 +25,10 @@ MonoBehaviour:
     m_Address: Assets/Localization/Tables/Dialogues_Njord Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 377b63e7a476f63488288563bae7f468
+    m_Address: Assets/Localization/Tables/Njord Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: dac00cbf13a36cc4a860be303f5402e2, type: 2}
   m_SchemaSet:

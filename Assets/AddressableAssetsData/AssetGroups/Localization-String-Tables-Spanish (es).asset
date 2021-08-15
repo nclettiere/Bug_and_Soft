@@ -22,8 +22,15 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es
+    - Preload
   - m_GUID: bdf29e0aa6216944da3eb1ad93704d33
     m_Address: Dialogues_Njord_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+  - m_GUID: 3b428bfd65a14a844b2e5ecb99afc606
+    m_Address: Njord_es
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es

@@ -24,6 +24,9 @@ MonoBehaviour:
     id: 5
   m_Metadata:
     m_Items: []
+  m_ProjectLocaleIdentifier:
+    m_Code: en
+  m_InitializeSynchronously: 1
   references:
     version: 1
     00000000:
