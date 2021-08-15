@@ -19,15 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 8718995456
-    m_Localized: OYE PACO! QUIERES UNOS POWER UPS?
+    m_Localized: OYE PACO! ES MUY PELIGROSO IR POR AHI DESPROTEGIDO
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: ELIJE UNO SABIAMENTE, SOLO LO PODRAS USAR EN ESTE NIVEL.
+    m_Localized: TOMA, UN POWERUP PARA AYUDARTE EN TU AVENTURA
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: SABIA ELECCION!
+    m_Localized: Recuerda presionar Q o R1 para accionarlo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 641822951305216
+    m_Localized: SALVA A TU, PADRE PACO!
     m_Metadata:
       m_Items: []
   references:

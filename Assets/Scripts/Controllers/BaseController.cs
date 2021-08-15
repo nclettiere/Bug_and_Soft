@@ -95,7 +95,7 @@ namespace Controllers
 
         public void ReadyToInteract(PlayerController controller, bool isReady)
         {
-            if (isReady && dialogueBubble != null)
+            if (canInteract && isReady && dialogueBubble != null)
                 dialogueBubble.gameObject.SetActive(true);
             else
                 dialogueBubble.gameObject.SetActive(false);
@@ -103,7 +103,6 @@ namespace Controllers
 
         public void ReadyToInteract(BaseController controller, bool isReady)
         {
-            throw new System.NotImplementedException();
         }
 
         private void Awake()
@@ -206,8 +205,8 @@ namespace Controllers
 
                 // Player Detection
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(wallCheck.position,
-                    new Vector2((wallCheck.position.x + (ctrlData.playerDetectionDistance * FacingDirection)),
+                Gizmos.DrawLine(transform.position,
+                    new Vector2((transform.position.x + (ctrlData.playerDetectionDistance * FacingDirection)),
                         transform.position.y));
             }
 
@@ -273,7 +272,7 @@ namespace Controllers
 
         public bool CheckWall()
         {
-            return Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.wallCheckDistance,
+            return Physics2D.Raycast(transform.position, transform.right, ctrlData.wallCheckDistance,
                 ctrlData.whatIsGround);
         }
 
@@ -297,7 +296,7 @@ namespace Controllers
 
         public bool CheckPlayerInRange()
         {
-            RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.playerDetectionDistance,
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, ctrlData.playerDetectionDistance,
                 ctrlData.whatIsPlayer);
 
             if (hit.collider != null)
@@ -409,14 +408,23 @@ namespace Controllers
 
         public void DestroyNow()
         {
+            StopAllCoroutines();
+            GameManager.Instance.AddPlayerKrowns(KrownReward);
             Destroy(gameObject);
         }
 
         public void DestroyNow(GameObject lapida)
         {
+            StopAllCoroutines();
+            GameManager.Instance.AddPlayerKrowns(KrownReward);
             renderer.enabled = false;
             Instantiate(lapida, transform.position, Quaternion.Euler(0f, 0f, 0f));
             Destroy(gameObject);
+        }
+
+        public bool CanCharacterInteract()
+        {
+            return canInteract;
         }
 
         #region UserVariables
@@ -428,6 +436,8 @@ namespace Controllers
         public ControllerStateMachine StateMachine = new ControllerStateMachine();
         public ControllerData ctrlData;
         public float deadMaxWait = 5f;
+        
+        public int KrownReward = 5;
 
         [SerializeField] private protected EControllerKind controllerKind = EControllerKind.NPC;
         [SerializeField] private ECharacterKind characterKind;
@@ -474,7 +484,7 @@ namespace Controllers
         private SpriteRenderer renderer;
         private ECharacterState currentState;
         protected bool playerFacingDirection;
-        public bool canCharacterDie = false;
+        protected bool canInteract = true;
 
         public bool wallDetected { get; private set; }
         public bool groundDetected { get; private set; }

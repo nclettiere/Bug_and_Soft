@@ -14,6 +14,8 @@ namespace Controllers
         [Header("Njord : Dialogue Options")] [SerializeField]
         private DialogueGroup dialogues;
 
+        private bool interacted;
+        
         protected override void Start()
         {
             base.Start();
@@ -43,10 +45,15 @@ namespace Controllers
 
         public override bool Interact(PlayerController controller, EInteractionKind interactionKind)
         {
-            // disables the interaction bubble !!
-            dialogueBubble.gameObject.SetActive(false);
-            // Open the dialogue canvas
-            DialogueManager.Instance.ShowDialogues(dialogues);
+            if (!interacted)
+            {
+                // disables the interaction bubble !!
+                dialogueBubble.gameObject.SetActive(false);
+                // Open the dialogue canvas
+                DialogueManager.Instance.ShowDialogues(dialogues);
+                interacted = true;
+                canInteract = false;
+            }
 
             return true;
         }

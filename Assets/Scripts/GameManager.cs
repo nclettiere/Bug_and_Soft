@@ -24,9 +24,12 @@ public class GameManager
     private int playerDeathCount;
     private Camera cameraMain;
     private DynamicCamera dynCamera;
+    private Canvas HUD;
     public PlayerController PlayerController { get; }
     private PlayerControls playerControls;
 
+    public int PlayerKrowns { get; private set; }
+    
     public float DeltaTime
     {
         get { return isGamePaused ? 0 : Time.deltaTime; }
@@ -47,6 +50,7 @@ public class GameManager
         isInputEnabled = false;
 
         PlayerController = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
+        HUD = GameObject.Find("UI_HUD").GetComponent<Canvas>();
 
         playerControls.Gameplay.Pause.performed += ctx =>
         {
@@ -198,5 +202,21 @@ public class GameManager
     public void PlayerExitInteractionMode()
     {
         PlayerController.ExitInteractionMode();
+    }
+
+    public bool AddPlayerKrowns(int amount)
+    {
+        PlayerKrowns += amount;
+            return true;
+    }
+    
+    public bool RemovePlayerKrowns(int amount)
+    {
+        if (PlayerKrowns >= amount)
+        {
+            PlayerKrowns -= amount;
+            return true;
+        }
+        return false;
     }
 }

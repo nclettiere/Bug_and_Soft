@@ -19,15 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 8718995456
-    m_Localized: OI, PACO! WAN' SOME POWER UPS?
+    m_Localized: OI, PACO! ITS TOO DANGEROUS TO GO LIKE THAT
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: CHOOSE ONE WISELY, YOU CAN ONLY USE IT ONCE PER LEVEL.
+    m_Localized: HERE, TAKE THIS POWERUP, IT WILL HELP YOU THOUGH YOUR ADVENTURE
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: WISE CHOICE!
+    m_Localized: Remember to press Q or R1 to actionate it!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 641822951305216
+    m_Localized: SAVE YOUR FATHER, PACO!
     m_Metadata:
       m_Items: []
   references:

@@ -15,6 +15,7 @@ public class DialogueTextEffector : MonoBehaviour
     public string text;
 
     [SerializeField] private AudioSource textTypeSFX;
+    [SerializeField] private AudioSource choiceSelectSFX;
     [SerializeField] private Button dialogueNextButton;
     [SerializeField] private LocalizeStringEvent localeStringEvent;
 
@@ -41,7 +42,7 @@ public class DialogueTextEffector : MonoBehaviour
 
     IEnumerator ShowText()
     {
-        for (int ii = 0; ii < dialogues.GetDialogueCount(); ii++)
+        for (int ii = 0; ii < dialogues.GetDialogueCount() + 1; ii++)
         {
             currentDialogueData = dialogues.NextDialogue();
 
@@ -66,21 +67,39 @@ public class DialogueTextEffector : MonoBehaviour
             }
 
             HideChoiceButtons();
+            
+            if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH)
+            {
+                OnEffectFinished();
+            }
         }
-
-        OnEffectFinished();
     }
 
     private void OnChoiceEvent()
     {
         choiceButton.gameObject.SetActive(true);
-        choiceButton.onClick.AddListener(() => currentDialogueData.RunAction());
+        
+        // TODO: Para el segundo sprint implementar RunAction con UnityEvent
+        //choiceButton.onClick.AddListener(() => currentDialogueData.RunAction());
+        
+        // Temporal, hasta el segundo sprint !
+        choiceButton.onClick.AddListener(() =>
+        {
+            choiceSelectSFX.Play();
+            DialogueManager.Instance.ChooseOption(2);
+            GameManager.Instance.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
+        });
     }
 
     private void OnEffectFinished()
     {
         finishButton.gameObject.SetActive(true);
-        finishButton.onClick.AddListener(() => currentDialogueData.RunAction());
+        finishButton.onClick.AddListener(() =>
+        {
+            DialogueManager.Instance.HideDialogues();
+            GameManager.Instance.PlayerExitInteractionMode();
+            GameManager.Instance.ResumeGame();
+        });
     }
 
     private void HideChoiceButtons()
