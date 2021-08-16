@@ -18,7 +18,7 @@ namespace Controllers.Damage
         /// </summary>
         /// <param name="damageAmount">La cantidad de danio a inflingir.</param>
         /// <param name="attackXPosition">La posicion X del ataque.</param>
-        public DamageInfo(int damageAmount, float attackXPosition, bool moveOnAttack, bool stun, bool slow) : this()
+        public DamageInfo(int damageAmount, float attackXPosition, bool moveOnAttack = false, bool stun = false, bool slow = false) : this()
         {
             DamageAmount = damageAmount;
             AttackXPosition = attackXPosition;

@@ -18,6 +18,7 @@ MonoBehaviour:
   topCheckDistance: 0.5
   playerNearRangeDistance: 10
   playerLongRangeDistance: 5
+  generalDamage: 5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8

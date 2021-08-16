@@ -240,4 +240,14 @@ public class GameManager
     {
         HUD.HideBossHealth();
     }
+
+    public void SetRomhoppState(int newState)
+    {
+        HUD.SetRomhoppState(newState);
+    }
+
+    public void ShowHUD()
+    {
+        HUDCanvas.enabled = true;
+    }
 }

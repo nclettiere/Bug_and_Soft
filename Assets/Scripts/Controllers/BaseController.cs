@@ -68,7 +68,7 @@ namespace Controllers
                 if (currentHealth <= 0f)
                     Die();
 
-                damagedTimeCD = Time.time + 0.15f;
+                damagedTimeCD = Time.time + 0.25f;
             }
         }
 
@@ -119,7 +119,7 @@ namespace Controllers
             rBody = GetComponent<Rigidbody2D>();
             renderer = GetComponent<SpriteRenderer>();
             playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-            currentHealth = maxHealth;
+            currentHealth = ctrlData.maxHealth;
 
             StateMachine = new ControllerStateMachine();
         }
@@ -392,36 +392,35 @@ namespace Controllers
             }
         }
 
-        private void CheckTouchDamage()
+        public void CheckTouchDamage()
         {
-            //if (canDamageOnTouch &&
-            //    Time.time >= lastTouchDamageTime + touchDamageCooldown)
-            //{
-            //    touchDamageBottomLeft.Set(
-            //        touchDamageCheck.position.x - (touchDamageWidth / 2),
-            //        touchDamageCheck.position.y - (touchDamageHeight / 2));
-//
-            //    touchDamageTopRight.Set(
-            //        touchDamageCheck.position.x + (touchDamageWidth / 2),
-            //        touchDamageCheck.position.y + (touchDamageHeight / 2));
-//
-            //    Collider2D hit = Physics2D.OverlapArea(
-            //        touchDamageBottomLeft,
-            //        touchDamageTopRight,
-            //        whatIsPlayer);
-//
-            //    if (hit != null)
-            //    {
-            //        lastTouchDamageTime = Time.time;
-            //DamageInfo dInfo = new DamageInfo(touchDamage, transform.position.x);
-//
-            //        PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
-            //        if (bctrl != null && (bctrl is IDamageable))
-            //        {
-            //            bctrl.Damage(this, dInfo);
-            //        }
-            //    }
-            //}
+            if (Time.time >= lastTouchDamageTime + touchDamageCooldown)
+            {
+                touchDamageBottomLeft.Set(
+                    touchDamageCheck.position.x - (touchDamageWidth / 2),
+                    touchDamageCheck.position.y - (touchDamageHeight / 2));
+
+                touchDamageTopRight.Set(
+                    touchDamageCheck.position.x + (touchDamageWidth / 2),
+                    touchDamageCheck.position.y + (touchDamageHeight / 2));
+
+                Collider2D hit = Physics2D.OverlapArea(
+                    touchDamageBottomLeft,
+                    touchDamageTopRight,
+                    ctrlData.whatIsPlayer);
+
+                if (hit != null)
+                {
+                    lastTouchDamageTime = Time.time;
+                    DamageInfo dInfo = new DamageInfo(ctrlData.generalDamage, transform.position.x);
+
+                    PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+                    if (bctrl != null && (bctrl is IDamageable))
+                    {
+                        bctrl.Damage(this, dInfo);
+                    }
+                }
+            }
         }
 
         private protected IEnumerator DamageEffect()
@@ -464,7 +463,6 @@ namespace Controllers
         public ControllerStateMachine StateMachine = new ControllerStateMachine();
         public ControllerData ctrlData;
         public float deadMaxWait = 5f;
-        public int maxHealth = 50;
         public int currentHealth;
 
         public int KrownReward = 5;

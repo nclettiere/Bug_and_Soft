@@ -88,6 +88,7 @@ public class DialogueTextEffector : MonoBehaviour
             choiceSelectSFX.Play();
             DialogueManager.Instance.ChooseOption(2);
             GameManager.Instance.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
+            GameManager.Instance.SetRomhoppState(0);
         });
     }
 

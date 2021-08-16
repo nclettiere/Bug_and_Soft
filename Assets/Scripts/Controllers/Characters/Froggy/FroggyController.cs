@@ -128,6 +128,8 @@ namespace Controllers.Froggy
 
                 if (currentHealth <= 0f)
                     Die();
+                else
+                    StateMachine.ChangeState(_damageState);
 
                 damagedTimeCD = Time.time + 0.45f;
             }

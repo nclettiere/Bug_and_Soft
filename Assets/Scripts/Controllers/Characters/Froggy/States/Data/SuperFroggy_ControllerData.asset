@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallCheckDistance: 1.95
   ledgeCheckDistacne: 5
-  groundCheckDistance: 0.5
-  topCheckDistance: 0.5
-  playerDetectionDistance: 10
+  groundCheckDistance: 11.49
+  topCheckDistance: 2.06
+  playerNearRangeDistance: 21.31
+  playerLongRangeDistance: 30
+  generalDamage: 30
+  maxHealth: 250
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8

@@ -24,7 +24,14 @@ public class Froggy_IdleState : IdleState
 
         if (controller.CheckPlayerInNearRange())
         {
+            Debug.Log("Player nearby");
             stateMachine.ChangeState(_froggyController._nearAttackState);
+        }        
+        
+        if (controller.CheckPlayerInLongRange())
+        {
+            Debug.Log("Player in long range");
+            stateMachine.ChangeState(_froggyController._prepareAttackState);
         }
 
         if (isIdleTimeOver)

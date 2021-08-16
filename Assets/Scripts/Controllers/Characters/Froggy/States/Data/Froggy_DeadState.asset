@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Froggy_DeadState
   m_EditorClassIdentifier: 
   applyTorque: 1
-  showLapida: 1
   lapida: {fileID: 1185056716335366503, guid: ab75ade4c48b42a4a89493cd5ea4bea1, type: 3}
+  showLapida: 0

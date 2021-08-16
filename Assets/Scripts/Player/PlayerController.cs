@@ -23,7 +23,7 @@ namespace Player
         [SerializeField] private float generalSpeed = 40f;
         [SerializeField] private float specialMoveCooldownTime = 5f;
         [SerializeField] private float rollCooldown = 0.5f;
-        [SerializeField] private int maxHealth = 150, currentHealth;
+        [SerializeField] public int currentHealth;
         [SerializeField] private float moveOnDamageDuration = 1f;
         [SerializeField] private GameObject onActivateWarpEffect;
         [SerializeField] private GameObject onWarpEffectParticle;
@@ -31,6 +31,10 @@ namespace Player
         [SerializeField] private AudioSource onWarpedSFX;
         [SerializeField] private AudioSource onRewardAdded;
         [SerializeField] private AudioSource onKrownRemove;
+        [SerializeField] private AudioSource onPlayerHurtSFX;
+        
+        
+        public int maxHealth = 150;
 
         private float horizontalMove;
         private bool jump;
@@ -46,8 +50,8 @@ namespace Player
         internal bool rollAnim;
         private bool savedRigidData;
         private float verticalMove;
-        private float specialMoveWaitTime;
-        private bool warpActioned;
+        public float specialMoveWaitTime;
+        public bool warpActioned;
         private Vector2 warpPosition;
         private EffectController effectController;
         private bool canUseSpecialMove;
@@ -61,6 +65,8 @@ namespace Player
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 currentHealth -= damageInfo.DamageAmount;
+                
+                onPlayerHurtSFX.Play();
 
                 if (damageInfo.MoveOnAttack)
                     MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
@@ -122,6 +128,7 @@ namespace Player
             {
                 if (!canUseSpecialMove)
                     return;
+                
                 if (Time.time >= specialMoveWaitTime)
                 {
                     warpActioned = false;
@@ -133,22 +140,36 @@ namespace Player
                     {
                         if (Time.time >= specialMoveWaitTime)
                         {
+                            StopCoroutine(ROMHOPPCooldownAnim());
                             warpPosition = transform.position;
                             warpActioned = true;
                             Instantiate(onActivateWarpEffect, transform.position, Quaternion.Euler(0f, 0f, 0f));
                             specialMoveWaitTime = Time.time + specialMoveCooldownTime;
                             onWarpActionedSFX.Play();
+                            GameManager.Instance.SetRomhoppState(1);
                         }
                     }
                     else
                     {
+                        StopCoroutine(ROMHOPPCooldownAnim());
                         transform.position = warpPosition;
                         warpActioned = false;
                         onWarpedSFX.Play();
                         Instantiate(onWarpEffectParticle, transform.position, Quaternion.Euler(0f, 0f, 0f));
+                        specialMoveWaitTime = Time.time + specialMoveCooldownTime;
+
+
+                        StartCoroutine(ROMHOPPCooldownAnim());
                     }
                 }
             };
+        }
+
+        private IEnumerator ROMHOPPCooldownAnim()
+        {
+            GameManager.Instance.SetRomhoppState(2);
+            yield return new WaitForSeconds(specialMoveWaitTime);
+            GameManager.Instance.SetRomhoppState(0);
         }
 
         public void ExitInteractionMode()
@@ -204,6 +225,17 @@ namespace Player
                     characterAnimator.SetBool("Praying", false);
                     respawning = false;
                 }
+            }
+            
+            if (Time.time > specialMoveWaitTime && !warpActioned)
+            {
+                GameManager.Instance.SetRomhoppState(0);
+            }else if (Time.time < specialMoveWaitTime && warpActioned)
+            {
+                GameManager.Instance.SetRomhoppState(1);
+            }else if (Time.time < specialMoveWaitTime && !warpActioned)
+            {
+                GameManager.Instance.SetRomhoppState(2);
             }
 
             CheckInteractions();
