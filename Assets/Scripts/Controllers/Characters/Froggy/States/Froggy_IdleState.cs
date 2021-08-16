@@ -22,9 +22,9 @@ public class Froggy_IdleState : IdleState
     {
         base.UpdateState();
 
-        if (controller.CheckPlayerInRange())
+        if (controller.CheckPlayerInNearRange())
         {
-            stateMachine.ChangeState(_froggyController._prepareAttackState);
+            stateMachine.ChangeState(_froggyController._nearAttackState);
         }
 
         if (isIdleTimeOver)

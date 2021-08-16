@@ -36,7 +36,7 @@ namespace Controllers.StateMachine.States
         {
             base.UpdateState();
             
-            if (controller.CheckPlayerInRange())
+            if (controller.CheckPlayerInLongRange())
             {
                 LookAtPlayer();
                 

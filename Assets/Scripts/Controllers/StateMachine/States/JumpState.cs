@@ -49,7 +49,7 @@ namespace Controllers.StateMachine.States
         {
             base.UpdateState();
 
-            if (controller.CheckPlayerInRange())
+            if (controller.CheckPlayerInLongRange())
                 stateMachine.ChangeState(froggyController._prepareAttackState);
 
             if (Time.time >= lastJumpTime)

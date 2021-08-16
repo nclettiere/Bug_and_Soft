@@ -153,7 +153,11 @@ namespace Controllers
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
                 if (!dead)
-                    CheckPlayerInRange();
+                {
+                    CheckPlayerInNearRange();
+                    CheckPlayerInLongRange();
+                }
+
                 StateMachine.CurrentState.UpdateState();
             }
         }
@@ -204,9 +208,15 @@ namespace Controllers
 
 
                 // Player Detection
+                //Near range
                 Gizmos.color = Color.blue;
                 Gizmos.DrawLine(transform.position,
-                    new Vector2((transform.position.x + (ctrlData.playerDetectionDistance * FacingDirection)),
+                    new Vector2((transform.position.x + (ctrlData.playerNearRangeDistance * FacingDirection)),
+                        transform.position.y));
+                //Long range
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(transform.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                    new Vector2((transform.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
                         transform.position.y));
             }
 
@@ -294,17 +304,37 @@ namespace Controllers
                 ctrlData.whatIsGround);
         }
 
-        public bool CheckPlayerInRange()
+
+        public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, ctrlData.playerDetectionDistance,
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, ctrlData.playerNearRangeDistance,
                 ctrlData.whatIsPlayer);
 
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("Player"))
+                {
                     return true;
+                }
             }
 
+            return false;
+        }
+        
+        public bool CheckPlayerInLongRange()
+        {
+            Vector2 longRangePos = transform.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
+            RaycastHit2D hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
+                ctrlData.whatIsPlayer);
+        
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    return true;
+                }
+            }
+        
             return false;
         }
 

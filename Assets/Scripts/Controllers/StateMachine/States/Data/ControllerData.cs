@@ -12,7 +12,8 @@ namespace Controllers.StateMachine.States.Data
         public float ledgeCheckDistacne = 0.5f;
         public float groundCheckDistance = 0.5f;
         public float topCheckDistance = 0.5f;
-        public float playerDetectionDistance = 10f;
+        public float playerNearRangeDistance = 5f;
+        public float playerLongRangeDistance = 8f;
         public LayerMask whatIsGround, whatIsPlayer;
     }
 }

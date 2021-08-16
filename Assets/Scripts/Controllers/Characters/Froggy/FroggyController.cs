@@ -30,6 +30,7 @@ namespace Controllers.Froggy
         public Froggy_AttackState _attackState { get; private set; }
         public Froggy_DeadState _deadState { get; private set; }
         public Froggy_DamageState _damageState { get; private set; }
+        public Froggy_NearAttackState _nearAttackState { get; private set; }
 
         protected override void Start()
         {
@@ -44,7 +45,8 @@ namespace Controllers.Froggy
             _attackState = new Froggy_AttackState(this, StateMachine, "Attacking", _attackStateData, this);
             _deadState = new Froggy_DeadState(this, StateMachine, "Dead", _deadStateData, this);
             _damageState = new Froggy_DamageState(this, StateMachine, "Dead", _damageStateData, this);
-
+            _nearAttackState = new Froggy_NearAttackState(this, StateMachine, "Idle", _jumpStateData, this);
+            
             StateMachine.Initialize(_idleState);
 
             InvokeRepeating("MoveCejas", 0f, 7f);
@@ -54,7 +56,6 @@ namespace Controllers.Froggy
         {
             _attackState.attackStarted = true;
         }
-
 
         /// <summary>
         /// Ataque especial de Froggy => Lengua suculenta

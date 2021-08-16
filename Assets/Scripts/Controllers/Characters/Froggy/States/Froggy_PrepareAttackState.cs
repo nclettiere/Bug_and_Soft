@@ -16,7 +16,7 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
-            if (controller.CheckPlayerInRange())
+            if (controller.CheckPlayerInLongRange())
             {
                 LookAtPlayer();
                 

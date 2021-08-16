@@ -16,7 +16,8 @@ MonoBehaviour:
   ledgeCheckDistacne: 5
   groundCheckDistance: 0.5
   topCheckDistance: 0.5
-  playerDetectionDistance: {x: 10, y: 5}
+  playerNearRangeDistance: 10
+  playerLongRangeDistance: 5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
