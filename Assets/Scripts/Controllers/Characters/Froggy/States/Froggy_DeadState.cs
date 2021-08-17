@@ -11,10 +11,55 @@ public class Froggy_DeadState : DeadState
 {
     private FroggyController _froggyController;
 
+    private float enterPhaseTwoWaitTime = float.NegativeInfinity;
+
     public Froggy_DeadState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
         DeadStateData stateData, FroggyController froggyController)
         : base(controller, stateMachine, animBoolName, stateData)
     {
         _froggyController = froggyController;
+    }
+    
+    
+    public override void Enter()
+    {
+        if (_froggyController.controllerKind != EControllerKind.Boss)
+        {
+            base.Enter();
+        }
+        else
+        {
+
+            GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
+            _froggyController.GetAnimator().SetBool("SuperFroggy_Transforming", true);
+            enterPhaseTwoWaitTime = Time.time + 3f;
+        }
+    }
+
+    public override void Exit()
+    {
+        base.Exit(); 
+    }
+
+    public override void UpdateState()
+    {
+        if (_froggyController.controllerKind != EControllerKind.Boss)
+        {
+            base.UpdateState();
+            return;
+        }
+
+        LookAtPlayer();
+        if (Time.time > enterPhaseTwoWaitTime)
+            _froggyController.Explode();
+    }
+        
+    protected virtual void LookAtPlayer()
+    {
+        float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
+                
+        if ((controller.transform.position.x < playerPositionX && controller.FacingDirection == -1) ||
+            (controller.transform.position.x > playerPositionX && controller.FacingDirection == 1))
+            controller.Flip();
     }
 }

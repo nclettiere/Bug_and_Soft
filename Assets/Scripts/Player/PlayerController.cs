@@ -79,6 +79,28 @@ namespace Player
             }
         }
 
+        public void Damage(DamageInfo damageInfo)
+        {
+            if (!rollAnim)
+            {
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
+
+                currentHealth -= damageInfo.DamageAmount;
+                
+                onPlayerHurtSFX.Play();
+
+                if (damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
+
+                if (damageInfo.Slow)
+                {
+                    AddEffect(EEffectKind.SLOWDOWN, damageInfo.slowDuration);
+                    effectController.SetEffectSlowDownActive(damageInfo.slowDuration);
+                }
+            }
+        }
+
         private void Start()
         {
             var SpawnPoint = GameObject.Find("SpawnPoint");

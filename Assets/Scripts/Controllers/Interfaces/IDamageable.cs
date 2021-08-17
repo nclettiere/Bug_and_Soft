@@ -19,5 +19,7 @@ namespace Controllers
         /// <param name="controller">Controlador del que inflinge damage.</param>
         /// <param name="damageInfo">La informacion del damage.</param>
         void Damage(BaseController controller, DamageInfo damageInfo);
+        
+        void Damage(DamageInfo damageInfo);
     }
 }

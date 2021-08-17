@@ -1,6 +1,7 @@
 using Controllers;
 using System.Collections;
 using System.Collections.Generic;
+using Controllers.Damage;
 using UnityEngine;
 
 namespace Player
@@ -15,7 +16,7 @@ namespace Player
 
         private int attackN = 0;
 
-        [SerializeField] private float[] attacksDamage;
+        [SerializeField] private int[] attacksDamage;
 
         [SerializeField] private Transform[] attacksHitboxPositions;
 
@@ -172,7 +173,7 @@ namespace Player
                     return;
 
                 RaycastHit2D[] detectedObjs =
-                    Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 1f,
+                    Physics2D.CircleCastAll(transform.position, attacksHitboxRadius[attackN - 1],
                         new Vector2(0f, 0f));
 
                 foreach (RaycastHit2D raycast in detectedObjs)
@@ -181,7 +182,9 @@ namespace Player
                     BaseController bctrl = raycast.transform.GetComponent<BaseController>();
                     if (bctrl != null && (bctrl is IDamageable))
                     {
-                        bctrl.Damage(attacksDamage[attackN - 1], attackN);
+                        DamageInfo damageInfo = new DamageInfo(attacksDamage[attackN - 1], transform.position.x, true);
+                        damageInfo.MoveOnAttackForce = new Vector2(5f * attackN, 10f);
+                        bctrl.Damage(damageInfo);
                     }
                 }
 

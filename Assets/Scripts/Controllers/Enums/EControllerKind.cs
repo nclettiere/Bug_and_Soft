@@ -8,6 +8,7 @@ namespace Controllers
     {
         NPC = 1,
         Enemy,
-        Neutral
+        Neutral,
+        Boss
     }
 }

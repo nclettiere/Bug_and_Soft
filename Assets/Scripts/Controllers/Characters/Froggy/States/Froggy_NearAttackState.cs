@@ -42,6 +42,12 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
+            
+            if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            {
+                froggyController.EnterPhaseTwo();
+            }
+            
             if (controller.CheckPlayerInLongRange())
             {
                 stateMachine.ChangeState(froggyController._prepareAttackState);
@@ -51,18 +57,14 @@ namespace Controllers.Froggy
             
             if (Time.time >= lastJumpTime)
             {
-                froggyController.GetAnimator().SetBool("NearAttackAlert", false);
-                froggyController.GetAnimator().SetBool("Idle", false);
-                froggyController.GetAnimator().SetBool("Jumping", true);
-
                 controller.GetAnimator().SetBool(animBoolName, true);
                 // SFX de saltar !!!
                 AudioSource.PlayClipAtPoint(jumpStateData.jumpSFX, controller.GetTransfrom().position);
 
-                controller.AddForce(new Vector2( 10f, 5f), true);
+                controller.AddForce(new Vector2( 10f, 7f), true);
 
                 lastJumpTime = Time.time + 1.25f;
-            }else if ((lastJumpTime - Time.time) < 0.5f)
+            }else if ((lastJumpTime - Time.time) < jumpCooldownTime)
             {
                 froggyController.GetAnimator().SetBool("NearAttackAlert", true);
             }
@@ -74,17 +76,14 @@ namespace Controllers.Froggy
                     controller.CheckTouchDamage();
                 }
             }
-            
-            Debug.Log("FROGGY " + (lastJumpTime - Time.time));
-            
+
             // OnLand
             if (!isDetectingGround && controller.CheckGround())
             {
+                Debug.Log("SupeprFroggy Landed");
                 controller.SetVelocity(0f);
                 AudioSource.PlayClipAtPoint(jumpStateData.landSFX, controller.GetTransfrom().position);
-                froggyController.GetAnimator().SetBool("NearAttackAlert", false);
-                controller.GetAnimator().SetBool("Jumping", false);
-                froggyController.GetAnimator().SetBool("Idle", true);
+                controller.GetAnimator().SetBool(animBoolName, false);
             }
             
             

@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896513, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_Name
-      value: SuperFroggy
+      value: SuperFroggy Variant
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: ctrlData
@@ -75,6 +75,14 @@ PrefabInstance:
       propertyPath: _froggyTongue
       value: 
       objectReference: {fileID: 2163852273976686426, guid: 9b8e1a7fa3a724e4e86941f5cd3bf8fd, type: 3}
+    - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: controllerKind
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: _superFroggySecondPhaseStateData
+      value: 
+      objectReference: {fileID: 11400000, guid: 88df7a7f7b826eb40b6082195350681e, type: 2}
     - target: {fileID: 242146971895896517, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_Enabled
       value: 1

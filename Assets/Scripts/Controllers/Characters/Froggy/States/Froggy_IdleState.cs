@@ -9,33 +9,36 @@ using UnityEngine;
 
 public class Froggy_IdleState : IdleState
 {
-    private FroggyController _froggyController;
+    private FroggyController froggyController;
 
     public Froggy_IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
         IdleStateData stateData, FroggyController froggyController)
         : base(controller, stateMachine, animBoolName, stateData)
     {
-        _froggyController = froggyController;
+        this.froggyController = froggyController;
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
 
+        if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+        {
+            froggyController.EnterPhaseTwo();
+        }
+        
         if (controller.CheckPlayerInNearRange())
         {
-            Debug.Log("Player nearby");
-            stateMachine.ChangeState(_froggyController._nearAttackState);
+            stateMachine.ChangeState(froggyController._nearAttackState);
         }        
         
         if (controller.CheckPlayerInLongRange())
         {
-            Debug.Log("Player in long range");
-            stateMachine.ChangeState(_froggyController._prepareAttackState);
+            stateMachine.ChangeState(froggyController._prepareAttackState);
         }
 
         if (isIdleTimeOver)
-            stateMachine.ChangeState(_froggyController._jumpState);
+            stateMachine.ChangeState(froggyController._jumpState);
     }
 
     public override void Enter()

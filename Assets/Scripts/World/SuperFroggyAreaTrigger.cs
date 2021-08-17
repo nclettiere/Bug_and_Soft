@@ -24,6 +24,9 @@ public class SuperFroggyAreaTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        GameManager.Instance.HideBossHealth();
+        if (other.transform.CompareTag("Player"))
+        {
+            GameManager.Instance.HideBossHealth();
+        }
     }
 }

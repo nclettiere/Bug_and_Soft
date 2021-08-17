@@ -62,6 +62,8 @@ namespace Controllers.StateMachine.States
 
                 lastJumpTime = Time.time + jumpCooldownTime;
             }
+            
+            
 
             // Ledge or Wall detected !
             if (controller.CheckWall() || !controller.CheckLedge())
@@ -75,6 +77,10 @@ namespace Controllers.StateMachine.States
             {
                 AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
                 controller.GetAnimator().SetBool(animBoolName, false);
+            }
+            else
+            {
+                froggyController.CheckTouchDamage();
             }
 
             isDetectingWall = controller.CheckWall();

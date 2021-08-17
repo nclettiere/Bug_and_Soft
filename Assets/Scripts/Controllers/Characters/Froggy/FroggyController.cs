@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using Controllers.Damage;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
 using Unity.Mathematics;
@@ -21,6 +22,7 @@ namespace Controllers.Froggy
         [SerializeField] private JumpStateData _jumpStateData;
         [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
         [SerializeField] private DamageStateData _damageStateData;
+        public GameObject _superFroggyNuke;
         private bool canFroggyDie = false;
         private FroggyTongueController instatiatedTongue;
 
@@ -32,11 +34,18 @@ namespace Controllers.Froggy
         public Froggy_DamageState _damageState { get; private set; }
         public Froggy_NearAttackState _nearAttackState { get; private set; }
 
+        // Super Froggy
+        public bool transforming;
+        public int currentPhase = 1;
+        public bool transformed;
+        [SerializeField] private SuperFroggy_SecondPhaseStateData _superFroggySecondPhaseStateData;
+        
+        public SuperFroggy_SecondPhase _superFroggySecondPhase { get; private set; }
+        public int hallPosition = 0;
+
         protected override void Start()
         {
             base.Start();
-
-            controllerKind = EControllerKind.Enemy;
 
             _jumpState = new JumpState(this, StateMachine, "Jumping", _jumpStateData, this);
             _idleState = new Froggy_IdleState(this, StateMachine, "Idle", _idleStateData, this);
@@ -46,10 +55,16 @@ namespace Controllers.Froggy
             _deadState = new Froggy_DeadState(this, StateMachine, "Dead", _deadStateData, this);
             _damageState = new Froggy_DamageState(this, StateMachine, "Dead", _damageStateData, this);
             _nearAttackState = new Froggy_NearAttackState(this, StateMachine, "Idle", _jumpStateData, this);
+            _superFroggySecondPhase = new SuperFroggy_SecondPhase(this, StateMachine, "Idle", _superFroggySecondPhaseStateData, this);
             
             StateMachine.Initialize(_idleState);
 
             InvokeRepeating("MoveCejas", 0f, 7f);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
         }
 
         public void Anim_OnAttackingAnimStarted()
@@ -92,9 +107,9 @@ namespace Controllers.Froggy
             StateMachine.ChangeState(_deadState);
         }
 
-        public override void Damage(float amount, int attackN)
+        public void Damage(DamageInfo damageInfo)
         {
-            if (dead ||
+            if (dead || transforming ||
                 controllerKind == EControllerKind.NPC ||
                 controllerKind == EControllerKind.Neutral)
                 return;
@@ -106,8 +121,9 @@ namespace Controllers.Froggy
                 StateMachine.ChangeState(_damageState);
 
                 StopAllCoroutines();
-
-                playerFacingDirection = playerController.IsFacingRight();
+                
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
                 if (firstAttack)
@@ -117,12 +133,10 @@ namespace Controllers.Froggy
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
-                    currentHealth -= (int) amount;
+                    currentHealth -= damageInfo.DamageAmount;
 
-                if (canBeMovedOnAttack && currentHealth >= 0.0f)
-                {
-                    MoveOnAttack(attackN);
-                }
+                if (damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
 
                 StartCoroutine(DamageEffect());
 
@@ -133,6 +147,28 @@ namespace Controllers.Froggy
 
                 damagedTimeCD = Time.time + 0.45f;
             }
+        }
+
+        // SuperFroggy : MiniBoss => SecondPhase
+        public void EnterPhaseTwo()
+        {
+            if (controllerKind == EControllerKind.Boss && currentPhase == 1)
+            {
+                transforming = true;
+                currentPhase++;
+                StateMachine.ChangeState(_superFroggySecondPhase);
+            }
+        }
+
+        public void Explode()
+        {
+            Instantiate(_superFroggyNuke, transform.position + new Vector3(0f, 2f), Quaternion.Euler(0f, 0f, 0f));
+            Destroy(gameObject);
+        }
+
+        public void PlaceBomb()
+        {
+            Instantiate(_superFroggySecondPhaseStateData.bombs, transform.position + new Vector3(0f, 2f), Quaternion.Euler(0f, 0f, 0f));
         }
     }
 }

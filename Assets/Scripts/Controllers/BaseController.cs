@@ -37,6 +37,12 @@ namespace Controllers
     {
         public virtual void Damage(float amount, int attackN)
         {
+
+        }
+        
+        
+        public void Damage(DamageInfo damageInfo)
+        {
             if (dead ||
                 controllerKind == EControllerKind.NPC ||
                 controllerKind == EControllerKind.Neutral)
@@ -44,31 +50,36 @@ namespace Controllers
 
             if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
             {
+                Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
+                
+                
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 playerFacingDirection = playerController.IsFacingRight();
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
+                
                 if (firstAttack)
                     hitAttackSFX1.Play();
                 else
                     hitAttackSFX2.Play();
+                
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
-                    currentHealth -= (int) amount;
+                    currentHealth -= damageInfo.DamageAmount;
 
-                if (canBeMovedOnAttack && currentHealth >= 0.0f)
-                {
-                    MoveOnAttack(attackN);
-                }
+                if (damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
 
                 StartCoroutine(DamageEffect());
 
                 if (currentHealth <= 0f)
                     Die();
 
-                damagedTimeCD = Time.time + 0.25f;
+                damagedTimeCD = Time.time + 0f;
             }
         }
 
@@ -124,7 +135,7 @@ namespace Controllers
             StateMachine = new ControllerStateMachine();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (GameManager.Instance.IsGamePaused())
             {
@@ -338,21 +349,12 @@ namespace Controllers
             return false;
         }
 
-        /// <summary>
-        ///     Calcula y adiciona el movimiento necesario para dat un efecto de movimento cuando recibe danio
-        /// </summary>
-        /// <param name="multiplier">
-        ///     Multiplicador del movimiento. Se recomienda utilizar el attackN del player.
-        /// </param>
-        private protected void MoveOnAttack(int multiplier)
+        protected void MoveOnDamaged(int direction, Vector2 moveOnDamagedForce)
         {
-            movedOnAttack = true;
-            moveOnAttackStart = Time.time;
-
-            if (playerFacingDirection)
-                rBody.velocity = new Vector2((moveOnAttackSpeed.x * multiplier), moveOnAttackSpeed.y);
-            else
-                rBody.velocity = new Vector2((moveOnAttackSpeed.x * multiplier) * -1, moveOnAttackSpeed.y);
+            moveOnDamaged = true;
+            moveOnDamagedStartTime = Time.time;
+            rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
+            //rigidbody2D.velocity = new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y);
         }
 
         /// <summary>
@@ -467,7 +469,7 @@ namespace Controllers
 
         public int KrownReward = 5;
 
-        [SerializeField] private protected EControllerKind controllerKind = EControllerKind.NPC;
+        public EControllerKind controllerKind = EControllerKind.NPC;
         [SerializeField] private ECharacterKind characterKind;
         [SerializeField] private float interactionRadius = 4f;
         [SerializeField] private float moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
@@ -516,6 +518,8 @@ namespace Controllers
         protected ECharacterState currentState;
         protected bool playerFacingDirection;
         protected bool canInteract = true;
+        private bool moveOnDamaged;
+        private float moveOnDamagedStartTime = float.NegativeInfinity;
 
         public bool wallDetected { get; private set; }
         public bool groundDetected { get; private set; }

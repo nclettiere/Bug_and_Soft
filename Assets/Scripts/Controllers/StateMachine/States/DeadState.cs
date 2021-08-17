@@ -5,7 +5,7 @@ namespace Controllers.StateMachine.States
 {
     public class DeadState : State
     {
-        private float deadWaitTime;
+        protected float deadWaitTime;
         private DeadStateData stateData;
 
         public DeadState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,

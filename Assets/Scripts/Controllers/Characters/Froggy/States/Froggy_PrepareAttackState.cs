@@ -16,6 +16,11 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
+            if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            {
+                froggyController.EnterPhaseTwo();
+            }
+            
             if (controller.CheckPlayerInLongRange())
             {
                 LookAtPlayer();

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallCheckDistance: 1.95
   ledgeCheckDistacne: 5
-  groundCheckDistance: 11.49
+  groundCheckDistance: 1.15
   topCheckDistance: 2.06
   playerNearRangeDistance: 21.31
   playerLongRangeDistance: 30
