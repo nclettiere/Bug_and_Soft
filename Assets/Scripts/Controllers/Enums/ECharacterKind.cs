@@ -4,6 +4,7 @@ namespace Controllers
     {
         Dummy = 1,
         Njord,
-        Froggy
+        Froggy,
+        OLC
     }
 }

@@ -107,48 +107,6 @@ namespace Controllers.Froggy
             StateMachine.ChangeState(_deadState);
         }
 
-        public void Damage(DamageInfo damageInfo)
-        {
-            if (dead || transforming ||
-                controllerKind == EControllerKind.NPC ||
-                controllerKind == EControllerKind.Neutral)
-                return;
-
-            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
-            {
-                if (instatiatedTongue != null)
-                    instatiatedTongue.Cancel();
-                StateMachine.ChangeState(_damageState);
-
-                StopAllCoroutines();
-                
-                // Obtenemos la posicion del ataque
-                int direction = damageInfo.GetAttackDirection(transform.position.x);
-
-                Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-                if (firstAttack)
-                    hitAttackSFX1.Play();
-                else
-                    hitAttackSFX2.Play();
-                firstAttack = !firstAttack;
-
-                if (!isInvencible)
-                    currentHealth -= damageInfo.DamageAmount;
-
-                if (damageInfo.MoveOnAttack)
-                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
-
-                StartCoroutine(DamageEffect());
-
-                if (currentHealth <= 0f)
-                    Die();
-                else
-                    StateMachine.ChangeState(_damageState);
-
-                damagedTimeCD = Time.time + 0.45f;
-            }
-        }
-
         // SuperFroggy : MiniBoss => SecondPhase
         public void EnterPhaseTwo()
         {

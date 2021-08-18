@@ -79,7 +79,7 @@ namespace Controllers
                 if (currentHealth <= 0f)
                     Die();
 
-                damagedTimeCD = Time.time + 0f;
+                damagedTimeCD = Time.time + .15f;
             }
         }
 
