@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Controllers;
 using Controllers.Damage;
+using Controllers.Froggy.States.Data;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
 using Unity.Mathematics;
@@ -17,17 +18,16 @@ namespace Controllers.Froggy
         [Header("OLC Specific Values")] [SerializeField]
         private AttackStateData _attackStateData;
 
-        [SerializeField] private DeadStateData _deadStateData;
         [SerializeField] private IdleStateData _idleStateData;
-        [SerializeField] private JumpStateData _jumpStateData;
-        [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
-        [SerializeField] private DamageStateData _damageStateData;
+        [SerializeField] private OLC_AttackStateData _olcAttackStateData;
         
         private FroggyTongueController instatiatedTongue;
 
         public OLC_IdleState _idleState { get; private set; }
         public OLC_RenegadeState _renegadeState { get; private set; }
         public OLC_AttackState _attackState { get; private set; }
+        
+        public Transform projectilePos;
 
         // Super Froggy
         public bool transforming;
@@ -42,7 +42,7 @@ namespace Controllers.Froggy
 
             _idleState = new OLC_IdleState(this, StateMachine, "Idle", _idleStateData, this);
             _renegadeState = new OLC_RenegadeState(this, StateMachine, "Renegade", this);
-            _attackState = new OLC_AttackState(this, StateMachine, "Attacking", _attackStateData, this);
+            _attackState = new OLC_AttackState(this, StateMachine, "Attacking", _attackStateData, _olcAttackStateData, this);
 
             StateMachine.Initialize(_idleState);
 

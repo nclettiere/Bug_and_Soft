@@ -63,8 +63,6 @@ namespace Controllers.StateMachine.States
                 lastJumpTime = Time.time + jumpCooldownTime;
             }
             
-            
-
             // Ledge or Wall detected !
             if (controller.CheckWall() || !controller.CheckLedge())
             {
