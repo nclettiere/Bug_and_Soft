@@ -16,6 +16,7 @@ public class OLC_Projectile : MonoBehaviour
     private bool isGravityOn;
     private bool hasHitGround;
     private bool playerRolled;
+    private bool isVertical;
 
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private LayerMask whatIsPlayer;
@@ -26,7 +27,10 @@ public class OLC_Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
-        rb.velocity = transform.right * speed;
+        if(!isVertical)
+            rb.velocity = transform.right * speed;
+        else
+            rb.velocity = Vector2.down * speed;
 
         xStartPos = transform.position.x;
         isGravityOn = false;
@@ -48,7 +52,6 @@ public class OLC_Projectile : MonoBehaviour
     {
         if (!hasHitGround)
         {
-
             Collider2D damageHit = Physics2D.OverlapCircle(damagePos.position, damageRadius, whatIsPlayer);
             Collider2D groundHit = Physics2D.OverlapCircle(damagePos.position, damageRadius, whatIsGround);
 
@@ -76,10 +79,11 @@ public class OLC_Projectile : MonoBehaviour
         }
     }
 
-    public void FireProjectile(float speed, float distance)
+    public void FireProjectile(float speed, float distance, bool isVertical = false)
     {
         this.speed = speed;
         this.distance = distance;
+        this.isVertical = isVertical;
     }
 
     private void OnDrawGizmos()

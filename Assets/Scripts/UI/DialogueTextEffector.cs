@@ -29,6 +29,7 @@ public class DialogueTextEffector : MonoBehaviour
     private bool choiceSelected;
     private int selectedChoiceIndex;
     private DialogueData currentDialogueData;
+    private bool abilityGained;
 
     void Start()
     {
@@ -61,8 +62,17 @@ public class DialogueTextEffector : MonoBehaviour
 
             if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
             {
-                OnChoiceEvent();
+                OnChoiceEvent(ii);
+                
                 yield return new WaitUntil(() => choiceSelected);
+                
+                if (!abilityGained)
+                {
+                    ii += 3;
+                    HideChoiceButtons();
+                    continue;
+                }
+                
                 choiceSelected = false;
             }
 
@@ -75,7 +85,7 @@ public class DialogueTextEffector : MonoBehaviour
         }
     }
 
-    private void OnChoiceEvent()
+    private void OnChoiceEvent(int dialogueIndex)
     {
         choiceButton.gameObject.SetActive(true);
         
@@ -85,8 +95,17 @@ public class DialogueTextEffector : MonoBehaviour
         // Temporal, hasta el segundo sprint !
         choiceButton.onClick.AddListener(() =>
         {
+            if (dialogueIndex == 1 && GameManager.Instance.PlayerKrowns < 150)
+            {
+                abilityGained = false;
+                choiceSelectSFX.Play();
+                ChooseOption(2);
+                return;
+            }
+            
+            abilityGained = true;
             choiceSelectSFX.Play();
-            DialogueManager.Instance.ChooseOption(2);
+            ChooseOption(2);
             GameManager.Instance.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
             GameManager.Instance.SetRomhoppState(0);
         });

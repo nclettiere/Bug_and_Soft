@@ -23,11 +23,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: HERE, TAKE THIS POWERUP, IT WILL HELP YOU TROUGH YOUR ADVENTURE
+    m_Localized: THE BIRD BELOW IS VERY DANGEROUS, DO YOU WANT A POWERUP? IT WILL
+      BE 150 KRONES.
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: IT ALLOWS YOU TO TELEPORT TO ANY LOCATION YOU WANT!
+    m_Localized: PERFECT! TAKE IT, USE IT WISELY!
     m_Metadata:
       m_Items: []
   - m_Id: 641822951305216
@@ -36,6 +37,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 705612781539328
     m_Localized: SAVE YOUR FATHER, PACO!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2123525666467840
+    m_Localized: YOU DON'T HAVE ENOUGH KRONES! TRY TO KILL MORE ENEMIES. NEXT TIME!
     m_Metadata:
       m_Items: []
   references:

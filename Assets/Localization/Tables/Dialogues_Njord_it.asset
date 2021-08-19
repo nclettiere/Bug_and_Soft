@@ -23,11 +23,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: ECCO, PRENDI QUESTO POWERUP TI AIUTERA' NELLA TUA AVVENTURA
+    m_Localized: "L'UCCELLO SOTTO \xC8 MOLTO PERICOLOSO, VUOI UN POWERUP? SAR\xC0
+      150 CORONE."
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: TI PERMETTE DI TELEFONARTI IN QUALSIASI POSIZIONE VUOI!
+    m_Localized: PERFETTO! PRENDILO, USALO CON INTELLIGENZA!
     m_Metadata:
       m_Items: []
   - m_Id: 641822951305216
@@ -36,6 +37,11 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 705612781539328
     m_Localized: SALVA TUO PADRE, PACO!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2123525666467840
+    m_Localized: NON HAI ABBASTANZA KRONEI! PROVA A UCCIDERE PI NEMICI LA PROSSIMA
+      VOLTA!
     m_Metadata:
       m_Items: []
   references:

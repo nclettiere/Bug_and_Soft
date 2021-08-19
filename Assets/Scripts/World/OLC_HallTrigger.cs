@@ -17,7 +17,7 @@ public class OLC_HallTrigger : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            GameManager.Instance.ShowBossHealth("Odinn Lost Crow - Phase 1", olc);
+            GameManager.Instance.ShowBossHealth("Odinn's Lost Crow - Phase 1", olc);
             olc.enabled = true;
             hasEnterHall = true;
             col1.enabled = true;

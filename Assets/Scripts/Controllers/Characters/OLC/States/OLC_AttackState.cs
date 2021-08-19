@@ -79,7 +79,6 @@ public class OLC_AttackState : AttackState
     public override void Enter()
     {
         base.Enter();
-        olcController.ShootPlumas();
         controller.GetAnimator().SetBool(animBoolName, true);
         isDetectingGround = controller.CheckGround();
     }

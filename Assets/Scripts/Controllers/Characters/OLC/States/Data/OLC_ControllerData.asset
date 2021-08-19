@@ -19,7 +19,7 @@ MonoBehaviour:
   playerNearRangeDistance: 9.67
   playerLongRangeDistance: 18.95
   generalDamage: 25
-  maxHealth: 1000
+  maxHealth: 350
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8

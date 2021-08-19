@@ -89,10 +89,10 @@ public class GameManager
     public void ResumeGame()
     {
         isGamePaused = false;
+        
         if (!IsFirstStart)
         {
             HUDCanvas.enabled = true;
-            IsFirstStart = true;
         }
     }
 

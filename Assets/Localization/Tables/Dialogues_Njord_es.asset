@@ -23,11 +23,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 16193535692800
-    m_Localized: TOMA, UN POWERUP PARA AYUDARTE EN TU AVENTURA
+    m_Localized: EL PAJARO DE AHI ABAJO ES MUY PELIGROSO, QUIERES UN POWERUP? SERAN
+      150 KRONES.
     m_Metadata:
       m_Items: []
   - m_Id: 16277396606976
-    m_Localized: TE PERMITE TPEAR A CUALQUIER UBICACION QUE QUIERAS!
+    m_Localized: PERFECTO! TOMA, USALO SABIAMENTE!
     m_Metadata:
       m_Items: []
   - m_Id: 641822951305216
@@ -36,6 +37,11 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 705612781539328
     m_Localized: SALVA A TU PADRE, PACO!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2123525666467840
+    m_Localized: NO TIENES SUFICIENTES KRONES! INTENTA MATAR MAS ENEMIGOS LA PROXIMA
+      VEZ!
     m_Metadata:
       m_Items: []
   references:

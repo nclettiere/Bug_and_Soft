@@ -41,7 +41,7 @@ namespace Controllers
         }
         
         
-        public void Damage(DamageInfo damageInfo)
+        public virtual void Damage(DamageInfo damageInfo)
         {
             if (dead ||
                 controllerKind == EControllerKind.NPC ||
