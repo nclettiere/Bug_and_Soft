@@ -40,12 +40,24 @@ public class DialogueTextEffector : MonoBehaviour
     {
         StartCoroutine(ShowText());
     }
+    
+    int ii;
 
     IEnumerator ShowText()
     {
-        for (int ii = 0; ii < dialogues.GetDialogueCount() + 1; ii++)
+
+        for (ii = 0; ii < dialogues.GetDialogueCount() + 1; ii++)
         {
-            currentDialogueData = dialogues.NextDialogue();
+            if (ii > 1 && !abilityGained)
+            {
+
+                currentDialogueData = dialogues.GetDialogueLocale(5);
+                ii = 5;
+            }
+            else
+            {
+                currentDialogueData = dialogues.NextDialogue();
+            }
 
             localeStringEvent.StringReference = currentDialogueData.Locale;
 
@@ -60,6 +72,11 @@ public class DialogueTextEffector : MonoBehaviour
                 yield return new WaitForSeconds(delay);
             }
 
+            if (ii == 5)
+            {
+                StopAllCoroutines();
+            }
+
             if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
             {
                 OnChoiceEvent(ii);
@@ -68,11 +85,10 @@ public class DialogueTextEffector : MonoBehaviour
                 
                 if (!abilityGained)
                 {
-                    ii += 3;
                     HideChoiceButtons();
                     continue;
                 }
-                
+
                 choiceSelected = false;
             }
 
@@ -80,10 +96,12 @@ public class DialogueTextEffector : MonoBehaviour
             
             if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH)
             {
-                OnEffectFinished();
+                OnEffectFinished(ii);
+                StopAllCoroutines();
             }
         }
     }
+    
 
     private void OnChoiceEvent(int dialogueIndex)
     {
@@ -97,6 +115,7 @@ public class DialogueTextEffector : MonoBehaviour
         {
             if (dialogueIndex == 1 && GameManager.Instance.PlayerKrowns < 150)
             {
+                Debug.Log("krones are not sufficient");
                 abilityGained = false;
                 choiceSelectSFX.Play();
                 ChooseOption(2);
@@ -106,12 +125,13 @@ public class DialogueTextEffector : MonoBehaviour
             abilityGained = true;
             choiceSelectSFX.Play();
             ChooseOption(2);
+            GameManager.Instance.RemovePlayerKrowns(150);
             GameManager.Instance.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
             GameManager.Instance.SetRomhoppState(0);
         });
     }
 
-    private void OnEffectFinished()
+    private void OnEffectFinished(int index)
     {
         finishButton.gameObject.SetActive(true);
         finishButton.onClick.AddListener(() =>

@@ -121,8 +121,7 @@ namespace Controllers
             if (OnLandEvent == null)
                 OnLandEvent = new UnityEvent();
         }
-
-
+        
         protected virtual void Start()
         {
             baseMovementController = GetComponent<BaseMovementController>();
@@ -434,7 +433,8 @@ namespace Controllers
 
         public virtual void Die()
         {
-            dead = true;
+            GameManager.Instance.LevelWon(1);
+            //dead = true;
         }
 
         public void DestroyNow()

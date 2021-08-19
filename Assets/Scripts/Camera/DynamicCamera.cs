@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,6 +73,7 @@ namespace CameraManagement
 
         void Awake()
         {
+            //GameObject.DontDestroyOnLoad(this);
             GameManager.Instance.GetPlayerControls().Gameplay.Camera.performed += ctx =>
             {
                 var value = ctx.ReadValue<Vector2>();
@@ -244,6 +246,11 @@ namespace CameraManagement
                 yield return null;
             }
             cameraOffset.y = endValue;
+        }
+
+        private void OnDestroy()
+        {
+            StopAllCoroutines();
         }
     }
 }

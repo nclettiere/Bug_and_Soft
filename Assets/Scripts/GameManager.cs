@@ -6,6 +6,7 @@ using Controllers;
 using Controllers.Froggy;
 using Player;
 using UI;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -19,18 +20,13 @@ using UnityEngine;
 public class GameManager
 {
     private static GameManager instance;
+    private static bool sceneChanged;
 
     private bool isInputEnabled = true;
     private bool isMainMenuOn = true;
     private bool isGamePaused;
     private bool isPlayerAlive;
     private int playerDeathCount;
-    private Camera cameraMain;
-    private DynamicCamera dynCamera;
-    private UI_HUD HUD;
-    private Canvas HUDCanvas;
-    public PlayerController PlayerController { get; }
-    private PlayerControls playerControls;
 
     public int PlayerKrowns { get; private set; }
 
@@ -38,26 +34,31 @@ public class GameManager
     {
         get { return isGamePaused ? 0 : Time.deltaTime; }
     }
+    
+    public PlayerController PlayerController
+    {
+        get
+        {
+            return GameObject.Find("Player")
+                .gameObject.GetComponent<PlayerController>();
+        }
+    }
 
     public Vector3 LastDeathPosition;
     private int mainMenuPhase;
 
     public bool IsFirstStart = true;
+    
+    public bool isGameOver {get; private set;}
 
-    private GameManager()
+    public static PlayerControls PlayerControls = new PlayerControls();
+
+
+    public GameManager()
     {
-        cameraMain = Camera.main;
-        if (!ReferenceEquals(cameraMain, null))
-            dynCamera = cameraMain.GetComponent<DynamicCamera>();
-
-        playerControls = new PlayerControls();
         isInputEnabled = false;
 
-        PlayerController = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
-        HUD = GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
-        HUDCanvas = GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
-
-        playerControls.Gameplay.Pause.performed += ctx =>
+        PlayerControls.Gameplay.Pause.performed += ctx =>
         {
             if (isMainMenuOn) return;
 
@@ -79,6 +80,7 @@ public class GameManager
 
             return instance;
         }
+        set => throw new NotImplementedException();
     }
 
     public void PauseGame()
@@ -92,7 +94,7 @@ public class GameManager
         
         if (!IsFirstStart)
         {
-            HUDCanvas.enabled = true;
+            GetHUDCanvas().enabled = true;
         }
     }
 
@@ -113,7 +115,7 @@ public class GameManager
 
     public PlayerControls GetPlayerControls()
     {
-        return playerControls;
+        return PlayerControls;
     }
 
     public Transform GetPlayerTransform()
@@ -140,23 +142,23 @@ public class GameManager
 
     public void SetInputEnabled(bool isEnabled)
     {
-        if (!ReferenceEquals(dynCamera, null) && isEnabled) dynCamera.UpdateSize(10f, 0.3f);
-        if (!ReferenceEquals(dynCamera, null)) instance.isInputEnabled = isEnabled;
+        if (!ReferenceEquals(GetDynamicCamera(), null) && isEnabled) GetDynamicCamera().UpdateSize(10f, 0.3f);
+        if (!ReferenceEquals(GetDynamicCamera(), null)) instance.isInputEnabled = isEnabled;
     }
 
     public void SetCameraTarget(Transform target)
     {
-        if (dynCamera != null) dynCamera.ChangeTarget(target);
+        GetDynamicCamera().ChangeTarget(target);
     }
 
     public void SetCameraOffset(Vector2 offset)
     {
-        if (dynCamera != null) dynCamera.UpdateOffset(offset);
+        GetDynamicCamera().UpdateOffset(offset);
     }
 
     public void SetCameraOffsetX(float offsetX)
     {
-        if (!ReferenceEquals(dynCamera, null)) dynCamera.UpdateOffsetX(offsetX);
+        GetDynamicCamera().UpdateOffsetX(offsetX);
     }
 
     public bool GetIsInputEnabled()
@@ -166,25 +168,25 @@ public class GameManager
 
     public void SetCameraOffsetY(float offsetY)
     {
-        if (!ReferenceEquals(dynCamera, null)) dynCamera.UpdateOffsetY(offsetY);
+        if (!ReferenceEquals(GetDynamicCamera(), null)) GetDynamicCamera().UpdateOffsetY(offsetY);
     }
 
     public void SetCameraSize(float size, float duration = 3f)
     {
-        if (dynCamera != null) dynCamera.UpdateSize(size, duration);
+        if (GetDynamicCamera() != null) GetDynamicCamera().UpdateSize(size, duration);
     }
 
     public Vector2 GetCameraOffset()
     {
-        if (!ReferenceEquals(dynCamera, null))
-            return dynCamera.GetOffsets();
+        if (!ReferenceEquals(GetDynamicCamera(), null))
+            return GetDynamicCamera().GetOffsets();
         return Vector2.zero;
     }
 
     public void SetCameraFollowTarget(bool follow)
     {
-        if (!ReferenceEquals(dynCamera, null))
-            dynCamera.FollowTarget = follow;
+        if (!ReferenceEquals(GetDynamicCamera(), null))
+            GetDynamicCamera().FollowTarget = follow;
     }
 
     public int GetMainMenuPhase()
@@ -233,21 +235,65 @@ public class GameManager
 
     public void ShowBossHealth(string bossName, BaseController controller)
     {
-        HUD.ShowBossHealth(bossName, controller);
+        GetHUD().ShowBossHealth(bossName, controller);
     }
 
     public void HideBossHealth()
     {
-        HUD.HideBossHealth();
+        GetHUD().HideBossHealth();
     }
 
     public void SetRomhoppState(int newState)
     {
-        HUD.SetRomhoppState(newState);
+        GetHUD().SetRomhoppState(newState);
     }
 
     public void ShowHUD()
     {
-        HUDCanvas.enabled = true;
+        GetHUDCanvas().enabled = true;
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        PauseGame();
+        GameObject.Find("UI/UI_GameOver").GetComponent<Canvas>().enabled = true;
+    }
+
+    public void Retry()
+    {
+        instance = new GameManager();
+        GameObject.Destroy(PlayerController.transform.gameObject);
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit ();
+#endif
+    }
+
+    public DynamicCamera GetDynamicCamera()
+    {
+        return Camera.main.GetComponent<DynamicCamera>();
+    }
+
+    public UI_HUD GetHUD()
+    {
+        return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
+    }
+    
+    public Canvas GetHUDCanvas()
+    {
+        return GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
+    }
+
+    public void LevelWon(int i)
+    {
+        isGameOver = true;
+        PauseGame();
+        GameObject.Find("UI/UI_LevelCompleted").GetComponent<Canvas>().enabled = true;
     }
 }

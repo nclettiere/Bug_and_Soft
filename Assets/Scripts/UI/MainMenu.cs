@@ -41,6 +41,7 @@ public class MainMenu : MonoBehaviour
     {
         // Llamamos al GameManager para decirle que el MainMenu esta listo
         GameManager.Instance.SetMainMenuOn(true);
+        
         // Registra los componentes del Canvas (UI) necesarios.
         pnlButtons = GameObject.Find("PanelButtons");
         pnlButtonsAnim = GameObject.Find("PanelButtonsAnims");
