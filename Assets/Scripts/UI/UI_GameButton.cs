@@ -21,18 +21,15 @@ namespace UI
                 case EButtonFunction.SETTINGS:
                     break;
                 case EButtonFunction.MAINMENU:
-                    //SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-                    //DestroyAll();
-                    //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
                     RestartGame();
                     GameManager.Instance = new GameManager();
                     break;
                 case EButtonFunction.RETRY:
-                    //SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-                    //DestroyAll();
-                    //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
                     RestartGame();
                     GameManager.Instance = new GameManager();
+                    break;
+                case EButtonFunction.RESUME:
+                    GameManager.Instance.ResumeGame();
                     break;
             }
         }

@@ -56,6 +56,22 @@ MonoBehaviour:
     m_Localized: RISOLUZIONE
     m_Metadata:
       m_Items: []
+  - m_Id: 27511615603961856
+    m_Localized: RETRY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27511676203266048
+    m_Localized: MENU PRINCIPALE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27512208934400000
+    m_Localized: PROSSIMO LIVELLO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27513268948267008
+    m_Localized: LIVELLO 1 COMPLETATO
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
     00000000:

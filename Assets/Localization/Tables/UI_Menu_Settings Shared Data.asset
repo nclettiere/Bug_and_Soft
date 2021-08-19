@@ -51,6 +51,22 @@ MonoBehaviour:
     m_Key: SettingsResolution
     m_Metadata:
       m_Items: []
+  - m_Id: 27511615603961856
+    m_Key: RetryButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27511676203266048
+    m_Key: MainMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27512208934400000
+    m_Key: NextLevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27513268948267008
+    m_Key: Level1Completed
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -5,6 +5,7 @@
         QUIT,
         SETTINGS,
         MAINMENU,
-        RETRY
+        RETRY,
+        RESUME
     }
 }
