@@ -433,8 +433,7 @@ namespace Controllers
 
         public virtual void Die()
         {
-            GameManager.Instance.LevelWon(1);
-            //dead = true;
+            dead = true;
         }
 
         public void DestroyNow()
