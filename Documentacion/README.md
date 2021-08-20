@@ -1,6 +1,6 @@
 # Bug&Soft Documentation
 
-### A version actual 0.1.9
+### A version actual 0.5.51
 [Ver historial de clases](https://github.com/DrAsin/Bug_and_Soft/blob/master/Documentacion/Historial.md)
 
 ### Objetivos del codigo
