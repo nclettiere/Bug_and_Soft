@@ -97,6 +97,11 @@ namespace Player
 
                 if (damageInfo.MoveOnAttack)
                     MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
+                    
+                if (currentHealth <= 0)
+                {
+                    GameManager.Instance.GameOver();
+                }
 
                 if (damageInfo.Slow)
                 {
