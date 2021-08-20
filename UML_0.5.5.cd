@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="@PlayerControls" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAQAACIAghAAhAAICJAAACAgAHBEAAAgAAAQAAg=</HashCode>
+      <FileName>Assets\PlayerControls.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Froggy_DeadState" Collapsed="true">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAEAgAAIAAgBAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_DeadState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Froggy_IdleState" Collapsed="true">
+    <Position X="10.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_IdleState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_Projectile" Collapsed="true">
+    <Position X="38" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYEAAgAFiAAAAAEAAABAAAAAUAAAQAAgAAAAAAQAgA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\OLC_Projectile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_AttackState" Collapsed="true">
+    <Position X="24" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAgAAAAAAAIBAAAAAAEAAABIAAgBQAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\OLC_AttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_IdleState" Collapsed="true">
+    <Position X="12.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\OLC_IdleState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_RenegadeState" Collapsed="true">
+    <Position X="21.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAgAAAAAAAAAAAEAAAEAAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\OLC_RenegadeState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_SecondPhase" Collapsed="true">
+    <Position X="26.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIgAAAEAIAgAAAAAAAIBAAAAIAEACAAIAAgDQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\OLC_SecondPhase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_StunnedState" Collapsed="true">
+    <Position X="15" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\OLC_StunnedState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParticleController" Collapsed="true">
+    <Position X="39.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Particles\ParticleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager" Collapsed="true">
+    <Position X="34.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QSQgwAgADEAACABRNBKkEICtQUBDAAAFQQCAERCFAEA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WarpMarker" Collapsed="true">
+    <Position X="36.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABACAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Misc\WarpMarker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WarpParticle" Collapsed="true">
+    <Position X="38" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAABAAAAAkAAAADAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Misc\WarpParticle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DialogueTextEffector" Collapsed="true">
+    <Position X="38" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARFAICACBaACAQAFQCAQAAgJAAAAAAILAAAACAAAAYA=</HashCode>
+      <FileName>Assets\Scripts\UI\DialogueTextEffector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImageAnimation" Collapsed="true">
+    <Position X="38" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAACAABAAAAAAAAEAAIAAAAAAAAAQCBAEA=</HashCode>
+      <FileName>Assets\Scripts\UI\ImageAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainMenu" Collapsed="true">
+    <Position X="31" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAQAgQCiQgACAlAAUAEAYBgIoBCAAAmABgAAAgDEA=</HashCode>
+      <FileName>Assets\Scripts\UI\MainMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScreenOpts" Collapsed="true">
+    <Position X="38" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABEACAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\ScreenOpts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI_ButtonMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAgAgAAAABAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_ButtonMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UI_JoystickController" Collapsed="true">
+    <Position X="31" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgIAAAAACAAAAAAAAAAAIAAAgAAAAEAAAAAAAAAASgA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_JoystickController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI_PanelOpacity" Collapsed="true">
+    <Position X="32.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_PanelOpacity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI_PauseMenuManager" Collapsed="true">
+    <Position X="34.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_PauseMenuManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraTrigger" Collapsed="true">
+    <Position X="36.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAEAAAAAAAAAAAAAAAAEAAACAAEAABAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\World\CameraTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DeathBoundsComponent" Collapsed="true">
+    <Position X="32.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\World\DeathBoundsComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FroggyNuke" Collapsed="true">
+    <Position X="31" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\World\FroggyNuke.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OLC_HallTrigger" Collapsed="true">
+    <Position X="36.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAQAIAAAAAAEAAAAEAAAAAAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\World\OLC_HallTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SuperFroggyAreaTrigger" Collapsed="true">
+    <Position X="31" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAiAAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\World\SuperFroggyAreaTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SuperFroggyPhases" Collapsed="true">
+    <Position X="32.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\World\SuperFroggyPhases.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraManagement.DynamicCamera" Collapsed="true">
+    <Position X="39.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAABBoEAAAABIgAAEBAAAAAAgAADBgCCAgAABEI=</HashCode>
+      <FileName>Assets\Scripts\Camera\DynamicCamera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.BaseController" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oVbEIMyFG2qkJiJnqQcAFAEBMwhEBgJPKLLIRYSBgWU=</HashCode>
+      <FileName>Assets\Scripts\Controllers\BaseController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Controllers.DummyController" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Dummy\DummyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.NjordController" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAACAACAAAAAAAIAAAAAAIAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Njord\NjordController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.FroggyController" Collapsed="true">
+    <Position X="7.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQARAAAAiAAABAwBsACAgmYAAggAAAgQFAAQAoAA4g=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\FroggyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.FroggyTongueController" Collapsed="true">
+    <Position X="32.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAQiAAAAICEAAAEAAAABFgQIAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\FroggyTongueController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.Froggy_AttackState" Collapsed="true">
+    <Position X="28.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAACACAAAAAAAGQAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_AttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.Froggy_DamageState" Collapsed="true">
+    <Position X="3.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_DamageState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.Froggy_NearAttackState" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAEQAABIACgBAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_NearAttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.Froggy_PrepareAttackState" Collapsed="true">
+    <Position X="19.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\Froggy_PrepareAttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.SuperFroggy_SecondPhase" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAACAQAAAAAAAMQgABIAAgJAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\Froggy\States\SuperFroggy_SecondPhase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.OLC_Controller" Collapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQBACAAigAAAAAIAACAACYAAAAAAAAAEAwQAQAA0A=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\OLC_Controller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Froggy.States.Data.OLC_AttackStateData" Collapsed="true">
+    <Position X="34.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Characters\OLC\States\Data\OLC_AttackStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.Movement.BaseMovementController" Collapsed="true">
+    <Position X="34.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Movement\BaseMovementController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.ControllerStateMachine" Collapsed="true">
+    <Position X="39.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABQAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\ControllerStateMachine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.State" Collapsed="true">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAICAAAEAAAAgAAAAAAAEAAAAIAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.AttackState" Collapsed="true">
+    <Position X="26.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAIAAAJAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\AttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.DamageState" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAIAAAJAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\DamageState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.DeadState" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAIAAgJAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\DeadState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.IdleState" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAABAAAAAAAQAEAEAAAAIAAAJAAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\IdleState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.JumpState" Collapsed="true">
+    <Position X="17.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABAAAACAAAAAAAAAEQAABIAAAJAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\JumpState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.MoveState" Collapsed="true">
+    <Position X="32.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\MoveState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.PrepareAttackState" Collapsed="true">
+    <Position X="19.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAYAAAAAAACAAAAACAAAEAAAAIAAgJAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\PrepareAttackState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.AttackStateData" Collapsed="true">
+    <Position X="32.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\AttackStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.ControllerData" Collapsed="true">
+    <Position X="38" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAMEAAIAAAAAAABgAQIAAAAAAgAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\ControllerData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.DamageStateData" Collapsed="true">
+    <Position X="41.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\DamageStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.DeadStateData" Collapsed="true">
+    <Position X="31" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAQAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\DeadStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.IdleStateData" Collapsed="true">
+    <Position X="36.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\IdleStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.JumpStateData" Collapsed="true">
+    <Position X="39.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAQAAQgAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\JumpStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.PrepareAttackStateData" Collapsed="true">
+    <Position X="36.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\PrepareAttackStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controllers.StateMachine.States.Data.SuperFroggy_SecondPhaseStateData" Collapsed="true">
+    <Position X="41.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\StateMachine\States\Data\SuperFroggy_SecondPhaseStateData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dialogues.DialogueGroup" Collapsed="true">
+    <Position X="34.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAQAIACAAAAAAAAEhAgAAAAAAAAAAAAIIAAEA=</HashCode>
+      <FileName>Assets\Scripts\Dialogues\DialogueGroup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dialogues.DialogueManager" Collapsed="true">
+    <Position X="36.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAABAABAAAAAgAAAAQAAAAAABAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Dialogues\DialogueManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Items.TorchComponent" Collapsed="true">
+    <Position X="34.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAGAAAAAACAAAAAAAAEAAACAAAQgAAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Items\TorchComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Misc.EffectController" Collapsed="true">
+    <Position X="41.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAFAAAAAAAAAYABQAAIAAgEAAAoAAEABAJIAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Misc\EffectController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Misc.Lapida" Collapsed="true">
+    <Position X="41.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAQDAoAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Misc\Lapida.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player.PlayerCombatController" Collapsed="true">
+    <Position X="41.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEASihQCCAEAAAAAEAInACEgQgAAACAABAABAEAEA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerCombatController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player.PlayerController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgSWACSKI2yAASTCiAACBgenPRhEFAAJMgBIgAhAiEw=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Player.PlayerLadderClimbingController" Collapsed="true">
+    <Position X="32.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQCAAiACIAAEAAAAAAAAAFACAQAICABAAAAACEA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerLadderClimbingController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player.PlayerMovementController" Collapsed="true">
+    <Position X="34.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAikAABQCqCIASABgBACBkmAACAQCCEIYCJAgBAFCWA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerMovementController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.UI_ButtonDialogueSelector" Collapsed="true">
+    <Position X="36.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_ButtonDialogueSelector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.UI_GameButton" Collapsed="true">
+    <Position X="39.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIICAAAAAAAAAAAAAAIAgCA=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_GameButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UI.UI_HUD" Collapsed="true">
+    <Position X="41.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAAAABAAAEAEAABggAAgAAAAIAAAgoQAgAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\UI\UI_HUD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="World.SoundController" Collapsed="true">
+    <Position X="39.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAEQAAAAAAAAAAAAABAAAAAAAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\World\SoundController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Controllers.Damage.DamageInfo" Collapsed="true">
+    <Position X="31" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ERAAACAAAAAAAAAAgQAAAAAACAAAEggAoAAEAAAARAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Damage\DamageInfo.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Dialogues.DialogueData" Collapsed="true">
+    <Position X="32.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Dialogues\DialogueGroup.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Controllers.IDamageable" Collapsed="true">
+    <Position X="31" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Interfaces\IDamageable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Interactions.Interfaces.IInteractive" Collapsed="true">
+    <Position X="32.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interactions\Interfaces\IInteractive.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="EPowerUpKind" Collapsed="true">
+    <Position X="31" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums\EPowerUpKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Controllers.ECharacterKind" Collapsed="true">
+    <Position X="34.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgACEAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Enums\ECharacterKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Controllers.ECharacterState" Collapsed="true">
+    <Position X="36.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAJAAAAAAAAAAAIAAAAAAAAAAAAAAAAACAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Enums\ECharacterState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Controllers.EControllerKind" Collapsed="true">
+    <Position X="38" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAQAAAAAAAEAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Controllers\Enums\EControllerKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Dialogues.DIALOGUE_ACTION" Collapsed="true">
+    <Position X="31" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Dialogues\DialogueGroup.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Enums.EButtonFunction" Collapsed="true">
+    <Position X="32.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAECAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enums\EButtonFunction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Enums.EEffectKind" Collapsed="true">
+    <Position X="39.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAgAAAAAAAAQAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Enums\EEffectKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Interactions.Enums.EInteractionKind" Collapsed="true">
+    <Position X="41.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAQAAAAAAAAAAAAAAAAACAAAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Interactions\Enums\EInteractionKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Dialogues.PerformAction" Collapsed="true">
+    <Position X="31" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Dialogues\DialogueGroup.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -2,9 +2,6 @@
 
 namespace Controllers.Damage
 {
-    /// <summary>
-    /// Struct que contiene la informacion de un ataque.
-    /// </summary>
     public struct DamageInfo
     {
         private int damageAmount;
@@ -13,11 +10,6 @@ namespace Controllers.Damage
         public float stunDuration, slowDuration;
         private Vector2 moveOnAttackForce;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="damageAmount">La cantidad de danio a inflingir.</param>
-        /// <param name="attackXPosition">La posicion X del ataque.</param>
         public DamageInfo(int damageAmount, float attackXPosition, bool moveOnAttack = false, bool stun = false, bool slow = false) : this()
         {
             DamageAmount = damageAmount;
@@ -29,11 +21,6 @@ namespace Controllers.Damage
             MoveOnAttackForce = new Vector2(10f, 10f);
         }
 
-        /// <summary>
-        /// Obtiene la direccion del ataque
-        /// </summary>
-        /// <param name="x">La posicion X del que recibe el ataque.</param>
-        /// <returns>Retorna: 1 si es atacado desde la izquierda. y -1 por la derecha.</returns>
         public int GetAttackDirection(float x)
         {
             int direction = (AttackXPosition < x) ? direction = 1 : direction = -1;

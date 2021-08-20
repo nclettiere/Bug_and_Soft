@@ -596,10 +596,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ctrlData: {fileID: 11400000, guid: a8ee0834b9cbeb24faf7be25e34232d1, type: 2}
   deadMaxWait: 5
+  currentHealth: 0
+  KrownReward: 10
   controllerKind: 2
   characterKind: 3
   interactionRadius: 0
-  maxHealth: 50
   moveOnAttackDuration: 0.1
   touchDamageCooldown: 0.75
   generalSpeed: 3
@@ -628,13 +629,20 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  canCharacterDie: 0
+  _froggyTongue: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+  _attackStateData: {fileID: 11400000, guid: 07bb7250f9abb0d4b9f957e706a4c3e7, type: 2}
+  _deadStateData: {fileID: 11400000, guid: 93d2ed74cc5fdcd4fbd638be62e8f68f, type: 2}
   _idleStateData: {fileID: 11400000, guid: d10b11051f389c442a26a034c8497a7a, type: 2}
   _jumpStateData: {fileID: 11400000, guid: f83e9cda744aed943a0f811463f6b7e1, type: 2}
   _prepareAttackStateData: {fileID: 11400000, guid: 4eddd5094a827664fa86c88e9121633d, type: 2}
-  _attackStateData: {fileID: 11400000, guid: 07bb7250f9abb0d4b9f957e706a4c3e7, type: 2}
-  _deadStateData: {fileID: 11400000, guid: 93d2ed74cc5fdcd4fbd638be62e8f68f, type: 2}
-  _froggyTongue: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+  _damageStateData: {fileID: 0}
+  _farty: {fileID: 0}
+  _superFroggyNuke: {fileID: 0}
+  transforming: 0
+  currentPhase: 1
+  transformed: 0
+  _superFroggySecondPhaseStateData: {fileID: 0}
+  hallPosition: 0
 --- !u!212 &242146971895896517
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -646,7 +654,6 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

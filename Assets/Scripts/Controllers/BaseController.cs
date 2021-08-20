@@ -18,16 +18,6 @@ using Random = UnityEngine.Random;
 
 namespace Controllers
 {
-    /// <summary>
-    ///     <para>Controller basico para todos los NPCs/Enemigos/Neutrals.</para>
-    ///     <para>Esta clase debe ser heredada por clases especificas para cada NPC.</para>
-    /// </summary>
-    /// <example>
-    ///     <para>Vease la clase DummyController</para>
-    /// </example>
-    /// <remarks>
-    ///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
-    /// </remarks>
     public class BaseController :
         /// @cond SKIP_THIS
         MonoBehaviour,
@@ -261,20 +251,11 @@ namespace Controllers
             rBody.AddTorque(newTorque * FacingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
         }
 
-        /// <summary>
-        ///     Obtiene el controller de moviemento del personaje especificando que tipo de moviemnto usa en T
-        /// </summary>
-        /// <typeparam name="T">Clase derivada de BaseMovementController</typeparam>
-        /// <returns>Un objeto de clase T que hereda de BaseMovementController almacenado en el BaseController.</returns>
         public T GetMovementController<T>() where T : BaseMovementController
         {
             return (T) baseMovementController;
         }
 
-        /// <summary>
-        ///     Obtiene el animator del character
-        /// </summary>
-        /// <returns>El animator del character</returns>
         public Animator GetAnimator()
         {
             return characterAnimator;
@@ -356,9 +337,6 @@ namespace Controllers
             //rigidbody2D.velocity = new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y);
         }
 
-        /// <summary>
-        ///     Metodo para checkear si el jugador puede interactual con este personaje 
-        /// </summary>
         private void CheckInteractions()
         {
             RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRadius, new Vector2(0f, 0f));
@@ -381,9 +359,6 @@ namespace Controllers
                 dialogueBubble.gameObject.SetActive(false);
         }
 
-        /// <summary>
-        ///     Checkea si es necesario mover al personaje mientras es atacado.
-        /// </summary>
         private void CheckMoveOnAttack()
         {
             if (Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)

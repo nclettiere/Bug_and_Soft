@@ -8,15 +8,6 @@ using Player;
 using UI;
 using UnityEditor;
 using UnityEngine;
-
-/// <summary>
-///     <para>Esta clase controla el estado del juego.</para>
-///     <para>Funciona como helper para todas las clases, ya que controla el UI, las camaras, la muerte del jugador, el guardado y la carga de savegames (no implementado), entre otros.</para>
-///     <para>Se debe instanciar antes de usar <code>GameManager.Instance</code></para>
-/// </summary>
-/// <remarks>
-///     \emoji :clock4: Ultima actualizacion: v0.0.9 - 22/7/2021 - Nicolas Cabrera
-/// </remarks>
 public class GameManager
 {
     private static GameManager instance;
@@ -295,5 +286,6 @@ public class GameManager
         isGameOver = true;
         PauseGame();
         GameObject.Find("UI/UI_LevelCompleted").GetComponent<Canvas>().enabled = true;
+        GameObject.Find("UI/UI_GameOver").SetActive(false);
     }
 }
