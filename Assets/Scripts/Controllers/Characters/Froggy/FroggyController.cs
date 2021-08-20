@@ -22,6 +22,7 @@ namespace Controllers.Froggy
         [SerializeField] private JumpStateData _jumpStateData;
         [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
         [SerializeField] private DamageStateData _damageStateData;
+        [SerializeField] private GameObject _farty;
         public GameObject _superFroggyNuke;
         private bool canFroggyDie = false;
         private FroggyTongueController instatiatedTongue;
@@ -120,7 +121,7 @@ namespace Controllers.Froggy
 
         public void Explode()
         {
-            Instantiate(_superFroggyNuke, transform.position + new Vector3(0f, 2f), Quaternion.Euler(0f, 0f, 0f));
+            Instantiate(_farty, transform.position, Quaternion.Euler(0f, 0f, 0f));
             Destroy(gameObject);
         }
 
