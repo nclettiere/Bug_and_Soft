@@ -34,6 +34,9 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+      - run: |	
+        mkdir -p ${{ github.workspace }}/artifact
+        echo hello > ${{ github.workspace }}/artifact/world.txt
       - uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
@@ -64,7 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: *
+          asset_path: build/StandaloneWindows64/StandaloneWindows64.exe
           asset_name: my-artifact.zip
           asset_content_type: application/zip
           
