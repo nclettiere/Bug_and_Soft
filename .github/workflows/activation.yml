@@ -14,3 +14,8 @@ jobs:
         with:
           name: Manual Activation File
           path: '${{ steps.getManualLicenseFile.outputs.filepath }}'
+      - uses: actions/download-artifact@v2
+        with:
+          name: Manual Activation File
+      - name: Display structure of downloaded files
+        run: ls -R
