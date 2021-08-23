@@ -35,6 +35,7 @@ jobs:
           path: build/${{ matrix.targetPlatform }}
   publishRelease:
     name: Publish release files
+    needs: [buildForAllSupportedPlatforms]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
