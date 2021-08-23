@@ -1,6 +1,10 @@
 name: Build project
 
-on: [push, pull_request]
+on: 
+  [push, pull_request]: 
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v0.5.53' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -33,15 +37,29 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-      - uses: actions/create-release@v1
+  publishRelease:
+    name: Publish release files
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          tag_name: ${{ GITHUB_SHA }}
+          release_name: Release - ${{ GITHUB_RUN_NUMBER }}
           draft: false
           prerelease: true
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./Build-StandaloneWindows64.exe
+          asset_name: my-artifact.zip
+          asset_content_type: application/zip
