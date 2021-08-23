@@ -27,7 +27,7 @@ jobs:
           draft: false
           prerelease: true
   buildForAllSupportedPlatforms:
-    name: Building: ${{ matrix.targetPlatform }}
+    name: Building ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
