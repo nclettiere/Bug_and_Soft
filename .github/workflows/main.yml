@@ -33,14 +33,15 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          repo_token: ${{ secrets.GITHUB_RELEASE }}
-          automatic_release_tag: "latest"
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
           prerelease: true
-          title: "Development Build"
-          files: |
-            LICENSE.txt
-            *.exe
-            Library/*.exe
-            Library-/*.exe
