@@ -1,13 +1,12 @@
 name: Build project
 
-
 on: 
   push:
     tags:
-      - 'v0.5.54'
+      - 'v*'
   pull_request:
     tags:
-      - 'v0.5.54'
+      - 'v*'
 
 jobs:
   buildForAllSupportedPlatforms:
