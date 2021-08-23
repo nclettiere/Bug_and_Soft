@@ -59,8 +59,8 @@ jobs:
       - name: Download artifact ${{ matrix.targetPlatform }}
         id: download
         uses: actions/download-artifact@v2
-          with:
-            path: Build-${{ matrix.targetPlatform }}
+        with:
+          path: Build-${{ matrix.targetPlatform }}
       - name: Upload artifact to release
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
