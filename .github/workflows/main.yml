@@ -1,48 +1,55 @@
-name: UnityActions
+name: Build project
 
-on:
-  pull_request: {}
-  push: { branches: [master] }
+on: 
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    tags:
+      - 'v*'
 
-env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
-    name: Build my project ✨
+  buildForAllSupportedPlatforms:
+    name: Building ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- Android # Build an Android .apk standalone app.
     steps:
-      # Activationn
-      - name: Unity - Request Activation File
-        uses: game-ci/unity-request-activation-file@v2.0-alpha-1
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           lfs: true
-
-      # Cache
-      - uses: actions/cache@v1.1.0
+      - uses: actions/cache@v2
         with:
           path: Library
-          key: Library
-
-      # Test
-      - name: Run tests
-        uses: webbertakken/unity-test-runner@v1.7
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      - uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2019.2.11f1
-
-      # Build
-      - name: Build project
-        uses: webbertakken/unity-builder@v1.5
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildsPath: ./build
+      - uses: actions/upload-artifact@v2
+        id: uarti
         with:
-          unityVersion: 2019.2.11f1
-          targetPlatform: WebGL
-
-      # Output
-      - uses: actions/upload-artifact@v1
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+      - name: Release
+        uses: fnkr/github-action-ghr@v1
+        env:
+          GHR_COMPRESS: zip
+          GHR_PATH: build/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update release
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          name: Build
-          path: build
-          
+          prerelease: true
