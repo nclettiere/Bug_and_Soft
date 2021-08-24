@@ -47,8 +47,10 @@ jobs:
           GHR_PATH: build/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update release
-        uses: johnwbyrd/update-release@v1.0.0
+        id: update_release
+        uses: tubone24/update_release@v1.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           body: "Despues de 189 anios, sube el ejecutable de windows. Disfruten."
           prerelease: true
