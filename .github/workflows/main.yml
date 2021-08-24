@@ -20,16 +20,6 @@ jobs:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           #- Android # Build an Android .apk standalone app.
     steps:
-      - name: Creating Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release - ${{ env.GITHUB_RUN_NUMBER }}
-          draft: false
-          prerelease: true
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -56,14 +46,10 @@ jobs:
         with:
           path: Build-${{ matrix.targetPlatform }}
       - name: Download path
-        run: echo "${{ steps.download.outputs.download-path }}"
-      - name: Upload artifact to release
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
+        run: echo "${{ steps.download.outputs.download-path }}"    
+      - name: Release
+        uses: fnkr/github-action-ghr@v1
         env:
+          GHR_COMPRESS: zip
+          GHR_PATH: build/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.download.outputs.download-path }}
-          asset_name: ${{ matrix.targetPlatform }}a.zip
-          asset_content_type: application/zip
