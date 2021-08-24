@@ -52,5 +52,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          body: "Despues de 189 anios, sube el ejecutable de windows. Disfruten."
           prerelease: true
