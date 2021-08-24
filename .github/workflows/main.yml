@@ -40,16 +40,15 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-      - name: Download artifact ${{ matrix.targetPlatform }}
-        id: download
-        uses: actions/download-artifact@v2
-        with:
-          path: Build-${{ matrix.targetPlatform }}
-      - name: Download path
-        run: echo "${{ steps.download.outputs.download-path }}"    
       - name: Release
         uses: fnkr/github-action-ghr@v1
         env:
           GHR_COMPRESS: zip
           GHR_PATH: build/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update release
+        uses: johnwbyrd/update-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: "Despues de 189 anios, sube el ejecutable de windows. Disfruten."
+          prerelease: true
