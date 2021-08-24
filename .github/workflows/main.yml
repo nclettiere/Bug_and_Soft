@@ -55,6 +55,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: Build-${{ matrix.targetPlatform }}
+      - name: Download path
+        run: echo "${{ steps.download.outputs.download-path }}"
       - name: Upload artifact to release
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
