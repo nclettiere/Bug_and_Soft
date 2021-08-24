@@ -10,11 +10,15 @@ on:
 
 
 jobs:
-  createRelease:
-    name: Create Release for tag ${{ github.ref }}
+  buildForAllSupportedPlatforms:
+    name: Building ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- Android # Build an Android .apk standalone app.
     steps:
       - name: Creating Release
         id: create_release
@@ -26,16 +30,6 @@ jobs:
           release_name: Release - ${{ env.GITHUB_RUN_NUMBER }}
           draft: false
           prerelease: true
-  buildForAllSupportedPlatforms:
-    name: Building ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- Android # Build an Android .apk standalone app.
-    steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -67,9 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.uarti.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ steps.download.outputs.download-path }}
           asset_name: ${{ matrix.targetPlatform }}a.zip
           asset_content_type: application/zip
-
-          
