@@ -9,7 +9,6 @@ using UnityEngine.InputSystem.Utilities;
 public class @PlayerControls : IInputActionCollection, IDisposable
 {
     public InputActionAsset asset { get; }
-
     public @PlayerControls()
     {
         asset = InputActionAsset.FromJson(@"{
@@ -111,6 +110,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""SpecialMove"",
                     ""type"": ""Button"",
                     ""id"": ""2515f7ee-30fa-4c26-af47-c5ba12e8a81b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""QuickSave"",
+                    ""type"": ""Button"",
+                    ""id"": ""54522605-db22-473a-a8d6-493ea1547620"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""QuickLoad"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e831130-94da-4b33-9c26-a2bb6ada2908"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -677,6 +692,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""SpecialMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44fc1253-5bb7-4045-ba17-f73fbba1739a"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4491e4b4-a761-435f-a202-7b57571b8938"",
+                    ""path"": ""<Keyboard>/f9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickLoad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -697,6 +734,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_MenuInteractMouse = m_Gameplay.FindAction("MenuInteractMouse", throwIfNotFound: true);
         m_Gameplay_SpecialMove = m_Gameplay.FindAction("SpecialMove", throwIfNotFound: true);
+        m_Gameplay_QuickSave = m_Gameplay.FindAction("QuickSave", throwIfNotFound: true);
+        m_Gameplay_QuickLoad = m_Gameplay.FindAction("QuickLoad", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -758,16 +797,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_MenuInteractMouse;
     private readonly InputAction m_Gameplay_SpecialMove;
-
+    private readonly InputAction m_Gameplay_QuickSave;
+    private readonly InputAction m_Gameplay_QuickLoad;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
-
-        public GameplayActions(@PlayerControls wrapper)
-        {
-            m_Wrapper = wrapper;
-        }
-
+        public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Horizontal => m_Wrapper.m_Gameplay_Horizontal;
         public InputAction @Vertical => m_Wrapper.m_Gameplay_Vertical;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
@@ -780,29 +815,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @MenuInteractMouse => m_Wrapper.m_Gameplay_MenuInteractMouse;
         public InputAction @SpecialMove => m_Wrapper.m_Gameplay_SpecialMove;
-
-        public InputActionMap Get()
-        {
-            return m_Wrapper.m_Gameplay;
-        }
-
-        public void Enable()
-        {
-            Get().Enable();
-        }
-
-        public void Disable()
-        {
-            Get().Disable();
-        }
-
+        public InputAction @QuickSave => m_Wrapper.m_Gameplay_QuickSave;
+        public InputAction @QuickLoad => m_Wrapper.m_Gameplay_QuickLoad;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-
-        public static implicit operator InputActionMap(GameplayActions set)
-        {
-            return set.Get();
-        }
-
+        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
         public void SetCallbacks(IGameplayActions instance)
         {
             if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
@@ -843,8 +862,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SpecialMove.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
                 @SpecialMove.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
                 @SpecialMove.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpecialMove;
+                @QuickSave.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickSave;
+                @QuickSave.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickSave;
+                @QuickSave.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickSave;
+                @QuickLoad.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickLoad;
+                @QuickLoad.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickLoad;
+                @QuickLoad.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnQuickLoad;
             }
-
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
             {
@@ -884,12 +908,16 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SpecialMove.started += instance.OnSpecialMove;
                 @SpecialMove.performed += instance.OnSpecialMove;
                 @SpecialMove.canceled += instance.OnSpecialMove;
+                @QuickSave.started += instance.OnQuickSave;
+                @QuickSave.performed += instance.OnQuickSave;
+                @QuickSave.canceled += instance.OnQuickSave;
+                @QuickLoad.started += instance.OnQuickLoad;
+                @QuickLoad.performed += instance.OnQuickLoad;
+                @QuickLoad.canceled += instance.OnQuickLoad;
             }
         }
     }
-
     public GameplayActions @Gameplay => new GameplayActions(this);
-
     public interface IGameplayActions
     {
         void OnHorizontal(InputAction.CallbackContext context);
@@ -904,5 +932,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnMenuInteractMouse(InputAction.CallbackContext context);
         void OnSpecialMove(InputAction.CallbackContext context);
+        void OnQuickSave(InputAction.CallbackContext context);
+        void OnQuickLoad(InputAction.CallbackContext context);
     }
 }

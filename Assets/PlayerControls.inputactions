@@ -67,40 +67,56 @@
                     "id": "2478ce14-5b57-47ee-85ab-159c139370e8",
                     "expectedControlType": "Button",
                     "processors": "",
-                  "interactions": ""
+                    "interactions": ""
                 },
-              {
-                "name": "Pause",
-                "type": "Button",
-                "id": "46c3b3ab-4557-4e85-886d-51ab520e42ed",
-                "expectedControlType": "Button",
-                "processors": "",
-                "interactions": ""
-              },
-              {
-                "name": "Interact",
-                "type": "Button",
-                "id": "1c00ebf7-d511-4797-994a-56a2a856da3c",
-                "expectedControlType": "Button",
-                "processors": "",
-                "interactions": ""
-              },
-              {
-                "name": "MenuInteractMouse",
-                "type": "Button",
-                "id": "7d172ee7-1469-42f5-9c63-3ea688e56b9f",
-                "expectedControlType": "Button",
-                "processors": "",
-                "interactions": ""
-              },
-              {
-                "name": "SpecialMove",
-                "type": "Button",
-                "id": "2515f7ee-30fa-4c26-af47-c5ba12e8a81b",
-                "expectedControlType": "Button",
-                "processors": "",
-                "interactions": ""
-              }
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "46c3b3ab-4557-4e85-886d-51ab520e42ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "1c00ebf7-d511-4797-994a-56a2a856da3c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MenuInteractMouse",
+                    "type": "Button",
+                    "id": "7d172ee7-1469-42f5-9c63-3ea688e56b9f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SpecialMove",
+                    "type": "Button",
+                    "id": "2515f7ee-30fa-4c26-af47-c5ba12e8a81b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "QuickSave",
+                    "type": "Button",
+                    "id": "54522605-db22-473a-a8d6-493ea1547620",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "QuickLoad",
+                    "type": "Button",
+                    "id": "3e831130-94da-4b33-9c26-a2bb6ada2908",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
             ],
             "bindings": [
                 {
@@ -610,60 +626,82 @@
                     "isPartOfComposite": false
                 },
                 {
-                  "name": "",
-                  "id": "78076907-119f-45cc-8755-582be6dd25ed",
-                  "path": "<Keyboard>/e",
-                  "interactions": "",
-                  "processors": "",
-                  "groups": "",
-                  "action": "Interact",
-                  "isComposite": false,
-                  "isPartOfComposite": false
+                    "name": "",
+                    "id": "78076907-119f-45cc-8755-582be6dd25ed",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
-              {
-                "name": "",
-                "id": "c327cb9a-6292-4122-92bb-496f642bbee2",
-                "path": "<Gamepad>/buttonNorth",
-                "interactions": "",
-                "processors": "",
-                "groups": "",
-                "action": "Interact",
-                "isComposite": false,
-                "isPartOfComposite": false
-              },
-              {
-                "name": "",
-                "id": "34b54d77-5419-4ba7-9680-2cd678d5b58f",
-                "path": "<Mouse>/leftButton",
-                "interactions": "",
-                "processors": "",
-                "groups": "",
-                "action": "MenuInteractMouse",
-                "isComposite": false,
-                "isPartOfComposite": false
-              },
-              {
-                "name": "",
-                "id": "89095ac8-7acb-4a38-bbd1-2084dbd624e4",
-                "path": "<DualShockGamepad>/rightShoulder",
-                "interactions": "",
-                "processors": "",
-                "groups": "",
-                "action": "SpecialMove",
-                "isComposite": false,
-                "isPartOfComposite": false
-              },
-              {
-                "name": "",
-                "id": "b61fd912-ccd2-42bc-afb5-90d11d52ba26",
-                "path": "<Keyboard>/q",
-                "interactions": "",
-                "processors": "",
-                "groups": "",
-                "action": "SpecialMove",
-                "isComposite": false,
-                "isPartOfComposite": false
-              }
+                {
+                    "name": "",
+                    "id": "c327cb9a-6292-4122-92bb-496f642bbee2",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "34b54d77-5419-4ba7-9680-2cd678d5b58f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MenuInteractMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89095ac8-7acb-4a38-bbd1-2084dbd624e4",
+                    "path": "<DualShockGamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b61fd912-ccd2-42bc-afb5-90d11d52ba26",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "44fc1253-5bb7-4045-ba17-f73fbba1739a",
+                    "path": "<Keyboard>/f5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickSave",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4491e4b4-a761-435f-a202-7b57571b8938",
+                    "path": "<Keyboard>/f9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuickLoad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
             ]
         }
     ],

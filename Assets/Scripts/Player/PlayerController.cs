@@ -5,6 +5,7 @@ using Enums;
 using Interactions.Enums;
 using Interactions.Interfaces;
 using Misc;
+using SaveSystem.Data;
 using UnityEngine;
 
 namespace Player
@@ -56,6 +57,7 @@ namespace Player
         private EffectController effectController;
         private bool canUseSpecialMove;
         private float rollCooldownWait = float.NegativeInfinity;
+        public int currentAbility { get; set; }
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -475,6 +477,13 @@ namespace Player
         public void KrownsRemoved()
         {
             onKrownRemove.Play();
+        }
+
+        public void SetData(PlayerData playerData)
+        {
+            transform.position = playerData.GetPosition();
+            currentHealth = playerData.Health;
+            GameManager.Instance.SetPlayerKrones(playerData.Krones);
         }
     }
 }

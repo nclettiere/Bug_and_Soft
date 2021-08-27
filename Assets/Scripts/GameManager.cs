@@ -5,6 +5,7 @@ using CameraManagement;
 using Controllers;
 using Controllers.Froggy;
 using Player;
+using SaveSystem.Data;
 using UI;
 using UnityEditor;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class GameManager
     private bool isGamePaused;
     private bool isPlayerAlive;
     private int playerDeathCount;
+    public int checkpointIndex { get; private set; }
 
     public int PlayerKrowns { get; private set; }
 
@@ -57,6 +59,18 @@ public class GameManager
                 ResumeGame();
             else
                 PauseGame();
+        };
+        
+        PlayerControls.Gameplay.QuickSave.performed += ctx =>
+        {
+            if (isMainMenuOn || isGamePaused) return;
+            QuickSave();
+        };
+        
+        PlayerControls.Gameplay.QuickLoad.performed += ctx =>
+        {
+            if (isMainMenuOn || isGamePaused) return;
+            QuickLoad();
         };
 
         PauseGame();
@@ -287,5 +301,46 @@ public class GameManager
         PauseGame();
         GameObject.Find("UI/UI_LevelCompleted").GetComponent<Canvas>().enabled = true;
         GameObject.Find("UI/UI_GameOver").SetActive(false);
+    }
+
+    public bool CreateNewSave(int slot)
+    {
+        var playerData = new PlayerData(PlayerController);
+        return SaveSystem.SaveSystem.SaveGame(ref playerData, slot);
+    }
+    
+    public bool LoadSave(int slot)
+    {
+        var playerData = SaveSystem.SaveSystem.LoadSaveGame(slot);
+        if (playerData == null) return false;
+        
+        // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
+        PlayerController.SetData(playerData);
+        
+        return true;
+
+    }
+    
+    public bool QuickSave()
+    {
+        var playerData = new PlayerData(PlayerController);
+        return SaveSystem.SaveSystem.QuickSaveGame(ref playerData);
+    }
+    
+    public bool QuickLoad()
+    {
+        var playerData = SaveSystem.SaveSystem.LoadQuickSaveGame();
+        if (playerData == null) return false;
+        
+        // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
+        PlayerController.SetData(playerData);
+        
+        return true;
+
+    }
+
+    public void SetPlayerKrones(int playerDataKrones)
+    {
+        PlayerKrowns = playerDataKrones;
     }
 }
