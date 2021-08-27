@@ -4,7 +4,7 @@
 
 PAGINA OFFICIAL [Click aca](https://bugnsoft.github.io/)
 
-UNITY VERSION : 2020.3.15f1
+UNITY VERSION : 2020.3.12f1
 
 #### Integrantes:
 - Bruno Baz
