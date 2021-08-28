@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 4286958349586239631}
   - component: {fileID: 3906862047199157833}
   - component: {fileID: 6078277829359893655}
+  - component: {fileID: 3861931906869227902}
   m_Layer: 0
   m_Name: LoadButton
   m_TagString: Untagged
@@ -200,9 +201,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI.UI_PauseMenuRemastered, Assembly-CSharp
-        m_MethodName: GoBack
+      - m_Target: {fileID: 3861931906869227902}
+        m_TargetAssemblyTypeName: UI.UI_GameButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -227,6 +228,23 @@ MonoBehaviour:
   selector: {fileID: 1823492149874638991}
   isMainMenu: 1
   selectorChangeSFX: {fileID: 0}
+--- !u!114 &3861931906869227902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763895676867492250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51cbd113e614780891d3e8ec624103b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Function: 6
+  saveSlot: 1
+  confirmationDialogue: {fileID: 0}
+  panelsToHide: []
+  panelsToShow: []
 --- !u!95 &2242630041311685856
 Animator:
   serializedVersion: 3
@@ -259,6 +277,7 @@ GameObject:
   - component: {fileID: 3366033510771357072}
   - component: {fileID: 4141310547405959121}
   - component: {fileID: 5256988905904948725}
+  - component: {fileID: 966694051703238688}
   m_Layer: 0
   m_Name: SaveButton
   m_TagString: Untagged
@@ -368,9 +387,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI.UI_PauseMenuRemastered, Assembly-CSharp
-        m_MethodName: GoBack
+      - m_Target: {fileID: 966694051703238688}
+        m_TargetAssemblyTypeName: UI.UI_GameButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -395,6 +414,24 @@ MonoBehaviour:
   selector: {fileID: 1823492149874638991}
   isMainMenu: 1
   selectorChangeSFX: {fileID: 0}
+--- !u!114 &966694051703238688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2706275138205155654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51cbd113e614780891d3e8ec624103b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Function: 5
+  saveSlot: 1
+  confirmationDialogue: {fileID: 0}
+  panelsToHide:
+  - {fileID: 2706275138205155654}
+  panelsToShow: []
 --- !u!1 &6353503446151696482
 GameObject:
   m_ObjectHideFlags: 0

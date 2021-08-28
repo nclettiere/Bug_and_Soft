@@ -6,6 +6,10 @@
         SETTINGS,
         MAINMENU,
         RETRY,
-        RESUME
+        RESUME,
+        SAVE,
+        LOAD,
+        SAVENOW,
+        LOADNOW
     }
 }

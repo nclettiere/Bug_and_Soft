@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2781515484688569284}
   - component: {fileID: 1035734739108311042}
   - component: {fileID: 1867817723445030330}
+  - component: {fileID: 130341119406655668}
   m_Layer: 0
   m_Name: SaveLoadButton1
   m_TagString: Untagged
@@ -162,6 +163,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &130341119406655668
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2781515484688569272}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5605369176433968340
 GameObject:
   m_ObjectHideFlags: 0

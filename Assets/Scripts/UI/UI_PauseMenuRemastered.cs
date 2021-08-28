@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -7,6 +8,7 @@ namespace UI
         private GameObject ButtonPanels;
         private GameObject SaveLoadSlotsPanel;
         private GameObject SaveLoadSlotsOptionsPanel;
+        [SerializeField] private GameObject[] SaveLoadSlotsOptionsButtons;
         
         private GameObject ReturnButton;
         private GameObject ReturnButtonSelector;
@@ -30,6 +32,12 @@ namespace UI
             SaveLoadSlotsOptionsPanel.SetActive(true);
             ReturnButton.SetActive(true);
             ReturnButtonSelector.SetActive(true);
+            
+            foreach (var slotPanel in SaveLoadSlotsOptionsButtons)
+            {
+                slotPanel.GetComponent<CanvasGroup>().alpha = 1;
+                slotPanel.GetComponent<Button>().interactable = true;
+            }
         }
         
         public void CloseLoadMenu()

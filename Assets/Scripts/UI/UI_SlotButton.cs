@@ -31,7 +31,6 @@ public class UI_SlotButton :
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-		Debug.Log("OnPointerEnter");
     	selectorKnob.SetActive(true);
         selectorKnob.transform.position = new Vector3(selectorKnob.transform.position.x, transform.position.y, selectorKnob.transform.position.z);
         //selectorChangeSFX.Play();
@@ -44,8 +43,10 @@ public class UI_SlotButton :
 
     public void OnClick()
     {
+
+	    slotsAnimator[0].transform.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+	    slotsAnimator[0].transform.gameObject.GetComponent<Button>().interactable = false;
 	    
-	    slotsAnimator[0].SetBool("Collapse", true);
 	    slotsAnimator[1].transform.gameObject.GetComponent<Button>().interactable = false;
 	    slotsAnimator[2].transform.gameObject.GetComponent<Button>().interactable = false;
 	    
