@@ -2,6 +2,7 @@
 {
     public enum EButtonFunction
     {
+        NONE,
         QUIT,
         SETTINGS,
         MAINMENU,

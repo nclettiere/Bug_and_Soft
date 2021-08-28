@@ -2,6 +2,7 @@
 using Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -12,6 +13,9 @@ namespace UI
         public GameObject confirmationDialogue;
         public GameObject[] panelsToHide;
         public GameObject[] panelsToShow;
+        
+        public GameObject[] panelsAplhaZero;
+        public GameObject[] panelsAlphaOne;
         
         public void OnClick()
         {
@@ -46,6 +50,28 @@ namespace UI
                     LoadGameOnSlotNow();
                     break;
             }
+            
+            foreach (var slotPanel in panelsToHide)
+            {
+                slotPanel.SetActive(false);
+            }
+            
+            foreach (var panel in panelsToShow)
+            {
+                panel.SetActive(true);
+            }
+            
+            foreach (var slotPanel in panelsAplhaZero)
+            {
+                slotPanel.GetComponent<CanvasGroup>().alpha = 0;
+                slotPanel.GetComponent<Button>().interactable = false;
+            }
+            
+            foreach (var panel in panelsAlphaOne)
+            {
+                panel.GetComponent<CanvasGroup>().alpha = 1;
+                panel.GetComponent<Button>().interactable = true;
+            }
         }
 
         private void DestroyAll()
@@ -69,11 +95,6 @@ namespace UI
         private void SaveGameOnSlot()
         {
             confirmationDialogue.SetActive(true);
-
-            foreach (var slotPanel in panelsToHide)
-            {
-                slotPanel.SetActive(false);
-            }
             
             GameManager.Instance.CreateNewSave(saveSlot);
         }
@@ -86,16 +107,6 @@ namespace UI
         private void SaveGameOnSlotNow()
         {
             confirmationDialogue.SetActive(false);
-            
-            foreach (var slotPanel in panelsToHide)
-            {
-                slotPanel.SetActive(false);
-            }
-            
-            foreach (var panel in panelsToShow)
-            {
-                panel.SetActive(true);
-            }
             
             GameManager.Instance.CreateNewSave(saveSlot);
         }
