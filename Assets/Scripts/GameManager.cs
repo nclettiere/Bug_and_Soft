@@ -10,9 +10,34 @@ using UI;
 using UnityEditor;
 using UnityEngine;
 
-public class GameManager
+public enum GameState { NullState, Intro, MainMenu, Game }
+public delegate void OnStateChangeHandler();
+
+public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    private static GameManager _instance;
+    public event OnStateChangeHandler OnStateChange;
+    public GameState gameState { get; private set; }
+    
+    public static GameManager Instance 
+    { 
+        get {
+            if (_instance == null)
+            {
+                _instance = GameObject.Find("GameManager").AddComponent<GameManager>();
+            }
+
+            return _instance; 
+        }
+    }
+    
+    public void SetGameState(GameState gameState) {
+        this.gameState = gameState;
+        if(OnStateChange!=null) {
+            OnStateChange();
+        }
+    }
+
     private static bool sceneChanged;
 
     private bool isInputEnabled = true;
@@ -28,7 +53,7 @@ public class GameManager
     {
         get { return isGamePaused ? 0 : Time.deltaTime; }
     }
-    
+
     public PlayerController PlayerController
     {
         get
@@ -42,20 +67,31 @@ public class GameManager
     private int mainMenuPhase;
 
     public bool IsFirstStart = true;
-    
-    public bool isGameOver {get; private set;}
+
+    public bool isGameOver { get; private set; }
 
     public static PlayerControls PlayerControls = new PlayerControls();
 
 
-    public GameManager()
+    void Awake()
     {
-        isInputEnabled = false;
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
+            Destroy(gameObject.GetComponent(_instance.GetType()));
+        
+        DontDestroyOnLoad(gameObject);          
+        
+        SetupGame();
+        SetupInput();
+    }
 
+    private void SetupInput()
+    {
         PlayerControls.Gameplay.Pause.performed += ctx =>
         {
             if (isMainMenuOn) return;
-
+        
             if (isGamePaused)
                 ResumeGame();
             else
@@ -73,31 +109,44 @@ public class GameManager
             if (isMainMenuOn || isGamePaused) return;
             QuickLoad();
         };
+    }
 
+    private void SetupGame()
+    {
+        isInputEnabled = false;
         PauseGame();
     }
 
-    public static GameManager Instance
-    {
-        get
-        {
-            if (instance == null)
-                instance = new GameManager();
-
-            return instance;
-        }
-        set => throw new NotImplementedException();
-    }
+    //public static GameManager Instance
+    //{
+    //    get
+    //    {
+    //        if (instance == null)
+    //            instance = new GameManager();
+//
+    //        return instance;
+    //    }
+    //    set => throw new NotImplementedException();
+    //}
+    
 
     public void PauseGame()
     {
-        isGamePaused = true;
+        Debug.Log("PAUSE GAME");
+        GameObject.Find("/UI_PauseMenu2").SetActive(true);
+        //GameObject.Find("UI/UI_GameOver").SetActive(false);
+        //GameObject.Find("UI/UI_Dialogues").SetActive(false);
+        //GameObject.Find("UI/UI_MainMenu").SetActive(false);
+        //GameObject.Find("UI/UI_HUD").SetActive(false);
+        //GameObject.Find("UI/UI_LevelCompleted").SetActive(false);
+        //GameObject.Find("UI/UI_GameOver").SetActive(false);
+        //isGamePaused = true;
     }
 
     public void ResumeGame()
     {
         isGamePaused = false;
-        
+
         if (!IsFirstStart)
         {
             GetHUDCanvas().enabled = true;
@@ -149,7 +198,7 @@ public class GameManager
     public void SetInputEnabled(bool isEnabled)
     {
         if (!ReferenceEquals(GetDynamicCamera(), null) && isEnabled) GetDynamicCamera().UpdateSize(10f, 0.3f);
-        if (!ReferenceEquals(GetDynamicCamera(), null)) instance.isInputEnabled = isEnabled;
+        if (!ReferenceEquals(GetDynamicCamera(), null)) Instance.isInputEnabled = isEnabled;
     }
 
     public void SetCameraTarget(Transform target)
@@ -268,7 +317,7 @@ public class GameManager
 
     public void Retry()
     {
-        instance = new GameManager();
+        //Instance = new GameManager();
         GameObject.Destroy(PlayerController.transform.gameObject);
     }
 
@@ -290,7 +339,7 @@ public class GameManager
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
     }
-    
+
     public Canvas GetHUDCanvas()
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
@@ -309,35 +358,33 @@ public class GameManager
         var playerData = new PlayerData(PlayerController);
         return SaveSystem.SaveSystem.SaveGame(ref playerData, slot);
     }
-    
+
     public bool LoadSave(int slot)
     {
         var playerData = SaveSystem.SaveSystem.LoadSaveGame(slot);
         if (playerData == null) return false;
-        
+
         // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
         PlayerController.SetData(playerData);
-        
-        return true;
 
+        return true;
     }
-    
+
     public bool QuickSave()
     {
         var playerData = new PlayerData(PlayerController);
         return SaveSystem.SaveSystem.QuickSaveGame(ref playerData);
     }
-    
+
     public bool QuickLoad()
     {
         var playerData = SaveSystem.SaveSystem.LoadQuickSaveGame();
         if (playerData == null) return false;
-        
+
         // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
         PlayerController.SetData(playerData);
-        
-        return true;
 
+        return true;
     }
 
     public void SetPlayerKrones(int playerDataKrones)

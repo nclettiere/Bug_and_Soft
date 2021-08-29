@@ -28,11 +28,11 @@ namespace UI
                     break;
                 case EButtonFunction.MAINMENU:
                     RestartGame();
-                    GameManager.Instance = new GameManager();
+                    //GameManager.Instance = new GameManager();
                     break;
                 case EButtonFunction.RETRY:
                     RestartGame();
-                    GameManager.Instance = new GameManager();
+                    //GameManager.Instance = new GameManager();
                     break;
                 case EButtonFunction.RESUME:
                     GameManager.Instance.ResumeGame();

@@ -102,7 +102,9 @@ public class UI_SlotButton :
 		    }
 
 		    slotDataInfoText[0].text = levelName;
-		    slotDataInfoText[1].text = "Slot" + slotPosition;
+		    //slotDataInfoText[1].text = "Slot" + slotPosition;
+		    slotDataInfoText[2].text = "HEALTH " + playerData.Health + "/250";
+		    slotDataInfoText[3].text = "KRONES " + playerData.Krones;
 	    }
 	    else
 	    {
