@@ -8,12 +8,15 @@ namespace SaveSystem
 {
     public static class SaveSystem
     {
-        private static readonly string WindowsQuickSavePath = Application.persistentDataPath + "/saves/savegame_quick.bin";
-        private static readonly string WindowsSavePath = Application.persistentDataPath + "/saves/savegame_";
-        
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        private static readonly string QuickSavePath = Application.persistentDataPath + "/saves/savegame_quick.bin";
+        private static readonly string SlotSavePath = Application.persistentDataPath + "/saves/savegame_";
+#elif  UNITY_EDITOR_LINUX || UNITY_EDITOR_LINUX
+        private static readonly string QuickSavePath = Application.persistentDataPath + "\\saves\\savegame_quick.bin";
+        private static readonly string SlotSavePath = Application.persistentDataPath + "\\saves\\savegame_";
+#endif
         public static bool SaveGame(ref PlayerData playerData, int slot)
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             EnsureDirs();
             var savePath = GetSaveSlot(slot);
             var binaryFormatter = new BinaryFormatter();
@@ -21,24 +24,20 @@ namespace SaveSystem
             binaryFormatter.Serialize(fileStream, playerData);
             fileStream.Close();
             return true;
-#endif
         }
         
         public static bool QuickSaveGame(ref PlayerData playerData)
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             EnsureDirs();
             var binaryFormatter = new BinaryFormatter();
-            var fileStream = new FileStream(WindowsQuickSavePath, FileMode.Create);
+            var fileStream = new FileStream(QuickSavePath, FileMode.Create);
             binaryFormatter.Serialize(fileStream, playerData);
             fileStream.Close();
             return true;
-#endif
         }
         
         public static PlayerData LoadSaveGame(int slot)
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             EnsureDirs();
             var savePath = GetSaveSlot(slot);
             if (File.Exists(savePath))
@@ -46,36 +45,46 @@ namespace SaveSystem
                 var binaryFormatter = new BinaryFormatter();
                 var fileStream = new FileStream(savePath, FileMode.Open);
                 var playerData = binaryFormatter.Deserialize(fileStream) as PlayerData;
-
+                fileStream.Close();
                 return playerData;
             }
             
             Debug.LogError("Savegame file does not exist.");
             return null;
-#endif
         }
         
         public static PlayerData LoadQuickSaveGame()
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
             EnsureDirs();
-            if (File.Exists(WindowsQuickSavePath))
+            if (File.Exists(QuickSavePath))
             {
                 var binaryFormatter = new BinaryFormatter();
-                var fileStream = new FileStream(WindowsQuickSavePath, FileMode.Open);
+                var fileStream = new FileStream(QuickSavePath, FileMode.Open);
                 var playerData = binaryFormatter.Deserialize(fileStream) as PlayerData;
-
+                fileStream.Close();
                 return playerData;
             }
             
             Debug.LogError("Savegame file does not exist.");
             return null;
-#endif
+        }
+
+        public static PlayerData[] LoadSlotsData()
+        {
+            PlayerData[] slotDatas = new PlayerData[3];
+            
+            // Checkea la data de los 3 slots
+            for (int i = 0; i < 3; i++)
+            {
+                slotDatas[i] = LoadSaveGame(i);
+            }
+
+            return slotDatas;
         }
 
         private static string GetSaveSlot(int slot)
         {
-            return WindowsSavePath + $"{slot:000}" + ".bin"; // example /saves/savegame_005.bin
+            return SlotSavePath + $"{slot:000}" + ".bin"; // example: /saves/savegame_003.bin
         }
 
         private static void EnsureDirs()

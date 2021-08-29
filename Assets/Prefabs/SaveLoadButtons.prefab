@@ -240,11 +240,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51cbd113e614780891d3e8ec624103b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Function: 6
+  Function: 7
   saveSlot: 1
   confirmationDialogue: {fileID: 0}
   panelsToHide: []
   panelsToShow: []
+  panelsAplhaZero: []
+  panelsAlphaOne: []
 --- !u!95 &2242630041311685856
 Animator:
   serializedVersion: 3
@@ -426,12 +428,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51cbd113e614780891d3e8ec624103b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Function: 5
+  Function: 8
   saveSlot: 1
   confirmationDialogue: {fileID: 0}
   panelsToHide:
   - {fileID: 2706275138205155654}
   panelsToShow: []
+  panelsAplhaZero: []
+  panelsAlphaOne: []
 --- !u!1 &6353503446151696482
 GameObject:
   m_ObjectHideFlags: 0

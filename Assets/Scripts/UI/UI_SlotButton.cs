@@ -1,3 +1,5 @@
+using SaveSystem.Data;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +10,8 @@ public class UI_SlotButton :
 	IPointerEnterHandler,
 	IPointerExitHandler
 {
+	[SerializeField]
+	private int slotPosition;
 	[SerializeField]
 	private GameObject selectorKnob;
 	[SerializeField]
@@ -28,6 +32,12 @@ public class UI_SlotButton :
     
     [SerializeField]
     private float knobPositionY;
+
+    [SerializeField]
+    private TextMeshProUGUI[] slotDataInfoText;
+    
+    [SerializeField]
+    private GameObject emptySlotMesasge;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -56,7 +66,8 @@ public class UI_SlotButton :
 		    slotSaveLoadPanel.SetActive(false);
 		    slotSaveLoadButtons.SetActive(false);
 		    
-		    slotsAnimator[0].SetBool("Collapsed", false);
+		    slotsAnimator[0].transform.gameObject.GetComponent<CanvasGroup>().alpha = 1;
+		    slotsAnimator[0].transform.gameObject.GetComponent<Button>().interactable = true;
 		    slotsAnimator[1].transform.gameObject.GetComponent<Button>().interactable = true;
 		    slotsAnimator[2].transform.gameObject.GetComponent<Button>().interactable = true;
 		    
@@ -69,6 +80,38 @@ public class UI_SlotButton :
 	    
 	    slotSaveLoadPanel.SetActive(true);
 		slotSaveLoadButtons.SetActive(true);
+    }
+
+    public void UpdateSlotInfoData()
+    {
+	    PlayerData playerData = SaveSystem.SaveSystem.LoadSaveGame(slotPosition);
+	    
+	    if (playerData != null)
+	    {
+		    foreach (var slotText in slotDataInfoText)
+		    {
+			    slotText.gameObject.SetActive(true);
+		    }
+		    emptySlotMesasge.SetActive(false);
+
+		    string levelName = "Slot: " + slotPosition;
+
+		    if (playerData.Level == 0)
+		    {
+			    levelName = "OLD VERGEN CHAMBER";
+		    }
+
+		    slotDataInfoText[0].text = levelName;
+		    slotDataInfoText[1].text = "Slot" + slotPosition;
+	    }
+	    else
+	    {
+		    foreach (var slotText in slotDataInfoText)
+		    {
+			    slotText.gameObject.SetActive(false);
+		    }
+		    emptySlotMesasge.SetActive(true);
+	    }
     }
 
     public void AnimNotifyCollapsedEnded()

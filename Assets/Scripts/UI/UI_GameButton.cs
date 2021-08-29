@@ -94,8 +94,6 @@ namespace UI
 
         private void SaveGameOnSlot()
         {
-            confirmationDialogue.SetActive(true);
-            
             GameManager.Instance.CreateNewSave(saveSlot);
         }
         

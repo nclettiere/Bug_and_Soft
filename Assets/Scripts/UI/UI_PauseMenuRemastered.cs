@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SaveSystem.Data;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
@@ -14,7 +15,7 @@ namespace UI
         private GameObject ReturnButtonSelector;
 
         private bool loadMenuOpened;
-        
+
         private void Awake()
         {
             ButtonPanels = transform.Find("PauseMenuPanel/Buttons").gameObject;
@@ -37,6 +38,7 @@ namespace UI
             {
                 slotPanel.GetComponent<CanvasGroup>().alpha = 1;
                 slotPanel.GetComponent<Button>().interactable = true;
+                slotPanel.GetComponent<UI_SlotButton>().UpdateSlotInfoData();
             }
         }
         

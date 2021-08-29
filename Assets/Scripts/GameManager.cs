@@ -9,6 +9,7 @@ using SaveSystem.Data;
 using UI;
 using UnityEditor;
 using UnityEngine;
+
 public class GameManager
 {
     private static GameManager instance;
