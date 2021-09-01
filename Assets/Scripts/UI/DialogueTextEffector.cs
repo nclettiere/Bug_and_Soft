@@ -126,7 +126,7 @@ public class DialogueTextEffector : MonoBehaviour
             choiceSelectSFX.Play();
             ChooseOption(2);
             GameManager.Instance.RemovePlayerKrowns(150);
-            GameManager.Instance.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
+            GameManager.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
             GameManager.Instance.SetRomhoppState(0);
         });
     }
@@ -138,7 +138,7 @@ public class DialogueTextEffector : MonoBehaviour
         {
             DialogueManager.Instance.HideDialogues();
             GameManager.Instance.PlayerExitInteractionMode();
-            GameManager.Instance.ResumeGame();
+            GameManager.ResumeGame();
         });
     }
 

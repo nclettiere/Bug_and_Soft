@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public event OnStateChangeHandler OnStateChange;
     public GameState gameState { get; private set; }
     
+    public static PlayerControls PlayerControls = new PlayerControls();
+    
     public static GameManager Instance 
     { 
         get {
@@ -30,6 +32,12 @@ public class GameManager : MonoBehaviour
             return _instance; 
         }
     }
+
+    public GameManager()
+    {
+        SetupInput();
+        SetupGame();
+    }
     
     public void SetGameState(GameState gameState) {
         this.gameState = gameState;
@@ -40,9 +48,9 @@ public class GameManager : MonoBehaviour
 
     private static bool sceneChanged;
 
-    private bool isInputEnabled = true;
-    private bool isMainMenuOn = true;
-    private bool isGamePaused;
+    private static bool isInputEnabled = true;
+    private static bool isMainMenuOn = true;
+    private static bool isGamePaused = true;
     private bool isPlayerAlive;
     private int playerDeathCount;
     public int checkpointIndex { get; private set; }
@@ -54,7 +62,7 @@ public class GameManager : MonoBehaviour
         get { return isGamePaused ? 0 : Time.deltaTime; }
     }
 
-    public PlayerController PlayerController
+    public static PlayerController PlayerController
     {
         get
         {
@@ -66,28 +74,26 @@ public class GameManager : MonoBehaviour
     public Vector3 LastDeathPosition;
     private int mainMenuPhase;
 
-    public bool IsFirstStart = true;
+    public static bool IsFirstStart = true;
 
     public bool isGameOver { get; private set; }
 
-    public static PlayerControls PlayerControls = new PlayerControls();
-
-
-    void Awake()
+    void Start()
     {
         if (_instance == null)
             _instance = this;
         else if (_instance != this)
             Destroy(gameObject.GetComponent(_instance.GetType()));
         
-        DontDestroyOnLoad(gameObject);          
+        DontDestroyOnLoad(gameObject);
         
-        SetupGame();
-        SetupInput();
+        isGamePaused = true;
+        PauseGame();
     }
 
-    private void SetupInput()
+    private static void SetupInput()
     {
+        Debug.Log("Setting Input Up");
         PlayerControls.Gameplay.Pause.performed += ctx =>
         {
             if (isMainMenuOn) return;
@@ -111,7 +117,7 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    private void SetupGame()
+    private static void SetupGame()
     {
         isInputEnabled = false;
         PauseGame();
@@ -130,7 +136,7 @@ public class GameManager : MonoBehaviour
     //}
     
 
-    public void PauseGame()
+    public static void PauseGame()
     {
         Debug.Log("PAUSE GAME");
         GameObject.Find("/UI_PauseMenu2").SetActive(true);
@@ -143,7 +149,7 @@ public class GameManager : MonoBehaviour
         //isGamePaused = true;
     }
 
-    public void ResumeGame()
+    public static void ResumeGame()
     {
         isGamePaused = false;
 
@@ -163,9 +169,9 @@ public class GameManager : MonoBehaviour
         return isMainMenuOn;
     }
 
-    public void SetMainMenuOn(bool isMainMenuOn)
+    public void SetMainMenuOn(bool mainMenuOn)
     {
-        this.isMainMenuOn = isMainMenuOn;
+       isMainMenuOn = mainMenuOn;
     }
 
     public PlayerControls GetPlayerControls()
@@ -198,7 +204,7 @@ public class GameManager : MonoBehaviour
     public void SetInputEnabled(bool isEnabled)
     {
         if (!ReferenceEquals(GetDynamicCamera(), null) && isEnabled) GetDynamicCamera().UpdateSize(10f, 0.3f);
-        if (!ReferenceEquals(GetDynamicCamera(), null)) Instance.isInputEnabled = isEnabled;
+        if (!ReferenceEquals(GetDynamicCamera(), null)) isInputEnabled = isEnabled;
     }
 
     public void SetCameraTarget(Transform target)
@@ -340,7 +346,7 @@ public class GameManager : MonoBehaviour
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
     }
 
-    public Canvas GetHUDCanvas()
+    public static Canvas GetHUDCanvas()
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
     }
@@ -370,13 +376,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public bool QuickSave()
+    public static bool QuickSave()
     {
         var playerData = new PlayerData(PlayerController);
         return SaveSystem.SaveSystem.QuickSaveGame(ref playerData);
     }
 
-    public bool QuickLoad()
+    public static bool QuickLoad()
     {
         var playerData = SaveSystem.SaveSystem.LoadQuickSaveGame();
         if (playerData == null) return false;

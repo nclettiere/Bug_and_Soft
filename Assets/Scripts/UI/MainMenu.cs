@@ -182,8 +182,8 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetMainMenuOn(false);
         GameManager.Instance.SetInputEnabled(true);
         GameManager.Instance.SetCameraOffsetX(1.3f);
-        GameManager.Instance.IsFirstStart = false;
-        GameManager.Instance.ResumeGame();
+        GameManager.IsFirstStart = false;
+        GameManager.ResumeGame();
         GameManager.Instance.ShowHUD();
     }
 
