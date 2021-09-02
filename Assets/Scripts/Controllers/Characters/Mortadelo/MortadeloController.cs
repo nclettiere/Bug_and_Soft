@@ -13,11 +13,14 @@ public class MortadeloController : BaseController
     private Transform[] routes;
     [SerializeField]
     private AttackStateData _attackStateData;
+    [SerializeField]
+    private DeadStateData _deadStateData;
 
     private NavMeshAgent _agent;
     
     public Mortadelo_IdleState IdleState { get; private set; }
     public Mortadelo_AttackState AttackState { get; private set; }
+    public Mortadelo_DeadState DeadState { get; private set; }
     
     protected override void Start()
     {
@@ -29,6 +32,7 @@ public class MortadeloController : BaseController
 
         IdleState = new Mortadelo_IdleState(this, StateMachine, "Idle", this, routes);
         AttackState = new Mortadelo_AttackState(this, StateMachine, "Dash", _attackStateData, this);
+        DeadState = new Mortadelo_DeadState(this, StateMachine, "Dead", _deadStateData, this);
             
         StateMachine.Initialize(IdleState);
     }

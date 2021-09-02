@@ -32,6 +32,10 @@ namespace Controllers.Characters.Mortadelo.States
 
         public override void UpdateState()
         {
+            if (mController.currentHealth <= 0)
+            {
+                stateMachine.ChangeState(mController.DeadState);
+            }
         }
 
         public override void UpdatePhysics()

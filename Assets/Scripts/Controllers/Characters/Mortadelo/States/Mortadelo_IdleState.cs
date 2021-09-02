@@ -25,6 +25,11 @@ public class Mortadelo_IdleState : State
     {
         base.UpdateState();
 
+        if (mController.currentHealth <= 0)
+        {
+            stateMachine.ChangeState(mController.DeadState);
+        }
+
         CheckPlayerInRange();
     }
 
