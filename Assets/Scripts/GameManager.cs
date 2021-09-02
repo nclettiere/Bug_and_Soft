@@ -138,15 +138,7 @@ public class GameManager : MonoBehaviour
 
     public static void PauseGame()
     {
-        Debug.Log("PAUSE GAME");
-        GameObject.Find("/UI_PauseMenu2").SetActive(true);
-        //GameObject.Find("UI/UI_GameOver").SetActive(false);
-        //GameObject.Find("UI/UI_Dialogues").SetActive(false);
-        //GameObject.Find("UI/UI_MainMenu").SetActive(false);
-        //GameObject.Find("UI/UI_HUD").SetActive(false);
-        //GameObject.Find("UI/UI_LevelCompleted").SetActive(false);
-        //GameObject.Find("UI/UI_GameOver").SetActive(false);
-        //isGamePaused = true;
+        isGamePaused = true;
     }
 
     public static void ResumeGame()

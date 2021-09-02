@@ -5,6 +5,7 @@ namespace Controllers
         Dummy = 1,
         Njord,
         Froggy,
-        OLC
+        OLC,
+        Mortadelo
     }
 }

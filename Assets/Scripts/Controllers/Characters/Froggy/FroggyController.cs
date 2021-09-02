@@ -62,12 +62,7 @@ namespace Controllers.Froggy
 
             InvokeRepeating("MoveCejas", 0f, 7f);
         }
-
-        protected override void Update()
-        {
-            base.Update();
-        }
-
+        
         public void Anim_OnAttackingAnimStarted()
         {
             _attackState.attackStarted = true;

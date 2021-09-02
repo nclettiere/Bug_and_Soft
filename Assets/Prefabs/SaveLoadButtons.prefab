@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector: {fileID: 1823492149874638991}
-  isMainMenu: 1
+  isMainMenu: 0
   selectorChangeSFX: {fileID: 0}
 --- !u!114 &3861931906869227902
 MonoBehaviour:
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector: {fileID: 1823492149874638991}
-  isMainMenu: 1
+  isMainMenu: 0
   selectorChangeSFX: {fileID: 0}
 --- !u!114 &966694051703238688
 MonoBehaviour:

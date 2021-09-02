@@ -12,6 +12,7 @@ using Player;
 using Interactions.Enums;
 using Interactions.Interfaces;
 using Misc;
+using UnityEngine.AI;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
