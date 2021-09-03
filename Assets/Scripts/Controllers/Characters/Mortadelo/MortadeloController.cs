@@ -10,8 +10,6 @@ using Controllers.Characters.Mortadelo.States;
 public class MortadeloController : BaseController
 {
     [SerializeField]
-    private Transform[] routes;
-    [SerializeField]
     private AttackStateData _attackStateData;
     [SerializeField]
     private DeadStateData _deadStateData;
@@ -30,7 +28,7 @@ public class MortadeloController : BaseController
         _agent.updateRotation = false;
         _agent.updateUpAxis = false;
 
-        IdleState = new Mortadelo_IdleState(this, StateMachine, "Idle", this, routes);
+        IdleState = new Mortadelo_IdleState(this, StateMachine, "Idle", this);
         AttackState = new Mortadelo_AttackState(this, StateMachine, "Dash", _attackStateData, this);
         DeadState = new Mortadelo_DeadState(this, StateMachine, "Dead", _deadStateData, this);
             

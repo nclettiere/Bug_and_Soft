@@ -26,10 +26,16 @@ namespace Controllers.StateMachine
             controller.GetAnimator().SetBool(animBoolName, false);
         }
 
+        /// <summary>
+        /// Se ejecuta en Update()
+        /// </summary>
         public virtual void UpdateState()
         {
         }
 
+        /// <summary>
+        /// Se ejecuta en FixedUpdate()
+        /// </summary>
         public virtual void UpdatePhysics()
         {
         }

@@ -15,7 +15,7 @@ public class Mortadelo_IdleState : State
     private float radio = 0.1f;
     private float angulo;
 
-    public Mortadelo_IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, MortadeloController mController, Transform[] routes)
+    public Mortadelo_IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, MortadeloController mController)
         : base(controller, stateMachine, animBoolName)
     {
         this.mController = mController;
@@ -31,6 +31,14 @@ public class Mortadelo_IdleState : State
         }
 
         CheckPlayerInRange();
+        
+        // (Aviso) seteo la pos Z a 0 pq a veces hay un que el mortadelo
+        // se va al carajo en ese eje
+        if (mController.GetTransfrom().position.z != 0f)
+        {
+            mController.GetTransfrom().position.Set(mController.GetTransfrom().position.x,
+                mController.GetTransfrom().position.y, 0f);
+        }
     }
 
     public override void UpdatePhysics()
@@ -59,7 +67,7 @@ public class Mortadelo_IdleState : State
         // se lo agregamos a la pos actual !!!
         angulo += rotateSpeed * Time.deltaTime;
         
-        var offset = new Vector3(Mathf.Sin(angulo), Mathf.Cos(angulo)) * radio;
+        var offset = new Vector3(Mathf.Sin(angulo), Mathf.Cos(angulo), 0f) * radio;
         mController.transform.position += offset;
     }
 }

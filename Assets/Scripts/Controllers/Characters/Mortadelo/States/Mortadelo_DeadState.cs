@@ -20,6 +20,12 @@ public class Mortadelo_DeadState : DeadState
         this.mController = mController;
     }
 
+    public override void Enter()
+    {
+        mController.rBody.gravityScale = 8f;
+        base.Enter();
+    }
+
     protected virtual void LookAtPlayer()
     {
         float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
