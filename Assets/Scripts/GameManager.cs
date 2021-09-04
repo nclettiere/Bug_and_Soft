@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
 using Controllers.Froggy;
+using Enums;
 using Player;
 using SaveSystem.Data;
 using UI;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
         get {
             if (_instance == null)
             {
-                _instance = GameObject.Find("GameManager").AddComponent<GameManager>();
+                _instance = GameObject.Find("Managers/GameManager").AddComponent<GameManager>();
             }
 
             return _instance; 
@@ -125,19 +126,6 @@ public class GameManager : MonoBehaviour
         isInputEnabled = false;
         PauseGame();
     }
-
-    //public static GameManager Instance
-    //{
-    //    get
-    //    {
-    //        if (instance == null)
-    //            instance = new GameManager();
-//
-    //        return instance;
-    //    }
-    //    set => throw new NotImplementedException();
-    //}
-    
 
     public static void PauseGame()
     {
@@ -340,6 +328,11 @@ public class GameManager : MonoBehaviour
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
     }
+    
+    public UIManager.UIManager GetUIManager()
+    {
+        return GameObject.Find("Managers/UIManager").GetComponent<UIManager.UIManager>();
+    }
 
     public static Canvas GetHUDCanvas()
     {
@@ -393,48 +386,9 @@ public class GameManager : MonoBehaviour
         PlayerKrowns = playerDataKrones;
     }
     
-    public Volume GetLevelPostProcess() 
-    {
-        return GameObject.Find("PostProcess").GetComponent<Volume>();
-    }
     
     public void ApplyBlindness(float howLong = 1f) 
     {
-        if (!isBlinded)
-        {
-            isBlinded = true;
-            Volume volume = GetLevelPostProcess();
-            Vignette vignette;
-            volume.profile.TryGet(typeof(Vignette), out vignette);
-
-            StartCoroutine(BlindPlayerFor(vignette, howLong, 0f, 0.6f));
-        }
-    }
-
-    private IEnumerator BlindPlayerFor(Vignette vignette, float seconds, float from, float to)
-    {
-        float counter = 0f;
-        
-        while (counter < 0.4f)
-        {
-            counter += DeltaTime;
-            vignette.intensity.value = Mathf.Lerp(from, to, counter / 0.4f);
-
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(seconds);
-
-        counter = 0f;
-        
-        while (counter < seconds)
-        {
-            counter += DeltaTime;
-            vignette.intensity.value = Mathf.Lerp(to, from, counter / seconds);
-
-            yield return null;
-        }
-
-        isBlinded = false;
+        GetUIManager().ApplyBlindness(howLong);
     }
 }

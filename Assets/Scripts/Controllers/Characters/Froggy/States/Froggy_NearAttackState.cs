@@ -61,7 +61,7 @@ namespace Controllers.Froggy
                 // SFX de saltar !!!
                 AudioSource.PlayClipAtPoint(jumpStateData.jumpSFX, controller.GetTransfrom().position);
 
-                controller.AddForce(new Vector2( 10f, 7f), true);
+                controller.AddForce(new Vector2( 10f, 5f), true);
 
                 lastJumpTime = Time.time + 1.25f;
             }else if ((lastJumpTime - Time.time) < jumpCooldownTime)

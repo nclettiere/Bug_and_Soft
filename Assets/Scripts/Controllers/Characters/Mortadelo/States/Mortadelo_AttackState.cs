@@ -95,7 +95,7 @@ namespace Controllers.Characters.Mortadelo.States
                     GameManager.Instance.ApplyBlindness(5f);
 
                     attack = true;
-                    attackCooldown = Time.time + 3.5f;
+                    attackCooldown = Time.time + 1.5f;
                 }
             }
             

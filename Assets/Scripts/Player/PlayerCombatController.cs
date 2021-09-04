@@ -1,6 +1,5 @@
-using Controllers;
 using System.Collections;
-using System.Collections.Generic;
+using Controllers;
 using Controllers.Damage;
 using UnityEngine;
 
@@ -8,14 +7,6 @@ namespace Player
 {
     public class PlayerCombatController : MonoBehaviour
     {
-        internal bool attacking = false,
-            awaitingAttack = true,
-            respawning = false,
-            hasAttackAnimationStarted = false,
-            damagedApplied = false;
-
-        private int attackN = 0;
-
         [SerializeField] private int[] attacksDamage;
 
         [SerializeField] private Transform[] attacksHitboxPositions;
@@ -23,6 +14,24 @@ namespace Player
         [SerializeField] private float[] attacksHitboxRadius;
 
         [SerializeField] private float generalInputCooldown;
+
+        [SerializeField] private Material playerMaterial;
+
+        [SerializeField] private AudioSource[] swordSwingSFX;
+
+        [SerializeField] private int UnlockedAttacksCount = 2;
+
+        [SerializeField] [Range(0.15f, 1f)] private float WaitForNextAttackMaxTime = 0.75f;
+
+        [SerializeField] private LayerMask whatCanBeDamaged;
+
+        internal bool attacking,
+            awaitingAttack = true,
+            respawning = false,
+            hasAttackAnimationStarted,
+            damagedApplied;
+
+        private int attackN;
 
         private Color[] gizmosColors;
         private float lastInputTime = float.NegativeInfinity;
@@ -32,17 +41,7 @@ namespace Player
         private PlayerController pCtrl;
         private PlayerLadderClimbingController pLadderCtrl;
 
-        [SerializeField] private Material playerMaterial;
-
         private PlayerMovementController pMovCtrl;
-
-        [SerializeField] private AudioSource[] swordSwingSFX;
-
-        [SerializeField] private int UnlockedAttacksCount = 2;
-
-        [SerializeField] [Range(0.15f, 1f)] private float WaitForNextAttackMaxTime = 0.75f;
-
-        [SerializeField] private LayerMask whatCanBeDamaged;
 
         private void Awake()
         {
@@ -57,9 +56,7 @@ namespace Player
 
                 if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll &&
                     !pMovCtrl.IsTouchingLedge)
-                {
                     if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
-                    {
                         if (awaitingAttack && Time.time >= lastInputTime)
                         {
                             StopAllCoroutines();
@@ -70,9 +67,6 @@ namespace Player
 
                             damagedApplied = false;
 
-                            // WACHIN Aumentamos el HDR del color del shader para que se vea
-                            // mas brillante CACHINN
-                            // ARTE     A  R  T  E
                             playerMaterial.SetFloat("EmmisiveIntensity", 0.25f);
 
                             pAnimator.SetBool("AwaitingAttack", false);
@@ -83,8 +77,6 @@ namespace Player
 
                             lastInputTime = Time.time + generalInputCooldown;
                         }
-                    }
-                }
             };
         }
 
@@ -95,9 +87,21 @@ namespace Player
             CheckAttackHitBox();
         }
 
+        private void OnDrawGizmos()
+        {
+            if (attacksHitboxPositions.Length == attacksHitboxRadius.Length)
+                for (var i = 0; i < attacksHitboxPositions.Length; i++)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireSphere(
+                        attacksHitboxPositions[i].position,
+                        attacksHitboxRadius[i]);
+                }
+        }
+
         /// <summary>
-        /// Accionado cuando la animacion del ataque termina
-        /// Se pasa a esperar al siguiente ataque en el combo loco (awaitingAttack)
+        ///     Accionado cuando la animacion del ataque termina
+        ///     Se pasa a esperar al siguiente ataque en el combo loco (awaitingAttack)
         /// </summary>
         public void AnimAttackEndEvt()
         {
@@ -122,11 +126,11 @@ namespace Player
         }
 
         /// <summary>
-        /// Accionado cuando la animacion de la espada hace un 'swing'
+        ///     Accionado cuando la animacion de la espada hace un 'swing'
         /// </summary>
         public void AnimAttackSwingEvt()
         {
-            if ((attackN - 1) >= 0 && (attackN - 1) <= swordSwingSFX.Length)
+            if (attackN - 1 >= 0 && attackN - 1 <= swordSwingSFX.Length)
                 swordSwingSFX[attackN - 1].Play();
 
             damagedApplied = false;
@@ -140,7 +144,7 @@ namespace Player
         }
 
         /// <summary>
-        /// Resetea el ataque del jugador si no hace un combo completo !!!
+        ///     Resetea el ataque del jugador si no hace un combo completo !!!
         /// </summary>
         private IEnumerator ResetAttack()
         {
@@ -172,37 +176,23 @@ namespace Player
                 if (attackN <= 0)
                     return;
 
-                RaycastHit2D[] detectedObjs =
+                var detectedObjs =
                     Physics2D.CircleCastAll(transform.position, attacksHitboxRadius[attackN - 1],
                         new Vector2(0f, 0f));
 
-                foreach (RaycastHit2D raycast in detectedObjs)
+                foreach (var raycast in detectedObjs)
                 {
                     // Check si implementa la interface IDamageable
-                    BaseController bctrl = raycast.transform.GetComponent<BaseController>();
-                    if (bctrl != null && (bctrl is IDamageable))
+                    var bctrl = raycast.transform.GetComponent<BaseController>();
+                    if (bctrl != null && bctrl is IDamageable)
                     {
-                        DamageInfo damageInfo = new DamageInfo(attacksDamage[attackN - 1], transform.position.x, true);
+                        var damageInfo = new DamageInfo(attacksDamage[attackN - 1], transform.position.x, true);
                         damageInfo.MoveOnAttackForce = new Vector2(5f * attackN, 10f);
                         bctrl.Damage(damageInfo);
                     }
                 }
 
                 damagedApplied = true;
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (attacksHitboxPositions.Length == attacksHitboxRadius.Length)
-            {
-                for (int i = 0; i < attacksHitboxPositions.Length; i++)
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawWireSphere(
-                        attacksHitboxPositions[i].position,
-                        attacksHitboxRadius[i]);
-                }
             }
         }
     }

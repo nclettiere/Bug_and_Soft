@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpingForce: {x: 3, y: 5}
   jumpingCooldownRandomRangeFrom: 2.5
-  jumpingCooldownRandomRangeTo: 5
+  jumpingCooldownRandomRangeTo: 3
   jumpSFX: {fileID: 8300000, guid: 963910b15916a1f4e8e3f839c6d8ab29, type: 3}
   landSFX: {fileID: 8300000, guid: 5ce8134cc79ab314ba1d183ecd5d15b4, type: 3}

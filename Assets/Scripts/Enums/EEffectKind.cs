@@ -5,6 +5,7 @@
         POISON,
         STUN,
         SLOWDOWN,
-        FIRE
+        FIRE,
+        BLINDNESS
     }
 }
