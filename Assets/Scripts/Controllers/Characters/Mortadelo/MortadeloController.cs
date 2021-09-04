@@ -39,4 +39,12 @@ public class MortadeloController : BaseController
     {
         _agent.SetDestination(target);
     }
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, 1f);
+    }
 }

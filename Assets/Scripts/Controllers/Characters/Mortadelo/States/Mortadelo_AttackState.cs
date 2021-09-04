@@ -1,6 +1,8 @@
-﻿using Controllers.StateMachine;
+﻿using Controllers.Damage;
+using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
+using Player;
 using UnityEngine;
 
 namespace Controllers.Characters.Mortadelo.States
@@ -12,7 +14,9 @@ namespace Controllers.Characters.Mortadelo.States
         private bool isDetectingGround;
         private bool rotated;
         private bool dashed;
+        private bool attack;
         private float dashCooldown = float.NegativeInfinity;
+        private float attackCooldown = float.NegativeInfinity;
 
         public Mortadelo_AttackState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             AttackStateData stateData, MortadeloController mController)
@@ -37,13 +41,8 @@ namespace Controllers.Characters.Mortadelo.States
                 stateMachine.ChangeState(mController.DeadState);
             }
             
-            // (Aviso) seteo la pos Z a 0 pq a veces hay un que el mortadelo
-            // se va al carajo en ese eje
-            if (mController.GetTransfrom().position.z != 0f)
-            {
-                mController.GetTransfrom().position.Set(mController.GetTransfrom().position.x,
-                    mController.GetTransfrom().position.y, 0f);
-            }
+            CheckForDash();
+            CheckForDamage();
         }
 
         public override void UpdatePhysics()
@@ -51,7 +50,6 @@ namespace Controllers.Characters.Mortadelo.States
             base.UpdatePhysics();
 
             LookAtPlayer();
-            CheckForDash();
 
             mController.SetTargetDestination(GameManager.Instance.GetPlayerTransform().position);
         }
@@ -62,7 +60,7 @@ namespace Controllers.Characters.Mortadelo.States
             {
                 RaycastHit2D hit =
                     Physics2D.CircleCast(mController.transform.position,
-                        1f,
+                        3.5f,
                         Vector2.zero,
                         mController.ctrlData.whatIsPlayer);
 
@@ -76,6 +74,34 @@ namespace Controllers.Characters.Mortadelo.States
             if (Time.time >= dashCooldown)
             {
                 dashed = false;
+            }
+        }
+
+        private void CheckForDamage()
+        {
+            if (!attack)
+            {
+                Collider2D hit =
+                    Physics2D.OverlapCircle(mController.transform.position,
+                        1f,
+                        mController.ctrlData.whatIsPlayer);
+                
+                PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+                if (bctrl != null && (bctrl is IDamageable))
+                {
+                    var dInfo = new DamageInfo(18, mController.GetTransfrom().position.x,
+                        true, false, false);
+                    bctrl.Damage(mController, dInfo);
+                    GameManager.Instance.ApplyBlindness(5f);
+
+                    attack = true;
+                    attackCooldown = Time.time + 3.5f;
+                }
+            }
+            
+            if (Time.time >= attackCooldown)
+            {
+                attack = false;
             }
         }
 

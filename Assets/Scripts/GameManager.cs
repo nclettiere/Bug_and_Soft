@@ -9,6 +9,8 @@ using SaveSystem.Data;
 using UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public enum GameState { NullState, Intro, MainMenu, Game }
 public delegate void OnStateChangeHandler();
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
     private static bool isGamePaused = true;
     private bool isPlayerAlive;
     private int playerDeathCount;
+    private bool isBlinded;
     public int checkpointIndex { get; private set; }
 
     public int PlayerKrowns { get; private set; }
@@ -388,5 +391,50 @@ public class GameManager : MonoBehaviour
     public void SetPlayerKrones(int playerDataKrones)
     {
         PlayerKrowns = playerDataKrones;
+    }
+    
+    public Volume GetLevelPostProcess() 
+    {
+        return GameObject.Find("PostProcess").GetComponent<Volume>();
+    }
+    
+    public void ApplyBlindness(float howLong = 1f) 
+    {
+        if (!isBlinded)
+        {
+            isBlinded = true;
+            Volume volume = GetLevelPostProcess();
+            Vignette vignette;
+            volume.profile.TryGet(typeof(Vignette), out vignette);
+
+            StartCoroutine(BlindPlayerFor(vignette, howLong, 0f, 0.6f));
+        }
+    }
+
+    private IEnumerator BlindPlayerFor(Vignette vignette, float seconds, float from, float to)
+    {
+        float counter = 0f;
+        
+        while (counter < 0.4f)
+        {
+            counter += DeltaTime;
+            vignette.intensity.value = Mathf.Lerp(from, to, counter / 0.4f);
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(seconds);
+
+        counter = 0f;
+        
+        while (counter < seconds)
+        {
+            counter += DeltaTime;
+            vignette.intensity.value = Mathf.Lerp(to, from, counter / seconds);
+
+            yield return null;
+        }
+
+        isBlinded = false;
     }
 }
