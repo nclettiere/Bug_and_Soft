@@ -4,21 +4,34 @@ using UnityEngine;
 
 namespace Controllers.Movement
 {
-    public class BaseMovementController : 
-    /// @cond SKIP_THIS
+    public class BaseMovementController :
         MonoBehaviour
-    /// @endcond
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public float Speed = 40f;
+        
+        protected Rigidbody2D rBody;
 
+        private Vector2 velocity = new Vector2(0f, 0f);
+        private BaseController bCtrl;
+        
+        protected virtual void Start()
+        {
+            rBody = GetComponent<Rigidbody2D>();
+            bCtrl = GetComponent<BaseController>();
         }
-
-        // Update is called once per frame
-        void Update()
+        
+        public virtual void Move(int direction, bool applyBoost)
         {
-
+            velocity.Set(Speed * direction, rBody.velocity.y);
+            // TODO: ApplyBoost
+            rBody.velocity = velocity;
+        }
+        
+        public virtual void Move()
+        {
+            velocity.Set(Speed * bCtrl.FacingDirection, rBody.velocity.y);
+            // TODO: ApplyBoost
+            rBody.velocity = velocity;
         }
     }
 }
