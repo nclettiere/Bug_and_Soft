@@ -16,8 +16,8 @@ MonoBehaviour:
   ledgeCheckDistacne: 0.5
   groundCheckDistance: 0.5
   topCheckDistance: 0.5
-  playerNearRangeDistance: 5
-  playerLongRangeDistance: 8
+  playerNearRangeDistance: 2
+  playerLongRangeDistance: 20
   generalDamage: 10
   maxHealth: 35
   whatIsGround:

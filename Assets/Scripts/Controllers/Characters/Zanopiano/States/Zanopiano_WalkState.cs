@@ -1,5 +1,6 @@
 ﻿using Controllers.Movement;
 using Controllers.StateMachine;
+using UnityEngine;
 
 namespace Controllers.Characters.Zanopiano.States
 {
@@ -7,6 +8,8 @@ namespace Controllers.Characters.Zanopiano.States
     {
 
         private ZanopianoController zController;
+
+        private bool alerting;
         
         public Zanopiano_WalkState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, ZanopianoController zController) 
             : base(controller, stateMachine, animBoolName)
@@ -18,6 +21,7 @@ namespace Controllers.Characters.Zanopiano.States
         {
             base.Enter();
             controller.GetAnimator().SetBool(animBoolName, true);
+            alerting = false;
         }
 
         public override void Exit()
@@ -30,6 +34,9 @@ namespace Controllers.Characters.Zanopiano.States
             base.UpdateState();
 
             CheckearLedge();
+            
+            CheckLongRange();
+            CheckNearRange();
         }
 
         private void CheckearLedge()
@@ -37,13 +44,51 @@ namespace Controllers.Characters.Zanopiano.States
             if (controller.CheckWall() || controller.CheckGround() && !controller.CheckLedge())
                 controller.Flip();
         }
+        
+        private void CheckLongRange()
+        {
+            if(controller.CheckPlayerInLongRange())
+            {
+                if (!controller.GetAnimator().GetBool("Alerting_Completed"))
+                {
+                    controller.GetAnimator().SetBool("Alerting", true);
+                    alerting = true;
+                }
+                else
+                {
+                    alerting = false;
+                }
+            }
+        }
+        
+        private void CheckNearRange()
+        {
+            if(controller.CheckPlayerInNearRange())
+            {
+                alerting = false;
+                if (!controller.GetAnimator().GetBool("Attacking_Completed"))
+                {
+                    controller.GetAnimator().SetBool("Alerting_Completed", false);
+                    controller.GetAnimator().SetBool("Alerting", false);
+                    controller.GetAnimator().SetBool("Attacking", true);
+                    stateMachine.ChangeState(zController.AttackState);
+                }
+            }
+        }
 
         public override void UpdatePhysics()
         {
             base.UpdatePhysics();
-            
-            controller.GetMovementController<BaseMovementController>()
-                .Move();
+
+            if (!controller.CheckPlayerInLongRange() && !controller.CheckPlayerInNearRange())
+            {
+                controller.GetAnimator().SetBool("Alerting_Completed", false);
+                controller.GetAnimator().SetBool("Alerting", false);
+                controller.GetAnimator().SetBool("Attacking", false);
+                
+                controller.GetMovementController<BaseMovementController>()
+                    .Move();
+            }
         }
     }
 }

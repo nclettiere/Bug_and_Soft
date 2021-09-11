@@ -18,6 +18,7 @@ namespace Controllers.Characters.Zanopiano
         //private NavMeshAgent _agent;
 
         public Zanopiano_WalkState WalkState { get; private set; }
+        public Zanopiano_AttackState AttackState { get; private set; }
 
         protected override void Start()
         {
@@ -28,9 +29,7 @@ namespace Controllers.Characters.Zanopiano
             //_agent.updateUpAxis = false;
 
             WalkState = new Zanopiano_WalkState(this, StateMachine, "Walk", this);
-            //IdleState = new Mortadelo_IdleState(this, StateMachine, "Idle", this);
-            //AttackState = new Mortadelo_AttackState(this, StateMachine, "Dash", _attackStateData, this);
-            //DeadState = new Mortadelo_DeadState(this, StateMachine, "Dead", _deadStateData, this);
+            AttackState = new Zanopiano_AttackState(this, StateMachine, "Attacking", this);
 
             StateMachine.Initialize(WalkState);
         }
@@ -46,6 +45,18 @@ namespace Controllers.Characters.Zanopiano
 
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(transform.position, 1f);
+        }
+
+        public void Anim_ZanopianoAlertingCompleted()
+        {
+            GetAnimator().SetBool("Alerting", false);
+            GetAnimator().SetBool("Alerting_Completed", true);
+        }
+        
+        public void Anim_ZanopianoAttackingCompleted()
+        {
+            GetAnimator().SetBool("Attacking", false);
+            StateMachine.ChangeState(WalkState);
         }
     }
 }
