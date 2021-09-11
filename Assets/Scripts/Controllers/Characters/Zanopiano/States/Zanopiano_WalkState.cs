@@ -6,12 +6,12 @@ namespace Controllers.Characters.Zanopiano.States
 {
     public class Zanopiano_WalkState : State
     {
-
         private ZanopianoController zController;
 
         private bool alerting;
-        
-        public Zanopiano_WalkState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, ZanopianoController zController) 
+
+        public Zanopiano_WalkState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
+            ZanopianoController zController)
             : base(controller, stateMachine, animBoolName)
         {
             this.zController = zController;
@@ -24,17 +24,12 @@ namespace Controllers.Characters.Zanopiano.States
             alerting = false;
         }
 
-        public override void Exit()
-        {
-            base.Exit();
-        }
-
         public override void UpdateState()
         {
             base.UpdateState();
 
             CheckearLedge();
-            
+
             CheckLongRange();
             CheckNearRange();
         }
@@ -44,10 +39,10 @@ namespace Controllers.Characters.Zanopiano.States
             if (controller.CheckWall() || controller.CheckGround() && !controller.CheckLedge())
                 controller.Flip();
         }
-        
+
         private void CheckLongRange()
         {
-            if(controller.CheckPlayerInLongRange())
+            if (controller.CheckPlayerInLongRange())
             {
                 if (!controller.GetAnimator().GetBool("Alerting_Completed"))
                 {
@@ -59,18 +54,23 @@ namespace Controllers.Characters.Zanopiano.States
                     alerting = false;
                 }
             }
+            else
+            {
+                controller.GetAnimator().SetBool("Alerting", false);
+                controller.GetAnimator().SetBool("Alerting_Completed", false);
+                alerting = false;
+            }
         }
-        
+
         private void CheckNearRange()
         {
-            if(controller.CheckPlayerInNearRange())
+            if (controller.CheckPlayerInNearRange())
             {
                 alerting = false;
                 if (!controller.GetAnimator().GetBool("Attacking_Completed"))
                 {
                     controller.GetAnimator().SetBool("Alerting_Completed", false);
                     controller.GetAnimator().SetBool("Alerting", false);
-                    controller.GetAnimator().SetBool("Attacking", true);
                     stateMachine.ChangeState(zController.AttackState);
                 }
             }
@@ -85,10 +85,19 @@ namespace Controllers.Characters.Zanopiano.States
                 controller.GetAnimator().SetBool("Alerting_Completed", false);
                 controller.GetAnimator().SetBool("Alerting", false);
                 controller.GetAnimator().SetBool("Attacking", false);
-                
+
                 controller.GetMovementController<BaseMovementController>()
                     .Move();
             }
+        }
+
+        public void AlertingFinished()
+        {
+            if (!controller.CheckPlayerInLongRange() && !controller.CheckPlayerInNearRange())
+                return;
+
+            controller.GetAnimator().SetBool("Alerting", false);
+            controller.GetAnimator().SetBool("Alerting_Completed", true);
         }
     }
 }

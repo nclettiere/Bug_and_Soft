@@ -12,7 +12,12 @@ namespace Controllers.Characters.Zanopiano
 {
     public class ZanopianoController : BaseController
     {
-        //[SerializeField] private AttackStateData _attackStateData;
+        private static readonly int AlertingCompleted = Animator.StringToHash("Alerting_Completed");
+        private static readonly int Alerting = Animator.StringToHash("Alerting");
+        
+        public Transform attackPosition;
+        public float attackRadius = 1f;
+        
         //[SerializeField] private DeadStateData _deadStateData;
 
         //private NavMeshAgent _agent;
@@ -43,20 +48,23 @@ namespace Controllers.Characters.Zanopiano
         {
             base.OnDrawGizmos();
 
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, 1f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPosition.position, attackRadius);
         }
 
         public void Anim_ZanopianoAlertingCompleted()
         {
-            GetAnimator().SetBool("Alerting", false);
-            GetAnimator().SetBool("Alerting_Completed", true);
+            WalkState.AlertingFinished();
         }
         
         public void Anim_ZanopianoAttackingCompleted()
         {
-            GetAnimator().SetBool("Attacking", false);
-            StateMachine.ChangeState(WalkState);
+            AttackState.AttackedFinished();
+        }
+        
+        public void Anim_ZanopianoAttackPunalada()
+        {
+            AttackState.AttackNow();
         }
     }
 }

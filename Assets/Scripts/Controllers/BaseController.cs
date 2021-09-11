@@ -20,18 +20,10 @@ using Random = UnityEngine.Random;
 namespace Controllers
 {
     public class BaseController :
-        /// @cond SKIP_THIS
         MonoBehaviour,
-        /// @endcond
         IDamageable,
         IInteractive
     {
-        public virtual void Damage(float amount, int attackN)
-        {
-
-        }
-        
-        
         public virtual void Damage(DamageInfo damageInfo)
         {
             if (dead ||
@@ -43,7 +35,6 @@ namespace Controllers
             {
                 Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
-                
                 
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
@@ -211,14 +202,14 @@ namespace Controllers
                 // Player Detection
                 //Near range
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(transform.position,
-                    new Vector2((transform.position.x + (ctrlData.playerNearRangeDistance * FacingDirection)),
-                        transform.position.y));
+                Gizmos.DrawLine(playerDetectCenterCheck.position,
+                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance * FacingDirection)),
+                        playerDetectCenterCheck.position.y));
                 //Long range
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(transform.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                    new Vector2((transform.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
-                        transform.position.y));
+                Gizmos.DrawLine(playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
+                        playerDetectCenterCheck.position.y));
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -299,7 +290,7 @@ namespace Controllers
 
         public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, ctrlData.playerNearRangeDistance,
+            RaycastHit2D hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right, ctrlData.playerNearRangeDistance,
                 ctrlData.whatIsPlayer);
 
             if (hit.collider != null)
@@ -315,7 +306,7 @@ namespace Controllers
         
         public bool CheckPlayerInLongRange()
         {
-            Vector2 longRangePos = transform.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
+            Vector2 longRangePos = playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
             RaycastHit2D hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
                 ctrlData.whatIsPlayer);
         
@@ -475,7 +466,8 @@ namespace Controllers
             wallCheck,
             topCheck,
             ledgeCheck,
-            touchDamageCheck;
+            touchDamageCheck,
+            playerDetectCenterCheck;
 
 
         [Header("Events Zone")] public UnityEvent OnLandEvent;

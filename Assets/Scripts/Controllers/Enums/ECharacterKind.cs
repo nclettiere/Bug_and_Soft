@@ -6,6 +6,8 @@ namespace Controllers
         Njord,
         Froggy,
         OLC,
-        Mortadelo
+        Mortadelo,
+        Zanopiano,
+        Pitonesi
     }
 }

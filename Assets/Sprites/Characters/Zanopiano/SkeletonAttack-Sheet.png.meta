@@ -44,6 +44,9 @@ TextureImporter:
   - first:
       213: 3283655370962838971
     second: SkeletonAttack-Sheet_13
+  - first:
+      213: -3379402262832885893
+    second: SkeletonAttack-Sheet_14
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -422,6 +425,27 @@ TextureImporter:
       bones: []
       spriteID: bb52b0f8923e19d20800000000000000
       internalID: 3283655370962838971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkeletonAttack-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7fc1bafb83f911d0800000000000000
+      internalID: -3379402262832885893
       vertices: []
       indices: 
       edges: []

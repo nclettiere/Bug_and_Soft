@@ -1,4 +1,5 @@
-﻿using Controllers.Movement;
+﻿using Controllers.Damage;
+using Controllers.Movement;
 using Controllers.StateMachine;
 using UnityEngine;
 
@@ -8,6 +9,11 @@ namespace Controllers.Characters.Zanopiano.States
     {
 
         private ZanopianoController zController;
+        private bool attackFinished;
+        private float cooldownTime = float.NegativeInfinity;
+        private bool cooldownTimeSetted;
+        
+        private DamageInfo dInfo;
         
         public Zanopiano_AttackState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, ZanopianoController zController) 
             : base(controller, stateMachine, animBoolName)
@@ -28,63 +34,51 @@ namespace Controllers.Characters.Zanopiano.States
         public override void Exit()
         {
             base.Exit();
+            controller.GetAnimator().SetBool(animBoolName, false);
+            controller.GetAnimator().SetBool("Attacking_Cooldown", false);
+            attackFinished = false;
+            cooldownTimeSetted = false;
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
+
+            if (attackFinished)
+            {
+                if (!cooldownTimeSetted)
+                {
+                    cooldownTime = Time.time + 1f;
+                    cooldownTimeSetted = true;
+                }
+
+                if (Time.time >= cooldownTime)
+                {
+                    stateMachine.ChangeState(zController.WalkState);
+                }
+            }
         }
 
-        //private void CheckearLedge()
-        //{
-        //    if (controller.CheckWall() || controller.CheckGround() && !controller.CheckLedge())
-        //        controller.Flip();
-        //}
-        //
-        //private void CheckLongRange()
-        //{
-        //    if(controller.CheckPlayerInLongRange())
-        //    {
-        //        if (!controller.GetAnimator().GetBool("Alerting_Completed"))
-        //        {
-        //            controller.GetAnimator().SetBool("Alerting", true);
-        //            alerting = true;
-        //        }
-        //        else
-        //        {
-        //            alerting = false;
-        //        }
-        //    }
-        //}
-        //
-        //private void CheckNearRange()
-        //{
-        //    if(controller.CheckPlayerInNearRange())
-        //    {
-        //        alerting = false;
-        //        if (!controller.GetAnimator().GetBool("Attacking_Completed"))
-        //        {
-        //            controller.GetAnimator().SetBool("Alerting_Completed", false);
-        //            controller.GetAnimator().SetBool("Alerting", false);
-        //            controller.GetAnimator().SetBool("Attacking", true);
-        //            stateMachine.ChangeState(zController.AttackState);
-        //        }
-        //    }
-        //}
-//
-        //public override void UpdatePhysics()
-        //{
-        //    base.UpdatePhysics();
-//
-        //    if (!controller.CheckPlayerInLongRange() && !controller.CheckPlayerInNearRange())
-        //    {
-        //        controller.GetAnimator().SetBool("Alerting_Completed", false);
-        //        controller.GetAnimator().SetBool("Alerting", false);
-        //        controller.GetAnimator().SetBool("Attacking", false);
-        //        
-        //        controller.GetMovementController<BaseMovementController>()
-        //            .Move();
-        //    }
-        //}
+        public void AttackedFinished()
+        {
+            controller.GetAnimator().SetBool(animBoolName, false);
+            controller.GetAnimator().SetBool("Attacking_Cooldown", true);
+            attackFinished = true;
+        }
+
+        public void AttackNow()
+        {
+            RaycastHit2D hit =
+                Physics2D.CircleCast(zController.attackPosition.position,
+                    zController.attackRadius,
+                    Vector2.zero,
+                    zController.ctrlData.whatIsPlayer);
+
+            if (hit != null)
+            {
+                dInfo = new DamageInfo(35, zController.GetTransfrom().position.x, true);
+                GameManager.PlayerController.Damage(dInfo);
+            }
+        }
     }
 }
