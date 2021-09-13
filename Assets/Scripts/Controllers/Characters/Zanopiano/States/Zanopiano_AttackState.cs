@@ -43,6 +43,11 @@ namespace Controllers.Characters.Zanopiano.States
         public override void UpdateState()
         {
             base.UpdateState();
+            
+            if (zController.currentHealth <= 0)
+            {
+                stateMachine.ChangeState(zController.DeadState);
+            }
 
             if (attackFinished)
             {

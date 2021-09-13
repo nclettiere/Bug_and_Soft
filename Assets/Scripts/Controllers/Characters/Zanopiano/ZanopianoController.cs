@@ -24,6 +24,7 @@ namespace Controllers.Characters.Zanopiano
 
         public Zanopiano_WalkState WalkState { get; private set; }
         public Zanopiano_AttackState AttackState { get; private set; }
+        public Zanopiano_DeadState DeadState { get; private set; }
 
         protected override void Start()
         {
@@ -35,6 +36,7 @@ namespace Controllers.Characters.Zanopiano
 
             WalkState = new Zanopiano_WalkState(this, StateMachine, "Walk", this);
             AttackState = new Zanopiano_AttackState(this, StateMachine, "Attacking", this);
+            DeadState = new Zanopiano_DeadState(this, StateMachine, "Dead", this);
 
             StateMachine.Initialize(WalkState);
         }

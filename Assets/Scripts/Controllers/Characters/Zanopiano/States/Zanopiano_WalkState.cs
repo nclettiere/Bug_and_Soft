@@ -28,6 +28,11 @@ namespace Controllers.Characters.Zanopiano.States
         {
             base.UpdateState();
 
+            if (zController.currentHealth <= 0)
+            {
+                stateMachine.ChangeState(zController.DeadState);
+            }
+
             CheckearLedge();
 
             CheckLongRange();
