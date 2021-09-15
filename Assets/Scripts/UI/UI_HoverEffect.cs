@@ -64,15 +64,18 @@ namespace UI
             float xPositionCameraCoordinates = (xPositionDeltaPoint / compensateForScalingX);
             float yPositionCameraCoordinates = (yPositionDeltaPoint / compensateForScalingY);
             
-            var rotX = new Vector3(10f * xPositionCameraCoordinates, 10f * yPositionCameraCoordinates);
-            transform.Rotate(rotX, Space.Self);
+            Debug.Log("The x is: " + xPositionCameraCoordinates);
+            Debug.Log("The y is: " + yPositionCameraCoordinates);
+            
+            //var rotX = new Vector3(10f * xPositionCameraCoordinates, 10f * yPositionCameraCoordinates);
+            //transform.Rotate(rotX, Space.Self);
         }
 
         private void FixedUpdate()
         {
             mousePos.Normalize();
-            Debug.Log("MousePos is: " + transform.GetComponent<RectTransform>().rect.width);
-            Debug.Log("ElementPos is: " + transform.position);
+            //Debug.Log("MousePos is: " + transform.GetComponent<RectTransform>().rect.width);
+            //Debug.Log("ElementPos is: " + transform.position);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
