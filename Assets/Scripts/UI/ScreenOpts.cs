@@ -7,32 +7,28 @@ using UnityEngine.Localization.Settings;
 
 public class ScreenOpts : MonoBehaviour
 {
-    public int currentFPS;
     public LocalizeStringEvent localizeString;
-    public static string sliderFPSamountSTR;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        currentFPS = (int)(Time.frameCount / Time.time);
-    }
-
+    public static string sliderFPSamountSTR = "60FPS";
+    public static string sliderVolumeStr = "0.2";
+    
     internal void SetFPSStr(int sliderFPSamount)
     {
         if (sliderFPSamount < 241)
         {
-            sliderFPSamountSTR = sliderFPSamount.ToString() + "FPS";
+            sliderFPSamountSTR = sliderFPSamount + "FPS";
         }
         else
         {
             sliderFPSamountSTR = "NO LIMIT";
         }
 
+        localizeString.StringReference.RefreshString();
+    }
+
+    internal void SetVolumeStr(float sliderVolumeAmount)
+    {
+        sliderVolumeStr = sliderVolumeAmount.ToString("0.0");
+        localizeString.RefreshString();
         localizeString.StringReference.RefreshString();
     }
 }

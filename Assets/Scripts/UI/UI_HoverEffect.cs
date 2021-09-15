@@ -5,16 +5,26 @@ using UnityEngine.InputSystem;
 
 namespace UI
 {
-    public class UI_HoverEffect 
+    public class UI_HoverEffect
         : MonoBehaviour,
-          IPointerEnterHandler,
-          IPointerExitHandler
+            IPointerEnterHandler,
+            IPointerExitHandler
     {
-        [SerializeField] private Canvas canvas;
+        [SerializeField] 
+        private RectTransform elementToEffect;
         
+        [SerializeField]
+        private GameObject selector;
+
+        [SerializeField]
+        private bool isMainMenu;
+    
+        [SerializeField]
+        private AudioSource selectorChangeSFX;
+
+        private RectTransform rTrans;
         private bool canTransition;
         Vector2 mousePos = Vector2.zero;
-        private RectTransform rTrans;
         private Vector2 elementSize;
 
         private void Start()
@@ -28,58 +38,40 @@ namespace UI
 
         private void Update()
         {
-             if (canTransition)
-             {
-                 mousePos.Set(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue());
-             }
-            
-            //Get the 4 corners (in world space) of the raw image gameobject's rect transform on the GUI
-            Vector3[] corners = new Vector3[4];
-            rTrans.GetWorldCorners(corners);
-            Rect newRect = rTrans.rect;//new Rect(corners[0], corners[2] - corners[0]);
-            
-            //Get the pixel offset amount from the current mouse position to the left edge of the minimap
-            //rect transform.  And likewise for the y offset position.
-            float xPositionDeltaPoint = Mouse.current.position.x.ReadValue() - newRect.x;
-            float yPositionDeltaPoint = Mouse.current.position.y.ReadValue() - newRect.y;
-            
-            //Debug.Log("The x position delta is: " + xPositionDeltaPoint);
-            //Debug.Log("The y position delta is: " + yPositionDeltaPoint);
-            
-                
-            //The value "170" is the raw image size.
-            float compensateForScalingX = elementSize.x * canvas.scaleFactor;
-            //"600" is the current reference resolution height on the Canvas Scaler script.
-            float compensateForScalingY = elementSize.x * (Screen.height / 600) * canvas.scaleFactor;
-            
-            //If the game screen height resolution and the canvas scaler script's "y reference resolution" are
-            //exactly the same, then the division value will be zero.  Since you can't divide by zero, I need
-            //to check for this here.
-            if (compensateForScalingY == 0)
+            if (canTransition)
             {
-                compensateForScalingY = elementSize.x;
-            }
-            
-            //The value "170" is the raw image size currently
-            float xPositionCameraCoordinates = (xPositionDeltaPoint / compensateForScalingX);
-            float yPositionCameraCoordinates = (yPositionDeltaPoint / compensateForScalingY);
-            
-            Debug.Log("The x is: " + xPositionCameraCoordinates);
-            Debug.Log("The y is: " + yPositionCameraCoordinates);
-            
-            //var rotX = new Vector3(10f * xPositionCameraCoordinates, 10f * yPositionCameraCoordinates);
-            //transform.Rotate(rotX, Space.Self);
-        }
+                mousePos.Set(Mouse.current.position.x.ReadValue(), Mouse.current.position.y.ReadValue());
 
-        private void FixedUpdate()
-        {
-            mousePos.Normalize();
-            //Debug.Log("MousePos is: " + transform.GetComponent<RectTransform>().rect.width);
-            //Debug.Log("ElementPos is: " + transform.position);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(rTrans, mousePos, null, out var result))
+                {
+                    result += rTrans.sizeDelta / 2;
+
+                    Vector2 normalized;
+                    normalized.x = (2 * (result.x / elementSize.x) - 1) * -1;
+                    normalized.y = (2 * (result.y / elementSize.y) - 1);
+
+                    Quaternion q = Quaternion.Euler(40f * normalized.y, 40f * normalized.x, 0);
+                    elementToEffect.rotation = Quaternion.Lerp(elementToEffect.rotation, q, Time.deltaTime * 5f);
+                }
+            }
+            else
+            {
+                var rotZero = Quaternion.Euler(0, 0, 0);
+                elementToEffect.rotation = Quaternion.Lerp(elementToEffect.rotation, rotZero, Time.deltaTime * 10f);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (isMainMenu && GameManager.Instance.GetMainMenuOn())
+            {
+                selector.transform.position = transform.position;
+                selectorChangeSFX.Play();
+            }else if (!isMainMenu && !GameManager.Instance.GetMainMenuOn())
+            {  
+                selector.transform.position = transform.position;
+                selectorChangeSFX.Play();
+            }
             canTransition = true;
         }
 

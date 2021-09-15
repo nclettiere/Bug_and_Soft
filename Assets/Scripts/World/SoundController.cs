@@ -13,6 +13,11 @@ namespace World
         private void Update()
         {
             PlayAmbientMusic();
+
+            foreach (AudioSource source in ambientMusic)
+            {
+                source.volume = GameManager.Instance.MasterVolume;
+            }
         }
         
         public void PlayAmbientMusic()

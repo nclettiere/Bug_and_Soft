@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: Level1Completed
     m_Metadata:
       m_Items: []
+  - m_Id: 37055005377777664
+    m_Key: MasterVolumeSliderText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -13,7 +13,14 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public enum GameState { NullState, Intro, MainMenu, Game }
+public enum GameState
+{
+    NullState,
+    Intro,
+    MainMenu,
+    Game
+}
+
 public delegate void OnStateChangeHandler();
 
 public class GameManager : MonoBehaviour
@@ -21,31 +28,19 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public event OnStateChangeHandler OnStateChange;
     public GameState gameState { get; private set; }
-    
+
     public static PlayerControls PlayerControls = new PlayerControls();
-    
-    public static GameManager Instance 
-    { 
-        get {
+
+    public static GameManager Instance
+    {
+        get
+        {
             if (_instance == null)
             {
                 _instance = GameObject.Find("Managers/GameManager").AddComponent<GameManager>();
             }
 
-            return _instance; 
-        }
-    }
-
-    public GameManager()
-    {
-        SetupInput();
-        SetupGame();
-    }
-    
-    public void SetGameState(GameState gameState) {
-        this.gameState = gameState;
-        if(OnStateChange!=null) {
-            OnStateChange();
+            return _instance;
         }
     }
 
@@ -82,15 +77,33 @@ public class GameManager : MonoBehaviour
 
     public bool isGameOver { get; private set; }
 
+    public float MasterVolume { get; private set; } = 0.2f;
+
+
+    public GameManager()
+    {
+        SetupInput();
+        SetupGame();
+    }
+
+    public void SetGameState(GameState gameState)
+    {
+        this.gameState = gameState;
+        if (OnStateChange != null)
+        {
+            OnStateChange();
+        }
+    }
+
     void Start()
     {
         if (_instance == null)
             _instance = this;
         else if (_instance != this)
             Destroy(gameObject.GetComponent(_instance.GetType()));
-        
+
         DontDestroyOnLoad(gameObject);
-        
+
         isGamePaused = true;
         PauseGame();
     }
@@ -101,19 +114,19 @@ public class GameManager : MonoBehaviour
         PlayerControls.Gameplay.Pause.performed += ctx =>
         {
             if (isMainMenuOn) return;
-        
+
             if (isGamePaused)
                 ResumeGame();
             else
                 PauseGame();
         };
-        
+
         PlayerControls.Gameplay.QuickSave.performed += ctx =>
         {
             if (isMainMenuOn || isGamePaused) return;
             QuickSave();
         };
-        
+
         PlayerControls.Gameplay.QuickLoad.performed += ctx =>
         {
             if (isMainMenuOn || isGamePaused) return;
@@ -154,7 +167,7 @@ public class GameManager : MonoBehaviour
 
     public void SetMainMenuOn(bool mainMenuOn)
     {
-       isMainMenuOn = mainMenuOn;
+        isMainMenuOn = mainMenuOn;
     }
 
     public PlayerControls GetPlayerControls()
@@ -328,7 +341,7 @@ public class GameManager : MonoBehaviour
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
     }
-    
+
     public UIManager.UIManager GetUIManager()
     {
         return GameObject.Find("Managers/UIManager").GetComponent<UIManager.UIManager>();
@@ -385,10 +398,15 @@ public class GameManager : MonoBehaviour
     {
         PlayerKrowns = playerDataKrones;
     }
-    
-    
-    public void ApplyBlindness(float howLong = 1f) 
+
+
+    public void ApplyBlindness(float howLong = 1f)
     {
         GetUIManager().ApplyBlindness(howLong);
+    }
+
+    public void ChangeMasterVolume(float newVolume)
+    {
+        MasterVolume = newVolume;
     }
 }

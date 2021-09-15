@@ -10,15 +10,16 @@ using UnityEngine.UI;
 /// </summary>
 public class MainMenu : MonoBehaviour
 {
-    private GameObject pnlSettings, pnlButtons, pnlButtonsAnim;
+    private GameObject pnlSettings, pnlButtons, pnlButtonsAnim, pnlButtonsInteraction, btnPlayAnim;
     private CanvasGroup dimmerCG;
-    private Button btnPlay, btnPlayAnim, btnSettings, btnApply, btnDiscard, btnQuit;
+    private Button btnPlay, btnSettings, btnApply, btnDiscard, btnQuit;
     private Dropdown dpwResolutions, dpwScreenMode, dpwLanguages;
-    private Slider sldFPS;
+    private Slider sldFPS, sldVolume;
     private Toggle togVSYNC;
 
     CanvasGroup panelButtonsGroup;
     CanvasGroup panelButtonsAnimGroup;
+    CanvasGroup pnlButtonsInteractionGroup;
     CanvasGroup panelSettingsGroup;
 
     private List<Dropdown.OptionData> resolutionListDpw;
@@ -28,8 +29,9 @@ public class MainMenu : MonoBehaviour
          needToUpdateVSYNC,
          needToUpdateFPS = false;
 
-    public int sliderFPSamount;
-    public ScreenOpts screenOpts;
+    public int sliderFPSamount, sliderVolumeAmount;
+    
+    public ScreenOpts[] screenOpts;
 
     public Button selectedButton;
 
@@ -45,14 +47,16 @@ public class MainMenu : MonoBehaviour
         // Registra los componentes del Canvas (UI) necesarios.
         pnlButtons = GameObject.Find("PanelButtons");
         pnlButtonsAnim = GameObject.Find("PanelButtonsAnims");
+        pnlButtonsInteraction = GameObject.Find("PanelRealButtons");
         pnlSettings = GameObject.Find("PanelSettings");
         panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
         panelButtonsAnimGroup = pnlButtonsAnim.GetComponent<CanvasGroup>();
         panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
+        pnlButtonsInteractionGroup = pnlButtonsInteraction.GetComponent<CanvasGroup>();
 
         dimmerCG = GameObject.Find("Dimmer").GetComponent<CanvasGroup>();
         btnPlay = GameObject.Find("ButtonPlay").GetComponent<Button>();
-        btnPlayAnim = GameObject.Find("ButtonPlayAnim").GetComponent<Button>();
+        btnPlayAnim = GameObject.Find("ButtonPlayAnim");
         btnSettings = GameObject.Find("ButtonSettings").GetComponent<Button>();
         btnApply = GameObject.Find("ButtonApply").GetComponent<Button>();
         btnDiscard = GameObject.Find("ButtonDiscard").GetComponent<Button>();
@@ -61,9 +65,11 @@ public class MainMenu : MonoBehaviour
         dpwScreenMode = GameObject.Find("DropdownScreenMode").GetComponent<Dropdown>();
         dpwLanguages = GameObject.Find("DropdownLanguages").GetComponent<Dropdown>();
         sldFPS = GameObject.Find("SliderFPS").GetComponent<Slider>();
+        sldVolume = GameObject.Find("SliderMasterVolume").GetComponent<Slider>();
         togVSYNC = GameObject.Find("ToggleVSYNC").GetComponent<Toggle>();
 
         // DEFAULT 
+        btnPlayAnim.GetComponent<Image>().enabled = false;
 
         // Setea la lista del dpwResolutions con las resoluciones soportadas por
         // el monitor (vease el metodo Start).
@@ -73,18 +79,13 @@ public class MainMenu : MonoBehaviour
 
 
         // setea los datos por defecto de FPS
-        screenOpts = GameObject.Find("TextFPSLimit").GetComponent<ScreenOpts>();
         SetLimitFPS();
         QualitySettings.vSyncCount = 1;
         sldFPS.interactable = false;
         sliderFPSamount = Screen.currentResolution.refreshRate;
         sldFPS.value = sliderFPSamount; // Para mejor performance setea los fps al refresh rate del monitor
-        screenOpts.SetFPSStr(sliderFPSamount);
-
-        // EVENTS
-        // Agrega events & callbacks
-        btnApply.onClick.AddListener(() => BtnApplyCallBack());
-        btnDiscard.onClick.AddListener(() => CloseSettingsPanel());
+        screenOpts[0].SetFPSStr(sliderFPSamount);
+        screenOpts[1].SetVolumeStr(20);
 
         // Dropdown resolutions : event
         dpwResolutions.onValueChanged.AddListener(delegate
@@ -107,7 +108,14 @@ public class MainMenu : MonoBehaviour
         {
             needToUpdateFPS = true;
             sliderFPSamount = (int)sldFPS.value;
-            screenOpts.SetFPSStr(sliderFPSamount);
+            screenOpts[0].SetFPSStr(sliderFPSamount);
+
+        });
+        
+        sldVolume.onValueChanged.AddListener(delegate
+        {
+            screenOpts[1].SetVolumeStr(sldVolume.value);
+            GameManager.Instance.ChangeMasterVolume(sldVolume.value);
 
         });
 
@@ -169,8 +177,12 @@ public class MainMenu : MonoBehaviour
         onPlaySFX.Play();
         btnPlay.GetComponent<Image>().enabled = false;
         btnPlay.GetComponent<Button>().enabled = false;
+        btnPlayAnim.GetComponent<Image>().enabled = true;
         btnSettings.GetComponent<Button>().enabled = false;
         btnQuit.GetComponent<Button>().enabled = false;
+        
+        StopAllCoroutines();
+        panelButtonsAnimGroup.alpha = 1f;
         StartCoroutine(DoFade(panelButtonsGroup, 1, 0, .3f));
         StartCoroutine(DoFade(panelButtonsAnimGroup, 1, 0, .5f, 1f, OnPlay));
     }
@@ -179,6 +191,7 @@ public class MainMenu : MonoBehaviour
     {
         panelButtonsGroup.interactable = false;
         panelSettingsGroup.interactable = false;
+        pnlButtonsInteractionGroup.interactable = false;
         GameManager.Instance.SetMainMenuOn(false);
         GameManager.Instance.SetInputEnabled(true);
         GameManager.Instance.SetCameraOffsetX(1.3f);
@@ -193,13 +206,19 @@ public class MainMenu : MonoBehaviour
 
         panelButtonsGroup.interactable = false;
         panelSettingsGroup.interactable = true;
+        pnlButtonsInteractionGroup.interactable = false;
+        
+        StopAllCoroutines();
 
         StartCoroutine(DoFade(panelButtonsGroup, 1, 0, .3f));
+        StartCoroutine(DoFade(panelButtonsAnimGroup, 1, 0, .3f));
         StartCoroutine(DoFade(panelSettingsGroup, 0, 1, .3f, 1f));
         StartCoroutine(DoFade(dimmerCG, 0, 1, .3f, 1f));
+        
+        panelButtonsAnimGroup.alpha = 0f;
     }
 
-    private void BtnApplyCallBack()
+    public void BtnApplyCallBack()
     {
         Dropdown.OptionData resData = resolutionListDpw[dpwResolutions.value];
         string[] subsWidth = resData.text.Split('x');
@@ -244,13 +263,18 @@ public class MainMenu : MonoBehaviour
         CloseSettingsPanel();
     }
 
-    private void CloseSettingsPanel()
+    public void CloseSettingsPanel()
     {
         GameManager.Instance.SetMainMenuPhase(0);
         panelButtonsGroup.interactable = true;
+        pnlButtonsInteractionGroup.interactable = true;
         panelSettingsGroup.interactable = false;
 
+        
+        StopAllCoroutines();
+        
         StartCoroutine(DoFade(panelButtonsGroup, 0, 1, .3f, 1f));
+        panelButtonsAnimGroup.alpha = 1f;
         StartCoroutine(DoFade(dimmerCG, 1, 0, .3f, 1f));
         StartCoroutine(DoFade(panelSettingsGroup, 1, 0, .3f));
     }
@@ -260,7 +284,7 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit ();
+        Application.Quit();
 #endif
     }
 

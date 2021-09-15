@@ -72,9 +72,14 @@ MonoBehaviour:
     m_Localized: LEVEL 1 COMPLETED
     m_Metadata:
       m_Items: []
+  - m_Id: 37055005377777664
+    m_Localized: 'MASTER VOLUME: {sliderVolumeStr}'
+    m_Metadata:
+      m_Items:
+      - id: 0
   references:
     version: 1
     00000000:
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 0050f16bca030000
+        m_Entries: 0050f16bca0300000050b1c054a58300
