@@ -20,6 +20,10 @@ namespace Controllers.Characters.Zanopiano.States
         public override void Enter()
         {
             base.Enter();
+            controller.GetAnimator().SetBool("Alerting", false);
+            controller.GetAnimator().SetBool("Alerting_Completed", false);
+            controller.GetAnimator().SetBool("Attacking", false);
+            controller.GetAnimator().SetBool("Attacking_Cooldown", false);
             controller.GetAnimator().SetBool(animBoolName, true);
         }
 
