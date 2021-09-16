@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Player;
+using UnityEngine;
 
 namespace Input
 {
@@ -10,6 +11,7 @@ namespace Input
             SetupRollInput();
             SetupJumpInput();
             SetupInteractInput();
+            SetupSwitchAbility();
         }
 
         private static void SetupAbilitiesInput()
@@ -45,17 +47,40 @@ namespace Input
         }
 
         // TEMP
-        private static int current;
+        private static int current = 0;
         private static void SetupSwitchAbility()
         {
             GameManager.Instance.GetPlayerControls().Gameplay.SwitchAbility.performed += ctx =>
             {
-                current++;
-                GameManager.PlayerController.powerUps.ChangePowerUp();
-                if (current > 3)
+                PlayerPowerUp pw;
+                
+                if (current > 2)
                 {
                     current = 0;
                 }
+
+                switch (current)
+                {
+                    case 0:
+                        pw = GameManager.PlayerController.teleportPowerUp;
+                        Debug.Log("Ability switched to: ROMHOPP");
+                        break;
+                    case 1:
+                        pw = GameManager.PlayerController.shieldPowerUp;
+                        Debug.Log("Ability switched to: SHIELD");
+                        break;
+                    case 2:
+                        pw = GameManager.PlayerController.godLikePowerUp;
+                        Debug.Log("Ability switched to: GODLIKE");
+                        break;
+                    default:
+                        pw = GameManager.PlayerController.teleportPowerUp;
+                        Debug.Log("Ability switched to: ROMHOPP");
+                        break;
+                }
+                GameManager.PlayerController.powerUps.ChangePowerUp(pw);
+                
+                current++;
             };
         }
     }

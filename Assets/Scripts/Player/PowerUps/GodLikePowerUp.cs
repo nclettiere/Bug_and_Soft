@@ -17,6 +17,7 @@ namespace Player
 
         public override void Enter()
         {
+            base.Enter();
             tpCooldownTime = float.NegativeInfinity;
         }
 

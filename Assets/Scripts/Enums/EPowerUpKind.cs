@@ -6,5 +6,6 @@ public enum EPowerUpKind
 {
     NONE,
     TELEPORT,
-    SHIELD
+    SHIELD,
+    GODLIKE
 }

@@ -69,6 +69,12 @@ namespace Player
         {
             if (!rollAnim)
             {
+                if (shieldPowerUp.IsActive() && powerUps.currentPowerUp == shieldPowerUp)
+                {
+                    shieldPowerUp.BrokeShield();
+                    return;
+                }
+                
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
@@ -143,7 +149,7 @@ namespace Player
 
             // A implementar en el tercer sprint
             // Cargar el savegame e inicializar con la habilidad guardada
-            powerUps.Initialize(godLikePowerUp);
+            powerUps.Initialize(teleportPowerUp);
         }
 
         public void ExitInteractionMode()

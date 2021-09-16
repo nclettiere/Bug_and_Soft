@@ -4,7 +4,7 @@ namespace Player
 {
     public class PlayerPowerUp
     {
-        protected static EPowerUpKind _powerUpKind = EPowerUpKind.NONE;
+        protected EPowerUpKind _powerUpKind = EPowerUpKind.NONE;
         protected bool activated;
         
         public PlayerPowerUp()
@@ -13,7 +13,8 @@ namespace Player
 
         public virtual void Enter()
         {
-            // to implement
+            Debug.Log("YEEE " + _powerUpKind);
+            GameManager.Instance.GetUIManager().ChangePowerUpKind(_powerUpKind);
         }
 
         public virtual void Exit()
