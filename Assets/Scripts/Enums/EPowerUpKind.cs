@@ -4,5 +4,7 @@ using UnityEngine;
 
 public enum EPowerUpKind
 {
-    TELEPORT
+    NONE,
+    TELEPORT,
+    SHIELD
 }

@@ -1,17 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
-using Controllers.Froggy;
-using Enums;
+using Input;
 using Player;
 using SaveSystem.Data;
 using UI;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public enum GameState
 {
@@ -28,6 +22,8 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public event OnStateChangeHandler OnStateChange;
     public GameState gameState { get; private set; }
+    
+    public GameInput gameInput { get; private set; }
 
     public static PlayerControls PlayerControls = new PlayerControls();
 
@@ -38,6 +34,7 @@ public class GameManager : MonoBehaviour
             if (_instance == null)
             {
                 _instance = GameObject.Find("Managers/GameManager").AddComponent<GameManager>();
+                GameInput.SetupInputs();
             }
 
             return _instance;
@@ -53,6 +50,8 @@ public class GameManager : MonoBehaviour
     private int playerDeathCount;
     private bool isBlinded;
     public int checkpointIndex { get; private set; }
+    
+    public List<BaseController> EnemiesInScreen { get; private set; } = new List<BaseController>();
 
     public int PlayerKrowns { get; private set; }
 
@@ -84,6 +83,7 @@ public class GameManager : MonoBehaviour
     {
         SetupInput();
         SetupGame();
+        GameInput.SetupInputs();
     }
 
     public void SetGameState(GameState gameState)

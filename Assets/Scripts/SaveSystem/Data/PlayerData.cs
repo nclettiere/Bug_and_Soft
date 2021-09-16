@@ -27,7 +27,6 @@ namespace SaveSystem.Data
             health = pctrl.currentHealth;
             krones = GameManager.Instance.PlayerKrowns;
             checkpoint = GameManager.Instance.checkpointIndex;
-            currentAbility = pctrl.currentAbility;
 
             position = new float[3];
             FillPosition(pctrl.transform.position);

@@ -125,9 +125,9 @@ public class DialogueTextEffector : MonoBehaviour
             abilityGained = true;
             choiceSelectSFX.Play();
             ChooseOption(2);
+            
             GameManager.Instance.RemovePlayerKrowns(150);
-            GameManager.PlayerController.AddPowerUp(EPowerUpKind.TELEPORT);
-            GameManager.Instance.SetRomhoppState(0);
+            GameManager.PlayerController.powerUps.ChangePowerUp(GameManager.PlayerController.teleportPowerUp);
         });
     }
 

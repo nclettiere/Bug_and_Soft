@@ -207,6 +207,7 @@ public class MainMenu : MonoBehaviour
         panelButtonsGroup.interactable = false;
         panelSettingsGroup.interactable = true;
         pnlButtonsInteractionGroup.interactable = false;
+        panelButtonsAnimGroup.interactable = false;
         
         StopAllCoroutines();
 

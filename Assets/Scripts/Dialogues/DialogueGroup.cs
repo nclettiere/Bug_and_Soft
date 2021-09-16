@@ -34,7 +34,7 @@ namespace Dialogues
         }
     }
 
-    public class DialogueGroup : MonoBehaviour
+    public class   DialogueGroup : MonoBehaviour
     {
         public LocalizedString[] locales;
         public DIALOGUE_ACTION[] dialogueActions;

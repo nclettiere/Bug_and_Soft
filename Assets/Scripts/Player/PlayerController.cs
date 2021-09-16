@@ -22,8 +22,6 @@ namespace Player
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
         [SerializeField] private float generalSpeed = 40f;
-        [SerializeField] private float specialMoveCooldownTime = 5f;
-        [SerializeField] private float rollCooldown = 0.5f;
         [SerializeField] public int currentHealth;
         [SerializeField] private float moveOnDamageDuration = 1f;
         [SerializeField] private GameObject onActivateWarpEffect;
@@ -33,8 +31,8 @@ namespace Player
         [SerializeField] private AudioSource onRewardAdded;
         [SerializeField] private AudioSource onKrownRemove;
         [SerializeField] private AudioSource onPlayerHurtSFX;
-        
-        
+
+
         public int maxHealth = 150;
 
         private float horizontalMove;
@@ -51,13 +49,21 @@ namespace Player
         internal bool rollAnim;
         private bool savedRigidData;
         private float verticalMove;
-        public float specialMoveWaitTime;
-        public bool warpActioned;
-        private Vector2 warpPosition;
         private EffectController effectController;
-        private bool canUseSpecialMove;
         private float rollCooldownWait = float.NegativeInfinity;
-        public int currentAbility { get; set; }
+
+
+        // Power Ups Manager
+        public PlayerPowerUpsProgression powerUps { get; private set; }
+
+        // ROMHOPP
+        public TeleportPowerUp teleportPowerUp { get; private set; }
+
+        // SHIELD
+        public ShieldPowerUp shieldPowerUp { get; private set; }
+
+        // GODLIKE
+        public GodLikePowerUp godLikePowerUp { get; private set; }
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -67,7 +73,7 @@ namespace Player
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 currentHealth -= damageInfo.DamageAmount;
-                
+
                 onPlayerHurtSFX.Play();
 
                 if (damageInfo.MoveOnAttack)
@@ -90,16 +96,22 @@ namespace Player
         {
             if (!rollAnim)
             {
+                if (shieldPowerUp.IsActive() && powerUps.currentPowerUp == shieldPowerUp)
+                {
+                    shieldPowerUp.BrokeShield();
+                    return;
+                }
+
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 currentHealth -= damageInfo.DamageAmount;
-                
+
                 onPlayerHurtSFX.Play();
 
                 if (damageInfo.MoveOnAttack)
                     MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
-                    
+
                 if (currentHealth <= 0)
                 {
                     GameManager.Instance.GameOver();
@@ -124,86 +136,14 @@ namespace Player
 
             currentHealth = maxHealth;
 
-            GameManager.Instance.GetPlayerControls().Gameplay.Roll.performed += ctxRoll =>
-            {
-                if (horizontalMove != 0f && !GameManager.Instance.IsGamePaused())
-                {
-                    //if (Time.time >= rollCooldownWait)
-                    //{
-                    roll = true;
-                    rollAnim = true;
-                    characterAnimator.SetBool("Roll", true);
-                    //rollCooldownWait = Time.time + rollCooldown;
-                    //}
-                }
-            };
-            GameManager.Instance.GetPlayerControls().Gameplay.Jump.performed += ctxRoll =>
-            {
-                if (!GameManager.Instance.IsGamePaused())
-                    jump = true;
-            };
-            // Interaction input
-            GameManager.Instance.GetPlayerControls().Gameplay.Interact.performed += ctx =>
-            {
-                if (canPlayerInteract && playerMovementCtrl.Grounded)
-                {
-                    //    Si el jugador puede interactuar llama a la interfaz del jugador
-                    if (lastInteractiveController != null && canPlayerInteract &&
-                        lastInteractiveController.CanCharacterInteract())
-                    {
-                        EnterInteractionMode();
-                        lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
-                    }
-                }
-            };
+            powerUps = new PlayerPowerUpsProgression();
+            teleportPowerUp = new TeleportPowerUp();
+            shieldPowerUp = new ShieldPowerUp();
+            godLikePowerUp = new GodLikePowerUp();
 
-            // SpecialMove input (SOLO PARA EL WARP MOVE, LOS DEMAS MOVES PARA EL 2 SPRINT)
-            GameManager.Instance.GetPlayerControls().Gameplay.SpecialMove.performed += ctx =>
-            {
-                if (!canUseSpecialMove)
-                    return;
-                
-                if (Time.time >= specialMoveWaitTime)
-                {
-                    warpActioned = false;
-                }
-
-                if (!isEnrolledInDialogue && !GameManager.Instance.IsGamePaused())
-                {
-                    if (!warpActioned)
-                    {
-                        if (Time.time >= specialMoveWaitTime)
-                        {
-                            StopCoroutine(ROMHOPPCooldownAnim());
-                            warpPosition = transform.position;
-                            warpActioned = true;
-                            Instantiate(onActivateWarpEffect, transform.position, Quaternion.Euler(0f, 0f, 0f));
-                            specialMoveWaitTime = Time.time + specialMoveCooldownTime;
-                            onWarpActionedSFX.Play();
-                            GameManager.Instance.SetRomhoppState(1);
-                        }
-                    }
-                    else
-                    {
-                        StopCoroutine(ROMHOPPCooldownAnim());
-                        transform.position = warpPosition;
-                        warpActioned = false;
-                        onWarpedSFX.Play();
-                        Instantiate(onWarpEffectParticle, transform.position, Quaternion.Euler(0f, 0f, 0f));
-                        specialMoveWaitTime = Time.time + specialMoveCooldownTime;
-
-
-                        StartCoroutine(ROMHOPPCooldownAnim());
-                    }
-                }
-            };
-        }
-
-        private IEnumerator ROMHOPPCooldownAnim()
-        {
-            GameManager.Instance.SetRomhoppState(2);
-            yield return new WaitForSeconds(specialMoveWaitTime);
-            GameManager.Instance.SetRomhoppState(0);
+            // A implementar en el tercer sprint
+            // Cargar el savegame e inicializar con la habilidad guardada
+            powerUps.Initialize(godLikePowerUp);
         }
 
         public void ExitInteractionMode()
@@ -260,17 +200,20 @@ namespace Player
                     respawning = false;
                 }
             }
-            
-            if (Time.time > specialMoveWaitTime && !warpActioned)
-            {
-                GameManager.Instance.SetRomhoppState(0);
-            }else if (Time.time < specialMoveWaitTime && warpActioned)
-            {
-                GameManager.Instance.SetRomhoppState(1);
-            }else if (Time.time < specialMoveWaitTime && !warpActioned)
-            {
-                GameManager.Instance.SetRomhoppState(2);
-            }
+
+            //if (Time.time > specialMoveWaitTime && !warpActioned)
+            //{
+            //    GameManager.Instance.SetRomhoppState(0);
+            //}else if (Time.time < specialMoveWaitTime && warpActioned)
+            //{
+            //    GameManager.Instance.SetRomhoppState(1);
+            //}else if (Time.time < specialMoveWaitTime && !warpActioned)
+            //{
+            //    GameManager.Instance.SetRomhoppState(2);
+            //}
+
+            if (powerUps.currentPowerUp != null)
+                powerUps.currentPowerUp.OnUpdate();
 
             CheckInteractions();
             CheckMoveOnDamaged();
@@ -424,16 +367,6 @@ namespace Player
             }
         }
 
-        public void AddPowerUp(EPowerUpKind kind)
-        {
-            switch (kind)
-            {
-                case EPowerUpKind.TELEPORT:
-                    canUseSpecialMove = true;
-                    break;
-            }
-        }
-
         #region Interaction
 
         [SerializeField] protected float interactionRadius = 3f;
@@ -484,6 +417,40 @@ namespace Player
             transform.position = playerData.GetPosition();
             currentHealth = playerData.Health;
             GameManager.Instance.SetPlayerKrones(playerData.Krones);
+        }
+
+        public void Rollear()
+        {
+            if (horizontalMove != 0f && !GameManager.Instance.IsGamePaused())
+            {
+                //if (Time.time >= rollCooldownWait)
+                //{
+                roll = true;
+                rollAnim = true;
+                characterAnimator.SetBool("Roll", true);
+                //rollCooldownWait = Time.time + rollCooldown;
+                //}
+            }
+        }
+
+        public void Jumpear()
+        {
+            if (!GameManager.Instance.IsGamePaused())
+                jump = true;
+        }
+
+        public void Interactear()
+        {
+            if (canPlayerInteract && playerMovementCtrl.Grounded)
+            {
+                //    Si el jugador puede interactuar llama a la interfaz del jugador
+                if (lastInteractiveController != null && canPlayerInteract &&
+                    lastInteractiveController.CanCharacterInteract())
+                {
+                    EnterInteractionMode();
+                    lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
+                }
+            }
         }
     }
 }

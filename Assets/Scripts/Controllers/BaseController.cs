@@ -360,6 +360,18 @@ namespace Controllers
             }
         }
 
+        private void OnBecameVisible()
+        {
+            GameManager.Instance.EnemiesInScreen
+                .Add(this);
+        }
+
+        private void OnBecameInvisible()
+        {
+            GameManager.Instance.EnemiesInScreen
+                .Remove(this);
+        }
+
         public void CheckTouchDamage()
         {
             if (Time.time >= lastTouchDamageTime + touchDamageCooldown)
