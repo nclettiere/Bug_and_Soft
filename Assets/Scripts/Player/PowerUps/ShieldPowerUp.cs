@@ -10,9 +10,8 @@ namespace Player
 
         private bool isActive;
 
-        public ShieldPowerUp()
+        public ShieldPowerUp() : base(EPowerUpKind.SHIELD)
         {
-            _powerUpKind = EPowerUpKind.SHIELD;
         }
 
         public override void Enter()

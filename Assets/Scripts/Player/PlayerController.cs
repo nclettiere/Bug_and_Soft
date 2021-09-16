@@ -207,17 +207,6 @@ namespace Player
                 }
             }
 
-            //if (Time.time > specialMoveWaitTime && !warpActioned)
-            //{
-            //    GameManager.Instance.SetRomhoppState(0);
-            //}else if (Time.time < specialMoveWaitTime && warpActioned)
-            //{
-            //    GameManager.Instance.SetRomhoppState(1);
-            //}else if (Time.time < specialMoveWaitTime && !warpActioned)
-            //{
-            //    GameManager.Instance.SetRomhoppState(2);
-            //}
-
             if (powerUps.currentPowerUp != null)
                 powerUps.currentPowerUp.OnUpdate();
 

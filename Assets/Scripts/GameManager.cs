@@ -300,11 +300,6 @@ public class GameManager : MonoBehaviour
         GetHUD().HideBossHealth();
     }
 
-    public void SetRomhoppState(int newState)
-    {
-        GetHUD().SetRomhoppState(newState);
-    }
-
     public void ShowHUD()
     {
         GetHUDCanvas().enabled = true;

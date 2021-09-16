@@ -52,35 +52,26 @@ namespace Input
         {
             GameManager.Instance.GetPlayerControls().Gameplay.SwitchAbility.performed += ctx =>
             {
-                PlayerPowerUp pw;
+                PlayerPowerUp pw = GameManager.PlayerController.teleportPowerUp;;
+                
+                current++;
                 
                 if (current > 2)
-                {
                     current = 0;
-                }
 
                 switch (current)
                 {
                     case 0:
                         pw = GameManager.PlayerController.teleportPowerUp;
-                        Debug.Log("Ability switched to: ROMHOPP");
                         break;
                     case 1:
                         pw = GameManager.PlayerController.shieldPowerUp;
-                        Debug.Log("Ability switched to: SHIELD");
                         break;
                     case 2:
                         pw = GameManager.PlayerController.godLikePowerUp;
-                        Debug.Log("Ability switched to: GODLIKE");
-                        break;
-                    default:
-                        pw = GameManager.PlayerController.teleportPowerUp;
-                        Debug.Log("Ability switched to: ROMHOPP");
                         break;
                 }
                 GameManager.PlayerController.powerUps.ChangePowerUp(pw);
-                
-                current++;
             };
         }
     }

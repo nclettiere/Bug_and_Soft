@@ -10,9 +10,8 @@ namespace Player
         private const float tpCooldown = 5f;
         private Vector2 targetWarp;
 
-        public GodLikePowerUp()
+        public GodLikePowerUp() : base(EPowerUpKind.GODLIKE)
         {
-            _powerUpKind = EPowerUpKind.TELEPORT;
         }
 
         public override void Enter()

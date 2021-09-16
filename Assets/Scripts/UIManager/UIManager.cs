@@ -10,14 +10,9 @@ namespace UIManager
     {
         [SerializeField] private GameObject blindEffectIndicator;
         [SerializeField] private GameObject poisonEffectIndicator;
-        
-        
-        [Header("HUD especificos")]
-        [SerializeField] private GameObject[] powerUpTeleportIndicator;
-        [SerializeField] private GameObject[] powerUpShieldIndicator;
-        [SerializeField] private GameObject[] powerUpGodLikeIndicator;
-        
-        public EPowerUpKind currentPowerUp { get; private set; }
+
+        public EPowerUpKind CurrentPowerUp { get; private set; }
+        public uint PowerUpState { get; private set; } = 0;
 
         private bool isBlindnessActive;
 
@@ -105,72 +100,16 @@ namespace UIManager
         {
             return GameObject.Find("PostProcess").GetComponent<Volume>();
         }
-
+        
         public void ChangePowerUpKind(EPowerUpKind kind)
         {
-            if (currentPowerUp != kind)
-            {
-                currentPowerUp = kind;
-
-                switch (kind)
-                {
-                    case EPowerUpKind.NONE:
-                        DesactivarHabilidad(EPowerUpKind.NONE);
-                        break;
-                    case EPowerUpKind.TELEPORT:
-                        DesactivarHabilidad(EPowerUpKind.NONE);
-                        powerUpTeleportIndicator[0].SetActive(true);
-                        break;
-                    case EPowerUpKind.SHIELD:
-                        DesactivarHabilidad(EPowerUpKind.NONE);
-                        powerUpShieldIndicator[0].SetActive(true);
-                        break;
-                    case EPowerUpKind.GODLIKE:
-                        DesactivarHabilidad(EPowerUpKind.NONE);
-                        powerUpGodLikeIndicator[0].SetActive(true);
-                        break;
-                }
-            }
+            CurrentPowerUp = kind;
+            GameManager.Instance.GetHUD().SwitchAbility();
         }
 
-        private void DesactivarHabilidad(EPowerUpKind kind)
+        public void ChangePowerUpState(uint state)
         {
-            switch (kind)
-            {
-                case EPowerUpKind.NONE:
-                    foreach (var obj in powerUpTeleportIndicator)
-                    {
-                        obj.SetActive(false);
-                    }                    
-                    foreach (var obj in powerUpShieldIndicator)
-                    {
-                        obj.SetActive(false);
-                    }                    
-                    foreach (var obj in powerUpGodLikeIndicator)
-                    {
-                        obj.SetActive(false);
-                    }
-                    break;
-                
-                case EPowerUpKind.TELEPORT:
-                    foreach (var obj in powerUpTeleportIndicator)
-                    {
-                        obj.SetActive(false);
-                    }
-                    break;
-                case EPowerUpKind.SHIELD:
-                    foreach (var obj in powerUpShieldIndicator)
-                    {
-                        obj.SetActive(false);
-                    }
-                    break;
-                case EPowerUpKind.GODLIKE:
-                    foreach (var obj in powerUpGodLikeIndicator)
-                    {
-                        obj.SetActive(false);
-                    }
-                    break;
-            } 
+            PowerUpState = state;
         }
     }
 }

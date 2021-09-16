@@ -13,15 +13,14 @@ namespace UI
         [SerializeField] private TextMeshProUGUI bossNameText;
         [SerializeField] private Slider playerHealthSlider;
         [SerializeField] private Slider bossHealthSlider;
-        
-        [SerializeField] private GameObject[] abilities;
-        [SerializeField] private GameObject[] abilitiesEmpty;
-        
+
+        [Header("HUD especificos")] 
+        [SerializeField] private GameObject[] powerUpTeleportIndicator;
+        [SerializeField] private GameObject[] powerUpShieldIndicator;
+        [SerializeField] private GameObject[] powerUpGodLikeIndicator;
+
         private bool showBossHealth;
         private BaseController controller;
-        
-        
-        private int ROMHOPP_state = -1;
 
         private void Update()
         {
@@ -36,42 +35,65 @@ namespace UI
 
             UpdateAbilities();
         }
+        
+        // Basicamente hace un clear a las habiliades xd
+        public void SwitchAbility()
+        {
+            ClearAbility(EPowerUpKind.TELEPORT);
+            ClearAbility(EPowerUpKind.SHIELD);
+            ClearAbility(EPowerUpKind.GODLIKE);
+        }
+
+        private void ClearAbility(EPowerUpKind kind)
+        {
+            switch (kind)
+            {
+                case EPowerUpKind.TELEPORT:
+                    foreach (var obj in powerUpTeleportIndicator)
+                    {
+                        obj.SetActive(false);
+                    }
+
+                    break;
+                case EPowerUpKind.SHIELD:
+                    foreach (var obj in powerUpShieldIndicator)
+                    {
+                        obj.SetActive(false);
+                    }
+
+                    break;
+                case EPowerUpKind.GODLIKE:
+                    foreach (var obj in powerUpGodLikeIndicator)
+                    {
+                        obj.SetActive(false);
+                    }
+
+                    break;
+            }
+        }
 
         private void UpdateAbilities()
         {
-            switch (ROMHOPP_state)
+            switch (GameManager.Instance.GetUIManager().CurrentPowerUp)
             {
-                case -1:
-                    abilities[0].SetActive(false);
-                    abilities[1].SetActive(false);
-                    abilities[2].SetActive(false);
-                    abilitiesEmpty[0].SetActive(true);
+                case EPowerUpKind.TELEPORT:
+                    UpdateAbility(ref powerUpTeleportIndicator);
                     break;
-                case 0:
-                    abilitiesEmpty[0].SetActive(false);
-                    abilities[0].SetActive(true);
-                    abilities[1].SetActive(false);
-                    abilities[2].SetActive(false);
+                case EPowerUpKind.SHIELD:
+                    UpdateAbility(ref powerUpShieldIndicator);
                     break;
-                case 1:
-                    abilitiesEmpty[0].SetActive(false);
-                    abilities[0].SetActive(false);
-                    abilities[1].SetActive(true);
-                    abilities[2].SetActive(false);
-                    break;
-                case 2:
-                    abilitiesEmpty[0].SetActive(false);
-                    abilities[0].SetActive(false);
-                    abilities[1].SetActive(false);
-                    abilities[2].SetActive(true);
+                case EPowerUpKind.GODLIKE:
+                    UpdateAbility(ref powerUpGodLikeIndicator);
                     break;
             }
-            
         }
 
-        public void SetRomhoppState(int newState)
+        private void UpdateAbility(ref GameObject[] powerUpIndicators)
         {
-            ROMHOPP_state = newState;
+            for (int i = 0; i < 3; i++)
+            {
+                powerUpIndicators[i].SetActive(i == GameManager.Instance.GetUIManager().PowerUpState);
+            }
         }
 
         private void UpdateBossHealthbar()
@@ -103,7 +125,10 @@ namespace UI
         {
             bossHealth.SetActive(false);
         }
-        
-        
+
+
+        public void ShowTeleportAbility()
+        {
+        }
     }
 }

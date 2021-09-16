@@ -4,17 +4,17 @@ namespace Player
 {
     public class PlayerPowerUp
     {
-        protected EPowerUpKind _powerUpKind = EPowerUpKind.NONE;
+        public EPowerUpKind powerUpKind { get; protected set; } = EPowerUpKind.NONE;
         protected bool activated;
         
-        public PlayerPowerUp()
-        { 
+        public PlayerPowerUp(EPowerUpKind powerUpKind)
+        {
+            this.powerUpKind = powerUpKind;
         }
 
         public virtual void Enter()
         {
-            Debug.Log("YEEE " + _powerUpKind);
-            GameManager.Instance.GetUIManager().ChangePowerUpKind(_powerUpKind);
+            GameManager.Instance.GetUIManager().ChangePowerUpKind(powerUpKind);
         }
 
         public virtual void Exit()
