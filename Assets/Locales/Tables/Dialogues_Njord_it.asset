@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Dialogues_Njord_it
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: it
+  m_SharedData: {fileID: 11400000, guid: 04a728f66f5b8f94c8e46f9a7c79ef03, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 8718995456
+    m_Localized: "IO, PACO! \xC8 TROPPO PERICOLOSO ANDARE COS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16193535692800
+    m_Localized: "L'UCCELLO SOTTO \xC8 MOLTO PERICOLOSO, VUOI UN POWERUP? SAR\xC0
+      150 CORONE."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16277396606976
+    m_Localized: PERFETTO! PRENDILO, USALO CON INTELLIGENZA!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 641822951305216
+    m_Localized: Ricorda di premere Q o R1 per attivarlo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 705612781539328
+    m_Localized: SALVA TUO PADRE, PACO!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2123525666467840
+    m_Localized: NON HAI ABBASTANZA KRONEI! PROVA A UCCIDERE PI NEMICI LA PROSSIMA
+      VOLTA!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13080107219505152
+    m_Localized: TEST DIALOGO 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13080219538771968
+    m_Localized: TEST DIALOGO 2 OTRA VEZ XD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13080281169874944
+    m_Localized: TODO FUNCA DE MARAVILLA
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1
