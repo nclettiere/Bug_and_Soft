@@ -7,7 +7,7 @@ namespace Player
     public class GodLikePowerUp : PlayerPowerUp
     {
         private volatile float tpCooldownTime = float.NegativeInfinity;
-        private const float tpCooldown = 5f;
+        private const float tpCooldown = 10f;
         private Vector2 targetWarp;
 
         public GodLikePowerUp() : base(EPowerUpKind.GODLIKE)
@@ -27,6 +27,10 @@ namespace Player
 
         public override void OnUpdate()
         {
+            if (Time.time >= tpCooldownTime)
+            {
+                GameManager.Instance.GetUIManager().ChangePowerUpState(0);
+            }
             if (activated)
             {
                 if (Time.time >= tpCooldownTime)
@@ -46,6 +50,7 @@ namespace Player
             {
                 controller.Damage(damageInfo);
             }
+            GameManager.Instance.GetUIManager().ChangePowerUpState(2);
         }
     }
 }

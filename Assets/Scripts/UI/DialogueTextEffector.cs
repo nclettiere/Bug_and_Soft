@@ -45,61 +45,59 @@ public class DialogueTextEffector : MonoBehaviour
 
     IEnumerator ShowText()
     {
-
-        for (ii = 0; ii < dialogues.GetDialogueCount() + 1; ii++)
-        {
-            if (ii > 1 && !abilityGained)
-            {
-
-                currentDialogueData = dialogues.GetDialogueLocale(5);
-                ii = 5;
-            }
-            else
-            {
-                currentDialogueData = dialogues.NextDialogue();
-            }
-
-            localeStringEvent.StringReference = currentDialogueData.Locale;
-
-            yield return new WaitForSeconds(startDelay);
-
-            for (int i = 0; i < Text.Length + 1; i++)
-            {
-                currentText = Text.Substring(0, i);
-                textRenderer.text = currentText;
-                if (!String.IsNullOrEmpty(currentText) && !Char.IsWhiteSpace(currentText.Last()))
-                    textTypeSFX.Play();
-                yield return new WaitForSeconds(delay);
-            }
-
-            if (ii == 5)
-            {
-                StopAllCoroutines();
-            }
-
-            if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
-            {
-                OnChoiceEvent(ii);
-                
-                yield return new WaitUntil(() => choiceSelected);
-                
-                if (!abilityGained)
-                {
-                    HideChoiceButtons();
-                    continue;
-                }
-
-                choiceSelected = false;
-            }
-
-            HideChoiceButtons();
-            
-            if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH)
-            {
-                OnEffectFinished(ii);
-                StopAllCoroutines();
-            }
-        }
+        //for (ii = 0; ii < dialogues.GetDialogueCount() + 1; ii++)
+        //{
+        //    if (ii > 1 && !abilityGained)
+        //    {
+//
+        //        currentDialogueData = dialogues.GetDialogueLocale(5);
+        //        ii = 5;
+        //    }
+        //    else
+        //    {
+        //        currentDialogueData = dialogues.NextDialogue();
+        //    }
+//
+        //    localeStringEvent.StringReference = currentDialogueData.Locale;
+//
+        //    yield return new WaitForSeconds(startDelay);
+//
+        //    for (int i = 0; i < Text.Length + 1; i++)
+        //    {
+        //        currentText = Text.Substring(0, i);
+        //        textRenderer.text = currentText;
+        //        if (!String.IsNullOrEmpty(currentText) && !Char.IsWhiteSpace(currentText.Last()))
+        //            textTypeSFX.Play();
+        //        yield return new WaitForSeconds(delay);
+        //    }
+//
+        //    if (ii == 5)
+        //        StopAllCoroutines();
+//
+        //    if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
+        //    {
+        //        OnChoiceEvent(ii);
+        //        
+        //        yield return new WaitUntil(() => choiceSelected);
+        //        
+        //        if (!abilityGained)
+        //        {
+        //            HideChoiceButtons();
+        //            continue;
+        //        }
+//
+        //        choiceSelected = false;
+        //    }
+//
+        //    HideChoiceButtons();
+        //    
+        //    if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH)
+        //    {
+        //        OnEffectFinished(ii);
+        //        StopAllCoroutines();
+        //    }
+        //}
+        yield return null;
     }
     
 

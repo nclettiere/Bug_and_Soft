@@ -56,7 +56,6 @@ namespace Player
             // Si se excede el limite de tiempo ..
             if (awaitingConfirmation && Time.time >= tpMaxWaitTime)
             {
-                Debug.Log("Resseikg...");
                 GameManager.Instance.GetUIManager().ChangePowerUpState(2);
                 tpCooldownTime = Time.time + tpCooldown;
                 tpMaxWaitTime = float.NegativeInfinity;

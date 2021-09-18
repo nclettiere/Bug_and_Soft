@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     private bool isPlayerAlive;
     private int playerDeathCount;
     private bool isBlinded;
+    public bool isDialogueMode { get; private set; }
     public int checkpointIndex { get; private set; }
     
     public List<BaseController> EnemiesInScreen { get; private set; } = new List<BaseController>();
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     public float DeltaTime
     {
-        get { return isGamePaused ? 0 : Time.deltaTime; }
+        get { return isGamePaused || isDialogueMode ? 0 : Time.deltaTime; }
     }
 
     public static PlayerController PlayerController
@@ -403,5 +404,15 @@ public class GameManager : MonoBehaviour
     public void ChangeMasterVolume(float newVolume)
     {
         MasterVolume = newVolume;
+    }
+
+    public void EnterDialogueMode()
+    {
+        isDialogueMode = true;
+    }
+    
+    public void ExitDialogueMode()
+    {
+        isDialogueMode = false;
     }
 }

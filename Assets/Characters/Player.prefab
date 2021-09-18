@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1455106971888218124
 Transform:
   m_ObjectHideFlags: 0
@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 5629790822863349703}
+  angle: 20
 --- !u!1 &1533293481177750982
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,8 +308,6 @@ MonoBehaviour:
   footStep1: {fileID: 4655116080529571681}
   footStep2: {fileID: 8288947571317503232}
   generalSpeed: 70
-  specialMoveCooldownTime: 5
-  rollCooldown: 0.5
   currentHealth: 150
   moveOnDamageDuration: 0.2
   onActivateWarpEffect: {fileID: 4018016533396014833, guid: 512c48647f6248e48afec46f2d4987b5, type: 3}
@@ -318,9 +317,8 @@ MonoBehaviour:
   onRewardAdded: {fileID: 2047962542100013945}
   onKrownRemove: {fileID: 8619854562554828247}
   onPlayerHurtSFX: {fileID: 210728642204563783}
+  shieldPlayerIndicator: {fileID: 613029091260329383}
   maxHealth: 150
-  specialMoveWaitTime: 0
-  warpActioned: 0
   interactionRadius: 3
   isEnrolledInDialogue: 0
 --- !u!114 &1627404402562284199

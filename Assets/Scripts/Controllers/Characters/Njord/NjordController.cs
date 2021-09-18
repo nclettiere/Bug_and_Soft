@@ -11,16 +11,18 @@ namespace Controllers
 {
     public class NjordController : BaseController
     {
-        [Header("Njord : Dialogue Options")] [SerializeField]
+        [Header("Njord : Dialogue Options")]
         private DialogueGroup dialogues;
 
         private bool interacted;
         
         protected override void Start()
         {
+            dialogues = GetComponent<DialogueGroup>();
+            
             base.Start();
-
             controllerKind = EControllerKind.Neutral;
+            dialogues.SelectedDialogue = 0;
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
 

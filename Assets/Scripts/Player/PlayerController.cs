@@ -31,7 +31,7 @@ namespace Player
         [SerializeField] private AudioSource onRewardAdded;
         [SerializeField] private AudioSource onKrownRemove;
         [SerializeField] private AudioSource onPlayerHurtSFX;
-
+        [SerializeField] private GameObject shieldPlayerIndicator;
 
         public int maxHealth = 150;
 
@@ -51,7 +51,6 @@ namespace Player
         private float verticalMove;
         private EffectController effectController;
         private float rollCooldownWait = float.NegativeInfinity;
-
 
         // Power Ups Manager
         public PlayerPowerUpsProgression powerUps { get; private set; }
@@ -144,7 +143,7 @@ namespace Player
 
             powerUps = new PlayerPowerUpsProgression();
             teleportPowerUp = new TeleportPowerUp();
-            shieldPowerUp = new ShieldPowerUp();
+            shieldPowerUp = new ShieldPowerUp(shieldPlayerIndicator);
             godLikePowerUp = new GodLikePowerUp();
 
             // A implementar en el tercer sprint
