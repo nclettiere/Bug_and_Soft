@@ -14,7 +14,7 @@ public class UI_PauseMenuManager : MonoBehaviour
 
     private void CheckGamePaused() 
     {
-        if(!GameManager.Instance.GetMainMenuOn() && !GameManager.IsFirstStart && !GameManager.Instance.isGameOver)
+        if(!GameManager.Instance.GetMainMenuOn() && !GameManager.IsFirstStart && !GameManager.Instance.isGameOver && !GameManager.Instance.isDialogueMode)
             pauseMenu.gameObject.SetActive(GameManager.Instance.IsGamePaused());
     }
 }

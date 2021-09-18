@@ -597,7 +597,7 @@ MonoBehaviour:
   ctrlData: {fileID: 11400000, guid: a8ee0834b9cbeb24faf7be25e34232d1, type: 2}
   deadMaxWait: 5
   currentHealth: 0
-  KrownReward: 10
+  KrownReward: 150
   controllerKind: 2
   characterKind: 3
   interactionRadius: 0

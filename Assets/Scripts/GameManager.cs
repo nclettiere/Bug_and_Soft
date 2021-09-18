@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     public float DeltaTime
     {
-        get { return isGamePaused || isDialogueMode ? 0 : Time.deltaTime; }
+        get { return isGamePaused ? 0 : Time.deltaTime; }
     }
 
     public static PlayerController PlayerController
@@ -409,10 +409,12 @@ public class GameManager : MonoBehaviour
     public void EnterDialogueMode()
     {
         isDialogueMode = true;
+        PauseGame();
     }
     
     public void ExitDialogueMode()
     {
         isDialogueMode = false;
+        ResumeGame();
     }
 }

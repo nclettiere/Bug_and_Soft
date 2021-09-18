@@ -12,17 +12,18 @@ namespace Controllers
     public class NjordController : BaseController
     {
         [Header("Njord : Dialogue Options")]
-        private DialogueGroup dialogues;
-
         private bool interacted;
+        
+        
+        public DialogueGroup Dialogues { get; private set; }
         
         protected override void Start()
         {
-            dialogues = GetComponent<DialogueGroup>();
+            Dialogues = GetComponent<DialogueGroup>();
             
             base.Start();
             controllerKind = EControllerKind.Neutral;
-            dialogues.SelectedDialogue = 0;
+            Dialogues.DialogueIndex = 0;
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
 
@@ -39,15 +40,15 @@ namespace Controllers
 
         public override bool Interact(PlayerController controller, EInteractionKind interactionKind)
         {
-            if (!interacted)
-            {
+            //if (!interacted)
+            //{
                 // disables the interaction bubble !!
                 dialogueBubble.gameObject.SetActive(false);
                 // Open the dialogue canvas
-                DialogueManager.Instance.ShowDialogues(dialogues);
+                DialogueManager.Instance.ShowDialogues(Dialogues);
                 interacted = true;
-                canInteract = false;
-            }
+                //canInteract = false;
+           // }
 
             return true;
         }

@@ -34,33 +34,21 @@ namespace Dialogues
         }
     }
 
-    public class   DialogueGroup : MonoBehaviour
+    public class  DialogueGroup : MonoBehaviour
     {
         public Dialogue[] dialogues;
-        public uint SelectedDialogue;
-        public UnityEvent dialogueActionCallbacks;
-
-        private void Awake()
-        {
-            if (dialogueActionCallbacks == null)
-                dialogueActionCallbacks = new UnityEvent();
-        }
-
-        private void TestAction()
-        {
-            DialogueManager.Instance.ChooseOption(2);
-        }
-
-        private void FinishAction()
-        {
-            DialogueManager.Instance.HideDialogues();
-            GameManager.Instance.PlayerExitInteractionMode();
-        }
+        public int DialogueIndex;
 
         public void Run()
         {
-            Debug.Log("Is null? "+ dialogues[SelectedDialogue] == null);
-            dialogues[SelectedDialogue].ShowDialogues();
+            dialogues[DialogueIndex].ShowDialogues();
+        }
+        
+        public void SetDialogueIndex(int i)
+        {
+            Debug.Log("Dialogue index setted to: " + i);
+            DialogueIndex = i;
         }
     }
+    
 }
