@@ -52,6 +52,10 @@ namespace Player
         private EffectController effectController;
         private float rollCooldownWait = float.NegativeInfinity;
 
+        private uint currentLvL;
+        private uint maxExperience;
+        private uint currentExperience;
+
         // Power Ups Manager
         public PlayerPowerUpsProgression powerUps { get; private set; }
 
@@ -359,6 +363,18 @@ namespace Player
                     playerMovementCtrl.AddSpeedPenalty(lifetime);
                     break;
             }
+        }
+
+        public void AddExperience(uint experience)
+        {
+            if(currentExperience + experience >= maxExperience)
+            {
+                
+            }
+            
+            //private uint currentLvL;
+            //private uint maxExperience;
+            //private uint currentExperience;
         }
 
         #region Interaction

@@ -16,6 +16,7 @@ namespace Controllers.StateMachine.States.Data
         public float playerLongRangeDistance = 8f;
         public int generalDamage = 10;
         public int maxHealth = 35;
+        public int experienceReward = 10;
         public LayerMask whatIsGround, whatIsPlayer;
     }
 }
