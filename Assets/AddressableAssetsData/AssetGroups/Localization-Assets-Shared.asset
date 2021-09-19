@@ -17,16 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1b19da67c039c474fa763bcbe67702dd
   m_SerializeEntries:
+  - m_GUID: 04a728f66f5b8f94c8e46f9a7c79ef03
+    m_Address: Assets/Locales/Tables/Dialogues_Njord Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   - m_GUID: 9c86aca556ed6d04eb30929c6f6961f6
     m_Address: Assets/Locales/Tables/NjordDialogues Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
   - m_GUID: 5ed7d3f7cf4945f4ebb3d3fff452db04
     m_Address: Assets/Locales/Tables/UI_Menu_Settings Shared Data.asset
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-  - m_GUID: 04a728f66f5b8f94c8e46f9a7c79ef03
-    m_Address: Assets/Locales/Tables/Dialogues_Njord Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
   m_ReadOnly: 1

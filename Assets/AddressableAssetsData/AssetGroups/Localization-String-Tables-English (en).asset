@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 3d68c3b8134322c469d1c87ae27fa80a
   m_SerializeEntries:
+  - m_GUID: fb6f2c4343c8b514681e0acf998c497f
+    m_Address: Dialogues_Njord_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
   - m_GUID: e1834e305d332cb4d8319417148ca9ab
     m_Address: NjordDialogues_en
     m_ReadOnly: 1
@@ -24,11 +29,6 @@ MonoBehaviour:
     - Locale-en
   - m_GUID: 9a41901c6d563b14ea103c5a8cc2be5b
     m_Address: UI_Menu_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-  - m_GUID: fb6f2c4343c8b514681e0acf998c497f
-    m_Address: Dialogues_Njord_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en

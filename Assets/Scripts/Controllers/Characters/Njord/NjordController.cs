@@ -13,8 +13,6 @@ namespace Controllers
     {
         [Header("Njord : Dialogue Options")]
         private bool interacted;
-        
-        
         public DialogueGroup Dialogues { get; private set; }
         
         protected override void Start()
@@ -51,6 +49,13 @@ namespace Controllers
            // }
 
             return true;
+        }
+
+        public void DialogueOnOptionChose(bool success)
+        {
+            Debug.Log("Called! "+ success);
+            if(success)
+                Dialogues.DialogueIndex = 1;
         }
     }
 }

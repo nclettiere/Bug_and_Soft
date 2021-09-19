@@ -103,8 +103,7 @@ public class Dialogue_Njord_Zero : Dialogue
                 ChooseOption(2);
                 return;
             }
-
-            nController.Dialogues.SetDialogueIndex(1);
+            OnDialogueChoseOption.Invoke(true);
             abilityGained = true;
             //choiceSelectSFX.Play();
             ChooseOption(2);

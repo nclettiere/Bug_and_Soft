@@ -13,6 +13,7 @@ public class Dialogue : MonoBehaviour
     public DIALOGUE_ACTION[] dialogueActions;
     
     public UnityEvent OnDialogueFinish;
+    public UnityEvent<bool> OnDialogueChoseOption;
 
     private protected DialogueGroup dialogueGroup;
     private protected uint currentDialogueIndex;
@@ -34,6 +35,8 @@ public class Dialogue : MonoBehaviour
     {
         if (OnDialogueFinish == null)
             OnDialogueFinish = new UnityEvent();
+        if (OnDialogueChoseOption == null)
+            OnDialogueChoseOption = new UnityEvent<bool>();
     }
 
     public void ShowDialogues()
