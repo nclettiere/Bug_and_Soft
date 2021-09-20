@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 902897338940988544}
   - component: {fileID: 5143041652268055252}
   - component: {fileID: 985624762341160022}
+  - component: {fileID: 867433757311006371}
   m_Layer: 0
   m_Name: HealthPotion
   m_TagString: Untagged
@@ -121,3 +122,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.12}
   serializedVersion: 2
   m_Radius: 0.62
+--- !u!114 &867433757311006371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4998679438131261279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f1a5c6e1684f9ca612ed86ef1290b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Kind: 0
+  lifetime: 20
+  isPercenatage: 1
+  healingAmount: 50
+  lifetimeWait: 0
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  overlapRadius: 1

@@ -12,6 +12,7 @@ namespace Input
             SetupJumpInput();
             SetupInteractInput();
             SetupSwitchAbility();
+            SetupStatsInput();
         }
 
         private static void SetupAbilitiesInput()
@@ -72,6 +73,21 @@ namespace Input
                         break;
                 }
                 GameManager.PlayerController.powerUps.ChangePowerUp(pw);
+            };
+        }
+
+        private static void SetupStatsInput()
+        {
+            GameManager.Instance.GetPlayerControls().Gameplay.ViewStats.performed += ctx =>
+            {
+                GameManager.Instance.GetHUD()
+                    .ShowStats();
+            };
+            
+            GameManager.Instance.GetPlayerControls().Gameplay.ViewStats.canceled += ctx =>
+            {
+                GameManager.Instance.GetHUD()
+                    .HideStats();
             };
         }
     }

@@ -137,6 +137,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ViewStats"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d5b3d93-c329-461f-8fbb-fe163cc3e18e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -733,6 +741,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""SwitchAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e3fbacc-8892-4f44-b2e1-8986d793ae2b"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ViewStats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -756,6 +775,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_QuickSave = m_Gameplay.FindAction("QuickSave", throwIfNotFound: true);
         m_Gameplay_QuickLoad = m_Gameplay.FindAction("QuickLoad", throwIfNotFound: true);
         m_Gameplay_SwitchAbility = m_Gameplay.FindAction("SwitchAbility", throwIfNotFound: true);
+        m_Gameplay_ViewStats = m_Gameplay.FindAction("ViewStats", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -820,6 +840,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_QuickSave;
     private readonly InputAction m_Gameplay_QuickLoad;
     private readonly InputAction m_Gameplay_SwitchAbility;
+    private readonly InputAction m_Gameplay_ViewStats;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -839,6 +860,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @QuickSave => m_Wrapper.m_Gameplay_QuickSave;
         public InputAction @QuickLoad => m_Wrapper.m_Gameplay_QuickLoad;
         public InputAction @SwitchAbility => m_Wrapper.m_Gameplay_SwitchAbility;
+        public InputAction @ViewStats => m_Wrapper.m_Gameplay_ViewStats;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -893,6 +915,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SwitchAbility.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAbility;
                 @SwitchAbility.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAbility;
                 @SwitchAbility.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwitchAbility;
+                @ViewStats.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnViewStats;
+                @ViewStats.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnViewStats;
+                @ViewStats.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnViewStats;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -942,6 +967,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SwitchAbility.started += instance.OnSwitchAbility;
                 @SwitchAbility.performed += instance.OnSwitchAbility;
                 @SwitchAbility.canceled += instance.OnSwitchAbility;
+                @ViewStats.started += instance.OnViewStats;
+                @ViewStats.performed += instance.OnViewStats;
+                @ViewStats.canceled += instance.OnViewStats;
             }
         }
     }
@@ -963,5 +991,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnQuickSave(InputAction.CallbackContext context);
         void OnQuickLoad(InputAction.CallbackContext context);
         void OnSwitchAbility(InputAction.CallbackContext context);
+        void OnViewStats(InputAction.CallbackContext context);
     }
 }

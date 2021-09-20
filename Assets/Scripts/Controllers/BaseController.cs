@@ -418,6 +418,8 @@ namespace Controllers
         public void DestroyNow()
         {
             StopAllCoroutines();
+            // Dropear items si tenes LUCKY BOYYYYYYY
+            DropItems();
             Destroy(gameObject);
         }
 
@@ -426,7 +428,25 @@ namespace Controllers
             StopAllCoroutines();
             renderer.enabled = false;
             Instantiate(lapida, transform.position, Quaternion.Euler(0f, 0f, 0f));
+            DropItems();
             Destroy(gameObject);
+        }
+        
+             
+        public virtual void DropItems() 
+        {
+            if (itemDrops != null && itemDrops.Length > 0)
+            {
+                // TODO: Luck factor !!!
+                int random = Random.Range(0, 35);
+                
+                // Dropea algo random
+                if (random <= 5)
+                {
+                    int item = Random.Range(0, itemDrops.Length - 1);
+                    Instantiate(itemDrops[item], transform.position, Quaternion.Euler(0f, 0f, 0f));
+                }
+            }
         }
 
         public bool CanCharacterInteract()
@@ -480,9 +500,12 @@ namespace Controllers
             ledgeCheck,
             touchDamageCheck,
             playerDetectCenterCheck;
+        
+        [Header("ItemDrops")]
+        [SerializeField] private protected GameObject[] itemDrops;
 
-
-        [Header("Events Zone")] public UnityEvent OnLandEvent;
+        [Header("Events Zone")] 
+        public UnityEvent OnLandEvent;
 
         #endregion
 

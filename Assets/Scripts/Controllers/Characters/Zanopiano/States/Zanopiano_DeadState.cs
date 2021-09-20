@@ -25,6 +25,7 @@ namespace Controllers.Characters.Zanopiano.States
             controller.GetAnimator().SetBool("Attacking", false);
             controller.GetAnimator().SetBool("Attacking_Cooldown", false);
             controller.GetAnimator().SetBool(animBoolName, true);
+            zController.DropItems();
         }
 
         public override void UpdateState()

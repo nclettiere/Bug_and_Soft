@@ -26,6 +26,7 @@ public class Froggy_DeadState : DeadState
         if (_froggyController.controllerKind != EControllerKind.Boss)
         {
             base.Enter();
+            _froggyController.DropItems();
         }
         else
         {

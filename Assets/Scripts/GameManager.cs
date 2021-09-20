@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
 using Input;
+using Inventory;
 using Player;
 using SaveSystem.Data;
 using UI;
@@ -336,6 +337,11 @@ public class GameManager : MonoBehaviour
     public UI_HUD GetHUD()
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
+    }
+    
+    public InventorySlotManager GetInventorySlotManager()
+    {
+        return GameObject.Find("Managers/InvetoryManager").GetComponent<InventorySlotManager>();
     }
 
     public UIManager.UIManager GetUIManager()

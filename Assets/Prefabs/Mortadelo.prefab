@@ -195,6 +195,9 @@ MonoBehaviour:
   ledgeCheck: {fileID: 722093470241720457}
   touchDamageCheck: {fileID: 722093468931476388}
   playerDetectCenterCheck: {fileID: 6420842701381717863}
+  itemDrops:
+  - {fileID: 4998679438131261279, guid: 0c463fb3bc7a92947af1e5f6d2b8295a, type: 3}
+  - {fileID: 4998679438131261279, guid: 0c463fb3bc7a92947af1e5f6d2b8295a, type: 3}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []

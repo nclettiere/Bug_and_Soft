@@ -10,14 +10,18 @@ namespace UI
     {
         [SerializeField] private TextMeshProUGUI krownsValue;
         [SerializeField] private GameObject bossHealth;
+        [SerializeField] private GameObject statsIndicator;
+        [SerializeField] private Image itemIndicator;
         [SerializeField] private TextMeshProUGUI bossNameText;
         [SerializeField] private Slider playerHealthSlider;
         [SerializeField] private Slider bossHealthSlider;
 
-        [Header("HUD especificos")] 
         [SerializeField] private GameObject[] powerUpTeleportIndicator;
         [SerializeField] private GameObject[] powerUpShieldIndicator;
         [SerializeField] private GameObject[] powerUpGodLikeIndicator;
+        
+        [SerializeField] private Sprite spriteHealthPotion;
+        
 
         private bool showBossHealth;
         private BaseController controller;
@@ -126,9 +130,36 @@ namespace UI
             bossHealth.SetActive(false);
         }
 
-
-        public void ShowTeleportAbility()
+        public void ShowStats()
         {
+            statsIndicator.SetActive(true);
+            Debug.Log("Showing stats");
+        }
+        
+        public void HideStats()
+        {
+            statsIndicator.SetActive(false);
+            Debug.Log("Hiding stats");
+        }
+
+        public void AddItem(EItemKind item)
+        {
+            switch (item)
+            {
+                case EItemKind.HEALTH_POTION:
+                    itemIndicator.sprite = spriteHealthPotion;
+                    break;
+            }
+            
+            itemIndicator.color = Color.white;
+            itemIndicator.enabled = true;
+        }
+
+        public void RemoveItem()
+        {
+            itemIndicator.enabled = false;
+            itemIndicator.sprite = null;
+            itemIndicator.color = Color.clear;
         }
     }
 }

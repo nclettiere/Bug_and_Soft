@@ -92,12 +92,10 @@ public class Dialogue_Njord_Zero : Dialogue
     {
         base.OnChoiceEvent(dialogueIndex);
         
-        // Temporal, hasta el segundo sprint !
         DialogueManager.Instance.SetButtonListener(() =>
         {
             if (dialogueIndex == 1 && GameManager.Instance.PlayerKrowns < 150)
             {
-                Debug.Log("krones are not sufficient");
                 abilityGained = false;
                 //choiceSelectSFX.Play();
                 ChooseOption(2);

@@ -24,6 +24,7 @@ public class Mortadelo_DeadState : DeadState
     {
         mController.rBody.gravityScale = 8f;
         base.Enter();
+        mController.DropItems();
     }
 
     protected virtual void LookAtPlayer()
