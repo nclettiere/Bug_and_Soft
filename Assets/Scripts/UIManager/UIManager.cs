@@ -10,6 +10,7 @@ namespace UIManager
     {
         [SerializeField] private GameObject blindEffectIndicator;
         [SerializeField] private GameObject poisonEffectIndicator;
+        [SerializeField] private GameObject UIShop;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; } = 0;
@@ -47,7 +48,6 @@ namespace UIManager
             yield return new WaitForSeconds(seconds);
 
             counter = 0f;
-
             
             DeactivateEffectIndicator(blindEffectIndicator);
             isBlindnessActive = false;
@@ -110,6 +110,16 @@ namespace UIManager
         public void ChangePowerUpState(uint state)
         {
             PowerUpState = state;
+        }
+
+        public void OpenShop()
+        {
+            UIShop.SetActive(true);
+        }
+
+        public void CloseShop()
+        {
+            UIShop.SetActive(false);
         }
     }
 }

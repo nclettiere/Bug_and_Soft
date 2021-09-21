@@ -42,7 +42,12 @@ public class Dialogue_Njord_Two : Dialogue
                     {
                         interactButtons[i].Callback = () =>
                         {
-                            Debug.Log("Opening SHOP");
+                            ResterDialogues();
+                            OnDialogueFinished();
+                            StopAllCoroutines();
+                            GameManager.Instance
+                                .GetUIManager()
+                                .OpenShop();
                         };
                         interactButtons[i].Text = "SI";
                     }
