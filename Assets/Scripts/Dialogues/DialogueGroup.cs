@@ -19,12 +19,14 @@ namespace Dialogues
     {
         public LocalizedString Locale;
         public DIALOGUE_ACTION Action;
+        public EDialogueChoice[] DialogueChoices;
         private PerformAction handler;
 
-        public DialogueData(LocalizedString locale, DIALOGUE_ACTION action, PerformAction performAction)
+        public DialogueData(LocalizedString locale, DIALOGUE_ACTION action, EDialogueChoice[] dialogueChoices, PerformAction performAction)
         {
             Locale = locale;
             Action = action;
+            DialogueChoices = dialogueChoices;
             handler = performAction;
         }
 
@@ -37,7 +39,7 @@ namespace Dialogues
     public class  DialogueGroup : MonoBehaviour
     {
         public Dialogue[] dialogues;
-        public int DialogueIndex;
+        public int DialogueIndex = 2;
 
         public void Run()
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Dialogues;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,8 @@ public class Dialogue : MonoBehaviour
     
     public LocalizedString[] locales;
     public DIALOGUE_ACTION[] dialogueActions;
-    
+    public DialogueChoices[] dialogueChoices;
+
     public UnityEvent OnDialogueFinish;
     public UnityEvent<bool> OnDialogueChoseOption;
 
@@ -44,7 +46,7 @@ public class Dialogue : MonoBehaviour
         StopAllCoroutines();
         currentDialogueIndex = 0;
         DialogueManager.textRenderer.text = "";
-        DialogueManager.Instance.HideInteractionButton();
+            DialogueManager.Instance.HideDefaultInteractionButton();
         StartCoroutine(ShowText());
     }
     
@@ -52,10 +54,10 @@ public class Dialogue : MonoBehaviour
     {
         if (index < locales.Length && index < dialogueActions.Length)
         {
-            return new DialogueData(locales[index], dialogueActions[index], null);
+            return new DialogueData(locales[index], dialogueActions[index], dialogueChoices[index].Choices, null);
         }
 
-        return new DialogueData(null, DIALOGUE_ACTION.NEXT, null);
+        return new DialogueData(null, DIALOGUE_ACTION.NEXT, null, null);
     }
     
     private protected  int GetDialogueCount()

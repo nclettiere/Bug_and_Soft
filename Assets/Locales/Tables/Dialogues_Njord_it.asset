@@ -56,5 +56,17 @@ MonoBehaviour:
     m_Localized: TODO FUNCA DE MARAVILLA
     m_Metadata:
       m_Items: []
+  - m_Id: 14080132012929024
+    m_Localized: BIENVENIDO A MI TIENDA PACO!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14080234043568128
+    m_Localized: QUIERES VER MIS PRODUCTOS?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14083637750624256
+    m_Localized: GRAN ELECCION!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

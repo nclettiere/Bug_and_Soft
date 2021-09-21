@@ -37,6 +37,12 @@ public class Dialogue_Njord_Zero : Dialogue
                     DialogueManager.textTypeSFX.Play();
                 yield return new WaitForSeconds(delay);
             }
+
+            if (currentDialogueData.Action == DIALOGUE_ACTION.NEXT &&
+                !(currentDialogueIndex + 1 == GetDialogueCount()))
+            {
+                DialogueManager.Instance.SetDefaultInteractButtonText("NEXT");
+            }
             
             if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
             {
@@ -54,7 +60,7 @@ public class Dialogue_Njord_Zero : Dialogue
                 choiceSelected = false;
             }
 
-            DialogueManager.Instance.HideInteractionButton();
+            DialogueManager.Instance.HideDefaultInteractionButton();
             
             if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH ||
                 currentDialogueIndex + 1 == GetDialogueCount())
@@ -62,6 +68,7 @@ public class Dialogue_Njord_Zero : Dialogue
                 ResterDialogues();
                 OnDialogueFinished();
                 StopAllCoroutines();
+                DialogueManager.Instance.SetDefaultInteractButtonText("FINISH");
             }
 
             currentDialogueIndex++;

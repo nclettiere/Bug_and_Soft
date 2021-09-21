@@ -21,7 +21,7 @@ namespace Controllers
             
             base.Start();
             controllerKind = EControllerKind.Neutral;
-            Dialogues.DialogueIndex = 0;
+            //Dialogues.DialogueIndex = 0;
             InvokeRepeating("MoveCejas", 0f, 5f);
         }
 
@@ -53,9 +53,14 @@ namespace Controllers
 
         public void DialogueOnOptionChose(bool success)
         {
-            Debug.Log("Called! "+ success);
             if(success)
                 Dialogues.DialogueIndex = 1;
+        }
+        
+        public void DialogueOnFinish()
+        { 
+            if(Dialogues.DialogueIndex == 1)
+                Dialogues.DialogueIndex += 1;
         }
     }
 }

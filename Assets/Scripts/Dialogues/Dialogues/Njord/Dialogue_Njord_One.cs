@@ -28,7 +28,7 @@ public class Dialogue_Njord_One : Dialogue
                 yield return new WaitForSeconds(delay);
             }
 
-            DialogueManager.Instance.HideInteractionButton();
+            DialogueManager.Instance.HideDefaultInteractionButton();
             
             if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH ||
                 currentDialogueIndex + 1 == GetDialogueCount())
@@ -40,6 +40,8 @@ public class Dialogue_Njord_One : Dialogue
 
             currentDialogueIndex++;
         }
+        
+        OnDialogueFinish.Invoke();
 
         currentDialogueIndex = 0;
         yield return null;
