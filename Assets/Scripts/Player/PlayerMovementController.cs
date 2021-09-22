@@ -218,11 +218,11 @@ namespace Player
                 OnAirEvent.Invoke();
         }
 
-        internal void PrepareRespawn(Transform SpawnPoint)
+        internal void PrepareRespawn(Vector3 SpawnPoint)
         {
             if (!FacingRight)
                 Flip();
-            transform.position = SpawnPoint.position;
+            transform.position = SpawnPoint;
         }
 
         public bool IsFacingRight()

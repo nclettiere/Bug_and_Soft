@@ -85,17 +85,19 @@ namespace Controllers.Characters.Mortadelo.States
                     Physics2D.OverlapCircle(mController.transform.position,
                         1f,
                         mController.ctrlData.whatIsPlayer);
-                
-                PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
-                if (bctrl != null && (bctrl is IDamageable))
+                if (hit != null)
                 {
-                    var dInfo = new DamageInfo(18, mController.GetTransfrom().position.x,
-                        true, false, false);
-                    bctrl.Damage(mController, dInfo);
-                    GameManager.Instance.ApplyBlindness(5f);
+                    PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+                    if (bctrl != null && (bctrl is IDamageable))
+                    {
+                        var dInfo = new DamageInfo(18, mController.GetTransfrom().position.x,
+                            true, false, false);
+                        bctrl.Damage(mController, dInfo);
+                        GameManager.Instance.ApplyBlindness(5f);
 
-                    attack = true;
-                    attackCooldown = Time.time + 1.5f;
+                        attack = true;
+                        attackCooldown = Time.time + 1.5f;
+                    }
                 }
             }
             

@@ -6,18 +6,15 @@ namespace Items
 {
     public class ItemGiver : MonoBehaviour
     {
-        [SerializeField] private Item item;
+        [SerializeField] private Item[] items;
         private BaseController controller;
-
-        private void Start()
+        
+        public void Run()
         {
-            controller = GetComponent<BaseController>();
-        }
-
-        private void Update()
-        {
-            if(controller.currentHealth <= 0)
+            foreach (var item in items)
+            {
                 item.Spawn(transform.position);
+            }
         }
     }
 }

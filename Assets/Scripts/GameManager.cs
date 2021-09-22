@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     private bool isBlinded;
     public bool isDialogueMode { get; private set; }
     public int checkpointIndex { get; private set; }
+
+    public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
     
     public List<BaseController> EnemiesInScreen { get; private set; } = new List<BaseController>();
 
@@ -422,5 +424,10 @@ public class GameManager : MonoBehaviour
     {
         isDialogueMode = false;
         ResumeGame();
+    }
+
+    public void SetSpawnPoint(Vector3 point)
+    {
+        spawnPoint = point;
     }
 }

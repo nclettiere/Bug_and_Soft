@@ -342,10 +342,10 @@ namespace Player
             AnimStartPrayingEvt();
 
             respawning = true;
-            var SpawnPoint = GameObject.Find("SpawnPoint");
+
             combatCtrl.ResetAttackNow();
             yield return new WaitForSeconds(1f);
-            playerMovementCtrl.PrepareRespawn(SpawnPoint.transform);
+            playerMovementCtrl.PrepareRespawn(GameManager.Instance.spawnPoint);
             yield return new WaitForSeconds(2f);
 
             GameManager.Instance.RespawnPlayer();

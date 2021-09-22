@@ -5,6 +5,7 @@ using Controllers.Froggy;
 using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
+using Items;
 using UnityEngine;
 
 public class Froggy_DeadState : DeadState
@@ -23,23 +24,23 @@ public class Froggy_DeadState : DeadState
     
     public override void Enter()
     {
+        _froggyController.DropItems();
+        
+        if (_froggyController.GetComponent<ItemGiver>() != null)
+        {
+            _froggyController.GetComponent<ItemGiver>().Run();
+        }
+        
         if (_froggyController.controllerKind != EControllerKind.Boss)
         {
             base.Enter();
-            _froggyController.DropItems();
         }
         else
         {
-
             GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
             _froggyController.GetAnimator().SetBool("SuperFroggy_Transforming", true);
             enterPhaseTwoWaitTime = Time.time + 3f;
         }
-    }
-
-    public override void Exit()
-    {
-        base.Exit(); 
     }
 
     public override void UpdateState()
