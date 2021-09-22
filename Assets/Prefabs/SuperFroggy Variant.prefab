@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &3229109244323304219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330432586759226540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6c2e3104774711a5509e4c33645bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 8762066518934809150, guid: 34d1223db7575b34b913d68e5f41428b, type: 3}
 --- !u!82 &1408559873665964618
 AudioSource:
   m_ObjectHideFlags: 0
@@ -233,6 +246,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+--- !u!1 &6330432586759226540 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 242146971895896513, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+  m_PrefabInstance: {fileID: 6090680369007156589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6330432585602713763 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 242146970908857806, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}

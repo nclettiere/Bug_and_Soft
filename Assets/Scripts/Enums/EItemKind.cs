@@ -1,4 +1,5 @@
 ﻿public enum EItemKind
 {
-    HEALTH_POTION
+    HEALTH_POTION,
+    KRONES
 }

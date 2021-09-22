@@ -16,7 +16,7 @@ namespace Items
 
         private Rigidbody2D rBody;
 
-        private bool isSpawned;
+        private protected bool isSpawned;
         
         private protected virtual void Start()
         {
