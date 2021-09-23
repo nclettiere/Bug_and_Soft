@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Enums;
+using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -11,6 +12,9 @@ namespace UIManager
         [SerializeField] private GameObject blindEffectIndicator;
         [SerializeField] private GameObject poisonEffectIndicator;
         [SerializeField] private GameObject UIShop;
+
+        [SerializeField] private UI_TransitionLvL transitionLvl1;
+        [SerializeField] private GameObject lvlCompletedPanel;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; } = 0;
@@ -120,6 +124,24 @@ namespace UIManager
         public void CloseShop()
         {
             UIShop.SetActive(false);
+        }
+
+        public void ShowTransitionOne()
+        {
+            HideLvlWonPanel();
+            GameManager.Instance.HideBossHealth();
+            transitionLvl1.gameObject.SetActive(true);
+            transitionLvl1.StartTransition();
+        }
+
+        public void ShowLvlWonPanel()
+        {
+            lvlCompletedPanel.SetActive(true);
+        }
+        
+        public void HideLvlWonPanel()
+        {
+            lvlCompletedPanel.SetActive(false);
         }
     }
 }

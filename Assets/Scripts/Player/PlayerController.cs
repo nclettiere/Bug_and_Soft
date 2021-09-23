@@ -136,7 +136,7 @@ namespace Player
 
         private void Start()
         {
-            var SpawnPoint = GameObject.Find("SpawnPoint");
+            var SpawnPoint = GameObject.Find("SpawnPoints/LevelOneDefaultSpawn");
             rigidbody2D = GetComponent<Rigidbody2D>();
             effectController = GetComponent<EffectController>();
             transform.position = SpawnPoint.transform.position;

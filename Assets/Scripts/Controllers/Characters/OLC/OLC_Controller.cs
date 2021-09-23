@@ -89,8 +89,9 @@ namespace Controllers.Froggy
 
                 if (currentHealth <= 0f)
                 {
-                    GameManager.Instance.LevelWon(1);
-                    //Die();
+                    GameManager.Instance.GetUIManager()
+                        .ShowLvlWonPanel();
+                    Destroy(gameObject);
                 }
                 else if (currentHealth <= ctrlData.maxHealth / 4 && currentPhase != 2)
                 {

@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     public bool isDialogueMode { get; private set; }
     public int checkpointIndex { get; private set; }
 
+    public int currentLevel { get; private set; } = 1;
+
     public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
     
     public List<BaseController> EnemiesInScreen { get; private set; } = new List<BaseController>();
@@ -356,12 +358,26 @@ public class GameManager : MonoBehaviour
         return GameObject.Find("UI/UI_HUD").GetComponent<Canvas>();
     }
 
-    public void LevelWon(int i)
+    public void LevelWon()
     {
         isGameOver = true;
         PauseGame();
-        GameObject.Find("UI/UI_LevelCompleted").GetComponent<Canvas>().enabled = true;
-        GameObject.Find("UI/UI_GameOver").SetActive(false);
+
+        if (currentLevel == 1)
+        {
+            PlayerController.transform.position
+                = GetLvlTwoPosition();
+            SetSpawnPoint(GetLvlTwoPosition());
+        }
+
+        QuickSave();
+        currentLevel++;
+    }
+
+    private Vector3 GetLvlTwoPosition()
+    {
+        return GameObject.Find("SpawnPoints/LevelTwoDefaultSpawn")
+            .transform.position;
     }
 
     public bool CreateNewSave(int slot)
@@ -402,8 +418,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerKrowns = playerDataKrones;
     }
-
-
+    
     public void ApplyBlindness(float howLong = 1f)
     {
         GetUIManager().ApplyBlindness(howLong);
