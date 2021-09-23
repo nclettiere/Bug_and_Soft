@@ -56,6 +56,8 @@ namespace Player
         private uint maxExperience;
         private uint currentExperience;
 
+        private float hozSpeed, verSpeed;
+
         // Power Ups Manager
         public PlayerPowerUpsProgression powerUps { get; private set; }
 
@@ -167,16 +169,6 @@ namespace Player
             combatCtrl = GetComponent<PlayerCombatController>();
         }
 
-        internal void OnEnable()
-        {
-            GameManager.Instance.GetPlayerControls().Enable();
-        }
-
-        internal void OnDisable()
-        {
-            GameManager.Instance.GetPlayerControls().Disable();
-        }
-
         private void Update()
         {
             if (GameManager.Instance.IsGamePaused() || isEnrolledInDialogue)
@@ -215,10 +207,11 @@ namespace Player
 
             CheckInteractions();
             CheckMoveOnDamaged();
+            
+            Debug.Log("Hoz: " + hozSpeed);
 
-            horizontalMove = GameManager.Instance.GetPlayerControls().Gameplay.Horizontal.ReadValue<float>() *
-                             generalSpeed;
-            verticalMove = GameManager.Instance.GetPlayerControls().Gameplay.Vertical.ReadValue<float>() * generalSpeed;
+            horizontalMove = hozSpeed * generalSpeed;
+            verticalMove = verSpeed * generalSpeed;
 
             characterAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         }
@@ -337,7 +330,7 @@ namespace Player
 
         private IEnumerator Respawn()
         {
-            OnDisable();
+            //OnDisable();
 
             AnimStartPrayingEvt();
 
@@ -351,7 +344,7 @@ namespace Player
             GameManager.Instance.RespawnPlayer();
             respawning = false;
 
-            OnEnable();
+            //OnEnable();
         }
 
 
@@ -466,6 +459,16 @@ namespace Player
         public void RefillHealth()
         {
             currentHealth = maxHealth;
+        }
+
+        public void SetHorizontalSpeed(float speed)
+        {
+            hozSpeed = speed;
+        }
+        
+        public void SetVerticalSpeed(float speed)
+        {
+            verSpeed = speed;
         }
     }
 }

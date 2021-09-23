@@ -74,7 +74,7 @@ namespace Player
                 {
                     if (currentPhase == 0)
                     {
-                        targetWarp = GameManager.PlayerController.transform.position;
+                        targetWarp = GameManager.Instance.PlayerController.transform.position;
                         tpCooldownTime = Time.time + tpCooldownFirstPhase;
                         tpMaxWaitTime = Time.time + tpCooldown;
                         awaitingConfirmation = true;
@@ -84,7 +84,7 @@ namespace Player
                     }
                     else if (currentPhase == 1)
                     {
-                        GameManager.PlayerController.transform.position = targetWarp;
+                        GameManager.Instance.PlayerController.transform.position = targetWarp;
                         tpCooldownTime = Time.time + tpCooldown;
                         awaitingConfirmation = false;
                         

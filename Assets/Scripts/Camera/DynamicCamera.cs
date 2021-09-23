@@ -47,16 +47,9 @@ namespace CameraManagement
         public bool FollowTarget { get; set; } = true;
 
         private Vector3 cameraMoveOffset = Vector3.zero;
-
-        void Awake()
+        
+        private void Start()
         {
-            //GameObject.DontDestroyOnLoad(this);
-            GameManager.Instance.GetPlayerControls().Gameplay.Camera.performed += ctx =>
-            {
-                var value = ctx.ReadValue<Vector2>();
-                cameraMoveOffset = new Vector3(value.x, value.y) * cameraMoveMultiplier;
-            };
-            GameManager.Instance.GetPlayerControls().Gameplay.Camera.canceled += ctx => cameraMoveOffset = Vector3.zero;
         }
 
         private void FixedUpdate()
@@ -205,6 +198,11 @@ namespace CameraManagement
         private void OnDestroy()
         {
             StopAllCoroutines();
+        }
+
+        public void UpdateOffsetJoystick(Vector2 value)
+        {
+            cameraMoveOffset = new Vector3(value.x, value.y) * cameraMoveMultiplier;
         }
     }
 }

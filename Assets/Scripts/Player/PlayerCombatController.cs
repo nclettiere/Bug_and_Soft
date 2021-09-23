@@ -43,41 +43,12 @@ namespace Player
 
         private PlayerMovementController pMovCtrl;
 
-        private void Awake()
+        private void Start()
         {
             pCtrl = GetComponent<PlayerController>();
             pMovCtrl = GetComponent<PlayerMovementController>();
             pLadderCtrl = GetComponent<PlayerLadderClimbingController>();
             pAnimator = GetComponent<Animator>();
-
-            GameManager.Instance.GetPlayerControls().Gameplay.Attack.performed += ctx =>
-            {
-                if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
-
-                if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll &&
-                    !pMovCtrl.IsTouchingLedge)
-                    if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
-                        if (awaitingAttack && Time.time >= lastInputTime)
-                        {
-                            StopAllCoroutines();
-
-                            attacking = true;
-                            attackN++;
-                            awaitingAttack = false;
-
-                            damagedApplied = false;
-
-                            playerMaterial.SetFloat("EmmisiveIntensity", 0.25f);
-
-                            pAnimator.SetBool("AwaitingAttack", false);
-                            pAnimator.SetBool("Attacking", true);
-                            pAnimator.SetInteger("AttackN", attackN);
-
-                            pMovCtrl.AttackMovement(attackN * 2);
-
-                            lastInputTime = Time.time + generalInputCooldown;
-                        }
-            };
         }
 
         private void Update()
@@ -205,6 +176,35 @@ namespace Player
         public int GetDamagePromedio()
         {
             return ((attacksDamage[0] + attacksDamage[0]) / 2);
+        }
+
+        public void AttackPerformed()
+        {
+            if (GameManager.Instance.IsGamePaused() || !GameManager.Instance.GetIsInputEnabled()) return;
+
+            if (!pCtrl.respawning && !pCtrl.isEnrolledInDialogue && !pCtrl.praying && !pCtrl.roll &&
+                !pMovCtrl.IsTouchingLedge)
+                if (pLadderCtrl != null && !pLadderCtrl.isClimbing)
+                    if (awaitingAttack && Time.time >= lastInputTime)
+                    {
+                        StopAllCoroutines();
+
+                        attacking = true;
+                        attackN++;
+                        awaitingAttack = false;
+
+                        damagedApplied = false;
+
+                        playerMaterial.SetFloat("EmmisiveIntensity", 0.25f);
+
+                        pAnimator.SetBool("AwaitingAttack", false);
+                        pAnimator.SetBool("Attacking", true);
+                        pAnimator.SetInteger("AttackN", attackN);
+
+                        pMovCtrl.AttackMovement(attackN * 2);
+
+                        lastInputTime = Time.time + generalInputCooldown;
+                    }
         }
     }
 }

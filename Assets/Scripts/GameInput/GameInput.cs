@@ -5,55 +5,89 @@ namespace Input
 {
     public class GameInput
     {
-        public static void SetupInputs()
+        public static PlayerControls playerControls;
+        
+        public void SetupInputs()
         {
+            playerControls = new PlayerControls();
+            playerControls.Enable();
+            
             SetupAbilitiesInput();
             SetupRollInput();
             SetupJumpInput();
             SetupInteractInput();
             SetupSwitchAbility();
             SetupStatsInput();
+            SetupPlayerMovementInput();
+            SetupMiscInput();
+            SetupCameraInput();
+            SetupPlayerAttack();
         }
 
-        private static void SetupAbilitiesInput()
-        {
-            GameManager.Instance.GetPlayerControls().Gameplay.SpecialMove.performed += ctx =>
+        private void SetupMiscInput()
+        {        
+            playerControls.Gameplay.Pause.performed += ctx =>
             {
-                GameManager.PlayerController.powerUps.currentPowerUp.Activate();
+                if (GameManager.Instance.isMainMenuOn) return;
+
+                if (GameManager.Instance.isGamePaused)
+                    GameManager.Instance.ResumeGame();
+                else
+                    GameManager.Instance.PauseGame();
+            };
+
+           //playerControls.Gameplay.QuickSave.performed += ctx =>
+           //{
+           //    if (isMainMenuOn || isGamePaused) return;
+           //    QuickSave();
+           //};
+
+           //playerControls.Gameplay.QuickLoad.performed += ctx =>
+           //{
+           //    if (isMainMenuOn || isGamePaused) return;
+           //    QuickLoad();
+           //};
+        }
+
+        private void SetupAbilitiesInput()
+        {
+            playerControls.Gameplay.SpecialMove.performed += ctx =>
+            {
+                GameManager.Instance.PlayerController.powerUps.currentPowerUp.Activate();
             };
         }
 
-        private static void SetupRollInput()
+        private void SetupRollInput()
         {
-            GameManager.Instance.GetPlayerControls().Gameplay.Roll.performed += ctxRoll =>
+            playerControls.Gameplay.Roll.performed += ctxRoll =>
             {
-                GameManager.PlayerController.Rollear();
+                GameManager.Instance.PlayerController.Rollear();
             };
         }
         
-        private static void SetupJumpInput()
+        private void SetupJumpInput()
         {
-            GameManager.Instance.GetPlayerControls().Gameplay.Jump.performed += ctx =>
+            playerControls.Gameplay.Jump.performed += ctx =>
             {
-                GameManager.PlayerController.Jumpear();
+                GameManager.Instance.PlayerController.Jumpear();
             };
         }
         
-        private static void SetupInteractInput()
+        private void SetupInteractInput()
         {
-            GameManager.Instance.GetPlayerControls().Gameplay.Interact.performed += ctx =>
+            playerControls.Gameplay.Interact.performed += ctx =>
             {
-                GameManager.PlayerController.Interactear();
+                GameManager.Instance.PlayerController.Interactear();
             };
         }
 
         // TEMP
-        private static int current = 0;
-        private static void SetupSwitchAbility()
+        private int current = 0;
+        private void SetupSwitchAbility()
         {
-            GameManager.Instance.GetPlayerControls().Gameplay.SwitchAbility.performed += ctx =>
+            playerControls.Gameplay.SwitchAbility.performed += ctx =>
             {
-                PlayerPowerUp pw = GameManager.PlayerController.teleportPowerUp;;
+                PlayerPowerUp pw = GameManager.Instance.PlayerController.teleportPowerUp;;
                 
                 current++;
                 
@@ -63,32 +97,77 @@ namespace Input
                 switch (current)
                 {
                     case 0:
-                        pw = GameManager.PlayerController.teleportPowerUp;
+                        pw = GameManager.Instance.PlayerController.teleportPowerUp;
                         break;
                     case 1:
-                        pw = GameManager.PlayerController.shieldPowerUp;
+                        pw = GameManager.Instance.PlayerController.shieldPowerUp;
                         break;
                     case 2:
-                        pw = GameManager.PlayerController.godLikePowerUp;
+                        pw = GameManager.Instance.PlayerController.godLikePowerUp;
                         break;
                 }
-                GameManager.PlayerController.powerUps.ChangePowerUp(pw);
+                GameManager.Instance.PlayerController.powerUps.ChangePowerUp(pw);
             };
         }
 
-        private static void SetupStatsInput()
+        private void SetupStatsInput()
         {
-            GameManager.Instance.GetPlayerControls().Gameplay.ViewStats.performed += ctx =>
+            playerControls.Gameplay.ViewStats.performed += ctx =>
             {
                 GameManager.Instance.GetHUD()
                     .ShowStats();
             };
             
-            GameManager.Instance.GetPlayerControls().Gameplay.ViewStats.canceled += ctx =>
+            playerControls.Gameplay.ViewStats.canceled += ctx =>
             {
                 GameManager.Instance.GetHUD()
                     .HideStats();
             };
+        }
+
+        public void SetupPlayerMovementInput()
+        {
+            // Horizontal
+            playerControls.Gameplay.Horizontal.performed += ctx =>
+            {
+                GameManager.Instance.PlayerController.SetHorizontalSpeed(
+                    playerControls.Gameplay.Horizontal.ReadValue<float>());
+            };
+            playerControls.Gameplay.Horizontal.canceled += ctx =>
+            {
+                GameManager.Instance.PlayerController.SetHorizontalSpeed(0f);
+            };
+            
+            // Vertical
+            playerControls.Gameplay.Vertical.performed += ctx =>
+            {
+                GameManager.Instance.PlayerController.SetVerticalSpeed(
+                    playerControls.Gameplay.Horizontal.ReadValue<float>());
+            };
+            playerControls.Gameplay.Vertical.canceled += ctx =>
+            {
+                GameManager.Instance.PlayerController.SetVerticalSpeed(0f);
+            };
+        }
+
+        private void SetupCameraInput()
+        {
+            playerControls.Gameplay.Camera.performed += ctx =>
+            {
+                var value = ctx.ReadValue<Vector2>();
+                GameManager.Instance.GetDynamicCamera()
+                    .UpdateOffsetJoystick(value);
+            };
+            
+            playerControls.Gameplay.Camera.canceled += ctx => 
+                GameManager.Instance.GetDynamicCamera()
+                    .UpdateOffsetJoystick(Vector2.zero);
+        }
+
+        private void SetupPlayerAttack()
+        {
+            playerControls.Gameplay.Attack.performed += ctx =>
+                GameManager.Instance.PlayerController.combatCtrl.AttackPerformed();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace UI
                     //GameManager.Instance = new GameManager();
                     break;
                 case EButtonFunction.RESUME:
-                    GameManager.ResumeGame();
+                    GameManager.Instance.ResumeGame();
                     break;
                 case EButtonFunction.SAVE:
                     SaveGameOnSlot();

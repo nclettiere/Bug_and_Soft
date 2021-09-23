@@ -112,8 +112,8 @@ namespace UI
         {
             if (playerHealthSlider != null)
             {
-                playerHealthSlider.maxValue = GameManager.PlayerController.maxHealth;
-                playerHealthSlider.value = GameManager.PlayerController.currentHealth;
+                playerHealthSlider.maxValue = GameManager.Instance.PlayerController.maxHealth;
+                playerHealthSlider.value = GameManager.Instance.PlayerController.currentHealth;
             }
 
             PlayerExperienceSlider.value = GameManager.Instance.currentExp;

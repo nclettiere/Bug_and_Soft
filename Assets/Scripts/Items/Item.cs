@@ -58,7 +58,7 @@ namespace Items
             }
             else
             {
-                Spawn(GameManager.PlayerController.transform.position);
+                Spawn(GameManager.Instance.PlayerController.transform.position);
             }
         }
 

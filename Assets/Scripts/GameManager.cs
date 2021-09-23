@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
@@ -26,18 +27,9 @@ public class GameManager : MonoBehaviour
     
     public GameInput gameInput { get; private set; }
 
-    public static PlayerControls PlayerControls = new PlayerControls();
-
     public static GameManager Instance
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = GameObject.Find("Managers/GameManager").AddComponent<GameManager>();
-                GameInput.SetupInputs();
-            }
-
+        get {
             return _instance;
         }
     }
@@ -45,8 +37,8 @@ public class GameManager : MonoBehaviour
     private static bool sceneChanged;
 
     private static bool isInputEnabled = true;
-    private static bool isMainMenuOn = true;
-    private static bool isGamePaused = true;
+    public bool isMainMenuOn = true;
+    public bool isGamePaused = true;
     private bool isPlayerAlive;
     private int playerDeathCount;
     private bool isBlinded;
@@ -59,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
     
-    public List<BaseController> EnemiesInScreen { get; private set; } = new List<BaseController>();
+    public List<BaseController> EnemiesInScreen { get; private set; }
 
     public int PlayerKrowns { get; private set; }
 
@@ -68,7 +60,7 @@ public class GameManager : MonoBehaviour
         get { return isGamePaused ? 0 : Time.deltaTime; }
     }
 
-    public static PlayerController PlayerController
+    public PlayerController PlayerController
     {
         get
         {
@@ -89,9 +81,19 @@ public class GameManager : MonoBehaviour
 
     public GameManager()
     {
-        SetupInput();
-        SetupGame();
-        GameInput.SetupInputs();
+        //SetupInput();
+        //SetupGame();
+        //GameInput.SetupInputs();
+    }
+
+    private void Awake()
+    {
+        if(_instance == null)
+            _instance = this;
+        
+        
+        gameInput = new GameInput();
+        gameInput.SetupInputs();
     }
 
     public void SetGameState(GameState gameState)
@@ -110,50 +112,28 @@ public class GameManager : MonoBehaviour
         else if (_instance != this)
             Destroy(gameObject.GetComponent(_instance.GetType()));
 
-        DontDestroyOnLoad(gameObject);
+        EnemiesInScreen = new List<BaseController>();
+
+        SetupGame();
 
         isGamePaused = true;
         PauseGame();
+
+        DontDestroyOnLoad(gameObject);
     }
 
-    private static void SetupInput()
-    {
-        Debug.Log("Setting Input Up");
-        PlayerControls.Gameplay.Pause.performed += ctx =>
-        {
-            if (isMainMenuOn) return;
-
-            if (isGamePaused)
-                ResumeGame();
-            else
-                PauseGame();
-        };
-
-        PlayerControls.Gameplay.QuickSave.performed += ctx =>
-        {
-            if (isMainMenuOn || isGamePaused) return;
-            QuickSave();
-        };
-
-        PlayerControls.Gameplay.QuickLoad.performed += ctx =>
-        {
-            if (isMainMenuOn || isGamePaused) return;
-            QuickLoad();
-        };
-    }
-
-    private static void SetupGame()
+    private void SetupGame()
     {
         isInputEnabled = false;
         PauseGame();
     }
 
-    public static void PauseGame()
+    public void PauseGame()
     {
         isGamePaused = true;
     }
 
-    public static void ResumeGame()
+    public void ResumeGame()
     {
         isGamePaused = false;
 
@@ -176,11 +156,6 @@ public class GameManager : MonoBehaviour
     public void SetMainMenuOn(bool mainMenuOn)
     {
         isMainMenuOn = mainMenuOn;
-    }
-
-    public PlayerControls GetPlayerControls()
-    {
-        return PlayerControls;
     }
 
     public Transform GetPlayerTransform()
@@ -399,13 +374,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public static bool QuickSave()
+    public bool QuickSave()
     {
         var playerData = new PlayerData(PlayerController);
         return SaveSystem.SaveSystem.QuickSaveGame(ref playerData);
     }
 
-    public static bool QuickLoad()
+    public bool QuickLoad()
     {
         var playerData = SaveSystem.SaveSystem.LoadQuickSaveGame();
         if (playerData == null) return false;

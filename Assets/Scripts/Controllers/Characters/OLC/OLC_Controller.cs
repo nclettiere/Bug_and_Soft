@@ -91,7 +91,7 @@ namespace Controllers.Froggy
                 {
                     GameManager.Instance.GetUIManager()
                         .ShowLvlWonPanel();
-                    GameManager.PlayerController.RefillHealth();
+                    GameManager.Instance.PlayerController.RefillHealth();
 
                     GivePlayerExp();
 

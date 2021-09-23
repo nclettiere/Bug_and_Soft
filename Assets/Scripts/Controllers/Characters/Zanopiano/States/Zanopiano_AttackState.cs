@@ -82,7 +82,7 @@ namespace Controllers.Characters.Zanopiano.States
             if (hit != null)
             {
                 dInfo = new DamageInfo(35, zController.GetTransfrom().position.x, true);
-                GameManager.PlayerController.Damage(dInfo);
+                GameManager.Instance.PlayerController.Damage(dInfo);
             }
         }
     }

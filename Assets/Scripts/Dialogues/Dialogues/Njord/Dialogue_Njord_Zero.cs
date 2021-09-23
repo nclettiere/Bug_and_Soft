@@ -114,7 +114,7 @@ public class Dialogue_Njord_Zero : Dialogue
             ChooseOption(2);
             
             GameManager.Instance.RemovePlayerKrowns(150);
-            GameManager.PlayerController.powerUps.ChangePowerUp(GameManager.PlayerController.teleportPowerUp);
+            GameManager.Instance.PlayerController.powerUps.ChangePowerUp(GameManager.Instance.PlayerController.teleportPowerUp);
         });
     }
 }

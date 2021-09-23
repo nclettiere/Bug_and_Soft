@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Input;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
@@ -125,7 +126,7 @@ public class MainMenu : MonoBehaviour
             needToUpdateVSYNC = true;
         });
 
-        GameManager.Instance.GetPlayerControls().Gameplay.MenuInteract.performed += ctx =>
+        GameInput.playerControls.Gameplay.MenuInteract.performed += ctx =>
         {
             if (selectedButton != null && GameManager.Instance.GetMainMenuOn() && GameManager.Instance.GetMainMenuPhase() == 0)
             {
@@ -196,7 +197,7 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetInputEnabled(true);
         GameManager.Instance.SetCameraOffsetX(1.3f);
         GameManager.IsFirstStart = false;
-        GameManager.ResumeGame();
+        GameManager.Instance.ResumeGame();
         GameManager.Instance.ShowHUD();
         
         GameManager.Instance.GetUIManager()

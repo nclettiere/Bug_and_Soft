@@ -9,7 +9,8 @@ public class UI_PauseMenuManager : MonoBehaviour
     
     void Update()
     {
-        CheckGamePaused();
+        if(GameManager.Instance != null)
+            CheckGamePaused();
     }
 
     private void CheckGamePaused() 
