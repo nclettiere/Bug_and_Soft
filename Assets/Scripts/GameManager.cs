@@ -53,7 +53,9 @@ public class GameManager : MonoBehaviour
     public bool isDialogueMode { get; private set; }
     public int checkpointIndex { get; private set; }
 
+    public int currentExp { get; private set; }
     public int currentLevel { get; private set; } = 1;
+    public bool isLevelingUp;
 
     public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
     
@@ -444,5 +446,58 @@ public class GameManager : MonoBehaviour
     public void SetSpawnPoint(Vector3 point)
     {
         spawnPoint = point;
+    }
+
+    public void AddExperience(int exp)
+    {
+        if (currentExp + exp > 50)
+        {
+            currentLevel++;
+            currentExp = 0;
+            AddExperience(exp);
+
+            isLevelingUp = true;
+            PauseGame();
+            GetUIManager().ShowLevelUpScreen();
+        }
+        else
+        {
+            currentExp += exp;
+        }
+    }
+
+    public void AumentHealth()
+    {
+        int newHealth = PlayerController.maxHealth + (int)(0.15f * PlayerController.maxHealth);
+        PlayerController.maxHealth = newHealth;
+        
+        PlayerController.RefillHealth();
+        
+        ResumeGame();
+        isLevelingUp = true;
+    }
+
+    public void AumentDamage()
+    {        
+        PlayerController.RefillHealth();
+        PlayerController.combatCtrl.IncreseDamage();
+        ResumeGame();
+        isLevelingUp = true;
+    }
+
+    public void Aumentagicka()
+    {        
+        PlayerController.RefillHealth();
+        
+        ResumeGame();
+        isLevelingUp = true;
+    }
+
+    public void AumentCdr()
+    {        
+        PlayerController.RefillHealth();
+        
+        ResumeGame();
+        isLevelingUp = true;
     }
 }

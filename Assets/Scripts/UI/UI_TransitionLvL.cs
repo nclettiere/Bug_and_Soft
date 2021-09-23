@@ -77,6 +77,9 @@ namespace UI
             loadingText.SetActive(true);
             contentToMove.localPosition = initialPos;
             gameObject.SetActive(false);
+
+            GameManager.Instance.GetUIManager()
+                .ShowLevelInfo();
         }
 
         public void RemoveTransition()

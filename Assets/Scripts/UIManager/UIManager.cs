@@ -12,9 +12,11 @@ namespace UIManager
         [SerializeField] private GameObject blindEffectIndicator;
         [SerializeField] private GameObject poisonEffectIndicator;
         [SerializeField] private GameObject UIShop;
+        [SerializeField] private GameObject UILevelUpScreen;
 
         [SerializeField] private UI_TransitionLvL transitionLvl1;
         [SerializeField] private GameObject lvlCompletedPanel;
+        [SerializeField] private UI_LevelInfo levelInfo;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; } = 0;
@@ -142,6 +144,46 @@ namespace UIManager
         public void HideLvlWonPanel()
         {
             lvlCompletedPanel.SetActive(false);
+        }
+
+        public void ShowLevelInfo()
+        {
+            levelInfo.gameObject.SetActive(true);
+            levelInfo.ShowInfo(GameManager.Instance.currentLevel, 4f);
+        }        
+        
+        public void ShowLevelUpScreen()
+        {
+            UILevelUpScreen.SetActive(true);
+        }
+        
+        public void HideLevelUpScreen()
+        {
+            UILevelUpScreen.SetActive(false);
+        }
+
+        public void LevelUpHealth()
+        {
+            HideLevelUpScreen();
+            GameManager.Instance.AumentHealth();
+        }
+        
+        public void LevelUpDamage()
+        {
+            HideLevelUpScreen();
+            GameManager.Instance.AumentDamage();
+        }
+        
+        public void LevelUpMagicka()
+        {
+            HideLevelUpScreen();
+            GameManager.Instance.Aumentagicka();
+        }
+        
+        public void LevelUpCdr()
+        {
+            HideLevelUpScreen();
+            GameManager.Instance.AumentCdr();
         }
     }
 }

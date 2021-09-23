@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -18,6 +19,13 @@ namespace UI
 
         [SerializeField]
         private bool isMainMenu;
+        
+        [SerializeField]
+        private bool isLvlUpScreen;
+        [SerializeField]
+        private TextMeshProUGUI displayText;
+        [SerializeField]
+        private string whatToDisplay;
     
         [SerializeField]
         private AudioSource selectorChangeSFX;
@@ -73,11 +81,21 @@ namespace UI
                 selectorChangeSFX.Play();
             }
             canTransition = true;
+
+            if (isLvlUpScreen)
+            {
+                displayText.text = whatToDisplay;
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             canTransition = false;
+            
+            if (isLvlUpScreen)
+            {
+                displayText.text = String.Empty;
+            }
         }
     }
 }

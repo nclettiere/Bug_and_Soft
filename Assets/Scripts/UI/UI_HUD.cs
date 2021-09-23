@@ -15,6 +15,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI bossNameText;
         [SerializeField] private Slider playerHealthSlider;
         [SerializeField] private Slider bossHealthSlider;
+        [SerializeField] private Slider PlayerExperienceSlider;
 
         [SerializeField] private GameObject[] powerUpTeleportIndicator;
         [SerializeField] private GameObject[] powerUpShieldIndicator;
@@ -30,7 +31,7 @@ namespace UI
         {
             krownsValue.text = GameManager.Instance.PlayerKrowns.ToString();
 
-            UpdatePlayerHelathbar();
+            UpdatePlayerBars();
 
             if (showBossHealth)
             {
@@ -107,13 +108,15 @@ namespace UI
             bossHealthSlider.value = controller.currentHealth;
         }
 
-        private void UpdatePlayerHelathbar()
+        private void UpdatePlayerBars()
         {
             if (playerHealthSlider != null)
             {
                 playerHealthSlider.maxValue = GameManager.PlayerController.maxHealth;
                 playerHealthSlider.value = GameManager.PlayerController.currentHealth;
             }
+
+            PlayerExperienceSlider.value = GameManager.Instance.currentExp;
         }
 
         public void ShowBossHealth(string bossName, BaseController controller)

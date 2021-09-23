@@ -59,7 +59,10 @@ namespace Controllers
                 StartCoroutine(DamageEffect());
 
                 if (currentHealth <= 0f)
+                {
+                    GivePlayerExp();
                     Die();
+                }
 
                 damagedTimeCD = Time.time + .15f;
             }
@@ -553,6 +556,11 @@ namespace Controllers
         public bool IsDead()
         {
             return dead;
+        }
+
+        public void GivePlayerExp()
+        {
+            GameManager.Instance.AddExperience(ctrlData.experienceReward);
         }
     }
 }

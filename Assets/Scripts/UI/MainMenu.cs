@@ -198,6 +198,9 @@ public class MainMenu : MonoBehaviour
         GameManager.IsFirstStart = false;
         GameManager.ResumeGame();
         GameManager.Instance.ShowHUD();
+        
+        GameManager.Instance.GetUIManager()
+            .ShowLevelInfo();
     }
 
     public void BtnSettingsCallBack()

@@ -195,5 +195,16 @@ namespace Player
                 damagedApplied = true;
             }
         }
+
+        public void IncreseDamage()
+        {
+            attacksDamage[0] = attacksDamage[0] + (int)(0.10f * attacksDamage[0]);
+            attacksDamage[1] = attacksDamage[1] + (int)(0.10f * attacksDamage[1]);
+        }
+        
+        public int GetDamagePromedio()
+        {
+            return ((attacksDamage[0] + attacksDamage[0]) / 2);
+        }
     }
 }

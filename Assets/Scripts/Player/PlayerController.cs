@@ -18,7 +18,7 @@ namespace Player
     {
         [SerializeField] private Animator characterAnimator;
 
-        private PlayerCombatController combatCtrl;
+        public PlayerCombatController combatCtrl { get; private set; }
         [SerializeField] private AudioSource footStep1;
         [SerializeField] private AudioSource footStep2;
         [SerializeField] private float generalSpeed = 40f;
@@ -461,6 +461,11 @@ namespace Player
                     lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
                 }
             }
+        }
+
+        public void RefillHealth()
+        {
+            currentHealth = maxHealth;
         }
     }
 }

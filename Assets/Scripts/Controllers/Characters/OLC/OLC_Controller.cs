@@ -91,6 +91,10 @@ namespace Controllers.Froggy
                 {
                     GameManager.Instance.GetUIManager()
                         .ShowLvlWonPanel();
+                    GameManager.PlayerController.RefillHealth();
+
+                    GivePlayerExp();
+
                     Destroy(gameObject);
                 }
                 else if (currentHealth <= ctrlData.maxHealth / 4 && currentPhase != 2)
