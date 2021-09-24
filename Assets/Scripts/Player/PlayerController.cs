@@ -207,8 +207,6 @@ namespace Player
 
             CheckInteractions();
             CheckMoveOnDamaged();
-            
-            Debug.Log("Hoz: " + hozSpeed);
 
             horizontalMove = hozSpeed * generalSpeed;
             verticalMove = verSpeed * generalSpeed;

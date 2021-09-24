@@ -4,6 +4,7 @@ using CameraManagement;
 using Controllers;
 using Input;
 using Inventory;
+using Managers;
 using Player;
 using SaveSystem.Data;
 using UI;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
         get {
             return _instance;
         }
+        set => _instance = value;
     }
 
     private static bool sceneChanged;
@@ -86,7 +88,7 @@ public class GameManager : MonoBehaviour
         //GameInput.SetupInputs();
     }
 
-    private void Awake()
+    public void Awake()
     {
         if(_instance == null)
             _instance = this;
@@ -325,9 +327,9 @@ public class GameManager : MonoBehaviour
         return GameObject.Find("Managers/InvetoryManager").GetComponent<InventorySlotManager>();
     }
 
-    public UIManager.UIManager GetUIManager()
+    public UIManager GetUIManager()
     {
-        return GameObject.Find("Managers/UIManager").GetComponent<UIManager.UIManager>();
+        return GameObject.Find("Managers/UIManager").GetComponent<UIManager>();
     }
 
     public static Canvas GetHUDCanvas()
