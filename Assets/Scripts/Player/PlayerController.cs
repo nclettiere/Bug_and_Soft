@@ -33,7 +33,7 @@ namespace Player
         [SerializeField] private AudioSource onPlayerHurtSFX;
         [SerializeField] private GameObject shieldPlayerIndicator;
 
-        public int maxHealth = 150;
+        public int maxHealth = 150; // health por defecto
 
         private float horizontalMove;
         private bool jump;
@@ -58,7 +58,10 @@ namespace Player
 
         public float hozSpeed { get; private set; }
         public float verSpeed { get; private set; }
-        
+
+        public int MaxMagicka { get; private set; } = 250;
+        public int CurrentMagicka { get; private set; } = 250;
+        public int MagickaRegenTime { get; private set; } = 12;
 
         // Power Ups Manager
         public PlayerPowerUpsProgression powerUps { get; private set; }
@@ -454,6 +457,14 @@ namespace Player
                     lastInteractiveController.Interact(this, EInteractionKind.Dialogue);
                 }
             }
+        }
+
+        public void RemoveMagicka(int amount)
+        {
+            if (CurrentMagicka - amount < 0)
+                CurrentMagicka = 0;
+            else
+                CurrentMagicka -= amount;
         }
 
         public void RefillHealth()

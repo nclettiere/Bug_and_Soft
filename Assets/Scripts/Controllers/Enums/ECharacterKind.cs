@@ -8,6 +8,8 @@ namespace Controllers
         OLC,
         Mortadelo,
         Zanopiano,
-        Pitonesi
+        Pitonesi,
+        Pepe,
+        VERGEN
     }
 }

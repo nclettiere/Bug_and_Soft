@@ -145,7 +145,7 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord && characterKind != ECharacterKind.Pepe)
             {
                 if (!dead)
                 {

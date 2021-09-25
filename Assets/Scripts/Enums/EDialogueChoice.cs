@@ -1,5 +1,6 @@
 ﻿public enum EDialogueChoice
 {
     NONE,
-    OPEN_SHOP
+    OPEN_SHOP,
+    ACCEPT_COMPANION
 }

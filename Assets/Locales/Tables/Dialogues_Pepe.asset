@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: Dialogues_Pepe
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: cb0eb907b3379b449aca105e051fa66e, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: f1c675535527b6942ac9e5829037fb55, type: 2}
+  - {fileID: 11400000, guid: 53913fcaad683fd4891f62add4b64381, type: 2}
+  - {fileID: 11400000, guid: 43353569365b501469299bfd30828f2c, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 1

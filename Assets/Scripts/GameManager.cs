@@ -477,4 +477,13 @@ public class GameManager : MonoBehaviour
         ResumeGame();
         isLevelingUp = true;
     }
+
+    
+    public void AcceptCompanionPepe()
+    {
+        GameObject
+            .Find("NPCs and Enemies/Pepe")
+            .GetComponent<PepeController>()
+            .AcceptCompanion();
+    }
 }
