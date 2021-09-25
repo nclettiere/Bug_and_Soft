@@ -272,31 +272,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15e9ab7d2a438a4184eb854a8d68fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ctrlData: {fileID: 11400000, guid: 3a23aa280b34a88459043c43f5560ebb, type: 2}
+  deadMaxWait: 5
+  currentHealth: 0
+  KrownReward: 5
   controllerKind: 2
   characterKind: 1
   interactionRadius: 4
-  maxHealth: 50
   moveOnAttackDuration: 0.1
+  touchDamageCooldown: 0
   generalSpeed: 40
+  touchDamage: 12
   isInvencible: 1
   canBeStunned: 1
+  canDamageOnTouch: 0
   canBeMovedOnAttack: 1
   movedOnAttack: 1
   moveOnAttackSpeed: {x: 10, y: 10}
   hitParticles: {fileID: 2921739069942501901, guid: d7aaf33d4b24c8e4280a5e3703540943, type: 3}
   hitAttackSFX1: {fileID: 5707441329136417492}
   hitAttackSFX2: {fileID: 1984927763591958713}
+  deathSFX: {fileID: 0}
   dialogueBubble: {fileID: 0}
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
-  groundCheckDistance: 0
-  wallCheckDistance: 0
+  touchDamageWidth: 0
+  touchDamageHeight: 0
   groundCheck: {fileID: 0}
   wallCheck: {fileID: 0}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 0
+  topCheck: {fileID: 0}
+  ledgeCheck: {fileID: 0}
+  touchDamageCheck: {fileID: 0}
+  playerDetectCenterCheck: {fileID: 0}
+  itemDrops: []
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6487321250209749333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e04404758be57e47889da2e3c60280b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 40
 --- !u!212 &6487321250209749339
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -320,7 +333,6 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

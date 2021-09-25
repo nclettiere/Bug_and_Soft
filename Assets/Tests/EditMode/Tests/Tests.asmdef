@@ -4,7 +4,13 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Scripts"
+        "Scripts",
+        "Unity.Localization",
+        "Unity.Localization.Editor",
+        "Unity.Localization.Editor.Tests",
+        "Unity.InternalAPIEditorBridge.013",
+        "Unity.InternalAPIEngineBridge.013",
+        "Unity.Localization.Runtime.Tests"
     ],
     "includePlatforms": [
         "Editor"

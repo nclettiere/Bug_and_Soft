@@ -4,6 +4,7 @@ using Managers;
 using NUnit.Framework;
 using Player;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.TestTools;
 
 public class Test_EditMode
@@ -17,7 +18,7 @@ public class Test_EditMode
     /// de los Gameobjects del nivel
     /// </summary>
     [Test]
-    public void PrimerCheck()
+    public void TestEssentialGameObjects()
     {
         gm = GameObject.Find("Managers/GameManager")
             .GetComponent<GameManager>();
@@ -35,18 +36,13 @@ public class Test_EditMode
     }
 
     /// <summary>
-    /// Checkea que los valores iniciales sean los correctos
+    /// Checkeamos que el LocalizationSettings este inicializado
+    /// Es escencial para todos los textos del juego !!!!
     /// </summary>
     [Test]
-    public void SegundoCheck()
+    public void TestLocalization()
     {
-        // GameManager.Instance deberia ser null
-        // antes de que comienze el gioco
-        Assert.IsNull(GameManager.Instance);
-        // Check: Player empieza con 100 de vitta
-        Assert.AreEqual(150, player.currentHealth);
-        // El powerup port defecto tiene que ser NONE ;
-        Assert.AreEqual(EPowerUpKind.NONE, uiManager.CurrentPowerUp);
+        Assert.IsNotNull(LocalizationSettings.Instance);
     }
     
     [Test]
@@ -54,3 +50,4 @@ public class Test_EditMode
     {
     }
 }
+

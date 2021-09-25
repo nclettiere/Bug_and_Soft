@@ -56,7 +56,9 @@ namespace Player
         private uint maxExperience;
         private uint currentExperience;
 
-        private float hozSpeed, verSpeed;
+        public float hozSpeed { get; private set; }
+        public float verSpeed { get; private set; }
+        
 
         // Power Ups Manager
         public PlayerPowerUpsProgression powerUps { get; private set; }

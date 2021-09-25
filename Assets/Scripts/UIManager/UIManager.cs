@@ -19,7 +19,7 @@ namespace Managers
         [SerializeField] private UI_LevelInfo levelInfo;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
-        public uint PowerUpState { get; private set; } = 0;
+        public uint PowerUpState { get; private set; }
 
         private bool isBlindnessActive;
 
