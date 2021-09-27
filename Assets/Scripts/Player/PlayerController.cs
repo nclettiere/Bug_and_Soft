@@ -32,6 +32,7 @@ namespace Player
         [SerializeField] private AudioSource onKrownRemove;
         [SerializeField] private AudioSource onPlayerHurtSFX;
         [SerializeField] private GameObject shieldPlayerIndicator;
+        [SerializeField] private Transform pepeTarget;
 
         public int maxHealth = 150; // health por defecto
 
@@ -480,6 +481,11 @@ namespace Player
         public void SetVerticalSpeed(float speed)
         {
             verSpeed = speed;
+        }
+
+        public Vector3 GetPepeTarget()
+        {
+            return pepeTarget.position;
         }
     }
 }

@@ -4,7 +4,6 @@ using CameraManagement;
 using Managers;
 using NUnit.Framework;
 using Player;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;

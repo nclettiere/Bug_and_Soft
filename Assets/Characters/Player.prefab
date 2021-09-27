@@ -97,6 +97,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 5629790822863349703}
   angle: 20
+--- !u!1 &626493588596199552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679719043292999501}
+  m_Layer: 6
+  m_Name: PepeTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &679719043292999501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626493588596199552}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0.89, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5629790822863349703}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1533293481177750982
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +319,7 @@ Transform:
   - {fileID: 673237495818489437}
   - {fileID: 8622117395139426462}
   - {fileID: 5847578204561672111}
+  - {fileID: 679719043292999501}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -318,6 +349,7 @@ MonoBehaviour:
   onKrownRemove: {fileID: 8619854562554828247}
   onPlayerHurtSFX: {fileID: 210728642204563783}
   shieldPlayerIndicator: {fileID: 613029091260329383}
+  pepeTarget: {fileID: 679719043292999501}
   maxHealth: 150
   interactionRadius: 3
   isEnrolledInDialogue: 0

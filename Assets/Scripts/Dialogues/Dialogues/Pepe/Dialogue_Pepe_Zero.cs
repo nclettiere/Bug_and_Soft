@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using Controllers;
 using UnityEngine;
 
 namespace Dialogues.Dialogues.Pepe
 {
     public class Dialogue_Pepe_Zero : Dialogue
     {
+        [SerializeField] private PepeController pController;
+
         public override IEnumerator ShowText(uint defaultDialogueIndex = 0)
         {
             while (currentDialogueIndex < GetDialogueCount())
             {
-                currentDialogueData = GetDialogueLocale((int)currentDialogueIndex);
+                currentDialogueData = GetDialogueLocale((int) currentDialogueIndex);
                 DialogueManager.Instance.GetLocalizeStrEvent().StringReference = currentDialogueData.Locale;
 
                 yield return new WaitForSeconds(startDelay);
@@ -26,40 +29,25 @@ namespace Dialogues.Dialogues.Pepe
                 }
 
                 DialogueManager.Instance.HideDefaultInteractionButton();
-
-                if (currentDialogueData.Action == DIALOGUE_ACTION.CHOICE)
+                
+                InteractButton[] interactButtons = new InteractButton[1];
+                interactButtons[0] = new InteractButton();
+                interactButtons[0].Text = "SALTAR";
+                interactButtons[0].Callback = () =>
                 {
-                    InteractButton[] interactButtons = new InteractButton[currentDialogueData.DialogueChoices.Length];
-
-                    for (int i = 0; i < currentDialogueData.DialogueChoices.Length; i++)
-                    {
-                        interactButtons[i] = new InteractButton();
-
-                        if (currentDialogueData.DialogueChoices[i] == EDialogueChoice.ACCEPT_COMPANION)
-                        {
-                            interactButtons[i].Callback = () =>
-                            {
-                                ResterDialogues();
-                                OnDialogueFinished();
-                                StopAllCoroutines();
-                                GameManager.Instance
-                                    .AcceptCompanionPepe();
-                            };
-                            interactButtons[i].Text = "SI";
-                        }
-                    }
-
-                    DialogueManager.Instance
-                        .AddInteractionButtons(interactButtons);
-                    DialogueManager.Instance
-                        .SetDefaultInteractButtonText("NO");
-                }
+                    ResterDialogues();
+                    OnDialogueFinished();
+                    pController.AcceptCompanion();
+                    currentDialogueIndex = 99;
+                };
+                DialogueManager.Instance.AddInteractionButtons(interactButtons);
 
                 if (currentDialogueData.Action == DIALOGUE_ACTION.FINISH ||
                     currentDialogueIndex + 1 == GetDialogueCount())
                 {
                     ResterDialogues();
                     OnDialogueFinished();
+                    pController.AcceptCompanion();
                     StopAllCoroutines();
                 }
 

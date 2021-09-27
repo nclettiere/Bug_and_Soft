@@ -145,9 +145,9 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord && characterKind != ECharacterKind.Pepe)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
-                if (!dead)
+                if (!dead &&characterKind != ECharacterKind.Pepe)
                 {
                     CheckPlayerInNearRange();
                     CheckPlayerInLongRange();
@@ -160,7 +160,7 @@ namespace Controllers
         private void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused() || dead) return;
-
+            
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
                 StateMachine.CurrentState.UpdatePhysics();
         }
