@@ -25,11 +25,12 @@ namespace Controllers
 
         protected override void Start()
         {
-            base.Start();
-
+        
             _agent = GetComponent<NavMeshAgent>();
             _agent.updateRotation = false;
             _agent.updateUpAxis = false;
+            
+            base.Start();
             
             Dialogues = GetComponent<DialogueGroup>();
 

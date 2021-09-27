@@ -1,0 +1,600 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7870728598480944204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560084346609173225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb7069c3102a44248bc5b4c4c5309cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogues:
+  - {fileID: -3711432587863505889}
+  DialogueIndex: 0
+--- !u!114 &-3711432587863505889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560084346609173225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff7b81757aa34f448b4d3ab0f2a39677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locales:
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 10719678464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 311858122752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 676284420096
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 819020779520
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 875337699328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 657237647650816
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658154518310912
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658308956778496
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658406470152192
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658517749231616
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658786021109760
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658885241565184
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 658972097212416
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659060743827456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659107376099328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659167484669952
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659260120068096
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659317489758208
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659425010741248
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659608960331776
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659701805445120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659783300771840
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659837499568128
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 659942118092800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 660011022118912
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 660646501117952
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 660798108430336
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 660863459880960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 660919122489344
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661004854063104
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661055332511744
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661157405093888
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661175692259328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661216817410048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661364838592512
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661415157657600
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661474347675648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661531440541696
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661605377732608
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661663951187968
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661727545225216
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661830569914368
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 661880519880704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  dialogueActions: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  dialogueChoices:
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  - Choices: 
+  OnDialogueFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDialogueChoseOption:
+    m_PersistentCalls:
+      m_Calls: []
+  pController: {fileID: 7800879005654292512}
+  references:
+    version: 1
+--- !u!114 &7800879005654292512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560084346609173225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1ac718b1a3470db7026675a29a7b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ctrlData: {fileID: 11400000, guid: 7405f005dedec6d4ba8573b58bf63a55, type: 2}
+  deadMaxWait: 5
+  currentHealth: 0
+  KrownReward: 5
+  controllerKind: 1
+  characterKind: 8
+  interactionRadius: 4
+  moveOnAttackDuration: 0
+  touchDamageCooldown: 0
+  generalSpeed: 40
+  touchDamage: 12
+  isInvencible: 1
+  canBeStunned: 0
+  canDamageOnTouch: 0
+  canBeMovedOnAttack: 0
+  movedOnAttack: 0
+  moveOnAttackSpeed: {x: 0, y: 0}
+  hitParticles: {fileID: 0}
+  hitAttackSFX1: {fileID: 0}
+  hitAttackSFX2: {fileID: 0}
+  deathSFX: {fileID: 0}
+  dialogueBubble: {fileID: 2399070846620792287}
+  canWalk: 0
+  canJump: 0
+  canBeDamaged: 0
+  touchDamageWidth: 0
+  touchDamageHeight: 0
+  groundCheck: {fileID: 6560084346001420589}
+  wallCheck: {fileID: 6560084346001420589}
+  topCheck: {fileID: 6560084346001420589}
+  ledgeCheck: {fileID: 6560084346001420589}
+  touchDamageCheck: {fileID: 6560084346001420589}
+  playerDetectCenterCheck: {fileID: 6560084346609173226}
+  itemDrops: []
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1001 &103310341641932316
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6560084346609173226}
+    m_Modifications:
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6826775257990252669, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+--- !u!1 &2399070846620792287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2316044330523098051, guid: 0b066754ef91f3d47b5b4209de12f709, type: 3}
+  m_PrefabInstance: {fileID: 103310341641932316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5841025625543395662
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 722093468931476386, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3272783395607864941, guid: 987acfb9f4b7a2f4c9f5fd17fc5411cc, type: 3}
+    - target: {fileID: 722093468931476386, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f06c4d311a4f74b4992866f1b512e544, type: 2}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 722093468931476389, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 08dc9ffe296dcd24b8a4bd184aaa4d3b, type: 2}
+    - target: {fileID: 722093468931476391, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+      propertyPath: m_Name
+      value: Pepe
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 722093468931476387, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+--- !u!1 &6560084346609173225 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 722093468931476391, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+  m_PrefabInstance: {fileID: 5841025625543395662}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6560084346609173226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 722093468931476388, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+  m_PrefabInstance: {fileID: 5841025625543395662}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6560084346001420589 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 722093469538203747, guid: 80035595c624c1147b77f505b062ed80, type: 3}
+  m_PrefabInstance: {fileID: 5841025625543395662}
+  m_PrefabAsset: {fileID: 0}
