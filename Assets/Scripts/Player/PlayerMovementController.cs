@@ -17,7 +17,7 @@ namespace Player
         [SerializeField] private LayerMask ClimableLayers;
         [SerializeField] private Collider2D CrouchDisableCollider;
         [Range(0, 1)] [SerializeField] private float CrouchSpeed = .36f;
-        private bool FacingRight = true;
+        public bool FacingRight { get; private set; } = true;
         [SerializeField] private Transform GroundCheck;
         internal bool Grounded;
         [SerializeField] private LayerMask GroundLayers;
@@ -143,7 +143,10 @@ namespace Player
         public void Move(float moveH, float moveV, bool crouch, bool jump, bool roll, bool attacking)
         {
             if (!GameManager.Instance.GetIsInputEnabled())
+            {
+                Debug.Log("Input is not enabled");
                 return;
+            }
 
             if (CanClimbLedge)
             {
@@ -240,7 +243,7 @@ namespace Player
             ShouldPlayerFlip = false;
         }
 
-        private void Flip()
+        public void Flip()
         {
             if (!ShouldPlayerFlip || pCtrl.moveOnDamaged) return;
             FacingRight = !FacingRight;
@@ -280,6 +283,12 @@ namespace Player
         [System.Serializable]
         public class BoolEvent : UnityEvent<bool>
         {
+        }
+
+        public void StopAllMovement()
+        {
+            Velocity = Vector3.zero;
+            Grounded = true;
         }
     }
 }

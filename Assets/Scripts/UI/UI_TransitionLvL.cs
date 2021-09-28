@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -40,8 +41,6 @@ namespace UI
 
                 yield return null;
             }
-            
-            
             GameManager.Instance.LevelWon();
             
             counter = 0f;
@@ -58,11 +57,18 @@ namespace UI
             // Mostramos el boton de continuar
             loadingText.SetActive(false);
             continueButton.SetActive(true);
+            
+            
+            GameManager.Instance.LoadLevel2();
+
+            Debug.Log("Should spawn on: " + GameManager.Instance.spawnPoint);
         }
 
         private IEnumerator ResetTransition()
         {
             continueButton.SetActive(false);
+            
+            //GameManager.Instance.PlayerController.RespawnNow();
             
             float counter = 0f;
             

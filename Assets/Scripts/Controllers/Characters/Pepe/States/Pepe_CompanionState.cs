@@ -6,7 +6,7 @@ namespace Controllers.States
     public class Pepe_CompanionState : State
     {
         private PepeController pController;
-
+        private Vector3 newPosition;
 
         public Pepe_CompanionState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             PepeController pController)
@@ -20,6 +20,14 @@ namespace Controllers.States
             base.Enter();
             controller.GetAnimator().SetBool(
                 "Following", true);
+                
+                newPosition = GameManager
+                                .Instance
+                                .PlayerController
+                                .GetPepeTarget();
+                
+                controller.GetComponent<SpriteRenderer>()
+                    .flipX = false;
         }
 
         public override void Exit()
@@ -27,17 +35,35 @@ namespace Controllers.States
             base.Exit();
             controller.GetAnimator().SetBool(
                 "Following", false);
+            
+            controller.GetComponent<SpriteRenderer>()
+                .flipX = true;
+        }
+
+        public override void UpdateState()
+        {
+            base.UpdateState();
+            
+            newPosition.Set(
+                GameManager.Instance.PlayerController.GetPepeTarget().x,
+                GameManager.Instance.PlayerController.GetPepeTarget().y, 0);
         }
 
         public override void UpdatePhysics()
         {
             base.UpdatePhysics();
-            pController.SetTargetDestination(
-                GameManager
-                    .Instance
-                    .PlayerController
-                    .GetPepeTarget()
-            );
+            LookAtPlayer();
+            pController.transform.position = 
+                Vector3.Lerp(pController.transform.position, newPosition, Time.deltaTime * 10f);
+        }
+        
+        private void LookAtPlayer()
+        {
+            float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
+                
+            if ((controller.transform.position.x < playerPositionX && controller.FacingDirection == -1) ||
+                (controller.transform.position.x > playerPositionX && controller.FacingDirection == 1))
+                controller.Flip();
         }
     }
 }

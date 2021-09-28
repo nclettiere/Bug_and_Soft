@@ -9,6 +9,7 @@ using Player;
 using SaveSystem.Data;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -80,22 +81,15 @@ public class GameManager : MonoBehaviour
 
     public float MasterVolume { get; private set; } = 0.2f;
 
-
-    public GameManager()
-    {
-        //SetupInput();
-        //SetupGame();
-        //GameInput.SetupInputs();
-    }
-
     public void Awake()
     {
         if(_instance == null)
             _instance = this;
         
-        
         gameInput = new GameInput();
         gameInput.SetupInputs();
+        
+        DontDestroyOnLoad(gameObject);
     }
 
     public void SetGameState(GameState gameState)
@@ -121,7 +115,7 @@ public class GameManager : MonoBehaviour
         isGamePaused = true;
         PauseGame();
 
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
     }
 
     private void SetupGame()
@@ -478,12 +472,14 @@ public class GameManager : MonoBehaviour
         isLevelingUp = true;
     }
 
-    
-    public void AcceptCompanionPepe()
+    public void LoadLevel2()
     {
-        GameObject
-            .Find("NPCs and Enemies/Pepe")
-            .GetComponent<PepeController>()
-            .AcceptCompanion();
+        SceneManager.LoadScene("Level2", LoadSceneMode.Single);
+        currentLevel = 2;
+        SetSpawnPoint(GetLvlTwoPosition());
+        RespawnPlayer(true);
+        PlayerController.RespawnNow();
+        PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        ResumeGame();
     }
 }

@@ -47,9 +47,10 @@ namespace CameraManagement
         public bool FollowTarget { get; set; } = true;
 
         private Vector3 cameraMoveOffset = Vector3.zero;
-        
-        private void Start()
+
+        private void Awake()
         {
+            DontDestroyOnLoad(gameObject);
         }
 
         private void FixedUpdate()

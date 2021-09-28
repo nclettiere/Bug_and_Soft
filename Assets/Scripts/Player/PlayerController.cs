@@ -173,6 +173,8 @@ namespace Player
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();
             combatCtrl = GetComponent<PlayerCombatController>();
+            
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
@@ -486,6 +488,17 @@ namespace Player
         public Vector3 GetPepeTarget()
         {
             return pepeTarget.position;
+        }
+
+        public void RespawnNow()
+        {
+            hozSpeed = 0f;
+            verSpeed = 0f;
+            playerMovementCtrl.StopAllMovement();
+            characterAnimator.SetBool("OnLand", true);
+            if (!playerMovementCtrl.FacingRight)
+                playerMovementCtrl.Flip();
+            transform.position = GameManager.Instance.spawnPoint;
         }
     }
 }

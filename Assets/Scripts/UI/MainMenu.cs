@@ -40,6 +40,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private AudioSource onPlaySFX;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(transform.root.gameObject);
+    }
+
     private void Start()
     {
         // Llamamos al GameManager para decirle que el MainMenu esta listo
