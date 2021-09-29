@@ -11,12 +11,7 @@ namespace UI
         [SerializeField] private TextMeshProUGUI info;
         [SerializeField] private TextMeshProUGUI infoShadow;
         
-        private AudioSource sound;
-
-        private void Start()
-        {
-            sound = GetComponent<AudioSource>();
-        }
+        [SerializeField] private AudioSource sound;
 
         public void ShowInfo(int level, float delay)
         {

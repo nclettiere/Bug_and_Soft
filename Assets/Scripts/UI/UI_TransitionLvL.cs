@@ -71,6 +71,8 @@ namespace UI
             //GameManager.Instance.PlayerController.RespawnNow();
             
             float counter = 0f;
+
+            duration = 3f;
             
             while (counter < duration)
             {

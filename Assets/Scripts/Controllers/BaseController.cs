@@ -223,7 +223,7 @@ namespace Controllers
             }
         }
 
-        public void Flip()
+        public virtual void Flip()
         {
             FacingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
@@ -522,7 +522,7 @@ namespace Controllers
         private SpriteRenderer renderer;
         protected ECharacterState currentState;
         protected bool playerFacingDirection;
-        protected bool canInteract = true;
+        protected internal bool canInteract = true;
         private bool moveOnDamaged;
         private float moveOnDamagedStartTime = float.NegativeInfinity;
 
@@ -533,8 +533,12 @@ namespace Controllers
         protected bool
             lastGroundDetected,
             lapidaIntance = false,
-            firstAttack,
-            canPlayerInteract = false,
+            firstAttack;
+
+        protected internal bool
+            canPlayerInteract = false;
+
+        protected bool
             savedRigidData;
 
         private Vector2

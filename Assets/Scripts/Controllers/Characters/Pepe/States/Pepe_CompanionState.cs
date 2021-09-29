@@ -28,6 +28,8 @@ namespace Controllers.States
                 
                 controller.GetComponent<SpriteRenderer>()
                     .flipX = false;
+
+                controller.canInteract = false;
         }
 
         public override void Exit()
@@ -38,6 +40,8 @@ namespace Controllers.States
             
             controller.GetComponent<SpriteRenderer>()
                 .flipX = true;
+            
+            controller.canInteract = true;
         }
 
         public override void UpdateState()
@@ -60,10 +64,12 @@ namespace Controllers.States
         private void LookAtPlayer()
         {
             float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
-                
+
             if ((controller.transform.position.x < playerPositionX && controller.FacingDirection == -1) ||
                 (controller.transform.position.x > playerPositionX && controller.FacingDirection == 1))
-                controller.Flip();
+            {
+                pController.Flip();
+            }
         }
     }
 }

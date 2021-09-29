@@ -131,6 +131,7 @@ MonoBehaviour:
   mainCG: {fileID: 3864085564035323861}
   info: {fileID: 3864085564240205961}
   infoShadow: {fileID: 3864085564630629492}
+  sound: {fileID: 7542827550145489216}
 --- !u!82 &7542827550145489216
 AudioSource:
   m_ObjectHideFlags: 0

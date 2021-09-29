@@ -130,7 +130,6 @@ namespace Input
             // Horizontal
             playerControls.Gameplay.Horizontal.performed += ctx =>
             {
-                Debug.Log("MOVING  PLAYER MOVING PLAYER");
                 GameManager.Instance.PlayerController.SetHorizontalSpeed(
                     playerControls.Gameplay.Horizontal.ReadValue<float>());
             };

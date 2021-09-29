@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
+using World;
 
 namespace Controllers
 {
@@ -15,6 +16,8 @@ namespace Controllers
     {
         [Header("Pepe : Dialogue Options")] private bool interacted;
         public DialogueGroup Dialogues { get; private set; }
+
+        [SerializeField] private QuickChatDialogue qcDialogue;
 
         [Header("Navigation")] private NavMeshAgent _agent;
 
@@ -79,6 +82,17 @@ namespace Controllers
         {
             isCompanion = true;
             StateMachine.ChangeState(CompanionState);
+        }
+
+        public void ShowQuickChat(Sprite dialogueText)
+        {
+            qcDialogue.ShowNewChat(dialogueText);  
+        }
+
+        public override void Flip()
+        {
+            base.Flip();
+            qcDialogue.Flip();
         }
     }
 }
