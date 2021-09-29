@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         get { return isGamePaused ? 0 : Time.deltaTime; }
     }
 
+    private List<EnemySpawner> enemies;
+
     public PlayerController PlayerController
     {
         get
@@ -88,6 +90,8 @@ public class GameManager : MonoBehaviour
         
         gameInput = new GameInput();
         gameInput.SetupInputs();
+
+        enemies = new List<EnemySpawner>();
         
         DontDestroyOnLoad(gameObject);
     }
@@ -481,5 +485,11 @@ public class GameManager : MonoBehaviour
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
         ResumeGame();
+    }
+
+    public void AddEnemySpawner(EnemySpawner enemySpawner)
+    {
+        enemies.Add(enemySpawner);
+        enemySpawner.Spawn();
     }
 }

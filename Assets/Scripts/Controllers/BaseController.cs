@@ -61,6 +61,7 @@ namespace Controllers
                 if (currentHealth <= 0f)
                 {
                     GivePlayerExp();
+                    OnLifeTimeEnded.Invoke();
                     Die();
                 }
 
@@ -105,6 +106,8 @@ namespace Controllers
         {
             if (OnLandEvent == null)
                 OnLandEvent = new UnityEvent();
+            if (OnLifeTimeEnded == null)
+                OnLifeTimeEnded = new UnityEvent();
         }
         
         protected virtual void Start()
@@ -529,6 +532,7 @@ namespace Controllers
         public bool wallDetected { get; private set; }
         public bool groundDetected { get; private set; }
         public bool topDetected { get; private set; }
+        public UnityEvent OnLifeTimeEnded { get; set; }
 
         protected bool
             lastGroundDetected,
