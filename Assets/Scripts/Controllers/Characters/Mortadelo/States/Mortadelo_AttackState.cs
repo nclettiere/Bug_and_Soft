@@ -29,7 +29,7 @@ namespace Controllers.Characters.Mortadelo.States
         {
             base.Enter();
 
-            mController.GetTransfrom().localScale = new Vector3(5, 5);
+            mController.GetTransfrom().localScale = new Vector3(0.8f, 0.8f);
             mController.GetAnimator().SetBool(animBoolName, true);
         }
 

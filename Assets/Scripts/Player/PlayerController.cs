@@ -164,6 +164,13 @@ namespace Player
             // A implementar en el tercer sprint
             // Cargar el savegame e inicializar con la habilidad guardada
             //powerUps.Initialize(teleportPowerUp);
+            
+            GameManager.Instance.OnLevelReset.AddListener(ResetStats);
+        }
+
+        private void ResetStats()
+        {
+            currentExperience = 0;
         }
 
         public void ExitInteractionMode()

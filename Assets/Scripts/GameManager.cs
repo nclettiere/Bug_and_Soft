@@ -9,6 +9,7 @@ using Player;
 using SaveSystem.Data;
 using UI;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public enum GameState
@@ -24,8 +25,6 @@ public delegate void OnStateChangeHandler();
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    public event OnStateChangeHandler OnStateChange;
-    public GameState gameState { get; private set; }
     
     public GameInput gameInput { get; private set; }
 
@@ -82,11 +81,17 @@ public class GameManager : MonoBehaviour
     public bool isGameOver { get; private set; }
 
     public float MasterVolume { get; private set; } = 0.2f;
+    
+    public UnityEvent OnLevelReset { get; private set; }
 
     public void Awake()
     {
         if(_instance == null)
             _instance = this;
+        
+        
+        if (OnLevelReset == null)
+            OnLevelReset = new UnityEvent();
         
         gameInput = new GameInput();
         gameInput.SetupInputs();
@@ -96,14 +101,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetGameState(GameState gameState)
-    {
-        this.gameState = gameState;
-        if (OnStateChange != null)
-        {
-            OnStateChange();
-        }
-    }
 
     void Start()
     {
@@ -118,6 +115,7 @@ public class GameManager : MonoBehaviour
 
         isGamePaused = true;
         PauseGame();
+        
 
         DontDestroyOnLoad(transform.root.gameObject);
     }
@@ -351,6 +349,12 @@ public class GameManager : MonoBehaviour
         currentLevel++;
     }
 
+    private Vector3 GetLvlOnePosition()
+    {
+        return GameObject.Find("SpawnPoints/LevelOneDefaultSpawn")
+            .transform.position;
+    }
+    
     private Vector3 GetLvlTwoPosition()
     {
         return GameObject.Find("SpawnPoints/LevelTwoDefaultSpawn")
@@ -491,5 +495,35 @@ public class GameManager : MonoBehaviour
     {
         enemies.Add(enemySpawner);
         enemySpawner.Spawn();
+    }
+
+    public void ReloadLevel()
+    {
+        isGameOver = false;
+        ResumeGame();
+        GameObject.Find("UI/UI_GameOver").GetComponent<Canvas>().enabled = false;
+        
+        PlayerController.RefillHealth();
+        PlayerKrowns = 0;
+        currentExp = 0;
+        
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+            SetSpawnPoint(GetLvlOnePosition());
+        else if(SceneManager.GetActiveScene().buildIndex == 1)
+            SetSpawnPoint(GetLvlTwoPosition());
+        
+        PlayerController.RespawnNow();
+        
+        foreach (var spawner in enemies)
+        {
+            spawner.Respawn();
+        }
+        
+        OnLevelReset.Invoke();
+    }
+
+    public int GetSceneIndex()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
     }
 }

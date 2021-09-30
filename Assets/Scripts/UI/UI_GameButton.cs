@@ -87,9 +87,11 @@ namespace UI
         
         public void RestartGame()
         {
-            int scene = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.UnloadScene(scene);
-            StartCoroutine(RestartLoad());
+            //int scene = SceneManager.GetActiveScene().buildIndex;
+            //SceneManager.UnloadScene(scene);
+            //StartCoroutine(RestartLoad());
+
+            GameManager.Instance.ReloadLevel();
         }
 
         private void SaveGameOnSlot()

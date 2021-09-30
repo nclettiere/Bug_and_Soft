@@ -13,6 +13,12 @@ public class OLC_HallTrigger : MonoBehaviour
     [SerializeField] private Animator bossCell;
     [SerializeField] private OLC_Controller olc;
 
+    
+    private void Start()
+    {
+        GameManager.Instance.OnLevelReset.AddListener(DisableLimits);
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.transform.CompareTag("Player"))
@@ -23,5 +29,13 @@ public class OLC_HallTrigger : MonoBehaviour
             col1.enabled = true;
             bossCell.SetBool("CloseCell", true);
         }
+    }
+    
+    private void DisableLimits()
+    {
+        
+        hasEnterHall = false;
+        col1.enabled = false;
+        bossCell.SetBool("CloseCell", false);
     }
 }

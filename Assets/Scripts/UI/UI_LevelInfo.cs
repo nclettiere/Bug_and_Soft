@@ -13,7 +13,12 @@ namespace UI
         
         [SerializeField] private AudioSource sound;
 
-        public void ShowInfo(int level, float delay)
+        private void Start()
+        {
+            GameManager.Instance.OnLevelReset.AddListener(() => ShowInfo(GameManager.Instance.GetSceneIndex()));
+        }
+
+        public void ShowInfo(int level, float delay = 1f)
         {
             string text = "";
             if (level == 1)

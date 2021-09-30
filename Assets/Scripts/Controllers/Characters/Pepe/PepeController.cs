@@ -26,9 +26,10 @@ namespace Controllers
         public Pepe_IdleState IdleState { get; private set; }
         public Pepe_CompanionState CompanionState { get; private set; }
 
+        private Vector3 initialPos;
+
         protected override void Start()
         {
-        
             _agent = GetComponent<NavMeshAgent>();
             _agent.updateRotation = false;
             _agent.updateUpAxis = false;
@@ -43,6 +44,21 @@ namespace Controllers
             StateMachine.Initialize(IdleState);
 
             controllerKind = EControllerKind.Neutral;
+
+            initialPos = transform.position;
+            
+            GameManager.Instance.OnLevelReset.AddListener(ResetPepe);
+        }
+
+        private void ResetPepe()
+        {
+            if (GameManager.Instance.GetSceneIndex() == 0)
+            {
+                Dialogues.DialogueIndex = 0;
+                StateMachine.ChangeState(IdleState);
+            }
+            
+            transform.position = initialPos;
         }
 
 
