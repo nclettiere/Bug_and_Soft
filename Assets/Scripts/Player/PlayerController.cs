@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Controllers;
 using Controllers.Damage;
 using Enums;
@@ -75,6 +76,8 @@ namespace Player
 
         // GODLIKE
         public GodLikePowerUp godLikePowerUp { get; private set; }
+        
+        public List<PlayerPowerUp> UnlockedPowerUps { get; private set; }
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -160,7 +163,7 @@ namespace Player
 
             // A implementar en el tercer sprint
             // Cargar el savegame e inicializar con la habilidad guardada
-            powerUps.Initialize(teleportPowerUp);
+            //powerUps.Initialize(teleportPowerUp);
         }
 
         public void ExitInteractionMode()
@@ -173,6 +176,8 @@ namespace Player
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();
             combatCtrl = GetComponent<PlayerCombatController>();
+
+            UnlockedPowerUps = new List<PlayerPowerUp>();
             
             DontDestroyOnLoad(gameObject);
         }
@@ -499,6 +504,54 @@ namespace Player
             if (!playerMovementCtrl.FacingRight)
                 playerMovementCtrl.Flip();
             transform.position = GameManager.Instance.spawnPoint;
+        }
+
+        public void UnlockPowerUp(EPowerUpKind kind, int krones)
+        {
+            switch (kind)
+            {
+                case EPowerUpKind.SHIELD:
+                    UnlockedPowerUps.Add(shieldPowerUp);
+                    powerUps.ChangePowerUp(shieldPowerUp);
+                    break;
+                case EPowerUpKind.TELEPORT:
+                    UnlockedPowerUps.Add(teleportPowerUp);
+                    powerUps.ChangePowerUp(teleportPowerUp);
+                    break;
+                case EPowerUpKind.GODLIKE:
+                    UnlockedPowerUps.Add(godLikePowerUp);
+                    powerUps.ChangePowerUp(godLikePowerUp);
+                    break;
+            }
+            
+            GameManager.Instance.RemovePlayerKrowns(krones);
+        }
+
+        public void CyclePowerUps()
+        {
+            bool isNext = false;
+            Debug.Log("UnlockedPowerUps Len> "+ UnlockedPowerUps.Count);
+            for (int i = 0; i < UnlockedPowerUps.Count; i++)
+            {
+                if (isNext)
+                {
+                    powerUps.ChangePowerUp(UnlockedPowerUps[i]);
+                    break;
+                }
+
+                if (powerUps.currentPowerUp.powerUpKind == UnlockedPowerUps[i].powerUpKind)
+                {
+                    if (i == UnlockedPowerUps.Count - 1)
+                    {
+                        powerUps.ChangePowerUp(UnlockedPowerUps[0]);
+                        break;
+                    }
+                    isNext = true;
+                }
+            }
+            foreach (PlayerPowerUp powerUp in UnlockedPowerUps)
+            {
+            }
         }
     }
 }

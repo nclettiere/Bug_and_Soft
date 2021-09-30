@@ -53,7 +53,8 @@ namespace Input
         {
             playerControls.Gameplay.SpecialMove.performed += ctx =>
             {
-                GameManager.Instance.PlayerController.powerUps.currentPowerUp.Activate();
+                if(GameManager.Instance.PlayerController.powerUps.currentPowerUp != null)
+                    GameManager.Instance.PlayerController.powerUps.currentPowerUp.Activate();
             };
         }
 
@@ -87,26 +88,7 @@ namespace Input
         {
             playerControls.Gameplay.SwitchAbility.performed += ctx =>
             {
-                PlayerPowerUp pw = GameManager.Instance.PlayerController.teleportPowerUp;;
-                
-                current++;
-                
-                if (current > 2)
-                    current = 0;
-
-                switch (current)
-                {
-                    case 0:
-                        pw = GameManager.Instance.PlayerController.teleportPowerUp;
-                        break;
-                    case 1:
-                        pw = GameManager.Instance.PlayerController.shieldPowerUp;
-                        break;
-                    case 2:
-                        pw = GameManager.Instance.PlayerController.godLikePowerUp;
-                        break;
-                }
-                GameManager.Instance.PlayerController.powerUps.ChangePowerUp(pw);
+                GameManager.Instance.PlayerController.CyclePowerUps();
             };
         }
 
