@@ -36,17 +36,22 @@ namespace Input
                     GameManager.Instance.PauseGame();
             };
 
-           //playerControls.Gameplay.QuickSave.performed += ctx =>
-           //{
-           //    if (isMainMenuOn || isGamePaused) return;
-           //    QuickSave();
-           //};
+           playerControls.Gameplay.QuickSave.performed += ctx =>
+           {
+               GameManager.Instance.QuickSave();
+           };
 
-           //playerControls.Gameplay.QuickLoad.performed += ctx =>
-           //{
-           //    if (isMainMenuOn || isGamePaused) return;
-           //    QuickLoad();
-           //};
+           playerControls.Gameplay.QuickLoad.performed += ctx =>
+           {
+               GameManager.Instance.QuickLoad();
+           };
+
+           playerControls.Gameplay.UseItem.performed += ctx =>
+           {
+               GameManager.Instance.
+                   GetInventorySlotManager().UseItem();
+           };
+           
         }
 
         private void SetupAbilitiesInput()

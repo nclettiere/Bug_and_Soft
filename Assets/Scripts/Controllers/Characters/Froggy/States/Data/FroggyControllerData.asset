@@ -19,6 +19,8 @@ MonoBehaviour:
   playerNearRangeDistance: 10
   playerLongRangeDistance: 5
   generalDamage: 5
+  maxHealth: 35
+  experienceReward: 10
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8

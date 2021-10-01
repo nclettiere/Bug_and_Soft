@@ -45,7 +45,7 @@ namespace Player
 
         private void BurnEnemies()
         {
-            DamageInfo damageInfo = new DamageInfo(1000, 0f, true);
+            DamageInfo damageInfo = new DamageInfo(20, 0f, true);
             foreach (var controller in GameManager.Instance.EnemiesInScreen)
             {
                 controller.Damage(damageInfo);

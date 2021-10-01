@@ -433,7 +433,6 @@ public class GameManager : MonoBehaviour
         {
             currentLevel++;
             currentExp = 0;
-            AddExperience(exp);
 
             isLevelingUp = true;
             PauseGame();

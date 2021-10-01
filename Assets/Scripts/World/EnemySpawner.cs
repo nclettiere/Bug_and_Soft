@@ -40,9 +40,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void Respawn()
     {
-        if(spawnedEnemy != null)
-            Destroy(spawnedEnemy);
-        
+        Destroy(spawnedEnemy);
         spawnedEnemy = Instantiate(character, transform.position, Quaternion.Euler(0, 0, 0), transform);
         controller = spawnedEnemy.GetComponent<BaseController>();
         controller.OnLifeTimeEnded.AddListener(() => OnControllerDestroyed());

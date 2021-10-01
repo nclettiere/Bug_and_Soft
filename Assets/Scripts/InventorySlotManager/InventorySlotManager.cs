@@ -6,13 +6,16 @@ namespace Inventory
     public class InventorySlotManager : MonoBehaviour
     {
         private Item currentItem;
+        private bool itemEjected;
 
         public void AddItem(Item item)
         {
             if(currentItem != null)
                 currentItem.Eject();
+            
             GameManager.Instance.GetHUD().AddItem(item.Kind);
             currentItem = item;
+            itemEjected = false;
         }
         
         public void RemoveItem()
@@ -21,16 +24,18 @@ namespace Inventory
             {
                 currentItem.Eject();
                 currentItem = null;
+                itemEjected = true;
             }
         }
 
         public void UseItem()
         {
-            if (currentItem != null)
+            if (!itemEjected)
             {
                 currentItem.Use();
                 RemoveItem();
                 GameManager.Instance.GetHUD().RemoveItem();
+                itemEjected = true;
             }
         }
     }

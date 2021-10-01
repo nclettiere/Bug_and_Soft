@@ -7,6 +7,7 @@ using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace Controllers.Froggy
@@ -40,6 +41,8 @@ namespace Controllers.Froggy
         
         public int hallPosition = 0;
 
+        public Vector3 initialPos;
+
         protected override void Start()
         {
             base.Start();
@@ -50,6 +53,9 @@ namespace Controllers.Froggy
             _stunnedState = new OLC_StunnedState(this, StateMachine, "Stunned", _idleStateData, this);
             _secondPhase = new OLC_SecondPhase(this, StateMachine, "Jumping", _attackStateData, _olcAttackStateData, this);
             StateMachine.Initialize(_idleState);
+
+            initialPos = transform.position;
+            GameManager.Instance.OnLevelReset.AddListener(ResetOLC);
         }
 
         public override void Damage(DamageInfo damageInfo)
@@ -115,6 +121,15 @@ namespace Controllers.Froggy
             }
         }
 
+        private void ResetOLC()
+        {
+            StateMachine.ChangeState(_idleState);
+            currentHealth = ctrlData.maxHealth;
+            transform.position = initialPos;
+            GameManager.Instance.HideBossHealth();
+            enabled = false;
+        }
+        
         protected override void Update()
         {
             base.Update();

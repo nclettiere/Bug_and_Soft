@@ -62,10 +62,12 @@ namespace SaveSystem
                 var fileStream = new FileStream(QuickSavePath, FileMode.Open);
                 var playerData = binaryFormatter.Deserialize(fileStream) as PlayerData;
                 fileStream.Close();
+
+                Debug.Log("Cargando save desde: " + QuickSavePath);
                 return playerData;
             }
             
-            Debug.LogError("Savegame file does not exist.");
+            Debug.LogError("Savegame no existe;");
             return null;
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a6c2e3104774711a5509e4c33645bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 8762066518934809150, guid: 34d1223db7575b34b913d68e5f41428b, type: 3}
+  items: []
 --- !u!82 &1408559873665964618
 AudioSource:
   m_ObjectHideFlags: 0
@@ -188,6 +188,10 @@ PrefabInstance:
       propertyPath: _deathSFX
       value: 
       objectReference: {fileID: 1408559873665964618}
+    - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: KrownReward
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: _froggyTongue
       value: 

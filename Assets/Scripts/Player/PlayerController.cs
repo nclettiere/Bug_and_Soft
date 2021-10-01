@@ -163,7 +163,7 @@ namespace Player
 
             // A implementar en el tercer sprint
             // Cargar el savegame e inicializar con la habilidad guardada
-            //powerUps.Initialize(teleportPowerUp);
+            //powerUps.Initialize(godLikePowerUp);
             
             GameManager.Instance.OnLevelReset.AddListener(ResetStats);
         }
@@ -559,6 +559,14 @@ namespace Player
             foreach (PlayerPowerUp powerUp in UnlockedPowerUps)
             {
             }
+        }
+
+        public void Heal(int healingAmount)
+        {
+            if (currentHealth + healingAmount > maxHealth)
+                currentHealth = maxHealth;
+            else
+                currentHealth += healingAmount;
         }
     }
 }
