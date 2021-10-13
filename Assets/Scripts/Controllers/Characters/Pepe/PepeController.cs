@@ -15,11 +15,10 @@ namespace Controllers
     public class PepeController : BaseController
     {
         [Header("Pepe : Dialogue Options")] private bool interacted;
-        public DialogueGroup Dialogues { get; private set; }
+        private DialogueGroup Dialogues { get; set; }
 
         [SerializeField] private QuickChatDialogue qcDialogue;
-
-        [Header("Navigation")] private NavMeshAgent _agent;
+        [SerializeField] private Collider2D _collider;
 
         public bool isCompanion { get; private set; }
 
@@ -28,25 +27,20 @@ namespace Controllers
 
         private Vector3 initialPos;
 
+
         protected override void Start()
         {
-            _agent = GetComponent<NavMeshAgent>();
-            _agent.updateRotation = false;
-            _agent.updateUpAxis = false;
-            
             base.Start();
-            
+
             Dialogues = GetComponent<DialogueGroup>();
 
             IdleState = new Pepe_IdleState(this, StateMachine, "Idle", this);
             CompanionState = new Pepe_CompanionState(this, StateMachine, "Following", this);
 
             StateMachine.Initialize(IdleState);
-
-            controllerKind = EControllerKind.Neutral;
-
-            initialPos = transform.position;
             
+            initialPos = transform.position;
+
             GameManager.Instance.OnLevelReset.AddListener(ResetPepe);
         }
 
@@ -57,23 +51,23 @@ namespace Controllers
                 Dialogues.DialogueIndex = 0;
                 StateMachine.ChangeState(IdleState);
             }
-            
+
             transform.position = initialPos;
+
+            interactionRadius = 4;
+            canInteract = true;
+            _collider.enabled = true;
+            canPlayerInteract = true;
         }
 
 
         public override bool Interact(PlayerController controller, EInteractionKind interactionKind)
         {
-            //if (!interacted)
-            //{
             // disables the interaction bubble !!
             dialogueBubble.gameObject.SetActive(false);
             // Open the dialogue canvas
             DialogueManager.Instance.ShowDialogues(Dialogues);
             interacted = true;
-            //canInteract = false;
-            // }
-
             return true;
         }
 
@@ -89,20 +83,19 @@ namespace Controllers
                 Dialogues.DialogueIndex += 1;
         }
 
-        public void SetTargetDestination(Vector3 target)
-        {
-            _agent.SetDestination(target);
-        }
-
         public void AcceptCompanion()
         {
             isCompanion = true;
+            canInteract = false;
+            canPlayerInteract = false;
+            interactionRadius = 0;
+            _collider.enabled = false;
             StateMachine.ChangeState(CompanionState);
         }
 
         public void ShowQuickChat(Sprite dialogueText)
         {
-            qcDialogue.ShowNewChat(dialogueText);  
+            qcDialogue.ShowNewChat(dialogueText);
         }
 
         public override void Flip()

@@ -228,6 +228,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   qcDialogue: {fileID: 8347970039860545131}
+  _collider: {fileID: 6721567057156535200}
 --- !u!114 &6721567057156535203
 MonoBehaviour:
   m_ObjectHideFlags: 0

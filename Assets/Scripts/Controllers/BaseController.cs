@@ -475,7 +475,7 @@ namespace Controllers
 
         public EControllerKind controllerKind = EControllerKind.NPC;
         [SerializeField] private ECharacterKind characterKind;
-        [SerializeField] private float interactionRadius = 4f;
+        [SerializeField] private protected float interactionRadius = 4f;
         [SerializeField] private float moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
         [SerializeField] private int touchDamage = 12;
 
