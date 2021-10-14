@@ -290,13 +290,12 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         PauseGame();
-        GameObject.Find("UI/UI_GameOver").GetComponent<Canvas>().enabled = true;
+        GetUIManager().ShowGameOver();
     }
 
     public void Retry()
     {
-        //Instance = new GameManager();
-        GameObject.Destroy(PlayerController.transform.gameObject);
+        Destroy(PlayerController.transform.gameObject);
     }
 
     public void QuitGame()
@@ -500,7 +499,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = false;
         ResumeGame();
-        GameObject.Find("UI/UI_GameOver").GetComponent<Canvas>().enabled = false;
+        GetUIManager().HideGameOver();
         
         PlayerController.RefillHealth();
         PlayerKrowns = 0;
@@ -514,9 +513,7 @@ public class GameManager : MonoBehaviour
         PlayerController.RespawnNow();
         
         foreach (var spawner in enemies)
-        {
             spawner.Respawn();
-        }
         
         OnLevelReset.Invoke();
     }

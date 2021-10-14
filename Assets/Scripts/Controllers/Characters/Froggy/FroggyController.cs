@@ -23,9 +23,9 @@ namespace Controllers.Froggy
         [SerializeField] private PrepareAttackStateData _prepareAttackStateData;
         [SerializeField] private DamageStateData _damageStateData;
         [SerializeField] private GameObject _farty;
+        [SerializeField] private FroggyTongueController tongueControllerongue;
         public GameObject _superFroggyNuke;
         private bool canFroggyDie = false;
-        private FroggyTongueController instatiatedTongue;
 
         public Froggy_IdleState _idleState { get; private set; }
         public JumpState _jumpState { get; private set; }
@@ -73,9 +73,9 @@ namespace Controllers.Froggy
         /// </summary>
         public void SpecialAttack()
         {
-            instatiatedTongue = Instantiate(_froggyTongue, transform.position, Quaternion.Inverse(transform.rotation))
-                .GetComponent<FroggyTongueController>();
-            instatiatedTongue.SetProps(this, _attackState);
+            tongueControllerongue.gameObject.SetActive(true);
+            tongueControllerongue.SetProps(this, _attackState);
+            tongueControllerongue.Activate();
         }
 
         /// <summary>

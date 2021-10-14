@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec42f9dbfcf54c74683b6cb5142125ff, type: 3}
   m_Name: FroggyControllerData
   m_EditorClassIdentifier: 
-  wallCheckDistance: 0.2
-  ledgeCheckDistacne: 5
+  wallCheckDistance: 0.4
+  ledgeCheckDistacne: 0.75
   groundCheckDistance: 0.5
   topCheckDistance: 0.5
-  playerNearRangeDistance: 10
-  playerLongRangeDistance: 5
+  playerNearRangeDistance: 8.24
+  playerLongRangeDistance: 2.76
   generalDamage: 5
   maxHealth: 35
   experienceReward: 10

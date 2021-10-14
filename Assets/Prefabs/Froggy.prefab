@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242146970851519726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0, z: 0}
+  m_LocalPosition: {x: 0.643, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}
@@ -575,10 +575,11 @@ Transform:
   m_GameObject: {fileID: 242146971895896513}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 242146970908857841}
   - {fileID: 242146972406056933}
+  - {fileID: 1566865843655757270}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -641,6 +642,7 @@ MonoBehaviour:
   _prepareAttackStateData: {fileID: 11400000, guid: 4eddd5094a827664fa86c88e9121633d, type: 2}
   _damageStateData: {fileID: 0}
   _farty: {fileID: 0}
+  tongueControllerongue: {fileID: 4175008825729574679}
   _superFroggyNuke: {fileID: 0}
   transforming: 0
   currentPhase: 1
@@ -751,8 +753,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.9153097e-10, y: -0.0024455392}
-  m_Size: {x: 0.61000025, y: 0.37554485}
+  m_Offset: {x: 0.011885168, y: -0.00006848716}
+  m_Size: {x: 1.2788273, y: 0.7511263}
   m_Direction: 1
 --- !u!1 &242146971993299168
 GameObject:
@@ -778,7 +780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242146971993299168}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.002, y: -0.184, z: 0}
+  m_LocalPosition: {x: -0.002, y: -0.379, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}
@@ -874,7 +876,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3068694512305279587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.314, y: -0.186, z: 0}
+  m_LocalPosition: {x: 0.651, y: -0.357, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}
@@ -934,9 +936,86 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5926173922429296521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.187, z: 0}
+  m_LocalPosition: {x: -0.001, y: 0.377, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 242146972406056933}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4709712326027208522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 242146971895896512}
+    m_Modifications:
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_Name
+      value: FroggyTongueAttackBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+--- !u!4 &1566865843655757270 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6116700037132724892, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+  m_PrefabInstance: {fileID: 4709712326027208522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4175008825729574679 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -527802962905792419, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
+  m_PrefabInstance: {fileID: 4709712326027208522}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acfe9384df004c30b047ef71131fca80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

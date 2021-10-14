@@ -13,6 +13,7 @@ namespace Managers
         [SerializeField] private GameObject poisonEffectIndicator;
         [SerializeField] private GameObject UIShop;
         [SerializeField] private GameObject UILevelUpScreen;
+        [SerializeField] private GameObject GameOverPanel;
 
         [SerializeField] private UI_TransitionLvL transitionLvl1;
         [SerializeField] private GameObject lvlCompletedPanel;
@@ -184,6 +185,16 @@ namespace Managers
         {
             HideLevelUpScreen();
             GameManager.Instance.AumentCdr();
+        }
+
+        public void ShowGameOver()
+        {
+            GameOverPanel.SetActive(true);
+        }     
+        
+        public void HideGameOver()
+        {
+            GameOverPanel.SetActive(false);
         }
     }
 }
