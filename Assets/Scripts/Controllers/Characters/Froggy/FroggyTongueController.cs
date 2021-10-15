@@ -48,21 +48,17 @@ namespace Controllers.Froggy
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!firstSlap)
-            {
-                if (other.transform.CompareTag("Player"))
-                {
-                    damageInfo = new DamageInfo(15, froggyController.transform.position.x, true, false, true);
-                    damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
-                    damageInfo.slowDuration = 3f;
+            if (firstSlap || !other.transform.CompareTag("Player")) return;
+            
+            damageInfo = new DamageInfo(15, froggyController.transform.position.x, true, false, true);
+            damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
+            damageInfo.slowDuration = 3f;
                     
-                    var pctrl = other.transform.GetComponent<PlayerController>();
-                    if (pctrl != null)
-                        pctrl.Damage(froggyController, damageInfo);
+            var pctrl = other.transform.GetComponent<PlayerController>();
+            if (pctrl != null)
+                pctrl.Damage(froggyController, damageInfo);
                     
-                    firstSlap = true;
-                }
-            }
+            firstSlap = true;
         }
 
         public void Cancel()

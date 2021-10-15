@@ -10,6 +10,7 @@ namespace Controllers.StateMachine.States
         protected bool flipAfterIdle;
         protected bool isIdleTimeOver;
         protected float idleTime;
+        protected float newIdleTime;
         
         public IdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, IdleStateData stateData) : base(controller, stateMachine, animBoolName)
         {
@@ -35,9 +36,12 @@ namespace Controllers.StateMachine.States
         public override void UpdateState()
         {
             base.UpdateState();
-            
-            if (Time.time >= startTime + idleTime)
+
+            if (Time.time >= newIdleTime)
+            {
                 isIdleTimeOver = true;
+                newIdleTime = Time.time + idleTime;
+            }
         }
 
         public override void UpdatePhysics()
@@ -52,7 +56,7 @@ namespace Controllers.StateMachine.States
 
         public void SetRandomIdleTime()
         {
-            idleTime = Random.Range(stateData.minIdleTime, stateData.maxIdleTime);
+            newIdleTime = Random.Range(stateData.minIdleTime, stateData.maxIdleTime);
         }
     }
 }

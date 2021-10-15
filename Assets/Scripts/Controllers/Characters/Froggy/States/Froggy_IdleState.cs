@@ -20,8 +20,6 @@ public class Froggy_IdleState : IdleState
 
     public override void UpdateState()
     {
-        base.UpdateState();
-
         if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
         {
             froggyController.EnterPhaseTwo();
@@ -39,6 +37,8 @@ public class Froggy_IdleState : IdleState
 
         if (isIdleTimeOver)
             stateMachine.ChangeState(froggyController._jumpState);
+        
+        base.UpdateState();
     }
 
     public override void Enter()
