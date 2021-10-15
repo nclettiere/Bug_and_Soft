@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codice.Client.BaseCommands;
 using Controllers.Damage;
 using Player;
 using UnityEngine;
@@ -30,9 +29,7 @@ namespace Controllers.Froggy
 
         private void FixedUpdate()
         {
-            // Copia la posicion del Froggy
             transform.localPosition = new Vector3(1, 0);
-            //CheckDamage();
         }
 
         public void Anim_OnTongueAnimEnded()
@@ -52,52 +49,19 @@ namespace Controllers.Froggy
             this.attackState = attackState;
         }
 
-        private void CheckDamage()
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (!firstSlap)
             {
-                //RaycastHit2D[] hits = new RaycastHit2D[10];
-                //coll.Cast(transform.right, whatCanBeDamaged, hits);
-                //foreach (var hit in hits)
-                //{
-                //    if (hit.collider != null)
-                //    {
-                //        if (hit.collider.transform != froggyController.transform &&
-                //            !damagedObjects.Contains(hit.collider.transform))
-                //        {
-                //            if (hit.collider.transform.CompareTag("Player"))
-                //            {
-                //                PlayerController pctrl = hit.transform.GetComponent<PlayerController>();
-                //                if (pctrl != null && (pctrl is IDamageable))
-                //                    pctrl.Damage(froggyController, damageInfo);
-                //            }
-//
-                //            damagedObjects.Add(hit.collider.transform);
-                //        }
-                //    }
-                //}
-            }
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.transform.CompareTag("Player"))
-            {
-                Debug.Log("Player is colliding");
-                var pctrl = other.transform.GetComponent<PlayerController>();
-                if (pctrl != null)
-                    pctrl.Damage(froggyController, damageInfo);
-            }
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            if (other.transform.CompareTag("Player"))
-            {
-                Debug.Log("Player is colliding 2");
-                var pctrl = other.transform.GetComponent<PlayerController>();
-                if (pctrl != null)
-                    pctrl.Damage(froggyController, damageInfo);
+                if (other.transform.CompareTag("Player"))
+                {
+                    Debug.Log("Player is colliding");
+                    var pctrl = other.transform.GetComponent<PlayerController>();
+                    if (pctrl != null)
+                        pctrl.Damage(froggyController, damageInfo);
+                    
+                    firstSlap = true;
+                }
             }
         }
 
@@ -113,6 +77,7 @@ namespace Controllers.Froggy
         
         private void Deactivate()
         {
+            firstSlap = false;
             gameObject.SetActive(false);
         }
     }

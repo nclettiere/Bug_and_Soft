@@ -9,6 +9,8 @@ TagManager:
   - Platform
   - Enemy
   - NPC
+  - Spawner
+  - Togue
   layers:
   - Default
   - TransparentFX
