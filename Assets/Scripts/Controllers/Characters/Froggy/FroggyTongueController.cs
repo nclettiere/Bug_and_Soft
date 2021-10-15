@@ -22,9 +22,6 @@ namespace Controllers.Froggy
         {
             damagedObjects = new List<Transform>();
             coll = GetComponent<BoxCollider2D>();
-            damageInfo = new DamageInfo(15, transform.position.x, true, false, true);
-            damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
-            damageInfo.slowDuration = 3f;
         }
 
         private void FixedUpdate()
@@ -55,7 +52,10 @@ namespace Controllers.Froggy
             {
                 if (other.transform.CompareTag("Player"))
                 {
-                    Debug.Log("Player is colliding");
+                    damageInfo = new DamageInfo(15, froggyController.transform.position.x, true, false, true);
+                    damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
+                    damageInfo.slowDuration = 3f;
+                    
                     var pctrl = other.transform.GetComponent<PlayerController>();
                     if (pctrl != null)
                         pctrl.Damage(froggyController, damageInfo);
