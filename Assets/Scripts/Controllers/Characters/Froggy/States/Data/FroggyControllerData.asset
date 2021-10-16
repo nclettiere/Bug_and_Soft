@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FroggyControllerData
   m_EditorClassIdentifier: 
   wallCheckDistance: 0.4
-  ledgeCheckDistacne: 1.77
-  groundCheckDistance: 0.13
+  ledgeCheckDistacne: 3
+  groundCheckDistance: 0.3
   topCheckDistance: 0.5
   playerNearRangeDistance: 8.24
   playerLongRangeDistance: 2.76
