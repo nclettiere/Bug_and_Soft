@@ -58,7 +58,6 @@ namespace Controllers.Froggy
 
         public void OnTongeFinished()
         {
-            Debug.Log("OnTongeFinished CALLED");
             tongueFinished = true;
         }
     }

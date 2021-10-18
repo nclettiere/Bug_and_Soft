@@ -35,19 +35,19 @@ namespace Controllers
             {
                 Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
-                
+
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 playerFacingDirection = playerController.IsFacingRight();
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-                
+
                 if (firstAttack)
                     hitAttackSFX1.Play();
                 else
                     hitAttackSFX2.Play();
-                
+
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
@@ -109,7 +109,7 @@ namespace Controllers
             if (OnLifeTimeEnded == null)
                 OnLifeTimeEnded = new UnityEvent();
         }
-        
+
         protected virtual void Start()
         {
             baseMovementController = GetComponent<BaseMovementController>();
@@ -150,7 +150,7 @@ namespace Controllers
 
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
             {
-                if (!dead &&characterKind != ECharacterKind.Pepe)
+                if (!dead && characterKind != ECharacterKind.Pepe)
                 {
                     CheckPlayerInNearRange();
                     CheckPlayerInLongRange();
@@ -163,7 +163,7 @@ namespace Controllers
         private void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused() || dead) return;
-            
+
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
                 StateMachine.CurrentState.UpdatePhysics();
         }
@@ -208,14 +208,39 @@ namespace Controllers
                 // Player Detection
                 //Near range
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(playerDetectCenterCheck.position,
-                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance * FacingDirection)),
-                        playerDetectCenterCheck.position.y));
+                if (FacingDirection == 1)
+                {
+                    Gizmos.DrawLine(playerDetectCenterCheck.position,
+                        new Vector2(
+                            (playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance)),
+                            playerDetectCenterCheck.position.y));
+                }
+                else
+                {
+                    Gizmos.DrawLine(playerDetectCenterCheck.position,
+                        new Vector2(
+                            (playerDetectCenterCheck.position.x - (ctrlData.playerNearRangeDistance)),
+                            playerDetectCenterCheck.position.y));
+                }
+
                 //Long range
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
-                        playerDetectCenterCheck.position.y));
+                if (FacingDirection == 1)
+                {
+                    Gizmos.DrawLine(
+                        playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                        new Vector2(
+                            (playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
+                            playerDetectCenterCheck.position.y));
+                }
+                else
+                {
+                    Gizmos.DrawLine(
+                        playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                        new Vector2(
+                            (playerDetectCenterCheck.position.x - ctrlData.playerLongRangeDistance ),
+                            playerDetectCenterCheck.position.y)); 
+                }
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -251,7 +276,7 @@ namespace Controllers
 
         public T GetMovementController<T>() where T : BaseMovementController
         {
-            return (T) baseMovementController;
+            return (T)baseMovementController;
         }
 
         public Animator GetAnimator()
@@ -296,8 +321,19 @@ namespace Controllers
 
         public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right, ctrlData.playerNearRangeDistance,
-                ctrlData.whatIsPlayer);
+            RaycastHit2D hit;
+            if (FacingDirection == 1) // right
+            {
+                hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right,
+                    ctrlData.playerNearRangeDistance,
+                    ctrlData.whatIsPlayer);
+            }
+            else // left
+            {
+                hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right,
+                    ctrlData.playerNearRangeDistance * -1,
+                    ctrlData.whatIsPlayer);
+            }
 
             if (hit.collider != null)
             {
@@ -309,13 +345,26 @@ namespace Controllers
 
             return false;
         }
-        
+
         public bool CheckPlayerInLongRange()
         {
-            Vector2 longRangePos = playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
-            RaycastHit2D hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
-                ctrlData.whatIsPlayer);
-        
+            RaycastHit2D hit;
+
+            if (FacingDirection == 1) // right
+            {
+                Vector2 longRangePos =
+                    playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
+                hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
+                    ctrlData.whatIsPlayer);
+            }
+            else // left
+            {
+                Vector2 longRangePos =
+                    playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f);
+                hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
+                    ctrlData.whatIsPlayer);
+            }
+
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("Player"))
@@ -323,7 +372,7 @@ namespace Controllers
                     return true;
                 }
             }
-        
+
             return false;
         }
 
@@ -437,15 +486,15 @@ namespace Controllers
             DropItems();
             Destroy(gameObject);
         }
-        
-             
-        public virtual void DropItems() 
+
+
+        public virtual void DropItems()
         {
             if (itemDrops != null && itemDrops.Length > 0)
             {
                 // TODO: Luck factor !!!
                 int random = Random.Range(0, 35);
-                
+
                 // Dropea algo random
                 if (random <= 5)
                 {
@@ -506,12 +555,10 @@ namespace Controllers
             ledgeCheck,
             touchDamageCheck,
             playerDetectCenterCheck;
-        
-        [Header("ItemDrops")]
-        [SerializeField] private protected GameObject[] itemDrops;
 
-        [Header("Events Zone")] 
-        public UnityEvent OnLandEvent;
+        [Header("ItemDrops")] [SerializeField] private protected GameObject[] itemDrops;
+
+        [Header("Events Zone")] public UnityEvent OnLandEvent;
 
         #endregion
 
