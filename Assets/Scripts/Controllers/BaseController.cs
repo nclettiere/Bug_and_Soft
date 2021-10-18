@@ -208,39 +208,41 @@ namespace Controllers
                 // Player Detection
                 //Near range
                 Gizmos.color = Color.blue;
-                if (FacingDirection == 1)
-                {
-                    Gizmos.DrawLine(playerDetectCenterCheck.position,
-                        new Vector2(
-                            (playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance)),
-                            playerDetectCenterCheck.position.y));
-                }
-                else
-                {
-                    Gizmos.DrawLine(playerDetectCenterCheck.position,
-                        new Vector2(
-                            (playerDetectCenterCheck.position.x - (ctrlData.playerNearRangeDistance)),
-                            playerDetectCenterCheck.position.y));
-                }
+                //if (FacingDirection == 1)
+                //{
+                //    Gizmos.DrawLine(playerDetectCenterCheck.position,
+                //        new Vector2(
+                //            (playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance)),
+                //            playerDetectCenterCheck.position.y));
+                //}
+                //else
+                //{
+                //    Gizmos.DrawLine(playerDetectCenterCheck.position,
+                //        new Vector2(
+                //            (playerDetectCenterCheck.position.x - (ctrlData.playerNearRangeDistance)),
+                //            playerDetectCenterCheck.position.y));
+                //}
+                Gizmos.DrawLine(AttacksRange[0].position, AttacksRange[1].position);
 
                 //Long range
                 Gizmos.color = Color.cyan;
-                if (FacingDirection == 1)
-                {
-                    Gizmos.DrawLine(
-                        playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                        new Vector2(
-                            (playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
-                            playerDetectCenterCheck.position.y));
-                }
-                else
-                {
-                    Gizmos.DrawLine(
-                        playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                        new Vector2(
-                            (playerDetectCenterCheck.position.x - ctrlData.playerLongRangeDistance ),
-                            playerDetectCenterCheck.position.y)); 
-                }
+                //if (FacingDirection == 1)
+                //{
+                //    Gizmos.DrawLine(
+                //        playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                //        new Vector2(
+                //            (playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
+                //            playerDetectCenterCheck.position.y));
+                //}
+                //else
+                //{
+                //    Gizmos.DrawLine(
+                //        playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f),
+                //        new Vector2(
+                //            (playerDetectCenterCheck.position.x - ctrlData.playerLongRangeDistance),
+                //            playerDetectCenterCheck.position.y));
+                //}
+                Gizmos.DrawLine(AttacksRange[1].position, AttacksRange[2].position);
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -289,11 +291,6 @@ namespace Controllers
             return transform;
         }
 
-        public GameObject GetDialogueBubble()
-        {
-            return dialogueBubble;
-        }
-
         public bool CheckWall()
         {
             return Physics2D.Raycast(wallCheck.position, transform.right, ctrlData.wallCheckDistance,
@@ -312,68 +309,16 @@ namespace Controllers
                 ctrlData.whatIsGround);
         }
 
-        public bool CheckTop()
-        {
-            return Physics2D.Raycast(topCheck.position, Vector2.up, ctrlData.topCheckDistance,
-                ctrlData.whatIsGround);
-        }
-
-
         public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit;
-            if (FacingDirection == 1) // right
-            {
-                hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right,
-                    ctrlData.playerNearRangeDistance,
-                    ctrlData.whatIsPlayer);
-            }
-            else // left
-            {
-                hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right,
-                    ctrlData.playerNearRangeDistance * -1,
-                    ctrlData.whatIsPlayer);
-            }
-
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            RaycastHit2D hit = Physics2D.Linecast(AttacksRange[0].position, AttacksRange[1].position, ctrlData.whatIsPlayer);
+            return hit.collider != null && hit.collider.CompareTag("Player");
         }
 
         public bool CheckPlayerInLongRange()
         {
-            RaycastHit2D hit;
-
-            if (FacingDirection == 1) // right
-            {
-                Vector2 longRangePos =
-                    playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
-                hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
-                    ctrlData.whatIsPlayer);
-            }
-            else // left
-            {
-                Vector2 longRangePos =
-                    playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f);
-                hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
-                    ctrlData.whatIsPlayer);
-            }
-
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            RaycastHit2D hit = Physics2D.Linecast(AttacksRange[1].position, AttacksRange[2].position, ctrlData.whatIsPlayer);
+            return hit.collider != null && hit.collider.CompareTag("Player");
         }
 
         protected void MoveOnDamaged(int direction, Vector2 moveOnDamagedForce)
@@ -381,38 +326,6 @@ namespace Controllers
             moveOnDamaged = true;
             moveOnDamagedStartTime = Time.time;
             rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
-            //rigidbody2D.velocity = new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y);
-        }
-
-        private void CheckInteractions()
-        {
-            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRadius, new Vector2(0f, 0f));
-
-            foreach (var hit in hits)
-            {
-                if (hit.collider.tag == "Player")
-                {
-                    canPlayerInteract = true;
-                    // Show interaction bubbles
-                    if (dialogueBubble != null)
-                        dialogueBubble.gameObject.SetActive(true);
-                    return;
-                }
-            }
-
-            canPlayerInteract = false;
-            // Hide interaction bubbles
-            if (dialogueBubble != null)
-                dialogueBubble.gameObject.SetActive(false);
-        }
-
-        private void CheckMoveOnAttack()
-        {
-            if (Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)
-            {
-                movedOnAttack = false;
-                rBody.velocity = new Vector2(0.0f, rBody.velocity.y);
-            }
         }
 
         private void OnBecameVisible()
@@ -555,6 +468,8 @@ namespace Controllers
             ledgeCheck,
             touchDamageCheck,
             playerDetectCenterCheck;
+
+        [SerializeField] private Transform[] AttacksRange;
 
         [Header("ItemDrops")] [SerializeField] private protected GameObject[] itemDrops;
 
