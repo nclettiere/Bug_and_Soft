@@ -106,7 +106,9 @@ namespace Controllers
         private void Awake()
         {
             if (OnLandEvent == null)
-                OnLandEvent = new UnityEvent();
+                OnLandEvent = new UnityEvent();            
+            if (OnBodyGroundCheckEvent == null)
+                OnBodyGroundCheckEvent = new UnityEvent();
             if (OnLifeTimeEnded == null)
                 OnLifeTimeEnded = new UnityEvent();
         }
@@ -123,6 +125,7 @@ namespace Controllers
             StateMachine = new ControllerStateMachine();
 
             cachedGroundCheck = CheckGround();
+            cachedBodyGroundCheck = CheckOnBodyTouchGround();
         }
 
         protected virtual void Update()
@@ -151,7 +154,8 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord && characterKind != ECharacterKind.Pepe)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord &&
+                characterKind != ECharacterKind.Pepe)
             {
                 if (!dead && characterKind != ECharacterKind.Pepe)
                 {
@@ -160,11 +164,16 @@ namespace Controllers
                 }
 
                 StateMachine.CurrentState.UpdateState();
-                
-                if(!cachedGroundCheck && CheckGround())
+
+                if (!cachedGroundCheck && CheckGround())
                     OnLandEvent.Invoke();
 
-                cachedGroundCheck = CheckGround();
+                cachedGroundCheck = CheckGround();                
+                
+                if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
+                    OnBodyGroundCheckEvent.Invoke();
+
+                cachedBodyGroundCheck = CheckGround();
             }
         }
 
@@ -216,40 +225,10 @@ namespace Controllers
                 // Player Detection
                 //Near range
                 Gizmos.color = Color.blue;
-                //if (FacingDirection == 1)
-                //{
-                //    Gizmos.DrawLine(playerDetectCenterCheck.position,
-                //        new Vector2(
-                //            (playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance)),
-                //            playerDetectCenterCheck.position.y));
-                //}
-                //else
-                //{
-                //    Gizmos.DrawLine(playerDetectCenterCheck.position,
-                //        new Vector2(
-                //            (playerDetectCenterCheck.position.x - (ctrlData.playerNearRangeDistance)),
-                //            playerDetectCenterCheck.position.y));
-                //}
                 Gizmos.DrawLine(AttacksRange[0].position, AttacksRange[1].position);
 
                 //Long range
                 Gizmos.color = Color.cyan;
-                //if (FacingDirection == 1)
-                //{
-                //    Gizmos.DrawLine(
-                //        playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                //        new Vector2(
-                //            (playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
-                //            playerDetectCenterCheck.position.y));
-                //}
-                //else
-                //{
-                //    Gizmos.DrawLine(
-                //        playerDetectCenterCheck.position - new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                //        new Vector2(
-                //            (playerDetectCenterCheck.position.x - ctrlData.playerLongRangeDistance),
-                //            playerDetectCenterCheck.position.y));
-                //}
                 Gizmos.DrawLine(AttacksRange[1].position, AttacksRange[2].position);
             }
 
@@ -319,13 +298,15 @@ namespace Controllers
 
         public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit = Physics2D.Linecast(AttacksRange[0].position, AttacksRange[1].position, ctrlData.whatIsPlayer);
+            RaycastHit2D hit =
+                Physics2D.Linecast(AttacksRange[0].position, AttacksRange[1].position, ctrlData.whatIsPlayer);
             return hit.collider != null && hit.collider.CompareTag("Player");
         }
 
         public bool CheckPlayerInLongRange()
         {
-            RaycastHit2D hit = Physics2D.Linecast(AttacksRange[1].position, AttacksRange[2].position, ctrlData.whatIsPlayer);
+            RaycastHit2D hit =
+                Physics2D.Linecast(AttacksRange[1].position, AttacksRange[2].position, ctrlData.whatIsPlayer);
             return hit.collider != null && hit.collider.CompareTag("Player");
         }
 
@@ -377,6 +358,22 @@ namespace Controllers
                     }
                 }
             }
+        }
+
+        public bool CheckOnBodyTouchGround()
+        {
+            touchDamageBottomLeft.Set(
+                touchDamageCheck.position.x - (touchDamageWidth / 2),
+                touchDamageCheck.position.y - (touchDamageHeight / 2));
+
+            touchDamageTopRight.Set(
+                touchDamageCheck.position.x + (touchDamageWidth / 2),
+                touchDamageCheck.position.y + (touchDamageHeight / 2));
+
+            return Physics2D.OverlapArea(
+                touchDamageBottomLeft,
+                touchDamageTopRight,
+                ctrlData.whatIsGround);
         }
 
         private protected IEnumerator DamageEffect()
@@ -492,6 +489,7 @@ namespace Controllers
         [Header("ItemDrops")] [SerializeField] private protected GameObject[] itemDrops;
 
         [Header("Events Zone")] public UnityEvent OnLandEvent;
+        [Header("Events Zone")] public UnityEvent OnBodyGroundCheckEvent;
 
         #endregion
 
@@ -518,7 +516,8 @@ namespace Controllers
             lastGroundDetected,
             lapidaIntance = false,
             firstAttack,
-            cachedGroundCheck;
+            cachedGroundCheck,
+            cachedBodyGroundCheck;
 
         protected internal bool
             canPlayerInteract = false;

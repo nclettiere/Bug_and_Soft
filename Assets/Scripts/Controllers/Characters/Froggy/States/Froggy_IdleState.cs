@@ -26,6 +26,8 @@ public class Froggy_IdleState : State
             froggyController.EnterPhaseTwo();
         }
         
+        if(controller.currentHealth <= 0)
+            stateMachine.ChangeState(froggyController._deadState);
 
         if (controller.CheckPlayerInLongRange())
         {
@@ -44,9 +46,6 @@ public class Froggy_IdleState : State
             stateMachine.ChangeState(froggyController._jumpState);
             jumpTimeWait = Time.time + jumpRatio;
         }
-
-        if (controller.CheckWall() || !controller.CheckLedge())
-            controller.Flip();
     }
 
     public override void Enter()
@@ -56,8 +55,12 @@ public class Froggy_IdleState : State
         jumpRatio = Random.Range(2f, 3f);
         jumpTimeWait = startTime + jumpRatio;
         
-        if (controller.CheckWall() || !controller.CheckLedge())
-            controller.Flip();
+        
+        controller.OnLandEvent.AddListener(() =>
+        {
+            if (controller.CheckWall() || !controller.CheckLedge())
+                controller.Flip();
+        });
     }
 
     public override void Exit()

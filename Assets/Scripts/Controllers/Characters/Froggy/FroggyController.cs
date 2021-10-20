@@ -68,9 +68,6 @@ namespace Controllers.Froggy
             _attackState.attackStarted = true;
         }
 
-        /// <summary>
-        /// Ataque especial de Froggy => Lengua suculenta
-        /// </summary>
         public void SpecialAttack()
         {
             tongueControllerongue.gameObject.SetActive(true);
@@ -78,20 +75,11 @@ namespace Controllers.Froggy
             tongueControllerongue.Activate();
         }
 
-        /// <summary>
-        ///     Metodo para empezar la animacion de mover cejas del PJ Njord
-        /// </summary>
         private void MoveCejas()
         {
             GetAnimator().SetBool("EyebrowsMovement", true);
         }
-
-        /// <summary>
-        ///     Metodo para terminar la animacion de mover cejas del PJ Njord
-        /// </summary>
-        /// <remarks>
-        ///     Es llamado al final de la animacion cejas.
-        /// </remarks>
+        
         private void AnimCejasEnded()
         {
             GetAnimator().SetBool("EyebrowsMovement", false);

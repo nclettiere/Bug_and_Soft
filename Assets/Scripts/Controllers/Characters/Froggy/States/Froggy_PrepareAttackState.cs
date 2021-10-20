@@ -20,6 +20,9 @@ namespace Controllers.Froggy
             {
                 froggyController.EnterPhaseTwo();
             }
+            
+            if(controller.currentHealth <= 0)
+                stateMachine.ChangeState(froggyController._deadState);
 
             if (controller.CheckPlayerInNearRange())
                 stateMachine.ChangeState(froggyController._nearAttackState);
