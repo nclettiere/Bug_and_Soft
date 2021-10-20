@@ -20,7 +20,10 @@ namespace Controllers.Froggy
             {
                 froggyController.EnterPhaseTwo();
             }
-            
+
+            if (controller.CheckPlayerInNearRange())
+                stateMachine.ChangeState(froggyController._nearAttackState);
+
             if (controller.CheckPlayerInLongRange())
             {
                 LookAtPlayer();

@@ -33,7 +33,8 @@ namespace Controllers.Froggy
 
         public override void Exit()
         {
-            base.Exit(); 
+            base.Exit();
+            controller.SetVelocity(0f);
             lastJumpTime = float.NegativeInfinity;
             froggyController.GetAnimator().SetBool("NearAttackAlert", false);
             froggyController.GetAnimator().SetBool("Idle", true);
@@ -42,16 +43,15 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
-            
             if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
             {
                 froggyController.EnterPhaseTwo();
             }
             
-            if (controller.CheckPlayerInLongRange())
-            {
-                stateMachine.ChangeState(froggyController._prepareAttackState);
-            }
+            //if (controller.CheckPlayerInLongRange())
+            //{
+            //    //stateMachine.ChangeState(froggyController._prepareAttackState);
+            //}
 
             LookAtPlayer();
             
@@ -61,7 +61,7 @@ namespace Controllers.Froggy
                 // SFX de saltar !!!
                 AudioSource.PlayClipAtPoint(jumpStateData.jumpSFX, controller.GetTransfrom().position);
 
-                controller.AddForce(new Vector2( 10f, 5f), true);
+                controller.AddForce(new Vector2(4,5), true);
 
                 lastJumpTime = Time.time + 1.25f;
             }else if ((lastJumpTime - Time.time) < jumpCooldownTime)

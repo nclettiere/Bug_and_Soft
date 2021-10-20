@@ -12,7 +12,7 @@ namespace Controllers.Froggy
         public bool attackStarted;
         
         private FroggyController froggyController;
-        private float nextAttackDuration;
+        private float attackCooldown = float.NegativeInfinity;
         private bool attacking;
         private bool tongueFinished;
 
@@ -25,8 +25,15 @@ namespace Controllers.Froggy
         public override void Enter()
         {
             base.Enter();
-            nextAttackDuration = Time.time + stateData.duration;
 
+            if (Time.time >= attackCooldown)
+            {
+                froggyController.SpecialAttack();
+                controller.GetAnimator().SetBool("IsReadyToAttack", true);
+                attackCooldown = Time.time + 3f;
+            }
+            else
+                stateMachine.ChangeState(froggyController._idleState);
         }
 
         public override void Exit()
@@ -43,22 +50,13 @@ namespace Controllers.Froggy
             {
                 froggyController.EnterPhaseTwo();
             }
-            if (attackStarted && !attacking)
-            {
-                froggyController.SpecialAttack();
-                attacking = true;
-            }
-            
-            if (tongueFinished)
-            {
-                // Animacion termino !!!
-                stateMachine.ChangeState(froggyController._idleState);
-            }
         }
 
         public void OnTongeFinished()
         {
             tongueFinished = true;
+            controller.GetAnimator().SetBool("Attacking", false);
+            stateMachine.ChangeState(froggyController._idleState);
         }
     }
 }

@@ -14,6 +14,7 @@ using Interactions.Interfaces;
 using Misc;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using World;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -120,6 +121,8 @@ namespace Controllers
             currentHealth = ctrlData.maxHealth;
 
             StateMachine = new ControllerStateMachine();
+
+            cachedGroundCheck = CheckGround();
         }
 
         protected virtual void Update()
@@ -148,7 +151,7 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord && characterKind != ECharacterKind.Pepe)
             {
                 if (!dead && characterKind != ECharacterKind.Pepe)
                 {
@@ -157,6 +160,11 @@ namespace Controllers
                 }
 
                 StateMachine.CurrentState.UpdateState();
+                
+                if(!cachedGroundCheck && CheckGround())
+                    OnLandEvent.Invoke();
+
+                cachedGroundCheck = CheckGround();
             }
         }
 
@@ -422,6 +430,15 @@ namespace Controllers
             return canInteract;
         }
 
+        public void ShowTauntIndicator()
+        {
+            if (enemyTauntIndicator != null)
+            {
+                enemyTauntIndicator.gameObject.SetActive(true);
+                enemyTauntIndicator.Show();
+            }
+        }
+
         #region UserVariables
 
         public int FacingDirection { get; private set; } =
@@ -450,6 +467,7 @@ namespace Controllers
         [SerializeField] private protected AudioSource hitAttackSFX2;
         [SerializeField] private AudioSource deathSFX;
         [SerializeField] private protected GameObject dialogueBubble;
+        [SerializeField] private protected EnemyTauntIndicator enemyTauntIndicator;
 
         [Header("State Options")] [SerializeField]
         private bool canWalk;
@@ -499,7 +517,8 @@ namespace Controllers
         protected bool
             lastGroundDetected,
             lapidaIntance = false,
-            firstAttack;
+            firstAttack,
+            cachedGroundCheck;
 
         protected internal bool
             canPlayerInteract = false;

@@ -126,11 +126,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896512, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896512, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896512, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -199,6 +199,14 @@ PrefabInstance:
     - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: controllerKind
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: touchDamageWidth
+      value: 3.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: touchDamageHeight
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896516, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: _superFroggySecondPhaseStateData

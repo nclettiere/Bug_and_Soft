@@ -49,7 +49,7 @@ namespace Controllers.Froggy
             base.Start();
 
             _jumpState = new JumpState(this, StateMachine, "Jumping", _jumpStateData, this);
-            _idleState = new Froggy_IdleState(this, StateMachine, "Idle", _idleStateData, this);
+            _idleState = new Froggy_IdleState(this, StateMachine, "Idle", this);
             _prepareAttackState =
                 new Froggy_PrepareAttackState(this, StateMachine, "PreparingAttack", _prepareAttackStateData, this);
             _attackState = new Froggy_AttackState(this, StateMachine, "Attacking", _attackStateData, this);
