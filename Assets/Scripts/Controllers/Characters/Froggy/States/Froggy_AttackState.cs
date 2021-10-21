@@ -12,7 +12,7 @@ namespace Controllers.Froggy
         public bool attackStarted;
         
         private FroggyController froggyController;
-        private float nextAttackDuration;
+        private float attackCooldown = float.NegativeInfinity;
         private bool attacking;
         private bool tongueFinished;
 
@@ -25,8 +25,15 @@ namespace Controllers.Froggy
         public override void Enter()
         {
             base.Enter();
-            nextAttackDuration = Time.time + stateData.duration;
 
+            if (Time.time >= attackCooldown)
+            {
+                froggyController.SpecialAttack();
+                controller.GetAnimator().SetBool("IsReadyToAttack", true);
+                attackCooldown = Time.time + 3f;
+            }
+            else
+                stateMachine.ChangeState(froggyController._idleState);
         }
 
         public override void Exit()
@@ -39,27 +46,20 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
-            if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
             {
                 froggyController.EnterPhaseTwo();
             }
-            if (attackStarted && !attacking)
-            {
-                froggyController.SpecialAttack();
-                attacking = true;
-            }
             
-            if (tongueFinished)
-            {
-                // Animacion termino !!!
-                stateMachine.ChangeState(froggyController._idleState);
-            }
+            //if(controller.currentHealth <= 0)
+            //    stateMachine.ChangeState(froggyController._deadState);
         }
 
         public void OnTongeFinished()
         {
-            Debug.Log("OnTongeFinished CALLED");
             tongueFinished = true;
+            controller.GetAnimator().SetBool("Attacking", false);
+            stateMachine.ChangeState(froggyController._idleState);
         }
     }
 }

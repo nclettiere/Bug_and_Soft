@@ -33,6 +33,8 @@ namespace Controllers.Froggy
         {
             base.Enter();
             
+            Debug.Log("Froggy is in secondphase");
+            
             froggyController.GetAnimator().SetBool("NearAttackAlert", true);
             froggyController.transforming = true;
             enterPhaseTwoWaitTime = Time.time + 1f;

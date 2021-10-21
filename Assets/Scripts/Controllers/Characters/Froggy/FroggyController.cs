@@ -49,7 +49,7 @@ namespace Controllers.Froggy
             base.Start();
 
             _jumpState = new JumpState(this, StateMachine, "Jumping", _jumpStateData, this);
-            _idleState = new Froggy_IdleState(this, StateMachine, "Idle", _idleStateData, this);
+            _idleState = new Froggy_IdleState(this, StateMachine, "Idle", this);
             _prepareAttackState =
                 new Froggy_PrepareAttackState(this, StateMachine, "PreparingAttack", _prepareAttackStateData, this);
             _attackState = new Froggy_AttackState(this, StateMachine, "Attacking", _attackStateData, this);
@@ -62,15 +62,18 @@ namespace Controllers.Froggy
 
             InvokeRepeating("MoveCejas", 0f, 7f);
         }
-        
+
+        protected override void Update()
+        {
+            base.Update();
+            currentState = StateMachine.CurrentState.ToString();
+        }
+
         public void Anim_OnAttackingAnimStarted()
         {
             _attackState.attackStarted = true;
         }
 
-        /// <summary>
-        /// Ataque especial de Froggy => Lengua suculenta
-        /// </summary>
         public void SpecialAttack()
         {
             tongueControllerongue.gameObject.SetActive(true);
@@ -78,20 +81,11 @@ namespace Controllers.Froggy
             tongueControllerongue.Activate();
         }
 
-        /// <summary>
-        ///     Metodo para empezar la animacion de mover cejas del PJ Njord
-        /// </summary>
         private void MoveCejas()
         {
             GetAnimator().SetBool("EyebrowsMovement", true);
         }
-
-        /// <summary>
-        ///     Metodo para terminar la animacion de mover cejas del PJ Njord
-        /// </summary>
-        /// <remarks>
-        ///     Es llamado al final de la animacion cejas.
-        /// </remarks>
+        
         private void AnimCejasEnded()
         {
             GetAnimator().SetBool("EyebrowsMovement", false);
@@ -99,8 +93,25 @@ namespace Controllers.Froggy
 
         public override void Die()
         {
-            base.Die();
+            dead = true;
+            GetAnimator().SetBool("Idle", false);
+            GetAnimator().SetBool("PreparingAttack", false);
+            GetAnimator().SetBool("Attacking", false);
+            GetAnimator().SetBool("Dead", true);
+            
             StateMachine.ChangeState(_deadState);
+        }
+
+        public override IEnumerator OnDie()
+        {
+            GameManager.Instance.AddPlayerKrowns(KrownReward);
+            
+            AddForce(new Vector2(20f * -FacingDirection, 10f), true);
+            //AddTorque(10000f * -FacingDirection, false);
+            
+            yield return new WaitForSeconds(1);
+            
+            Destroy(gameObject);
         }
 
         // SuperFroggy : MiniBoss => SecondPhase

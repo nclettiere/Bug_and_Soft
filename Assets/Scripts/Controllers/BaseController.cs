@@ -14,6 +14,7 @@ using Interactions.Interfaces;
 using Misc;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using World;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -31,23 +32,22 @@ namespace Controllers
                 controllerKind == EControllerKind.Neutral)
                 return;
 
-            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
+            if (Time.time > damagedTimeCD)
             {
-                Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
-                
+
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
                 playerFacingDirection = playerController.IsFacingRight();
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-                
+
                 if (firstAttack)
                     hitAttackSFX1.Play();
                 else
                     hitAttackSFX2.Play();
-                
+
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
@@ -105,11 +105,13 @@ namespace Controllers
         private void Awake()
         {
             if (OnLandEvent == null)
-                OnLandEvent = new UnityEvent();
+                OnLandEvent = new UnityEvent();            
+            if (OnBodyGroundCheckEvent == null)
+                OnBodyGroundCheckEvent = new UnityEvent();
             if (OnLifeTimeEnded == null)
                 OnLifeTimeEnded = new UnityEvent();
         }
-        
+
         protected virtual void Start()
         {
             baseMovementController = GetComponent<BaseMovementController>();
@@ -120,10 +122,24 @@ namespace Controllers
             currentHealth = ctrlData.maxHealth;
 
             StateMachine = new ControllerStateMachine();
+
+            cachedGroundCheck = CheckGround();
+            cachedBodyGroundCheck = CheckOnBodyTouchGround();
         }
 
         protected virtual void Update()
         {
+            //if (dead)
+            //{
+            //    if (!deadCoroutineStarted)
+            //    {
+            //        deadCoroutineStarted = true;
+            //        StartCoroutine(OnDie());
+            //    }
+//
+            //    return;
+            //}
+            
             if (GameManager.Instance.IsGamePaused())
             {
                 if (!savedRigidData)
@@ -148,26 +164,39 @@ namespace Controllers
                 savedRigidData = false;
             }
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord &&
+                characterKind != ECharacterKind.Pepe)
             {
-                if (!dead &&characterKind != ECharacterKind.Pepe)
+                if (!dead && characterKind != ECharacterKind.Pepe)
                 {
                     CheckPlayerInNearRange();
                     CheckPlayerInLongRange();
                 }
 
-                StateMachine.CurrentState.UpdateState();
+                StateMachine.CurrentState?.UpdateState();
+
+                if (!cachedGroundCheck && CheckGround())
+                    OnLandEvent.Invoke();
+
+                cachedGroundCheck = CheckGround();                
+                
+                if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
+                    OnBodyGroundCheckEvent.Invoke();
+
+                cachedBodyGroundCheck = CheckGround();
             }
         }
 
         private void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused() || dead) return;
-            
+
             if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
                 StateMachine.CurrentState.UpdatePhysics();
         }
 
+        
+        GUIStyle style = new GUIStyle();
         protected virtual void OnDrawGizmos()
         {
             // World Checks gizmoes ...
@@ -208,14 +237,22 @@ namespace Controllers
                 // Player Detection
                 //Near range
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(playerDetectCenterCheck.position,
-                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerNearRangeDistance * FacingDirection)),
-                        playerDetectCenterCheck.position.y));
+                Gizmos.DrawLine(AttacksRange[0].position, AttacksRange[1].position);
+
                 //Long range
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f),
-                    new Vector2((playerDetectCenterCheck.position.x + (ctrlData.playerLongRangeDistance * FacingDirection)),
-                        playerDetectCenterCheck.position.y));
+                Gizmos.DrawLine(AttacksRange[1].position, AttacksRange[2].position);
+                
+#if UNITY_EDITOR
+                
+                style.normal.textColor = Color.blue;
+                UnityEditor.Handles.color = Color.blue;
+                UnityEditor.Handles.Label(AttacksRange[1].position - new Vector3(2, 0), "Attack near range", style);
+
+                style.normal.textColor = Color.cyan;
+                UnityEditor.Handles.color = Color.cyan;
+                UnityEditor.Handles.Label(AttacksRange[2].position - new Vector3(2, 0), "Attack long range", style);
+#endif
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -251,7 +288,7 @@ namespace Controllers
 
         public T GetMovementController<T>() where T : BaseMovementController
         {
-            return (T) baseMovementController;
+            return (T)baseMovementController;
         }
 
         public Animator GetAnimator()
@@ -262,11 +299,6 @@ namespace Controllers
         public Transform GetTransfrom()
         {
             return transform;
-        }
-
-        public GameObject GetDialogueBubble()
-        {
-            return dialogueBubble;
         }
 
         public bool CheckWall()
@@ -287,44 +319,18 @@ namespace Controllers
                 ctrlData.whatIsGround);
         }
 
-        public bool CheckTop()
-        {
-            return Physics2D.Raycast(topCheck.position, Vector2.up, ctrlData.topCheckDistance,
-                ctrlData.whatIsGround);
-        }
-
-
         public bool CheckPlayerInNearRange()
         {
-            RaycastHit2D hit = Physics2D.Raycast(playerDetectCenterCheck.position, transform.right, ctrlData.playerNearRangeDistance,
-                ctrlData.whatIsPlayer);
-
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            RaycastHit2D hit =
+                Physics2D.Linecast(AttacksRange[0].position, AttacksRange[1].position, ctrlData.whatIsPlayer);
+            return hit.collider != null && hit.collider.CompareTag("Player");
         }
-        
+
         public bool CheckPlayerInLongRange()
         {
-            Vector2 longRangePos = playerDetectCenterCheck.position + new Vector3(ctrlData.playerNearRangeDistance, 0f);
-            RaycastHit2D hit = Physics2D.Raycast(longRangePos, transform.right, ctrlData.playerLongRangeDistance,
-                ctrlData.whatIsPlayer);
-        
-            if (hit.collider != null)
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    return true;
-                }
-            }
-        
-            return false;
+            RaycastHit2D hit =
+                Physics2D.Linecast(AttacksRange[1].position, AttacksRange[2].position, ctrlData.whatIsPlayer);
+            return hit.collider != null && hit.collider.CompareTag("Player");
         }
 
         protected void MoveOnDamaged(int direction, Vector2 moveOnDamagedForce)
@@ -332,38 +338,6 @@ namespace Controllers
             moveOnDamaged = true;
             moveOnDamagedStartTime = Time.time;
             rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
-            //rigidbody2D.velocity = new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y);
-        }
-
-        private void CheckInteractions()
-        {
-            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRadius, new Vector2(0f, 0f));
-
-            foreach (var hit in hits)
-            {
-                if (hit.collider.tag == "Player")
-                {
-                    canPlayerInteract = true;
-                    // Show interaction bubbles
-                    if (dialogueBubble != null)
-                        dialogueBubble.gameObject.SetActive(true);
-                    return;
-                }
-            }
-
-            canPlayerInteract = false;
-            // Hide interaction bubbles
-            if (dialogueBubble != null)
-                dialogueBubble.gameObject.SetActive(false);
-        }
-
-        private void CheckMoveOnAttack()
-        {
-            if (Time.time >= moveOnAttackStart + moveOnAttackDuration && movedOnAttack)
-            {
-                movedOnAttack = false;
-                rBody.velocity = new Vector2(0.0f, rBody.velocity.y);
-            }
         }
 
         private void OnBecameVisible()
@@ -409,6 +383,22 @@ namespace Controllers
             }
         }
 
+        public bool CheckOnBodyTouchGround()
+        {
+            touchDamageBottomLeft.Set(
+                touchDamageCheck.position.x - (touchDamageWidth / 2),
+                touchDamageCheck.position.y - (touchDamageHeight / 2));
+
+            touchDamageTopRight.Set(
+                touchDamageCheck.position.x + (touchDamageWidth / 2),
+                touchDamageCheck.position.y + (touchDamageHeight / 2));
+
+            return Physics2D.OverlapArea(
+                touchDamageBottomLeft,
+                touchDamageTopRight,
+                ctrlData.whatIsGround);
+        }
+
         private protected IEnumerator DamageEffect()
         {
             renderer.color = new Color(1f, 0.334f, 0.305f);
@@ -419,6 +409,12 @@ namespace Controllers
         public virtual void Die()
         {
             dead = true;
+            StateMachine.ChangeState(null);
+        }
+
+        public virtual IEnumerator OnDie()
+        {
+            yield return 0;
         }
 
         public void DestroyNow()
@@ -437,15 +433,15 @@ namespace Controllers
             DropItems();
             Destroy(gameObject);
         }
-        
-             
-        public virtual void DropItems() 
+
+
+        public virtual void DropItems()
         {
             if (itemDrops != null && itemDrops.Length > 0)
             {
                 // TODO: Luck factor !!!
                 int random = Random.Range(0, 35);
-                
+
                 // Dropea algo random
                 if (random <= 5)
                 {
@@ -458,6 +454,15 @@ namespace Controllers
         public bool CanCharacterInteract()
         {
             return canInteract;
+        }
+
+        public void ShowTauntIndicator()
+        {
+            if (enemyTauntIndicator != null)
+            {
+                enemyTauntIndicator.gameObject.SetActive(true);
+                enemyTauntIndicator.Show();
+            }
         }
 
         #region UserVariables
@@ -488,6 +493,7 @@ namespace Controllers
         [SerializeField] private protected AudioSource hitAttackSFX2;
         [SerializeField] private AudioSource deathSFX;
         [SerializeField] private protected GameObject dialogueBubble;
+        [SerializeField] private protected EnemyTauntIndicator enemyTauntIndicator;
 
         [Header("State Options")] [SerializeField]
         private bool canWalk;
@@ -506,12 +512,13 @@ namespace Controllers
             ledgeCheck,
             touchDamageCheck,
             playerDetectCenterCheck;
-        
-        [Header("ItemDrops")]
-        [SerializeField] private protected GameObject[] itemDrops;
 
-        [Header("Events Zone")] 
-        public UnityEvent OnLandEvent;
+        [SerializeField] private Transform[] AttacksRange;
+
+        [Header("ItemDrops")] [SerializeField] private protected GameObject[] itemDrops;
+
+        [Header("Events Zone")] public UnityEvent OnLandEvent;
+        [Header("Events Zone")] public UnityEvent OnBodyGroundCheckEvent;
 
         #endregion
 
@@ -523,7 +530,7 @@ namespace Controllers
         protected internal Rigidbody2D rBody;
         protected PlayerController playerController;
         private SpriteRenderer renderer;
-        protected ECharacterState currentState;
+        protected string currentState;
         protected bool playerFacingDirection;
         protected internal bool canInteract = true;
         private bool moveOnDamaged;
@@ -532,12 +539,16 @@ namespace Controllers
         public bool wallDetected { get; private set; }
         public bool groundDetected { get; private set; }
         public bool topDetected { get; private set; }
+
+        private bool deadCoroutineStarted;
         public UnityEvent OnLifeTimeEnded { get; set; }
 
         protected bool
             lastGroundDetected,
             lapidaIntance = false,
-            firstAttack;
+            firstAttack,
+            cachedGroundCheck,
+            cachedBodyGroundCheck;
 
         protected internal bool
             canPlayerInteract = false;

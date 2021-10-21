@@ -16,7 +16,13 @@ namespace Controllers.StateMachine
 
         public void ChangeState(State nextState)
         {
-            CurrentState.Exit();
+            if (nextState == null)
+            {
+                CurrentState = null;
+                return;
+            }
+
+            CurrentState?.Exit();
             CurrentState = nextState;
             CurrentState.Enter();
         }
