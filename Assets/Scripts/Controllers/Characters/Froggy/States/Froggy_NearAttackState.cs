@@ -43,22 +43,14 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
-            if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
             {
                 froggyController.EnterPhaseTwo();
             }
-            
-            if(controller.currentHealth <= 0)
-                stateMachine.ChangeState(froggyController._deadState);
-            
-            //if (controller.CheckPlayerInLongRange())
-            //{
-            //    //stateMachine.ChangeState(froggyController._prepareAttackState);
-            //}
 
             LookAtPlayer();
             
-            if (Time.time >= lastJumpTime)
+            if (Time.time >= lastJumpTime && !controller.IsDead())
             {
                 controller.GetAnimator().SetBool(animBoolName, true);
                 // SFX de saltar !!!
@@ -83,7 +75,6 @@ namespace Controllers.Froggy
             // OnLand
             if (!isDetectingGround && controller.CheckGround())
             {
-                Debug.Log("SupeprFroggy Landed");
                 controller.SetVelocity(0f);
                 AudioSource.PlayClipAtPoint(jumpStateData.landSFX, controller.GetTransfrom().position);
                 controller.GetAnimator().SetBool(animBoolName, false);

@@ -137,6 +137,7 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 0}
   deathSFX: {fileID: 0}
   dialogueBubble: {fileID: 6622991600816733698}
+  enemyTauntIndicator: {fileID: 0}
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
@@ -156,6 +157,10 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnBodyGroundCheckEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  Dialogues: {fileID: 7822060047811124681}
 --- !u!212 &7822060047811124686
 SpriteRenderer:
   m_ObjectHideFlags: 0

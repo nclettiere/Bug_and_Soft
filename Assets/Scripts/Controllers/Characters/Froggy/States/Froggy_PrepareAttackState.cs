@@ -16,13 +16,14 @@ namespace Controllers.Froggy
 
         public override void UpdateState()
         {
-            if (controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
             {
                 froggyController.EnterPhaseTwo();
             }
             
-            if(controller.currentHealth <= 0)
-                stateMachine.ChangeState(froggyController._deadState);
+            
+            //if(controller.currentHealth <= 0)
+            //    stateMachine.ChangeState(froggyController._deadState);
 
             if (controller.CheckPlayerInNearRange())
                 stateMachine.ChangeState(froggyController._nearAttackState);

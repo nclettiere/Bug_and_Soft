@@ -27,15 +27,10 @@ namespace Controllers.StateMachine.States
             if (stateData.applyTorque)
             {
                 controller.AddForce(new Vector2(3f * -controller.FacingDirection, 3f), true);
-                controller.AddTorque(10f * -controller.FacingDirection, true);
+                controller.AddTorque(10f * -controller.FacingDirection, false);
             }
 
             deadWaitTime = Time.time + controller.deadMaxWait;
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
         }
 
         public override void UpdateState()
@@ -46,16 +41,9 @@ namespace Controllers.StateMachine.States
             }
 
             if (stateData.showLapida)
-            {
                 controller.DestroyNow(stateData.lapida);
-            }
             else
                 controller.DestroyNow();
-        }
-
-        public override void UpdatePhysics()
-        {
-            base.UpdatePhysics();
         }
     }
 }

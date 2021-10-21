@@ -65,7 +65,7 @@ namespace Controllers.Froggy
                 controllerKind == EControllerKind.Neutral)
                 return;
 
-            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
+            if (Time.time > damagedTimeCD)
             {
                 Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();

@@ -25,9 +25,12 @@ namespace Controllers.StateMachine.States
             
             controller.OnLandEvent.AddListener(() =>
             {
-                AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
-                CheckForFlip();
-                stateMachine.ChangeState(froggyController._idleState);
+                if (!controller.IsDead())
+                {
+                    AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
+                    CheckForFlip();
+                    stateMachine.ChangeState(froggyController._idleState);
+                }
             });
             
             controller.GetAnimator().SetBool(animBoolName, true);
@@ -39,14 +42,6 @@ namespace Controllers.StateMachine.States
         {
             base.Exit();
             controller.GetAnimator().SetBool(animBoolName, false);
-        }
-
-        public override void UpdateState()
-        {
-            base.UpdateState();
-            
-            if(controller.currentHealth <= 0)
-                stateMachine.ChangeState(froggyController._deadState);
         }
 
         private void CheckForFlip()

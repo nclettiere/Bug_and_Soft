@@ -32,9 +32,8 @@ namespace Controllers
                 controllerKind == EControllerKind.Neutral)
                 return;
 
-            if (Time.time > damagedTimeCD && currentState != ECharacterState.Dead)
+            if (Time.time > damagedTimeCD)
             {
-                Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
 
                 // Obtenemos la posicion del ataque
@@ -130,6 +129,17 @@ namespace Controllers
 
         protected virtual void Update()
         {
+            //if (dead)
+            //{
+            //    if (!deadCoroutineStarted)
+            //    {
+            //        deadCoroutineStarted = true;
+            //        StartCoroutine(OnDie());
+            //    }
+//
+            //    return;
+            //}
+            
             if (GameManager.Instance.IsGamePaused())
             {
                 if (!savedRigidData)
@@ -163,7 +173,7 @@ namespace Controllers
                     CheckPlayerInLongRange();
                 }
 
-                StateMachine.CurrentState.UpdateState();
+                StateMachine.CurrentState?.UpdateState();
 
                 if (!cachedGroundCheck && CheckGround())
                     OnLandEvent.Invoke();
@@ -185,6 +195,8 @@ namespace Controllers
                 StateMachine.CurrentState.UpdatePhysics();
         }
 
+        
+        GUIStyle style = new GUIStyle();
         protected virtual void OnDrawGizmos()
         {
             // World Checks gizmoes ...
@@ -230,6 +242,17 @@ namespace Controllers
                 //Long range
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawLine(AttacksRange[1].position, AttacksRange[2].position);
+                
+#if UNITY_EDITOR
+                
+                style.normal.textColor = Color.blue;
+                UnityEditor.Handles.color = Color.blue;
+                UnityEditor.Handles.Label(AttacksRange[1].position - new Vector3(2, 0), "Attack near range", style);
+
+                style.normal.textColor = Color.cyan;
+                UnityEditor.Handles.color = Color.cyan;
+                UnityEditor.Handles.Label(AttacksRange[2].position - new Vector3(2, 0), "Attack long range", style);
+#endif
             }
 
             if (controllerKind == EControllerKind.NPC)
@@ -386,6 +409,12 @@ namespace Controllers
         public virtual void Die()
         {
             dead = true;
+            StateMachine.ChangeState(null);
+        }
+
+        public virtual IEnumerator OnDie()
+        {
+            yield return 0;
         }
 
         public void DestroyNow()
@@ -501,7 +530,7 @@ namespace Controllers
         protected internal Rigidbody2D rBody;
         protected PlayerController playerController;
         private SpriteRenderer renderer;
-        protected ECharacterState currentState;
+        protected string currentState;
         protected bool playerFacingDirection;
         protected internal bool canInteract = true;
         private bool moveOnDamaged;
@@ -510,6 +539,8 @@ namespace Controllers
         public bool wallDetected { get; private set; }
         public bool groundDetected { get; private set; }
         public bool topDetected { get; private set; }
+
+        private bool deadCoroutineStarted;
         public UnityEvent OnLifeTimeEnded { get; set; }
 
         protected bool

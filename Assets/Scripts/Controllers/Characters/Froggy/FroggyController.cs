@@ -62,7 +62,13 @@ namespace Controllers.Froggy
 
             InvokeRepeating("MoveCejas", 0f, 7f);
         }
-        
+
+        protected override void Update()
+        {
+            base.Update();
+            currentState = StateMachine.CurrentState.ToString();
+        }
+
         public void Anim_OnAttackingAnimStarted()
         {
             _attackState.attackStarted = true;
@@ -87,8 +93,25 @@ namespace Controllers.Froggy
 
         public override void Die()
         {
-            base.Die();
+            dead = true;
+            GetAnimator().SetBool("Idle", false);
+            GetAnimator().SetBool("PreparingAttack", false);
+            GetAnimator().SetBool("Attacking", false);
+            GetAnimator().SetBool("Dead", true);
+            
             StateMachine.ChangeState(_deadState);
+        }
+
+        public override IEnumerator OnDie()
+        {
+            GameManager.Instance.AddPlayerKrowns(KrownReward);
+            
+            AddForce(new Vector2(20f * -FacingDirection, 10f), true);
+            //AddTorque(10000f * -FacingDirection, false);
+            
+            yield return new WaitForSeconds(1);
+            
+            Destroy(gameObject);
         }
 
         // SuperFroggy : MiniBoss => SecondPhase
