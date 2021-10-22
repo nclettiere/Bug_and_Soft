@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private GameObject character;
     [SerializeField] private ECharacterKind characterKind;
+    [SerializeField] private bool startFlipped;
 
     private void Start()
     {
@@ -23,6 +24,9 @@ public class EnemySpawner : MonoBehaviour
         {
             spawnedEnemy = Instantiate(character, transform.position, Quaternion.Euler(0, 0, 0), transform);
             controller = spawnedEnemy.GetComponent<BaseController>();
+
+            if (startFlipped) controller.Flip();
+            
             controller.OnLifeTimeEnded.AddListener(() => OnControllerDestroyed());
             hasEnemySpawned = true;
         }

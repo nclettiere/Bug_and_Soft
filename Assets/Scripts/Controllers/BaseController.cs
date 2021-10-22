@@ -123,23 +123,16 @@ namespace Controllers
 
             StateMachine = new ControllerStateMachine();
 
-            cachedGroundCheck = CheckGround();
-            cachedBodyGroundCheck = CheckOnBodyTouchGround();
+            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord &&
+                characterKind != ECharacterKind.Pepe)
+            {
+                cachedGroundCheck = CheckGround();
+                cachedBodyGroundCheck = CheckOnBodyTouchGround();
+            }
         }
 
         protected virtual void Update()
         {
-            //if (dead)
-            //{
-            //    if (!deadCoroutineStarted)
-            //    {
-            //        deadCoroutineStarted = true;
-            //        StartCoroutine(OnDie());
-            //    }
-//
-            //    return;
-            //}
-            
             if (GameManager.Instance.IsGamePaused())
             {
                 if (!savedRigidData)

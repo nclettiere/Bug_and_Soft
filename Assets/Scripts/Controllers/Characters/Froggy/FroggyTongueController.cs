@@ -50,7 +50,7 @@ namespace Controllers.Froggy
         {
             if (firstSlap || !other.transform.CompareTag("Player")) return;
             
-            damageInfo = new DamageInfo(15, froggyController.transform.position.x, true, false, true);
+            damageInfo = new DamageInfo(5, froggyController.transform.position.x, true, false, true);
             damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
             damageInfo.slowDuration = 3f;
                     
