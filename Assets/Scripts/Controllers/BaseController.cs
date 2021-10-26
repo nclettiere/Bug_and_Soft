@@ -180,7 +180,7 @@ namespace Controllers
             }
         }
 
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (GameManager.Instance.IsGamePaused() || dead) return;
 

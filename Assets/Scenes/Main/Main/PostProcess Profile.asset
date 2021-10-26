@@ -205,13 +205,13 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: -63.27
   contrast:
-    m_OverrideState: 1
-    m_Value: 12
+    m_OverrideState: 0
+    m_Value: -16
     min: -100
     max: 100
   colorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 0.1792453, g: 0, b: 0, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0.21568628, b: 0.21568628, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -221,8 +221,8 @@ MonoBehaviour:
     min: -180
     max: 180
   saturation:
-    m_OverrideState: 1
-    m_Value: -5
+    m_OverrideState: 0
+    m_Value: -53
     min: -100
     max: 100
 --- !u!114 &5884353810955338446
@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
   m_Name: WhiteBalance
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   temperature:
     m_OverrideState: 1
@@ -261,11 +261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70afe9e12c7a7ed47911bb608a23a8ff, type: 3}
   m_Name: SplitToning
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.18867925, g: 0.3018868, b: 0, a: 1}
+    m_Value: {r: 1, g: 0, b: 0.070706844, a: 1}
     hdr: 0
     showAlpha: 0
     showEyeDropper: 1
@@ -277,7 +277,7 @@ MonoBehaviour:
     showEyeDropper: 1
   balance:
     m_OverrideState: 1
-    m_Value: -36
+    m_Value: -100
     min: -100
     max: 100
 --- !u!114 &6610697975820446148
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.644341, y: 1, z: 0.6615561, w: -0.097902104}
+    m_Value: {x: 0.7670944, y: 1, z: 0.69642377, w: -0.097902104}
   midtones:
     m_OverrideState: 0
     m_Value: {x: 0.97222036, y: 0.9763067, z: 1, w: 0.0839161}
