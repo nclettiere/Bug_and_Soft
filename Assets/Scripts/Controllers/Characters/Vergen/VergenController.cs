@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Controllers.Characters.Vergen.States;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Controllers.Characters.Vergen
 {
@@ -10,11 +12,14 @@ namespace Controllers.Characters.Vergen
         
         [SerializeField] private GameObject _SpearObject;
         [SerializeField] private Transform _SpearPosition;
+        [SerializeField] private LayerMask _WhatIsSpikes;
 
         public VergenIdleState vergenIdleState { get; private set; }
         public VergenPhaseOneState vergenPhaseOneState { get; private set; }
         public VergenNormalAttackState vergenNormalAttackState { get; private set; }
         public VergenLongRangeAttack vergenLongAttackState { get; private set; }
+        
+        public bool HasSpearAttackFinished { get; private set; }
 
         private bool spearShot;
         
@@ -79,17 +84,20 @@ namespace Controllers.Characters.Vergen
             else
                 rot = Quaternion.Euler(0, 180, 0);
             
-            GameObject proj = Instantiate(_SpearObject, _SpearPosition.position, rot, transform);
+            GameObject proj = Instantiate(_SpearObject, _SpearPosition.position, rot);
             VergenSpear vSpear = proj.GetComponent<VergenSpear>();
             
             vSpear.FireProjectile(30f, 30f, false);
+
+            vergenLongAttackState.OnSpearShot();
         }
 
         public void ShootSpears()
         {
-            StopCoroutine(StartShooting());
             Debug.Log("Shooting "+ vergenLongAttackState.NumberOfSpears +" spears!");
-            StartCoroutine(StartShooting());
+            //StartCoroutine(StartShooting());
+            HasSpearAttackFinished = false;
+            GetAnimator().SetBool("LongRangeAttack", true);
         }
 
         private IEnumerator StartShooting()
@@ -97,6 +105,7 @@ namespace Controllers.Characters.Vergen
             for (int i = 0; i < vergenLongAttackState.NumberOfSpears; i++)
             {
                 spearShot = false;
+                Debug.Log($"Number of spears is {vergenLongAttackState.NumberOfSpears}");
                 GetAnimator().SetBool("LongRangeAttack", true);
                 yield return new WaitUntil(() => spearShot);
                 GetAnimator().SetBool("LongRangeAttack", false);
@@ -104,14 +113,24 @@ namespace Controllers.Characters.Vergen
             
             Debug.Log("Shooting finished!");
 
-            StateMachine.ChangeState(vergenPhaseOneState);
+            vergenLongAttackState.OnAttackFinish();
             
             yield return null;
         }
 
         private void Anim_OnSpearShotFinished()
         {
+            HasSpearAttackFinished = true;
+            GetAnimator().SetBool("LongRangeAttack", false);
             spearShot = true;
         }
+
+        public bool CheckForSpikes()
+        {
+            var capsule = GetComponent<CapsuleCollider2D>();
+            RaycastHit2D hit = Physics2D.CircleCast(transform.position, 2, Vector2.zero, 0, _WhatIsSpikes);
+            return hit.collider != null && hit.collider.CompareTag("Spikes");
+        }
+
     }
 }

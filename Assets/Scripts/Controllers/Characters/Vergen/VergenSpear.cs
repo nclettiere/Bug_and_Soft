@@ -1,4 +1,5 @@
-﻿using Controllers.Damage;
+﻿using System.Collections;
+using Controllers.Damage;
 using Player;
 using UnityEngine;
 
@@ -67,6 +68,8 @@ namespace Controllers.Characters.Vergen
                     hasHitGround = true;
                     rb.gravityScale = 0f;
                     rb.velocity = Vector2.zero;
+                    
+                    StartCoroutine(DestroyDelayed());
                 }
 
                 if (Mathf.Abs(xStartPos - transform.position.x) >= distance && !isGravityOn)
@@ -87,6 +90,12 @@ namespace Controllers.Characters.Vergen
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(damagePos.position, damageRadius);
+        }
+        
+        private IEnumerator DestroyDelayed() 
+        {
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
+            Destroy(gameObject);
         }
     }
 }

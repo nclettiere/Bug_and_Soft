@@ -12,6 +12,7 @@ namespace Controllers.Characters.Vergen.States
 
         public UnityEvent OnVergenShootingSpears;
         public int NumberOfSpears;
+        public int NumberOfSpearsShot;
 
         public VergenLongRangeAttack(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             VergenController vController)
@@ -25,14 +26,43 @@ namespace Controllers.Characters.Vergen.States
         public override void Enter()
         {
             base.Enter();
+            
+            if(vController.CheckPlayerInNearRange())
+                controller.rBody.AddForce(new Vector2(40 * -controller.FacingDirection, 20),
+                    ForceMode2D.Impulse);
+            
             NumberOfSpears = Random.Range(1, 5);
             OnVergenShootingSpears.Invoke();
+        }
+
+        public override void UpdatePhysics()
+        {
+            base.UpdatePhysics();
+
+            if (NumberOfSpearsShot >= NumberOfSpears)
+            {
+                stateMachine.ChangeState(vController.vergenPhaseOneState);
+            }
+            else
+            {
+                if (vController.HasSpearAttackFinished && vController.CheckGround())
+                {
+                    vController.ShootSpears();
+                }
+            }
         }
 
         public override void Exit()
         {
             base.Exit();
+            NumberOfSpearsShot = 0;
             vController.GetAnimator().SetBool(animBoolName, false);
+        }
+        
+        
+        public void OnSpearShot()
+        {
+            NumberOfSpearsShot++;
         }
 
         public void OnAttackFinish()

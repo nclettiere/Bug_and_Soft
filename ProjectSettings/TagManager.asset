@@ -11,6 +11,7 @@ TagManager:
   - NPC
   - Spawner
   - Togue
+  - Spikes
   layers:
   - Default
   - TransparentFX

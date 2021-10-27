@@ -2,6 +2,7 @@
 using Controllers.Characters.Vergen;
 using Controllers.Movement;
 using Controllers.StateMachine;
+using UnityEngine;
 
 namespace Controllers.Characters.Vergen.States
 {
@@ -9,7 +10,10 @@ namespace Controllers.Characters.Vergen.States
     {
         private VergenController vController;
 
-        private bool hasAttackedNearRange = true;
+        private bool hasAttackedNearRange;
+
+        private int _attackKind;
+        public bool attackOnCourse;
 
         public VergenPhaseOneState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             VergenController vController)
@@ -21,12 +25,13 @@ namespace Controllers.Characters.Vergen.States
         public override void Enter()
         {
             base.Enter();
+            attackOnCourse = false;
         }
 
         public override void Exit()
         {
             base.Exit();
-            
+
             vController.GetAnimator().SetBool(animBoolName, false);
         }
 
@@ -40,31 +45,43 @@ namespace Controllers.Characters.Vergen.States
         {
             base.UpdatePhysics();
 
-            //if (!vController.CheckPlayerInNearRange())
-            //{
-            //    vController.GetMovementController<BaseMovementController>().Move();
-            //    vController.GetAnimator().SetBool(animBoolName, true);
-            //}
-            //else
-            //{
-            //    vController.GetAnimator().SetBool(animBoolName, false);
-            //    stateMachine.ChangeState(vController.vergenNormalAttackState);
-            //    hasAttackedNearRange = true;
-            //}
-            //
-            //if(hasAttackedNearRange) {
-                if (vController.CheckPlayerInLongRange())
+
+            if (!attackOnCourse)
+            {
+                if (_attackKind == 0)
                 {
-                    vController.GetAnimator().SetBool(animBoolName, false);
-                    stateMachine.ChangeState(vController.vergenLongAttackState);
+                    if (!vController.CheckPlayerInNearRange())
+                    {
+                        vController.GetMovementController<BaseMovementController>().Move();
+                        vController.GetAnimator().SetBool(animBoolName, true);
+                    }
+                    else
+                    {
+                        attackOnCourse = true;
+                        vController.GetAnimator().SetBool(animBoolName, false);
+                        hasAttackedNearRange = true;
+                        _attackKind = Random.Range(0, 2);
+                        Debug.Log($"AttackKind is {_attackKind}");
+                        stateMachine.ChangeState(vController.vergenNormalAttackState);
+                        return;
+                    }
                 }
-            //}
+
+                if (_attackKind == 1)
+                {
+                    if (vController.CheckPlayerInNearRange())
+                    {
+                        vController.GetAnimator().SetBool(animBoolName, false);
+                        _attackKind = 0;
+                        stateMachine.ChangeState(vController.vergenLongAttackState);
+                    }
+                }
+            }
         }
-        
+
         protected virtual void LookAtPlayer()
         {
             float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
-                
             if ((controller.transform.position.x < playerPositionX && controller.FacingDirection == -1) ||
                 (controller.transform.position.x > playerPositionX && controller.FacingDirection == 1))
                 controller.Flip();
