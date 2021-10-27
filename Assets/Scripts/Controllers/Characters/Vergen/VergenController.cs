@@ -15,8 +15,8 @@ namespace Controllers.Characters.Vergen
         public VergenPhaseOneState vergenPhaseOneState { get; private set; }
         public VergenNormalAttackState vergenNormalAttackState { get; private set; }
         public VergenLongRangeAttack vergenLongAttackState { get; private set; }
-        
-        public 
+
+        private bool spearShot;
         
         protected override void Start()
         {
@@ -26,6 +26,8 @@ namespace Controllers.Characters.Vergen
             vergenPhaseOneState = new VergenPhaseOneState(this, StateMachine, "Run", this);
             vergenNormalAttackState = new VergenNormalAttackState(this, StateMachine, "NormalAttack", this);
             vergenLongAttackState = new VergenLongRangeAttack(this, StateMachine, "LongRangeAttack", this);
+            
+            vergenLongAttackState.OnVergenShootingSpears.AddListener(ShootSpears);
             
             StateMachine.Initialize(vergenIdleState);
         }
@@ -81,6 +83,35 @@ namespace Controllers.Characters.Vergen
             VergenSpear vSpear = proj.GetComponent<VergenSpear>();
             
             vSpear.FireProjectile(30f, 30f, false);
+        }
+
+        public void ShootSpears()
+        {
+            StopCoroutine(StartShooting());
+            Debug.Log("Shooting "+ vergenLongAttackState.NumberOfSpears +" spears!");
+            StartCoroutine(StartShooting());
+        }
+
+        private IEnumerator StartShooting()
+        {
+            for (int i = 0; i < vergenLongAttackState.NumberOfSpears; i++)
+            {
+                spearShot = false;
+                GetAnimator().SetBool("LongRangeAttack", true);
+                yield return new WaitUntil(() => spearShot);
+                GetAnimator().SetBool("LongRangeAttack", false);
+            }
+            
+            Debug.Log("Shooting finished!");
+
+            StateMachine.ChangeState(vergenPhaseOneState);
+            
+            yield return null;
+        }
+
+        private void Anim_OnSpearShotFinished()
+        {
+            spearShot = true;
         }
     }
 }

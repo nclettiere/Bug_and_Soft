@@ -104,7 +104,7 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.9166667
-    functionName: 
+    functionName: Anim_OnSpearShotFinished
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

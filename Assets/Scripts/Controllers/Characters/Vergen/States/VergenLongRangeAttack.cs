@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Controllers.StateMachine;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace Controllers.Characters.Vergen.States
@@ -9,17 +10,23 @@ namespace Controllers.Characters.Vergen.States
     {
         private VergenController vController;
 
+        public UnityEvent OnVergenShootingSpears;
+        public int NumberOfSpears;
+
         public VergenLongRangeAttack(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             VergenController vController)
             : base(controller, stateMachine, animBoolName)
         {
             this.vController = vController;
+
+            OnVergenShootingSpears = new UnityEvent();
         }
 
         public override void Enter()
         {
             base.Enter();
-            vController.GetAnimator().SetBool(animBoolName, true);
+            NumberOfSpears = Random.Range(1, 5);
+            OnVergenShootingSpears.Invoke();
         }
 
         public override void Exit()
