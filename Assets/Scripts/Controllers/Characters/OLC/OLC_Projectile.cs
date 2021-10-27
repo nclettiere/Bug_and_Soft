@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class OLC_Projectile : MonoBehaviour
 {
-
     private float speed;
     private float distance;
     private float xStartPos;
