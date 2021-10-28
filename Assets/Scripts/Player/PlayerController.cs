@@ -34,6 +34,7 @@ namespace Player
         [SerializeField] private AudioSource onPlayerHurtSFX;
         [SerializeField] private GameObject shieldPlayerIndicator;
         [SerializeField] private Transform pepeTarget;
+        public Transform VergenTrapTarget;
 
         public int maxHealth = 150; // health por defecto
 
@@ -166,6 +167,7 @@ namespace Player
             //powerUps.Initialize(godLikePowerUp);
             
             GameManager.Instance.OnLevelReset.AddListener(ResetStats);
+            GameManager.Instance.OnVergenTrappedPlayer.AddListener(VergenTrapStart);
         }
 
         private void ResetStats()
@@ -571,6 +573,7 @@ namespace Player
 
         public void VergenTrapStart()
         {
+            Debug.Log("VergenTrapStart");
             GameManager.Instance.gameInput.DisableInput();
         }
     }

@@ -40,12 +40,11 @@ public class VergenHeadAsesina : MonoBehaviour
         {
             var pController = other.transform.GetComponent<PlayerController>();
 
-            if (!pController.roll)
+            if (!pController.rollAnim)
             {
                 rb.gravityScale = -3;
                 playerHit = true;
-                GameManager.Instance.PlayerController
-                    .VergenTrapStart();
+                GameManager.Instance.VergenTrapStart();
                 Destroy(gameObject, 5f);
             }
         }

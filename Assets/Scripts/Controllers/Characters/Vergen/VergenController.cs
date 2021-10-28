@@ -16,18 +16,31 @@ namespace Controllers.Characters.Vergen
         [SerializeField] private LayerMask _WhatIsSpikes;
         
         [SerializeField] private GameObject _vergenGhost;
-        [SerializeField] private VergenGhostTrigger[] _vergenGhostTriggers;
+        [SerializeField] private AudioSource _vergenTrap1SFX;
+        [SerializeField] private AudioSource _vergenTrap2SFX;
+        [SerializeField] private AudioSource _vergenBattleShoutSFX;
+        [SerializeField] private AudioSource _vergenTpSFX;
+        
+        public VergenGhostTrigger[] VergenGhostTriggers;
 
         public VergenIdleState vergenIdleState { get; private set; }
         public VergenPhaseOneState vergenPhaseOneState { get; private set; }
+        public VergenPhaseTwoState vergenPhaseTwoState { get; private set; }
         public VergenNormalAttackState vergenNormalAttackState { get; private set; }
         public VergenLongRangeAttack vergenLongAttackState { get; private set; }
         
         public VergenTorbeshinoState vergenTorbeshinoState { get; private set; }
         
+        public VergenFreeKillState vergenFreeKillState { get; private set; }
+        
+        public VergenTeleportState vergenTeleportState { get; private set; }
+        
         public bool HasSpearAttackFinished { get; private set; }
 
         private bool spearShot;
+
+        public int CurrentPhase = 1;
+        public bool AlwaysEnterRageMode;
         
         protected override void Start()
         {
@@ -35,11 +48,20 @@ namespace Controllers.Characters.Vergen
             
             vergenIdleState = new VergenIdleState(this, StateMachine, "Idle", this);
             vergenPhaseOneState = new VergenPhaseOneState(this, StateMachine, "Run", this);
+            vergenPhaseTwoState = new VergenPhaseTwoState(this, StateMachine, "Run", this);
             vergenNormalAttackState = new VergenNormalAttackState(this, StateMachine, "NormalAttack", this);
             vergenLongAttackState = new VergenLongRangeAttack(this, StateMachine, "LongRangeAttack", this);
             vergenTorbeshinoState = new VergenTorbeshinoState(this, StateMachine, "Torbeshino", this);
+            vergenFreeKillState = new VergenFreeKillState(this, StateMachine, "", this);
+            vergenTeleportState = new VergenTeleportState(this, StateMachine, "Disappear", this);
             
             vergenLongAttackState.OnVergenShootingSpears.AddListener(ShootSpears);
+            GameManager.Instance.OnVergenTrappedPlayer.AddListener(VergenTrapStart);
+
+            foreach (var ghostTrigger in VergenGhostTriggers)
+            {
+                ghostTrigger.OnVergenHeadDodged.AddListener(RestorePhaseTwo);
+            }
             
             StateMachine.Initialize(vergenIdleState);
         }
@@ -103,28 +125,40 @@ namespace Controllers.Characters.Vergen
 
         public void ShootSpears()
         {
-            Debug.Log("Shooting "+ vergenLongAttackState.NumberOfSpears +" spears!");
-            //StartCoroutine(StartShooting());
             HasSpearAttackFinished = false;
             GetAnimator().SetBool("LongRangeAttack", true);
         }
-
-        private IEnumerator StartShooting()
+        
+        public void RestorePhaseTwo()
         {
-            for (int i = 0; i < vergenLongAttackState.NumberOfSpears; i++)
-            {
-                spearShot = false;
-                Debug.Log($"Number of spears is {vergenLongAttackState.NumberOfSpears}");
-                GetAnimator().SetBool("LongRangeAttack", true);
-                yield return new WaitUntil(() => spearShot);
-                GetAnimator().SetBool("LongRangeAttack", false);
-            }
-            
-            Debug.Log("Shooting finished!");
+            StateMachine.ChangeState(vergenPhaseTwoState);
+        }
 
-            vergenLongAttackState.OnAttackFinish();
+        private void VergenTrapStart()
+        {
+            StopAllCoroutines();
+            StartCoroutine(VergenMasterTrap());
+        }
+        
+        private IEnumerator VergenMasterTrap()
+        {
+            GameManager.Instance.GetDynamicCamera().UpdateSize(7.85f, 2f);
+            yield return new WaitForSeconds(3f);
             
-            yield return null;
+            StateMachine.ChangeState(vergenFreeKillState);
+            rBody.velocity = Vector2.zero;
+            transform.position = GameManager.Instance.PlayerController.VergenTrapTarget.position;
+            LookAtPlayer();
+
+            _vergenTrap1SFX.Play();
+            yield return new WaitForSeconds(1f);
+            
+            GetAnimator().SetBool("NormalAttack", true);
+            _vergenTrap2SFX.Play();
+            _vergenBattleShoutSFX.Play();
+            yield return new WaitForSeconds(0.15f);
+            
+            yield return 0;
         }
 
         private void Anim_OnSpearShotFinished()
@@ -134,11 +168,9 @@ namespace Controllers.Characters.Vergen
             spearShot = true;
         }
 
-        public bool CheckForSpikes()
+        public void Anim_OnDisappearFinished()
         {
-            var capsule = GetComponent<CapsuleCollider2D>();
-            RaycastHit2D hit = Physics2D.CircleCast(transform.position, 2, Vector2.zero, 0, _WhatIsSpikes);
-            return hit.collider != null && hit.collider.CompareTag("Spikes");
+            vergenTeleportState.OnDisappearFinished();
         }
 
         public override void Damage(DamageInfo damageInfo)
@@ -146,7 +178,7 @@ namespace Controllers.Characters.Vergen
             
             if (Time.time > damagedTimeCD)
             {
-                _vergenGhostTriggers[Random.Range(0, 2)].Run();
+                //_vergenGhostTriggers[Random.Range(0, 2)].Run();
                 
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);

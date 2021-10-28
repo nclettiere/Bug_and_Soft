@@ -40,8 +40,12 @@ public class Spikes : MonoBehaviour
                     }
                     else if (transform.CompareTag("Enemy"))
                     {
-                        transform.GetComponent<BaseController>()
-                            .Damage(dInfo);
+                        BaseController bc = transform.GetComponent<BaseController>();
+                        if (bc != null)
+                        {
+                            bc.Damage(dInfo);
+                        }
+
                         damageCooldownTime = Time.time + damageCooldown;
                     }
                 }   

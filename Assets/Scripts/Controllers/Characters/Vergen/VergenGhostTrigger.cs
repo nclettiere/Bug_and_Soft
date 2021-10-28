@@ -16,11 +16,14 @@ namespace Controllers.Characters.Vergen
         private GameObject currentVergenGhost;
 
         public UnityEvent OnVergenGhostReachedEnd;
+        public UnityEvent OnVergenHeadDodged;
 
         private void Awake()
         {
             if (OnVergenGhostReachedEnd == null)
                 OnVergenGhostReachedEnd = new UnityEvent();
+            if (OnVergenHeadDodged == null)
+                OnVergenHeadDodged = new UnityEvent();
         }
 
         private void Start()
@@ -59,6 +62,10 @@ namespace Controllers.Characters.Vergen
             if (other.transform.CompareTag("VergenGhost"))
             {
                 OnVergenGhostReachedEnd.Invoke();
+            }else if (other.transform.CompareTag("VergenHead"))
+            {
+                Destroy(other.transform.gameObject);
+                OnVergenHeadDodged.Invoke();
             }
         }
 

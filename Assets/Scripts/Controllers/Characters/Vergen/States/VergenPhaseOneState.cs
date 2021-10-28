@@ -38,6 +38,12 @@ namespace Controllers.Characters.Vergen.States
         public override void UpdateState()
         {
             base.UpdateState();
+
+            if (vController.currentHealth <= vController.ctrlData.maxHealth / 3)
+            {
+                stateMachine.ChangeState(vController.vergenPhaseTwoState);
+            }
+            
             LookAtPlayer();
         }
 
@@ -59,7 +65,7 @@ namespace Controllers.Characters.Vergen.States
                         attackOnCourse = true;
                         vController.GetAnimator().SetBool(animBoolName, false);
                         hasAttackedNearRange = true;
-                        _attackKind = Random.Range(0, 3);
+                        _attackKind = Random.Range(0, 2);
                         Debug.Log($"AttackKind is {_attackKind}");
                         stateMachine.ChangeState(vController.vergenNormalAttackState);
                         return;
@@ -71,13 +77,6 @@ namespace Controllers.Characters.Vergen.States
                     vController.GetAnimator().SetBool(animBoolName, false);
                     _attackKind = 0;
                     stateMachine.ChangeState(vController.vergenLongAttackState);
-                }
-                
-                if (_attackKind == 2)
-                {
-                    vController.GetAnimator().SetBool(animBoolName, false);
-                    _attackKind = 0;
-                    stateMachine.ChangeState(vController.vergenTorbeshinoState);
                 }
             }
         }

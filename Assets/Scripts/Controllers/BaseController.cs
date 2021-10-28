@@ -579,5 +579,13 @@ namespace Controllers
         {
             GameManager.Instance.AddExperience(ctrlData.experienceReward);
         }
+        
+        protected void LookAtPlayer()
+        {
+            float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
+            if ((transform.position.x < playerPositionX && FacingDirection == -1) ||
+                (transform.position.x > playerPositionX && FacingDirection == 1))
+                Flip();
+        }
     }
 }

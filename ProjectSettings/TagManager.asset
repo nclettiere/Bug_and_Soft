@@ -12,6 +12,8 @@ TagManager:
   - Spawner
   - Togue
   - Spikes
+  - VergenGhost
+  - VergenHead
   layers:
   - Default
   - TransparentFX

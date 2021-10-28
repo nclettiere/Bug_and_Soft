@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5829217603619005509}
   m_Layer: 0
   m_Name: Vergen_MetalHead
-  m_TagString: Untagged
+  m_TagString: VergenHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

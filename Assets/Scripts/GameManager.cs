@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     public float MasterVolume { get; private set; } = 0.2f;
     
     public UnityEvent OnLevelReset { get; private set; }
+    public UnityEvent OnVergenTrappedPlayer { get; private set; }
 
     public void Awake()
     {
@@ -92,6 +93,9 @@ public class GameManager : MonoBehaviour
         
         if (OnLevelReset == null)
             OnLevelReset = new UnityEvent();
+        
+        if (OnVergenTrappedPlayer == null)
+            OnVergenTrappedPlayer = new UnityEvent();
         
         gameInput = new GameInput();
         gameInput.SetupInputs();
@@ -521,5 +525,10 @@ public class GameManager : MonoBehaviour
     public int GetSceneIndex()
     {
         return SceneManager.GetActiveScene().buildIndex;
+    }
+
+    public void VergenTrapStart()
+    {
+        OnVergenTrappedPlayer.Invoke();
     }
 }
