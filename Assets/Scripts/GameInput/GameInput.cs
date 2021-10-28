@@ -156,5 +156,15 @@ namespace Input
             playerControls.Gameplay.Attack.performed += ctx =>
                 GameManager.Instance.PlayerController.combatCtrl.AttackPerformed();
         }
+
+        public void DisableInput()
+        {
+            playerControls.Disable();
+        }
+        
+        public void EnableInput()
+        {
+            playerControls.Enable();
+        }
     }
 }

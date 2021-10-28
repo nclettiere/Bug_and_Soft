@@ -47,6 +47,7 @@ namespace Controllers.Characters.Vergen.States
             {
                 if (vController.HasSpearAttackFinished && vController.CheckGround())
                 {
+                    LookAtPlayer();
                     vController.ShootSpears();
                 }
             }
@@ -69,6 +70,14 @@ namespace Controllers.Characters.Vergen.States
         {
             vController.GetAnimator().SetBool(animBoolName, false);
             vController.PhaseOneAttackWait();
+        }
+        
+        protected virtual void LookAtPlayer()
+        {
+            float playerPositionX = GameManager.Instance.GetPlayerTransform().position.x;
+            if ((controller.transform.position.x < playerPositionX && controller.FacingDirection == -1) ||
+                (controller.transform.position.x > playerPositionX && controller.FacingDirection == 1))
+                controller.Flip();
         }
     }
 }

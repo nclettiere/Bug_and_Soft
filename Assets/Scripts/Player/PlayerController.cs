@@ -568,5 +568,10 @@ namespace Player
             else
                 currentHealth += healingAmount;
         }
+
+        public void VergenTrapStart()
+        {
+            GameManager.Instance.gameInput.DisableInput();
+        }
     }
 }

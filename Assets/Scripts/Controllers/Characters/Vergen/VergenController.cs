@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Controllers.Characters.Vergen.States;
+using Controllers.Damage;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,11 +14,16 @@ namespace Controllers.Characters.Vergen
         [SerializeField] private GameObject _SpearObject;
         [SerializeField] private Transform _SpearPosition;
         [SerializeField] private LayerMask _WhatIsSpikes;
+        
+        [SerializeField] private GameObject _vergenGhost;
+        [SerializeField] private VergenGhostTrigger[] _vergenGhostTriggers;
 
         public VergenIdleState vergenIdleState { get; private set; }
         public VergenPhaseOneState vergenPhaseOneState { get; private set; }
         public VergenNormalAttackState vergenNormalAttackState { get; private set; }
         public VergenLongRangeAttack vergenLongAttackState { get; private set; }
+        
+        public VergenTorbeshinoState vergenTorbeshinoState { get; private set; }
         
         public bool HasSpearAttackFinished { get; private set; }
 
@@ -31,6 +37,7 @@ namespace Controllers.Characters.Vergen
             vergenPhaseOneState = new VergenPhaseOneState(this, StateMachine, "Run", this);
             vergenNormalAttackState = new VergenNormalAttackState(this, StateMachine, "NormalAttack", this);
             vergenLongAttackState = new VergenLongRangeAttack(this, StateMachine, "LongRangeAttack", this);
+            vergenTorbeshinoState = new VergenTorbeshinoState(this, StateMachine, "Torbeshino", this);
             
             vergenLongAttackState.OnVergenShootingSpears.AddListener(ShootSpears);
             
@@ -57,6 +64,8 @@ namespace Controllers.Characters.Vergen
         {
             _CombatEnabled = true;
             StateMachine.ChangeState(vergenPhaseOneState);
+            
+            GameManager.Instance.ShowBossHealth("VERGEN - FASE 1", this);
         }
         
         public void OnAttackFinish()
@@ -132,5 +141,44 @@ namespace Controllers.Characters.Vergen
             return hit.collider != null && hit.collider.CompareTag("Spikes");
         }
 
+        public override void Damage(DamageInfo damageInfo)
+        {
+            
+            if (Time.time > damagedTimeCD)
+            {
+                _vergenGhostTriggers[Random.Range(0, 2)].Run();
+                
+                // Obtenemos la posicion del ataque
+                int direction = damageInfo.GetAttackDirection(transform.position.x);
+
+                playerFacingDirection = playerController.IsFacingRight();
+
+                Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
+
+                if (firstAttack)
+                    hitAttackSFX1.Play();
+                else
+                    hitAttackSFX2.Play();
+
+                firstAttack = !firstAttack;
+
+                if (!isInvencible)
+                    currentHealth -= damageInfo.DamageAmount;
+
+                if (damageInfo.MoveOnAttack)
+                    MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
+
+                StartCoroutine(DamageEffect());
+
+                if (currentHealth <= 0f)
+                {
+                    GivePlayerExp();
+                    OnLifeTimeEnded.Invoke();
+                    Die();
+                }
+
+                damagedTimeCD = Time.time + .15f;
+            }
+        }
     }
 }

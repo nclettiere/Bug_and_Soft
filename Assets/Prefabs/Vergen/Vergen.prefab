@@ -361,6 +361,9 @@ MonoBehaviour:
       m_Calls: []
   _SpearObject: {fileID: 257261927395767650, guid: 19ec21fd531eb2a40a330e1bb6fad6e7, type: 3}
   _SpearPosition: {fileID: 8108724562021083873}
+  _WhatIsSpikes:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &3281195805794630574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,7 +557,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4343306737107358221}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.93, y: 0.28, z: 0}
+  m_LocalPosition: {x: 3.93, y: -0.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3281195805794630570}

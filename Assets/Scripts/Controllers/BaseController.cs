@@ -261,6 +261,11 @@ namespace Controllers
             FacingDirection *= -1;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
+        
+        public virtual void FlipSpriteX(bool flipX)
+        {
+            renderer.flipX = flipX;
+        }
 
         public void SetVelocity(float velocity)
         {

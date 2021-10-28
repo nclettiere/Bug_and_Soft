@@ -45,7 +45,6 @@ namespace Controllers.Characters.Vergen.States
         {
             base.UpdatePhysics();
 
-
             if (!attackOnCourse)
             {
                 if (_attackKind == 0)
@@ -60,7 +59,7 @@ namespace Controllers.Characters.Vergen.States
                         attackOnCourse = true;
                         vController.GetAnimator().SetBool(animBoolName, false);
                         hasAttackedNearRange = true;
-                        _attackKind = Random.Range(0, 2);
+                        _attackKind = Random.Range(0, 3);
                         Debug.Log($"AttackKind is {_attackKind}");
                         stateMachine.ChangeState(vController.vergenNormalAttackState);
                         return;
@@ -69,12 +68,16 @@ namespace Controllers.Characters.Vergen.States
 
                 if (_attackKind == 1)
                 {
-                    if (vController.CheckPlayerInNearRange())
-                    {
-                        vController.GetAnimator().SetBool(animBoolName, false);
-                        _attackKind = 0;
-                        stateMachine.ChangeState(vController.vergenLongAttackState);
-                    }
+                    vController.GetAnimator().SetBool(animBoolName, false);
+                    _attackKind = 0;
+                    stateMachine.ChangeState(vController.vergenLongAttackState);
+                }
+                
+                if (_attackKind == 2)
+                {
+                    vController.GetAnimator().SetBool(animBoolName, false);
+                    _attackKind = 0;
+                    stateMachine.ChangeState(vController.vergenTorbeshinoState);
                 }
             }
         }
