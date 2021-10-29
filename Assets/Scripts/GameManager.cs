@@ -550,4 +550,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    public void LoadCredits()
+    {
+        SceneManager.LoadScene("Creditos", LoadSceneMode.Single);
+    }
 }
