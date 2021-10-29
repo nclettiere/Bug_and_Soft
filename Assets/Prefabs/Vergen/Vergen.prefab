@@ -625,7 +625,9 @@ MonoBehaviour:
   _vergenBattleShoutSFX: {fileID: 8024046590650465717}
   _vergenTpSFX: {fileID: 7654809047793789120}
   VergenGhostTriggers: []
+  DeadExplosion: {fileID: 3407860988812979177, guid: 3616393fa1b7eec439c3211aa4035173, type: 3}
   CurrentPhase: 1
+  AlwaysEnterRageMode: 0
 --- !u!114 &3281195805794630574
 MonoBehaviour:
   m_ObjectHideFlags: 0

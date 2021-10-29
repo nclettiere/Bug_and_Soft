@@ -539,7 +539,7 @@ namespace Controllers
         public bool topDetected { get; private set; }
 
         private bool deadCoroutineStarted;
-        public UnityEvent OnLifeTimeEnded { get; set; }
+        public UnityEvent OnLifeTimeEnded;
 
         protected bool
             lastGroundDetected,

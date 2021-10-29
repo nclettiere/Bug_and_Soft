@@ -9,14 +9,14 @@ public class VergenHeadAsesina : MonoBehaviour
     private Rigidbody2D rb;
 
     private bool playerHit;
-    public float Speed = 30;
+    public float Speed = 900;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    void Update()
+    
+    private void FixedUpdate()
     {
         if (!GameManager.Instance.isGamePaused)
         {

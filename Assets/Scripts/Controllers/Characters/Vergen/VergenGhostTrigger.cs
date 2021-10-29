@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace Controllers.Characters.Vergen
 {
@@ -32,7 +34,7 @@ namespace Controllers.Characters.Vergen
             {
                 canTransition = false;
                 Destroy(currentVergenGhost);
-                oppositeSide.SpawnHeadAsesina();
+                StartCoroutine(oppositeSide.SpawnHeadAsesina());
             });
         }
 
@@ -62,15 +64,18 @@ namespace Controllers.Characters.Vergen
             if (other.transform.CompareTag("VergenGhost"))
             {
                 OnVergenGhostReachedEnd.Invoke();
+                Destroy(other.transform.gameObject);
             }else if (other.transform.CompareTag("VergenHead"))
             {
-                Destroy(other.transform.gameObject);
                 OnVergenHeadDodged.Invoke();
+                Destroy(other.transform.gameObject);
             }
         }
 
-        public void SpawnHeadAsesina()
+        public IEnumerator SpawnHeadAsesina()
         {
+            yield return new WaitForSeconds(Random.Range(1, 3));
+            
             if (isRightSide)
             {
                 currentVergenGhost = Instantiate(VergenHeadAsesina, transform.position, Quaternion.Euler(0, 180, 0), transform);
@@ -79,6 +84,8 @@ namespace Controllers.Characters.Vergen
             {
                 currentVergenGhost = Instantiate(VergenHeadAsesina, transform.position, Quaternion.Euler(0, 0, 0), transform);
             }
+            
+            yield return 0;
         }
     }
 }

@@ -573,8 +573,13 @@ namespace Player
 
         public void VergenTrapStart()
         {
-            Debug.Log("VergenTrapStart");
             GameManager.Instance.gameInput.DisableInput();
+        }
+
+        public void OnVergenDie()
+        {
+            GameManager.Instance.gameInput.EnableInput();
+            GameManager.Instance.GetDynamicCamera().ChangeTarget(transform);
         }
     }
 }

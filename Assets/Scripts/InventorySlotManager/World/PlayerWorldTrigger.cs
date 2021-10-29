@@ -47,5 +47,14 @@ namespace World
                 }
             }
         }
+
+        public void UnblockColliders()
+        {
+            
+            foreach (var collisionBlock in _CollisionBlocks)
+            {
+                collisionBlock.enabled = false;
+            }
+        }
     }
 }

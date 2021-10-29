@@ -14,6 +14,7 @@ namespace Controllers.Characters.Vergen.States
 
         private int _attackKind;
         public bool attackOnCourse;
+        public bool enteredRageMode;
         
         public bool freeKillChance;
         public float freeKillChanceTime;
@@ -37,7 +38,7 @@ namespace Controllers.Characters.Vergen.States
 
                 int result = Random.Range(0, 100);
 
-                if (result >= 10 && result <= 45)
+                if (result >= 10 && result <= 45 || (vController.AlwaysEnterRageMode && !enteredRageMode))
                 {
                     freeKillChance = true;
                     freeKillChanceTime = startTime + Random.Range(0, 20);
@@ -73,12 +74,13 @@ namespace Controllers.Characters.Vergen.States
         {
             base.UpdatePhysics();
 
-            if (freeKillChance )//|| vController.AlwaysEnterRageMode)
+            if (freeKillChance)
             {
                 if (Time.time >= freeKillChanceTime)
                 {
-                    vController.VergenGhostTriggers[Random.Range(0, 2)].Run();
+                    vController.VergenGhostTriggers[0].Run();//Random.Range(0, 2)].Run();
                     freeKillChance = false;
+                    enteredRageMode = true;
                     stateMachine.ChangeState(vController.vergenTeleportState);
                     return;
                 }

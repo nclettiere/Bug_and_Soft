@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
+using Controllers.Characters.Vergen;
 using Input;
 using Inventory;
 using Managers;
@@ -68,8 +69,8 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return GameObject.Find("Player")
-                .gameObject.GetComponent<PlayerController>();
+            var pCtrl = GameObject.Find("Player")?.gameObject.GetComponent<PlayerController>();
+            return (pCtrl != null) ? pCtrl : null;
         }
     }
 
@@ -530,5 +531,23 @@ public class GameManager : MonoBehaviour
     public void VergenTrapStart()
     {
         OnVergenTrappedPlayer.Invoke();
+    }
+    
+    public VergenController GetVergenController()
+    {
+        return GameObject.Find("/Characters/Enemigos/Vergen")
+            .GetComponent<VergenController>();
+    }
+
+    public void LoadCutscene(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                //SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+                //SceneManager.UnloadSceneAsync(GetSceneIndex());
+                SceneManager.LoadScene("Cutscene0", LoadSceneMode.Single);
+                break;
+        }
     }
 }
