@@ -18,6 +18,7 @@ namespace Managers
         [SerializeField] private UI_TransitionLvL transitionLvl1;
         [SerializeField] private GameObject lvlCompletedPanel;
         [SerializeField] private UI_LevelInfo levelInfo;
+        [SerializeField] private MainMenu mainMenu;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; }
@@ -195,6 +196,16 @@ namespace Managers
         public void HideGameOver()
         {
             GameOverPanel.SetActive(false);
+        }
+
+        public void ShowMainMenu()
+        {
+            mainMenu.Show();
+        }
+        
+        public void HideMainMenu()
+        {
+            mainMenu.gameObject.SetActive(false);
         }
     }
 }

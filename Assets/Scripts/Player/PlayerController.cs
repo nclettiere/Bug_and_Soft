@@ -188,7 +188,7 @@ namespace Player
 
             UnlockedPowerUps = new List<PlayerPowerUp>();
             
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
 
         private void Update()

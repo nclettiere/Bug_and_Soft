@@ -6,12 +6,12 @@ namespace Input
     public class GameInput
     {
         public static PlayerControls playerControls;
-        
+
         public void SetupInputs()
         {
             playerControls = new PlayerControls();
             playerControls.Enable();
-            
+
             SetupAbilitiesInput();
             SetupRollInput();
             SetupJumpInput();
@@ -25,7 +25,7 @@ namespace Input
         }
 
         private void SetupMiscInput()
-        {        
+        {
             playerControls.Gameplay.Pause.performed += ctx =>
             {
                 if (GameManager.Instance.isMainMenuOn) return;
@@ -36,30 +36,26 @@ namespace Input
                     GameManager.Instance.PauseGame();
             };
 
-           playerControls.Gameplay.QuickSave.performed += ctx =>
-           {
-               GameManager.Instance.QuickSave();
-           };
+            playerControls.Gameplay.QuickSave.performed += ctx => { GameManager.Instance.QuickSave(); };
 
-           playerControls.Gameplay.QuickLoad.performed += ctx =>
-           {
-               GameManager.Instance.QuickLoad();
-           };
+            playerControls.Gameplay.QuickLoad.performed += ctx => { GameManager.Instance.QuickLoad(); };
 
-           playerControls.Gameplay.UseItem.performed += ctx =>
-           {
-               GameManager.Instance.
-                   GetInventorySlotManager().UseItem();
-           };
-           
+            playerControls.Gameplay.UseItem.performed += ctx =>
+            {
+                GameManager.Instance.GetInventorySlotManager().UseItem();
+            };
         }
 
         private void SetupAbilitiesInput()
         {
             playerControls.Gameplay.SpecialMove.performed += ctx =>
+
             {
-                if(GameManager.Instance.PlayerController.powerUps.currentPowerUp != null)
-                    GameManager.Instance.PlayerController.powerUps.currentPowerUp.Activate();
+                if (GameManager.Instance.PlayerController != null)
+                {
+                    if (GameManager.Instance.PlayerController.powerUps.currentPowerUp != null)
+                        GameManager.Instance.PlayerController.powerUps.currentPowerUp.Activate();
+                }
             };
         }
 
@@ -67,33 +63,39 @@ namespace Input
         {
             playerControls.Gameplay.Roll.performed += ctxRoll =>
             {
-                GameManager.Instance.PlayerController.Rollear();
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.Rollear();
             };
         }
-        
+
         private void SetupJumpInput()
         {
             playerControls.Gameplay.Jump.performed += ctx =>
             {
-                GameManager.Instance.PlayerController.Jumpear();
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.Jumpear();
             };
         }
-        
+
         private void SetupInteractInput()
         {
             playerControls.Gameplay.Interact.performed += ctx =>
             {
-                GameManager.Instance.PlayerController.Interactear();
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.Interactear();
             };
         }
 
         // TEMP
         private int current = 0;
+
         private void SetupSwitchAbility()
         {
             playerControls.Gameplay.SwitchAbility.performed += ctx =>
+
             {
-                GameManager.Instance.PlayerController.CyclePowerUps();
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.CyclePowerUps();
             };
         }
 
@@ -104,7 +106,7 @@ namespace Input
                 GameManager.Instance.GetHUD()
                     .ShowStats();
             };
-            
+
             playerControls.Gameplay.ViewStats.canceled += ctx =>
             {
                 GameManager.Instance.GetHUD()
@@ -116,24 +118,32 @@ namespace Input
         {
             // Horizontal
             playerControls.Gameplay.Horizontal.performed += ctx =>
+
             {
-                GameManager.Instance.PlayerController.SetHorizontalSpeed(
-                    playerControls.Gameplay.Horizontal.ReadValue<float>());
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.SetHorizontalSpeed(
+                        playerControls.Gameplay.Horizontal.ReadValue<float>());
             };
             playerControls.Gameplay.Horizontal.canceled += ctx =>
+
             {
-                GameManager.Instance.PlayerController.SetHorizontalSpeed(0f);
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.SetHorizontalSpeed(0f);
             };
-            
+
             // Vertical
             playerControls.Gameplay.Vertical.performed += ctx =>
+
             {
-                GameManager.Instance.PlayerController.SetVerticalSpeed(
-                    playerControls.Gameplay.Horizontal.ReadValue<float>());
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.SetVerticalSpeed(
+                        playerControls.Gameplay.Horizontal.ReadValue<float>());
             };
             playerControls.Gameplay.Vertical.canceled += ctx =>
+
             {
-                GameManager.Instance.PlayerController.SetVerticalSpeed(0f);
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.SetVerticalSpeed(0f);
             };
         }
 
@@ -141,27 +151,38 @@ namespace Input
         {
             playerControls.Gameplay.Camera.performed += ctx =>
             {
-                var value = ctx.ReadValue<Vector2>();
-                GameManager.Instance.GetDynamicCamera()
-                    .UpdateOffsetJoystick(value);
+                if (GameManager.Instance.GetDynamicCamera() != null)
+                {
+                    var value = ctx.ReadValue<Vector2>();
+                    GameManager.Instance.GetDynamicCamera()
+                        .UpdateOffsetJoystick(value);
+                }
             };
-            
-            playerControls.Gameplay.Camera.canceled += ctx => 
-                GameManager.Instance.GetDynamicCamera()
-                    .UpdateOffsetJoystick(Vector2.zero);
+
+            playerControls.Gameplay.Camera.canceled += ctx =>
+            {
+                if (GameManager.Instance.GetDynamicCamera() != null)
+                {
+                    GameManager.Instance.GetDynamicCamera()
+                        .UpdateOffsetJoystick(Vector2.zero);
+                }
+            };
         }
 
         private void SetupPlayerAttack()
         {
             playerControls.Gameplay.Attack.performed += ctx =>
-                GameManager.Instance.PlayerController.combatCtrl.AttackPerformed();
+            {
+                if (GameManager.Instance.PlayerController != null)
+                    GameManager.Instance.PlayerController.combatCtrl.AttackPerformed();
+            };
         }
 
         public void DisableInput()
         {
             playerControls.Disable();
         }
-        
+
         public void EnableInput()
         {
             playerControls.Enable();

@@ -42,7 +42,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(transform.root.gameObject);
+        //DontDestroyOnLoad(transform.root.gameObject);
     }
 
     private void Start()
@@ -332,5 +332,20 @@ public class MainMenu : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if (callback != null)
             callback();
+    }
+
+    public void Show()
+    {
+        panelButtonsGroup.alpha = 1;
+        dimmerCG.alpha = 0;
+        panelButtonsAnimGroup.alpha = 1;
+        panelSettingsGroup.alpha = 0;
+    }
+    
+    public void Hide()
+    {
+        panelButtonsAnimGroup.alpha = 0;
+        OnPlay();
+        panelButtonsAnimGroup.alpha = 0;
     }
 }

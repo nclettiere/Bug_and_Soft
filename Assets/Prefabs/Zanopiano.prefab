@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2519001691328450801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.08, y: 0, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5051913118586385835}
@@ -252,6 +252,7 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 5051913119348361688}
   deathSFX: {fileID: 0}
   dialogueBubble: {fileID: 0}
+  enemyTauntIndicator: {fileID: 0}
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
@@ -271,6 +272,12 @@ MonoBehaviour:
   - {fileID: 4998679438131261279, guid: 0c463fb3bc7a92947af1e5f6d2b8295a, type: 3}
   - {fileID: 4998679438131261279, guid: 0c463fb3bc7a92947af1e5f6d2b8295a, type: 3}
   OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBodyGroundCheckEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLifeTimeEnded:
     m_PersistentCalls:
       m_Calls: []
   attackPosition: {fileID: 5051913118363800251}
@@ -839,7 +846,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8084828591131310123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.45, y: 0, z: 0}
+  m_LocalPosition: {x: 1.7, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5051913118586385835}

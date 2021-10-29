@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance
     {
-        get {
+        get
+        {
             return _instance;
         }
         set => _instance = value;
@@ -88,9 +89,18 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
-        if(_instance == null)
+        if (_instance != null)
+        {
+           Instance.GetUIManager().HideMainMenu();
+           Instance.ShowHUD();
+           Instance.RespawnPlayer();
+           Destroy(gameObject.transform.root.gameObject);
+        }
+        else
+        {
             _instance = this;
-        
+            DontDestroyOnLoad(this);
+        }
         
         if (OnLevelReset == null)
             OnLevelReset = new UnityEvent();
@@ -103,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         enemies = new List<EnemySpawner>();
         
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
 
@@ -121,6 +131,7 @@ public class GameManager : MonoBehaviour
         isGamePaused = true;
         PauseGame();
         
+        Instance.GetUIManager().ShowMainMenu();
 
         DontDestroyOnLoad(transform.root.gameObject);
     }
@@ -329,7 +340,7 @@ public class GameManager : MonoBehaviour
 
     public UIManager GetUIManager()
     {
-        return GameObject.Find("Managers/UIManager").GetComponent<UIManager>();
+        return GameObject.Find("/UIManager").GetComponent<UIManager>();
     }
 
     public static Canvas GetHUDCanvas()
