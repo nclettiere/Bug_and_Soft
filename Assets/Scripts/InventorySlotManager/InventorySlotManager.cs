@@ -1,5 +1,7 @@
-﻿using Items;
+﻿using System;
+using Items;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Inventory
 {
@@ -7,6 +9,16 @@ namespace Inventory
     {
         private Item currentItem;
         private bool itemEjected;
+        
+        private bool firstTimeHealing = true;
+        
+        public UnityEvent OnFirstHeal;
+
+        private void Awake()
+        {
+            if (OnFirstHeal == null)
+                OnFirstHeal = new UnityEvent();
+        }
 
         public void AddItem(Item item)
         {
@@ -32,6 +44,11 @@ namespace Inventory
         {
             if (!itemEjected)
             {
+                if (currentItem.Kind == EItemKind.HEALTH_POTION && firstTimeHealing)
+                {
+                    OnFirstHeal.Invoke();
+                    firstTimeHealing = false;
+                }
                 currentItem.Use();
                 RemoveItem();
                 GameManager.Instance.GetHUD().RemoveItem();

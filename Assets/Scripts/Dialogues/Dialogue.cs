@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Dialogues;
 using TMPro;
@@ -27,6 +28,7 @@ public class Dialogue : MonoBehaviour
     private protected float startDelay = 2f;
     private protected float delay = 0.035f;
     
+    private protected bool showDialogues;
     private protected bool choiceSelected;
 
     //private int from, to;
@@ -45,9 +47,11 @@ public class Dialogue : MonoBehaviour
     {
         StopAllCoroutines();
         currentDialogueIndex = 0;
+        showDialogues = true;
         DialogueManager.textRenderer.text = "";
             DialogueManager.Instance.HideDefaultInteractionButton();
-        StartCoroutine(ShowText());
+        
+        //StartCoroutine(ShowText());
     }
     
     private protected DialogueData GetDialogueLocale(int index)
@@ -107,4 +111,21 @@ public class Dialogue : MonoBehaviour
         selectedChoiceIndex = i;
     }
 
+    private void Update()
+    {
+        if (showDialogues)
+        {
+            if (currentDialogueIndex < GetDialogueCount())
+            {
+                currentDialogueData = GetDialogueLocale((int) currentDialogueIndex);
+                DialogueManager.Instance.GetLocalizeStrEvent().StringReference = currentDialogueData.Locale;
+                
+                
+            }
+            else
+            {
+                showDialogues = false;
+            }
+        }
+    }
 }

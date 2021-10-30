@@ -16,7 +16,7 @@ namespace World
             {
                 if (!_textShown)
                 {
-                    pepeController.ShowQuickChat(dialogueText);
+                    pepeController.ShowQuickChat(new Tuple<Sprite, int>(dialogueText, 3));
                     _textShown = true;
                 }
             }

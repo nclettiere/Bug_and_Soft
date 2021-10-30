@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5210353171753879257}
   - component: {fileID: 5210353171753879258}
   - component: {fileID: 1012415661964246425}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MiniOLC
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,3 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _smoke: {fileID: 7585813766369474399, guid: f8c7af6cf00c58942b030f8a9168b842, type: 3}
+  _pepeQC:
+  - {fileID: -4000408299289160625, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
+  - {fileID: 7780915145902564970, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}

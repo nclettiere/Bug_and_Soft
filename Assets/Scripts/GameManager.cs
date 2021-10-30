@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
@@ -99,7 +100,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(transform.root.gameObject);
         }
         
         if (OnLevelReset == null)
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviour
 
         enemies = new List<EnemySpawner>();
         
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.root.gameObject);
     }
 
 
@@ -360,8 +361,8 @@ public class GameManager : MonoBehaviour
             SetSpawnPoint(GetLvlTwoPosition());
         }
 
-        QuickSave();
         currentLevel++;
+        QuickSave();
     }
 
     private Vector3 GetLvlOnePosition()
@@ -427,14 +428,19 @@ public class GameManager : MonoBehaviour
 
     public void EnterDialogueMode()
     {
+        Instance.SetCameraSize(6.5f, 0.5f);
         isDialogueMode = true;
         PauseGame();
     }
     
     public void ExitDialogueMode()
     {
+        Instance.SetCameraSize(10f, 0.3f);
+        PlayerController.ExitInteractionMode();
         isDialogueMode = false;
-        ResumeGame();
+        
+        if(!Instance.GetUIManager().IsShopOpened)
+            ResumeGame();
     }
 
     public void SetSpawnPoint(Vector3 point)
@@ -565,5 +571,21 @@ public class GameManager : MonoBehaviour
     public void LoadCredits()
     {
         SceneManager.LoadScene("Creditos", LoadSceneMode.Single);
+    }
+
+    public IEnumerator ShowTransitionOne()
+    {
+        yield return new WaitForSeconds(15);
+        LevelWon();
+        Instance.GetUIManager().ShowTransitionOne();
+        yield return 0;
+    }
+
+    public IEnumerator ShowTransitionTwo()
+    {
+        yield return new WaitForSeconds(20);
+        //LevelWon();
+        //Instance.GetUIManager().ShowTransitionOne();
+        yield return 0; 
     }
 }

@@ -211,7 +211,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565982226393907819}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ee42e15f7ced8e478bd03f59ea20d10, type: 3}
   m_Name: 
@@ -238,6 +238,7 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 565982227980724668}
   deathSFX: {fileID: 0}
   dialogueBubble: {fileID: 0}
+  enemyTauntIndicator: {fileID: 0}
   canWalk: 1
   canJump: 1
   canBeDamaged: 1
@@ -257,10 +258,16 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  _plumasAttack: {fileID: 0}
+  OnBodyGroundCheckEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLifeTimeEnded:
+    m_PersistentCalls:
+      m_Calls: []
   _attackStateData: {fileID: 11400000, guid: 0c9256b0d9724514e9bb1b145cbf5ef7, type: 2}
   _idleStateData: {fileID: 11400000, guid: c60fb426da3c8d24b89fd2eeb135671f, type: 2}
   _olcAttackStateData: {fileID: 11400000, guid: 0ca4284d7d861994099b815aab6f2a06, type: 2}
+  _miniOLC: {fileID: 0}
   projectilePos: {fileID: 565982228224051666}
   secondPhasePos: {fileID: 565982227490464679}
   arrowsPos:
@@ -275,6 +282,7 @@ MonoBehaviour:
   transformed: 0
   hallPosition: 0
   initialPos: {x: 0, y: 0, z: 0}
+  OLCisActive: 0
 --- !u!50 &565982226393907821
 Rigidbody2D:
   serializedVersion: 4

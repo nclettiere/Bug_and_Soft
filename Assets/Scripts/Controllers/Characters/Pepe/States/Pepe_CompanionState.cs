@@ -48,8 +48,6 @@ namespace Controllers.States
         {
             base.UpdateState();
             
-            Debug.Log($"New Pos: {GameManager.Instance.PlayerController.GetPepeTarget()}");
-            
             newPosition.Set(
                 GameManager.Instance.PlayerController.GetPepeTarget().x,
                 GameManager.Instance.PlayerController.GetPepeTarget().y, 0);

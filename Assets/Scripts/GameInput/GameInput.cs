@@ -7,6 +7,8 @@ namespace Input
     {
         public static PlayerControls playerControls;
 
+        private bool firstTimeHealing;
+
         public void SetupInputs()
         {
             playerControls = new PlayerControls();

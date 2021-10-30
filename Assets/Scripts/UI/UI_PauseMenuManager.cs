@@ -20,7 +20,8 @@ public class UI_PauseMenuManager : MonoBehaviour
             !GameManager.IsFirstStart && 
             !GameManager.Instance.isGameOver && 
             !GameManager.Instance.isDialogueMode &&
-            !GameManager.Instance.isLevelingUp)
+            !GameManager.Instance.isLevelingUp &&
+            !GameManager.Instance.GetUIManager().IsShopOpened)
             pauseMenu.gameObject.SetActive(GameManager.Instance.IsGamePaused());
     }
 }

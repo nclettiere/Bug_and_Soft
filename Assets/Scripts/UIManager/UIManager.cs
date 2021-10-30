@@ -22,6 +22,7 @@ namespace Managers
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; }
+        public bool IsShopOpened { get; private set; }
 
         private bool isBlindnessActive;
 
@@ -122,11 +123,15 @@ namespace Managers
 
         public void OpenShop()
         {
+            IsShopOpened = true;
+            GameManager.Instance.PauseGame();
             UIShop.SetActive(true);
         }
 
         public void CloseShop()
         {
+            IsShopOpened = false;
+            GameManager.Instance.ResumeGame();
             UIShop.SetActive(false);
         }
 

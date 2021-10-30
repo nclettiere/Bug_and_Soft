@@ -178,7 +178,6 @@ namespace Player
         public void ExitInteractionMode()
         {
             isEnrolledInDialogue = false;
-            GameManager.Instance.SetCameraSize(10f, 0.3f);
         }
 
         private void Awake()
@@ -325,7 +324,6 @@ namespace Player
         public void EnterInteractionMode()
         {
             isEnrolledInDialogue = true;
-            GameManager.Instance.SetCameraSize(6.5f, 0.5f);
         }
 
         public int GetFacingDirection()

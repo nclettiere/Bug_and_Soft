@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using Controllers.Characters.OLC.States;
 using Controllers.Damage;
 using Controllers.Froggy.States.Data;
 using Controllers.StateMachine.States;
@@ -20,7 +22,8 @@ namespace Controllers.Froggy
         [SerializeField] private IdleStateData _idleStateData;
         [SerializeField] private OLC_AttackStateData _olcAttackStateData;
         [SerializeField] private GameObject _miniOLC;
-        
+        [SerializeField] private PepeController _pepeController;
+
         private FroggyTongueController instatiatedTongue;
 
         public OLC_IdleState _idleState { get; private set; }
@@ -28,35 +31,53 @@ namespace Controllers.Froggy
         public OLC_AttackState _attackState { get; private set; }
         public OLC_StunnedState _stunnedState { get; private set; }
         public OLC_SecondPhase _secondPhase { get; private set; }
-        
+        public OLC_DeadState _deadState { get; private set; }
+
         public Transform projectilePos;
         public Transform secondPhasePos;
         public Transform[] arrowsPos;
 
         // Super Froggy
-        public bool transforming;
         public int currentPhase = 1;
-        public bool transformed;
-        
-        public int hallPosition = 0;
-
         public Vector3 initialPos;
 
         public bool OLCisActive;
 
         protected override void Start()
         {
+            if (GameManager.Instance.GetSceneIndex() == 0)
+            {
+                ctrlData.maxHealth = 100;
+            }else if (GameManager.Instance.GetSceneIndex() == 1)
+            {
+                ctrlData.maxHealth = 150;
+            }
+            
             base.Start();
 
             _idleState = new OLC_IdleState(this, StateMachine, "Idle", _idleStateData, this);
             _renegadeState = new OLC_RenegadeState(this, StateMachine, "Renegade", this);
-            _attackState = new OLC_AttackState(this, StateMachine, "Attacking", _attackStateData, _olcAttackStateData, this);
+            _attackState = new OLC_AttackState(this, StateMachine, "Attacking", _attackStateData, _olcAttackStateData,
+                this);
             _stunnedState = new OLC_StunnedState(this, StateMachine, "Stunned", _idleStateData, this);
-            _secondPhase = new OLC_SecondPhase(this, StateMachine, "Jumping", _attackStateData, _olcAttackStateData, this);
+            _secondPhase = new OLC_SecondPhase(this, StateMachine, "Jumping", _attackStateData, _olcAttackStateData,
+                this);
+            _deadState = new OLC_DeadState(this, StateMachine, "DEAD", this);
             StateMachine.Initialize(_idleState);
 
             initialPos = transform.position;
             GameManager.Instance.OnLevelReset.AddListener(ResetOLC);
+
+
+            OnLifeTimeEnded.AddListener(() =>
+            {
+                if (GameManager.Instance.GetSceneIndex() == 0)
+                {
+                    _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[0], 2));
+                    _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[1], 3));
+                }
+            });
+
         }
 
         public override void Damage(DamageInfo damageInfo)
@@ -70,20 +91,20 @@ namespace Controllers.Froggy
             {
                 Debug.Log("DamageReceived (" + damageInfo.DamageAmount + ")");
                 StopAllCoroutines();
-                
-                
+
+
                 // Obtenemos la posicion del ataque
                 int direction = damageInfo.GetAttackDirection(transform.position.x);
 
-                playerFacingDirection = playerController.IsFacingRight();
+                playerFacingDirection = GameManager.Instance.PlayerController.IsFacingRight();
 
                 Instantiate(hitParticles, transform.position, Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360f)));
-                
+
                 if (firstAttack)
                     hitAttackSFX1.Play();
                 else
                     hitAttackSFX2.Play();
-                
+
                 firstAttack = !firstAttack;
 
                 if (!isInvencible)
@@ -96,16 +117,34 @@ namespace Controllers.Froggy
 
                 if (currentHealth <= 0f)
                 {
-                    //GameManager.Instance.GetUIManager()
-                    //    .ShowLvlWonPanel();
                     GameManager.Instance.PlayerController.RefillHealth();
 
                     GivePlayerExp();
 
-                    if (GameManager.Instance.GetSceneIndex() == 1)
-                        Instantiate(_miniOLC, transform.position, Quaternion.identity);
 
-                    Destroy(gameObject);
+                    if (GameManager.Instance.GetSceneIndex() == 0)
+                    {
+                        isInvencible = true;
+                        StateMachine.ChangeState(_deadState);
+                        StartCoroutine(LevelWonDelayed());
+                        GameManager.Instance.StartCoroutine(GameManager.Instance.ShowTransitionOne());
+                    }
+                    else if (GameManager.Instance.GetSceneIndex() == 1)
+                    {
+                        Instantiate(_miniOLC, transform.position, Quaternion.identity);
+                        GameManager.Instance.StartCoroutine(GameManager.Instance.ShowTransitionTwo());
+
+                        OnLifeTimeEnded.AddListener(() =>
+                        {
+                            _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[2], 2));
+                            _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[3], 2));
+                            _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[4], 3));
+                            _pepeController.ShowQuickChat(new Tuple<Sprite, int>(_pepeController.OLCFlyQC[5], 3));
+                        });
+
+                        OnLifeTimeEnded.Invoke();
+                        Destroy(gameObject);
+                    }
                 }
                 else if (currentHealth <= ctrlData.maxHealth / 4 && currentPhase != 2)
                 {
@@ -125,6 +164,12 @@ namespace Controllers.Froggy
             }
         }
 
+        private IEnumerator LevelWonDelayed()
+        {
+            yield return new WaitForSeconds(10);
+            yield return 0;
+        }
+
         private void ResetOLC()
         {
             StateMachine.ChangeState(_idleState);
@@ -137,13 +182,13 @@ namespace Controllers.Froggy
 
         protected override void Update()
         {
-            if(OLCisActive)
+            if (OLCisActive)
                 base.Update();
         }
 
         protected override void FixedUpdate()
         {
-            if(OLCisActive)
+            if (OLCisActive)
                 base.FixedUpdate();
         }
 

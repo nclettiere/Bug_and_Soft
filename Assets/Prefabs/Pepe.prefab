@@ -107,6 +107,8 @@ GameObject:
   - component: {fileID: 6721567057156535203}
   - component: {fileID: 6721567057156535202}
   - component: {fileID: 6721567057156535215}
+  - component: {fileID: 4691985356415705621}
+  - component: {fileID: 1644809470402545556}
   m_Layer: 10
   m_Name: Pepe
   m_TagString: NPC
@@ -275,6 +277,7 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 0}
   deathSFX: {fileID: 0}
   dialogueBubble: {fileID: 9035333198176593639}
+  enemyTauntIndicator: {fileID: 0}
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
@@ -294,8 +297,16 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnBodyGroundCheckEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLifeTimeEnded:
+    m_PersistentCalls:
+      m_Calls: []
   qcDialogue: {fileID: 8347970039860545131}
   _collider: {fileID: 6721567057156535200}
+  _isLevel2Or3: 0
+  FirstHealQC: {fileID: 4713988718591650029, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
 --- !u!114 &6721567057156535203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,6 +755,60 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4691985356415705621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721567057156535256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc50b12a1d274aa7a42d54a413952954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogues:
+  - {fileID: 0}
+--- !u!114 &1644809470402545556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721567057156535256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 341c487e4329fe04d874184b1b1267dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Pepe
+  sentences:
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 10719678464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 311858122752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:cb0eb907b3379b449aca105e051fa66e
+    m_TableEntryReference:
+      m_KeyId: 676284420096
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 1
 --- !u!1 &8782735740550080249
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,6 +921,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6721567057156535207}
     m_Modifications:
+    - target: {fileID: 5595969454947885197, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595969454947885197, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7220848426692962412, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -903,6 +976,10 @@ PrefabInstance:
     - target: {fileID: 7589313510138945922, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}
       propertyPath: m_Name
       value: QuickChatDialogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589313510138945922, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f129ad65c45b1a4399ffcf567478e63, type: 3}

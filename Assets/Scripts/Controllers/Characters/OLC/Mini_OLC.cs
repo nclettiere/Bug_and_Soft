@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Controllers.Froggy
@@ -7,9 +8,13 @@ namespace Controllers.Froggy
     {
         private Rigidbody2D _rbody;
         [SerializeField] private GameObject _smoke;
+        [SerializeField] private Sprite[] _pepeQC;
+        
+        private PepeController _pepe;
 
         private void Awake()
         {
+            _pepe = GameObject.Find("/Characters/NPC/Pepe").GetComponent<PepeController>();
             _rbody = GetComponent<Rigidbody2D>();
         }
 
@@ -19,6 +24,9 @@ namespace Controllers.Froggy
             _rbody.AddTorque(10, ForceMode2D.Impulse);
 
             Instantiate(_smoke, transform.position, Quaternion.Euler(0, 0, 0));
+            
+            //_pepe.ShowQuickChat(new Tuple<Sprite, int>(_pepeQC[0], 2));
+            //_pepe.ShowQuickChat(new Tuple<Sprite, int>(_pepeQC[1], 2));
         }
     }
 }

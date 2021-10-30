@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Controllers.Froggy;
 using UnityEngine;
 
@@ -27,15 +24,19 @@ public class OLC_HallTrigger : MonoBehaviour
             olc.enabled = true;
             hasEnterHall = true;
             col1.enabled = true;
-            bossCell.SetBool("CloseCell", true);
+            CloseCell(true);
         }
     }
     
     private void DisableLimits()
     {
-        
         hasEnterHall = false;
         col1.enabled = false;
-        bossCell.SetBool("CloseCell", false);
+        CloseCell(false);
+    }
+
+    public void CloseCell(bool close)
+    {
+        bossCell.SetBool("CloseCell", close);
     }
 }

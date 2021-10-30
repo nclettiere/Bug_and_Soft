@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,11 @@ namespace UI
         [SerializeField] private Text godlikeText;
         [SerializeField] private Button potaButton;
         [SerializeField] private Text potaText;
+
+        private void OnEnable()
+        {
+            GameManager.Instance.PauseGame();
+        }
 
         public void UnlockWarpy()
         {
