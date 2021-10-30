@@ -19,6 +19,7 @@ namespace Controllers
 
         [SerializeField] private QuickChatDialogue qcDialogue;
         [SerializeField] private Collider2D _collider;
+        [SerializeField] private bool _isLevel2Or3;
 
         public bool isCompanion { get; private set; }
 
@@ -37,7 +38,10 @@ namespace Controllers
             IdleState = new Pepe_IdleState(this, StateMachine, "Idle", this);
             CompanionState = new Pepe_CompanionState(this, StateMachine, "Following", this);
 
-            StateMachine.Initialize(IdleState);
+            if(!_isLevel2Or3)
+                StateMachine.Initialize(IdleState);
+            else
+                StateMachine.Initialize(CompanionState);
             
             initialPos = transform.position;
 

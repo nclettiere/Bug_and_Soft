@@ -157,7 +157,7 @@ namespace Player
                     transform.position = LedgePos1 + new Vector2(0f, 1f);
                     Rigidbody2D.AddForce(new Vector2(250f, 1000f));
                     characterAnimator.SetBool("CanClimbLedge", false);
-                    GameManager.Instance.SetCameraOffsetY(beforeLedgeClimbOffsetY);
+                    GameManager.Instance.SetCameraOffsetY(2.5f);
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }
@@ -168,7 +168,7 @@ namespace Player
                     ShouldPlayerFlip = true;
                     transform.position = LedgePos1 - new Vector2(0f, 1.2f);
                     characterAnimator.SetBool("CanClimbLedge", false);
-                    GameManager.Instance.SetCameraOffsetY(beforeLedgeClimbOffsetY);
+                    GameManager.Instance.SetCameraOffsetY(2.5f);
                     CanClimbLedge = false;
                     LedgeDetected = false;
                 }

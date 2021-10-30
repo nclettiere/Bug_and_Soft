@@ -14,13 +14,12 @@ namespace Controllers.Froggy
 {
     public class OLC_Controller : BaseController
     {
-        public GameObject _plumasAttack;
-
         [Header("OLC Specific Values")] [SerializeField]
         private AttackStateData _attackStateData;
 
         [SerializeField] private IdleStateData _idleStateData;
         [SerializeField] private OLC_AttackStateData _olcAttackStateData;
+        [SerializeField] private GameObject _miniOLC;
         
         private FroggyTongueController instatiatedTongue;
 
@@ -42,6 +41,8 @@ namespace Controllers.Froggy
         public int hallPosition = 0;
 
         public Vector3 initialPos;
+
+        public bool OLCisActive;
 
         protected override void Start()
         {
@@ -95,11 +96,14 @@ namespace Controllers.Froggy
 
                 if (currentHealth <= 0f)
                 {
-                    GameManager.Instance.GetUIManager()
-                        .ShowLvlWonPanel();
+                    //GameManager.Instance.GetUIManager()
+                    //    .ShowLvlWonPanel();
                     GameManager.Instance.PlayerController.RefillHealth();
 
                     GivePlayerExp();
+
+                    if (GameManager.Instance.GetSceneIndex() == 1)
+                        Instantiate(_miniOLC, transform.position, Quaternion.identity);
 
                     Destroy(gameObject);
                 }
@@ -127,12 +131,26 @@ namespace Controllers.Froggy
             currentHealth = ctrlData.maxHealth;
             transform.position = initialPos;
             GameManager.Instance.HideBossHealth();
-            enabled = false;
+            //enabled = false;
+            OLCisActive = false;
         }
-        
+
         protected override void Update()
         {
-            base.Update();
+            if(OLCisActive)
+                base.Update();
+        }
+
+        protected override void FixedUpdate()
+        {
+            if(OLCisActive)
+                base.FixedUpdate();
+        }
+
+        public void StartCombat()
+        {
+            GameManager.Instance.ShowBossHealth("Odinn's Lost Crow - Fase 1", this);
+            OLCisActive = true;
         }
     }
 }
