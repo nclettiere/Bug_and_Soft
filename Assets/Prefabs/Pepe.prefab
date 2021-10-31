@@ -307,6 +307,11 @@ MonoBehaviour:
   _collider: {fileID: 6721567057156535200}
   _isLevel2Or3: 0
   FirstHealQC: {fileID: 4713988718591650029, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
+  OLCFlyQC: []
+  Nievel2_1QC:
+  - {fileID: -3841149507335508781, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
+  - {fileID: -8463752095263698356, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
+  Nievel2_1SFX: {fileID: 0}
 --- !u!114 &6721567057156535203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +812,9 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  OnDialogueFinish:
+    m_PersistentCalls:
+      m_Calls: []
   references:
     version: 1
 --- !u!1 &8782735740550080249

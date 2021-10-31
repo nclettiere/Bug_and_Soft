@@ -172,6 +172,7 @@ namespace Controllers.Froggy
 
         private void ResetOLC()
         {
+            Debug.Log("RESET OLC");
             StateMachine.ChangeState(_idleState);
             currentHealth = ctrlData.maxHealth;
             transform.position = initialPos;

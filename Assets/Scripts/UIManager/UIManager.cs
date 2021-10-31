@@ -16,6 +16,7 @@ namespace Managers
         [SerializeField] private GameObject GameOverPanel;
 
         [SerializeField] private UI_TransitionLvL transitionLvl1;
+        [SerializeField] private UI_TransitionLvL transitionLvl21;
         [SerializeField] private GameObject lvlCompletedPanel;
         [SerializeField] private UI_LevelInfo levelInfo;
         [SerializeField] private MainMenu mainMenu;
@@ -141,6 +142,14 @@ namespace Managers
             GameManager.Instance.HideBossHealth();
             transitionLvl1.gameObject.SetActive(true);
             transitionLvl1.StartTransition();
+        }        
+        
+        public void ShowTransitionTwo()
+        {
+            HideLvlWonPanel();
+            GameManager.Instance.HideBossHealth();
+            transitionLvl21.gameObject.SetActive(true);
+            transitionLvl21.StartTransition();
         }
 
         public void ShowLvlWonPanel()

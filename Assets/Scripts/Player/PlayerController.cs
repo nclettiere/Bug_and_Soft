@@ -579,5 +579,10 @@ namespace Player
             GameManager.Instance.gameInput.EnableInput();
             GameManager.Instance.GetDynamicCamera().ChangeTarget(transform);
         }
+
+        public void OnLevel2_1Finish()
+        {
+            GameManager.Instance.ShowTransitionTwo();
+        }
     }
 }

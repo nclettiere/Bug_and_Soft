@@ -502,6 +502,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel2()
     {
+        foreach (var spawner in enemies)
+            spawner.Kill();
+        enemies.Clear();
+        
         SceneManager.LoadScene("Level2", LoadSceneMode.Single);
         currentLevel = 2;
         SetSpawnPoint(GetLvlTwoPosition());
@@ -584,8 +588,38 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShowTransitionTwo()
     {
         yield return new WaitForSeconds(20);
-        //LevelWon();
-        //Instance.GetUIManager().ShowTransitionOne();
+        LevelWon();
+        Instance.GetUIManager().ShowTransitionTwo();
         yield return 0; 
+    }
+
+    public void LoadLevel21()
+    {        
+        foreach (var spawner in enemies)
+            spawner.Kill();
+        enemies.Clear();
+        
+        SceneManager.LoadScene("Level2.1", LoadSceneMode.Single);
+        currentLevel = 2;
+        SetSpawnPoint(GetLvlTwoPosition());
+        RespawnPlayer(true);
+        PlayerController.RespawnNow();
+        PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        ResumeGame();
+    }
+
+    public void LoadLevel3()
+    {        
+        foreach (var spawner in enemies)
+            spawner.Kill();
+        enemies.Clear();
+        
+        SceneManager.LoadScene("Level3", LoadSceneMode.Single);
+        currentLevel = 2;
+        SetSpawnPoint(GetLvlTwoPosition());
+        RespawnPlayer(true);
+        PlayerController.RespawnNow();
+        PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        ResumeGame();
     }
 }

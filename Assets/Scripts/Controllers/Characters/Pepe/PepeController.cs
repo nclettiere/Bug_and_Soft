@@ -31,6 +31,8 @@ namespace Controllers
         [SerializeField] private Sprite FirstHealQC;
 
         public Sprite[] OLCFlyQC;
+        public Sprite[] Nievel2_1QC;
+        public AudioSource Nievel2_1SFX;
         public bool isCompanion { get; private set; }
 
         public Pepe_IdleState IdleState { get; private set; }
@@ -57,12 +59,26 @@ namespace Controllers
 
             initialPos = transform.position;
 
-            GameManager.Instance.OnLevelReset.AddListener(ResetPepe);
+            if (GameManager.Instance.GetSceneIndex() == 2)
+            {
+                StartCoroutine(StartLevel21QuickChats());
+            }
             
             GameManager.Instance.GetInventorySlotManager().OnFirstHeal.AddListener(()=>
             {
                 ShowQuickChat(new Tuple<Sprite, int>(FirstHealQC, 3));
             });
+        }
+
+        private IEnumerator StartLevel21QuickChats()
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsGamePaused());
+            yield return new WaitForSeconds(4);
+            //Nievel2_1SFX.Play();
+            yield return new WaitForSeconds(1);
+            ShowQuickChat(new Tuple<Sprite, int>(Nievel2_1QC[0], 1));
+            ShowQuickChat(new Tuple<Sprite, int>(Nievel2_1QC[1], 2));
+            yield return 0;
         }
 
         protected override void Update()

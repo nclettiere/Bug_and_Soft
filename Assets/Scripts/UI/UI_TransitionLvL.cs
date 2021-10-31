@@ -8,6 +8,7 @@ namespace UI
 {
     public class UI_TransitionLvL : MonoBehaviour
     {
+        [SerializeField] private bool showText = true;
         [SerializeField] private float duration = 8f;
         [SerializeField] private float delay;
         
@@ -42,26 +43,30 @@ namespace UI
                 yield return null;
             }
             GameManager.Instance.LevelWon();
-            
-            counter = 0f;
-            duration = 20f;
-            while (counter < duration)
+
+            if (showText)
             {
-                counter += Time.deltaTime;
-                contentToMove.localPosition += Vector3.up;
-                yield return null;
+                counter = 0f;
+                duration = 20f;
+                while (counter < duration)
+                {
+                    counter += Time.deltaTime;
+                    contentToMove.localPosition += Vector3.up;
+                    yield return null;
+                }
             }
-            
+
             yield return new WaitForSeconds(3f);
 
-            // Mostramos el boton de continuar
             loadingText.SetActive(false);
             continueButton.SetActive(true);
             
-            
-            GameManager.Instance.LoadLevel2();
-
-            Debug.Log("Should spawn on: " + GameManager.Instance.spawnPoint);
+            if(GameManager.Instance.GetSceneIndex() == 0)
+                GameManager.Instance.LoadLevel2();
+            else if(GameManager.Instance.GetSceneIndex() == 1)
+                GameManager.Instance.LoadLevel21();
+            else if(GameManager.Instance.GetSceneIndex() == 2)
+                GameManager.Instance.LoadLevel3();
         }
 
         private IEnumerator ResetTransition()

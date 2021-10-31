@@ -50,4 +50,11 @@ public class EnemySpawner : MonoBehaviour
         controller.OnLifeTimeEnded.AddListener(() => OnControllerDestroyed());
         hasEnemySpawned = true;
     }
+
+    public void Kill()
+    {
+        if(spawnedEnemy != null)
+            Destroy(spawnedEnemy);
+        Destroy(gameObject);
+    }
 }

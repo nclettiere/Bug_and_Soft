@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,6 +20,11 @@ namespace World
         {
             if (OnPlayerTrigger == null)
                 OnPlayerTrigger = new UnityEvent();
+        }
+        
+        private void Start()
+        {
+            GameManager.Instance.OnLevelReset.AddListener(()=>UnblockColliders(true));
         }
 
         private void Update()
@@ -48,8 +54,17 @@ namespace World
             }
         }
 
-        public void UnblockColliders()
+        private IEnumerator EnableTriggerDelayed()
         {
+            yield return new WaitForSeconds(10);
+            _HasPlayerPassed = false;
+            yield return 0;
+        }
+
+        public void UnblockColliders(bool resetTrigger = false)
+        {
+            if (resetTrigger)
+                StartCoroutine(EnableTriggerDelayed());
             
             foreach (var collisionBlock in _CollisionBlocks)
             {
