@@ -43,6 +43,7 @@ namespace Controllers.Characters.Vergen
 
         public int CurrentPhase = 1;
         public bool AlwaysEnterRageMode;
+        public PepeController Pepe;
 
         protected override void Start()
         {
@@ -66,9 +67,11 @@ namespace Controllers.Characters.Vergen
                 ghostTrigger.OnVergenHeadDodged.AddListener(RestorePhaseTwo);
             }
 
-            OnLifeTimeEnded.AddListener(
-                GameManager.Instance.PlayerController.OnVergenDie
-            );
+            OnLifeTimeEnded.AddListener(() =>
+            {
+                GameManager.Instance.PlayerController.OnVergenDie();
+                Pepe.ShowVergenQuickChats();
+            });
 
             StateMachine.Initialize(vergenIdleState);
         }

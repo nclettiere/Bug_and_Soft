@@ -592,6 +592,14 @@ public class GameManager : MonoBehaviour
         Instance.GetUIManager().ShowTransitionTwo();
         yield return 0; 
     }
+    
+    public IEnumerator ShowTransitionThree()
+    {
+        yield return new WaitForSeconds(3);
+        LevelWon();
+        Instance.GetUIManager().ShowTransitionTwo();
+        yield return 0; 
+    }
 
     public void LoadLevel21()
     {        

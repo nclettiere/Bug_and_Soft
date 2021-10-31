@@ -580,9 +580,12 @@ namespace Player
             GameManager.Instance.GetDynamicCamera().ChangeTarget(transform);
         }
 
-        public void OnLevel2_1Finish()
+        public void OnLevel2_1Finish(Transform newCameraTarget)
         {
-            GameManager.Instance.ShowTransitionTwo();
+            GameManager.Instance.gameInput.DisableInput();
+            GameManager.Instance.GetDynamicCamera().ChangeTarget(newCameraTarget);
+            hozSpeed = 1;
+            StartCoroutine(GameManager.Instance.ShowTransitionThree());
         }
     }
 }

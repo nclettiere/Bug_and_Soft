@@ -41,6 +41,12 @@ TextureImporter:
   - first:
       213: -8463752095263698356
     second: PepeQuickChat000-Sheet_12
+  - first:
+      213: 7666556918354543541
+    second: PepeQuickChat000-Sheet_13
+  - first:
+      213: -6158758102641528409
+    second: PepeQuickChat000-Sheet_14
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -398,6 +404,48 @@ TextureImporter:
       bones: []
       spriteID: c42d6deef46ba8a80800000000000000
       internalID: -8463752095263698356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PepeQuickChat000-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 320
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b306d8e5e4156a60800000000000000
+      internalID: 7666556918354543541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PepeQuickChat000-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 320
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a13e7ad222b78aa0800000000000000
+      internalID: -6158758102641528409
       vertices: []
       indices: 
       edges: []

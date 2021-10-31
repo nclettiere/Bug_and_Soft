@@ -55,9 +55,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Pixeled_Pixel_Pefect
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1457799936
   material: {fileID: -7597627139092801985}
-  materialHashCode: 0
+  materialHashCode: -1011356000
   m_Version: 1.1.0
   m_SourceFontFileGUID: 1ab9226ca7e440d4a9e85d25def25f87
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 1ab9226ca7e440d4a9e85d25def25f87, type: 3}

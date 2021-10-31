@@ -58,7 +58,7 @@ namespace Controllers.States
             base.UpdatePhysics();
             LookAtPlayer();
             pController.transform.position = 
-                Vector3.Lerp(pController.transform.position, newPosition, Time.deltaTime * 10f);
+                Vector3.Lerp(new Vector3(pController.transform.position.x, pController.transform.position.y, 0), newPosition, Time.deltaTime * 10f);
         }
         
         private void LookAtPlayer()

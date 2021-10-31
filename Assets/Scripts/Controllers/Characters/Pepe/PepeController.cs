@@ -32,6 +32,7 @@ namespace Controllers
 
         public Sprite[] OLCFlyQC;
         public Sprite[] Nievel2_1QC;
+        public Sprite[] VergenDeadQC;
         public AudioSource Nievel2_1SFX;
         public bool isCompanion { get; private set; }
 
@@ -156,6 +157,12 @@ namespace Controllers
         {
             base.Flip();
             qcDialogue.Flip();
+        }
+
+        public void ShowVergenQuickChats()
+        {
+            ShowQuickChat(new Tuple<Sprite, int>(VergenDeadQC[0], 2));
+            ShowQuickChat(new Tuple<Sprite, int>(VergenDeadQC[1], 2));
         }
     }
 }
