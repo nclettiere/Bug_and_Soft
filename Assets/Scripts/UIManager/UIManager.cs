@@ -20,6 +20,7 @@ namespace Managers
         [SerializeField] private GameObject lvlCompletedPanel;
         [SerializeField] private UI_LevelInfo levelInfo;
         [SerializeField] private MainMenu mainMenu;
+        [SerializeField] private GameObject mainMenuObject;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; }
@@ -214,12 +215,14 @@ namespace Managers
 
         public void ShowMainMenu()
         {
+            if(!mainMenuObject.activeSelf)
+                mainMenuObject.SetActive(true);
             mainMenu.Show();
         }
         
         public void HideMainMenu()
         {
-            mainMenu.gameObject.SetActive(false);
+            mainMenuObject.SetActive(false);
         }
     }
 }

@@ -500,10 +500,49 @@ public class GameManager : MonoBehaviour
         isLevelingUp = true;
     }
 
+    public void LoadLevel1()
+    {
+        SceneManager.LoadScene("Level1", LoadSceneMode.Single);
+        StartCoroutine(LoadLevel1Delayed());
+    }
+    
+    public void LoadLevel1Full()
+    {
+        SceneManager.LoadScene("Level1", LoadSceneMode.Single);
+        StartCoroutine(LoadLevel1FullDelayed());
+    }
+
+    private IEnumerator LoadLevel1FullDelayed()
+    {
+        currentLevel = 1;
+        yield return new WaitForSeconds(1);
+        Instance.SetMainMenuOn(true);
+        Instance.SetInputEnabled(false);
+        Instance.GetUIManager().ShowMainMenu();
+    }
+
+    private IEnumerator LoadLevel1Delayed()
+    {
+        currentLevel = 1;
+        yield return new WaitForSeconds(1);
+        Instance.SetMainMenuOn(false);
+        Instance.SetInputEnabled(true);
+        Instance.SetCameraOffsetX(1.3f);
+        IsFirstStart = false;
+        Instance.ResumeGame();
+        Instance.ShowHUD();
+        Instance.GetUIManager()
+            .ShowLevelInfo();
+        yield return 0;
+    }
+
     public void LoadLevel2()
     {
         foreach (var spawner in enemies)
-            spawner.Kill();
+        {
+            if(spawner != null)
+                spawner.Kill();
+        }
         enemies.Clear();
         
         SceneManager.LoadScene("Level2", LoadSceneMode.Single);
@@ -565,9 +604,10 @@ public class GameManager : MonoBehaviour
         switch (i)
         {
             case 0:
-                //SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
-                //SceneManager.UnloadSceneAsync(GetSceneIndex());
                 SceneManager.LoadScene("Cutscene0", LoadSceneMode.Single);
+                break;
+            case 1:
+                SceneManager.LoadScene("Cutscene1", LoadSceneMode.Single);
                 break;
         }
     }

@@ -51,10 +51,10 @@ public class MainMenu : MonoBehaviour
         GameManager.Instance.SetMainMenuOn(true);
         
         // Registra los componentes del Canvas (UI) necesarios.
-        pnlButtons = GameObject.Find("PanelButtons");
-        pnlButtonsAnim = GameObject.Find("PanelButtonsAnims");
-        pnlButtonsInteraction = GameObject.Find("PanelRealButtons");
-        pnlSettings = GameObject.Find("PanelSettings");
+        pnlButtons = GameObject.Find("/UI/UI_MainMenu/PanelButtons");
+        pnlButtonsAnim = GameObject.Find("/UI/UI_MainMenu/PanelButtonsAnims");
+        pnlButtonsInteraction = GameObject.Find("/UI/UI_MainMenu/PanelRealButtons");
+        pnlSettings = GameObject.Find("/UI/UI_MainMenu/PanelSettings");
         panelButtonsGroup = pnlButtons.GetComponent<CanvasGroup>();
         panelButtonsAnimGroup = pnlButtonsAnim.GetComponent<CanvasGroup>();
         panelSettingsGroup = pnlSettings.GetComponent<CanvasGroup>();
@@ -195,18 +195,25 @@ public class MainMenu : MonoBehaviour
 
     private void OnPlay()
     {
-        panelButtonsGroup.interactable = false;
-        panelSettingsGroup.interactable = false;
-        pnlButtonsInteractionGroup.interactable = false;
-        GameManager.Instance.SetMainMenuOn(false);
-        GameManager.Instance.SetInputEnabled(true);
-        GameManager.Instance.SetCameraOffsetX(1.3f);
-        GameManager.IsFirstStart = false;
-        GameManager.Instance.ResumeGame();
-        GameManager.Instance.ShowHUD();
-        
-        GameManager.Instance.GetUIManager()
-            .ShowLevelInfo();
+        if (GameManager.Instance.GetSceneIndex() == 0)
+        {
+            GameManager.Instance.LoadCutscene(1);
+        }
+        else
+        {
+            panelButtonsGroup.interactable = false;
+            panelSettingsGroup.interactable = false;
+            pnlButtonsInteractionGroup.interactable = false;
+            GameManager.Instance.SetMainMenuOn(false);
+            GameManager.Instance.SetInputEnabled(true);
+            GameManager.Instance.SetCameraOffsetX(1.3f);
+            GameManager.IsFirstStart = false;
+            GameManager.Instance.ResumeGame();
+            GameManager.Instance.ShowHUD();
+
+            GameManager.Instance.GetUIManager()
+                .ShowLevelInfo();
+        }
     }
 
     public void BtnSettingsCallBack()
@@ -336,6 +343,7 @@ public class MainMenu : MonoBehaviour
 
     public void Show()
     {
+        Debug.Log("Showing Main Menu");
         panelButtonsGroup.alpha = 1;
         dimmerCG.alpha = 0;
         panelButtonsAnimGroup.alpha = 1;
