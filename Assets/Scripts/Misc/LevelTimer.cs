@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,6 +9,7 @@ namespace Misc
     public class LevelTimer : MonoBehaviour
     {
         public float timerWaitAmout = 120;
+        public float delay = 10;
         public bool timerIsRunning = false;
 
         public UnityEvent OnTimerEnd;
@@ -26,13 +28,23 @@ namespace Misc
         private void Start()
         {
             timeRemaining = timerWaitAmout;
-            timerIsRunning = true;
+            if (delay > 0)
+                StartCoroutine(StartWithDelay());
+            else
+                timerIsRunning = true;
             GameManager.Instance.OnLevelReset.AddListener(() =>
             {
                 timeRemaining = timerWaitAmout;
                 timerIsRunning = true;
             });
             OnTimerEnd.AddListener(GameManager.Instance.GameOver);
+        }
+
+        private IEnumerator StartWithDelay()
+        {
+            yield return new WaitForSeconds(delay);
+            timerIsRunning = true;
+            yield return 0;
         }
 
         void Update()

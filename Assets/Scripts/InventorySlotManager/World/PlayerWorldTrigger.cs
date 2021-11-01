@@ -63,6 +63,7 @@ namespace World
 
         public void UnblockColliders(bool resetTrigger = false)
         {
+            Debug.Log($"Unlocking colliders resetTrigger: {resetTrigger}");
             if (resetTrigger)
                 StartCoroutine(EnableTriggerDelayed());
             

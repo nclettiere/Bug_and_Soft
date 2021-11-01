@@ -545,13 +545,32 @@ public class GameManager : MonoBehaviour
         }
         enemies.Clear();
         
-        SceneManager.LoadScene("Level2", LoadSceneMode.Single);
         currentLevel = 2;
+        SceneManager.LoadScene("Level2", LoadSceneMode.Single);
+        Instance.GetUIManager().HideMainMenu();
+        StartCoroutine(LoadLevel2Delayed());
+    }
+
+    private IEnumerator LoadLevel2Delayed()
+    {        
+        yield return new WaitForSeconds(1);
+        
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        
+        Instance.SetMainMenuOn(false);
+        Instance.SetInputEnabled(true);
+        Instance.SetCameraOffsetX(1.3f);
+        IsFirstStart = false;
+        Instance.ResumeGame();
+        Instance.ShowHUD();
+        Instance.GetUIManager()
+            .ShowLevelInfo();
         ResumeGame();
+        Instance.GetUIManager().HideMainMenu();
+        yield return 0;
     }
 
     public void AddEnemySpawner(EnemySpawner enemySpawner)
@@ -619,6 +638,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator ShowTransitionOne()
     {
+        currentLevel++;
+        QuickSave();
         yield return new WaitForSeconds(15);
         LevelWon();
         Instance.GetUIManager().ShowTransitionOne();
@@ -627,6 +648,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator ShowTransitionTwo()
     {
+        currentLevel++;
+        QuickSave();
         yield return new WaitForSeconds(20);
         LevelWon();
         Instance.GetUIManager().ShowTransitionTwo();
@@ -635,6 +658,8 @@ public class GameManager : MonoBehaviour
     
     public IEnumerator ShowTransitionThree()
     {
+        currentLevel++;
+        QuickSave();
         yield return new WaitForSeconds(3);
         LevelWon();
         Instance.GetUIManager().ShowTransitionTwo();
@@ -644,30 +669,73 @@ public class GameManager : MonoBehaviour
     public void LoadLevel21()
     {        
         foreach (var spawner in enemies)
-            spawner.Kill();
+        {
+            if(spawner != null)
+                spawner.Kill();
+        }
         enemies.Clear();
         
+        currentLevel = 3;
         SceneManager.LoadScene("Level2.1", LoadSceneMode.Single);
-        currentLevel = 2;
+        StartCoroutine(LoadLevel21Delayed());
+    }
+
+    private IEnumerator LoadLevel21Delayed()
+    {        
+        yield return new WaitForSeconds(1);
+        
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        
+        Instance.SetMainMenuOn(false);
+        Instance.SetInputEnabled(true);
+        Instance.SetCameraOffsetX(1.3f);
+        IsFirstStart = false;
+        Instance.ResumeGame();
+        Instance.ShowHUD();
+        Instance.GetUIManager()
+            .ShowLevelInfo();
         ResumeGame();
+        Instance.GetUIManager().HideMainMenu();
+        yield return 0;
     }
 
     public void LoadLevel3()
-    {        
+    {
         foreach (var spawner in enemies)
-            spawner.Kill();
+        {
+            if(spawner != null)
+                spawner.Kill();
+        }
         enemies.Clear();
         
+        currentLevel = 3;
         SceneManager.LoadScene("Level3", LoadSceneMode.Single);
-        currentLevel = 2;
+        Instance.GetUIManager().HideMainMenu();
+        StartCoroutine(LoadLevel3Delayed());
+    }
+
+    private IEnumerator LoadLevel3Delayed()
+    {        
+        yield return new WaitForSeconds(1);
+        
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
+        
+        Instance.SetMainMenuOn(false);
+        Instance.SetInputEnabled(true);
+        Instance.SetCameraOffsetX(1.3f);
+        IsFirstStart = false;
+        Instance.ResumeGame();
+        Instance.ShowHUD();
+        Instance.GetUIManager()
+            .ShowLevelInfo();
         ResumeGame();
+        Instance.GetUIManager().HideMainMenu();
+        yield return 0;
     }
 }

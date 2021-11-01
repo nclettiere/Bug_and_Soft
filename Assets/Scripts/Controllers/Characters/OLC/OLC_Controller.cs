@@ -126,7 +126,7 @@ namespace Controllers.Froggy
                     {
                         isInvencible = true;
                         StateMachine.ChangeState(_deadState);
-                        StartCoroutine(LevelWonDelayed());
+                        //StartCoroutine(LevelWonDelayed());
                         GameManager.Instance.StartCoroutine(GameManager.Instance.ShowTransitionOne());
                     }
                     else if (GameManager.Instance.GetSceneIndex() == 1)
@@ -164,11 +164,11 @@ namespace Controllers.Froggy
             }
         }
 
-        private IEnumerator LevelWonDelayed()
-        {
-            yield return new WaitForSeconds(10);
-            yield return 0;
-        }
+        //private IEnumerator LevelWonDelayed()
+        //{
+        //    yield return new WaitForSeconds(10);
+        //    yield return 0;
+        //}
 
         private void ResetOLC()
         {
