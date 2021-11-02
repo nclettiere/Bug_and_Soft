@@ -2,6 +2,7 @@
 using System.Collections;
 using Controllers.Characters.Vergen.States;
 using Controllers.Damage;
+using Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,6 +21,8 @@ namespace Controllers.Characters.Vergen
         [SerializeField] private AudioSource _vergenTrap2SFX;
         [SerializeField] private AudioSource _vergenBattleShoutSFX;
         [SerializeField] private AudioSource _vergenTpSFX;
+        [SerializeField] private Transform _vergenAttackTrans;
+        [SerializeField] private int _normalAttackAmount;
 
         public VergenGhostTrigger[] VergenGhostTriggers;
 
@@ -45,8 +48,12 @@ namespace Controllers.Characters.Vergen
         public bool AlwaysEnterRageMode;
         public PepeController Pepe;
 
+        private Vector3 initialPos;
+
         protected override void Start()
         {
+            initialPos = transform.position;
+            
             base.Start();
 
             vergenIdleState = new VergenIdleState(this, StateMachine, "Idle", this);
@@ -72,8 +79,21 @@ namespace Controllers.Characters.Vergen
                 GameManager.Instance.PlayerController.OnVergenDie();
                 Pepe.ShowVergenQuickChats();
             });
+            
+            GameManager.Instance.OnLevelReset.AddListener(() =>
+            {
+                ResetVergen();
+            });
 
             StateMachine.Initialize(vergenIdleState);
+        }
+
+        private void ResetVergen()
+        {
+            StateMachine.ChangeState(vergenIdleState);
+            GameManager.Instance.HideBossHealth();
+            currentHealth = ctrlData.maxHealth;
+            transform.position = initialPos;
         }
 
         protected override void Update()
@@ -219,6 +239,27 @@ namespace Controllers.Characters.Vergen
                 }
 
                 damagedTimeCD = Time.time + .15f;
+            }
+        }
+
+        public void DoHitDamage()
+        {
+            var hit = Physics2D.CircleCast(
+                _vergenAttackTrans.position, 
+                2, 
+                transform.right, 
+                0, 
+                ctrlData.whatIsPlayer);
+
+            if (hit != null & hit.collider.transform != null && hit.collider.transform.CompareTag("Player"))
+            {
+                var pCtrl = hit.collider.transform.GetComponent<PlayerController>();
+                DamageInfo dInfo = new DamageInfo(
+                    _normalAttackAmount,
+                    transform.position.x,
+                    true);
+                dInfo.MoveOnAttackForce = new Vector2(200, 10);
+                pCtrl.Damage(dInfo);
             }
         }
     }

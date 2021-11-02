@@ -56,14 +56,14 @@ namespace World
 
         private IEnumerator EnableTriggerDelayed()
         {
-            yield return new WaitForSeconds(10);
+            if(GameManager.Instance.GetSceneIndex() != 3)
+                yield return new WaitForSeconds(10);
             _HasPlayerPassed = false;
             yield return 0;
         }
 
         public void UnblockColliders(bool resetTrigger = false)
         {
-            Debug.Log($"Unlocking colliders resetTrigger: {resetTrigger}");
             if (resetTrigger)
                 StartCoroutine(EnableTriggerDelayed());
             

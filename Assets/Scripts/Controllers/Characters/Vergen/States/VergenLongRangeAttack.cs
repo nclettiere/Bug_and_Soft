@@ -27,7 +27,7 @@ namespace Controllers.Characters.Vergen.States
         {
             base.Enter();
             
-            if(vController.CheckPlayerInNearRange())
+            //if(vController.CheckPlayerInNearRange())
                 controller.rBody.AddForce(new Vector2(40 * -controller.FacingDirection, 20),
                     ForceMode2D.Impulse);
             

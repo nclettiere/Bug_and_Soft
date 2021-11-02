@@ -447,6 +447,7 @@ Transform:
   - {fileID: 3281195804963520706}
   - {fileID: 8108724562021083873}
   - {fileID: 2466551606260229377}
+  - {fileID: 453614585309822113}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -614,6 +615,9 @@ MonoBehaviour:
   OnBodyGroundCheckEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnLifeTimeEnded:
+    m_PersistentCalls:
+      m_Calls: []
   _SpearObject: {fileID: 257261927395767650, guid: 19ec21fd531eb2a40a330e1bb6fad6e7, type: 3}
   _SpearPosition: {fileID: 8108724562021083873}
   _WhatIsSpikes:
@@ -624,10 +628,13 @@ MonoBehaviour:
   _vergenTrap2SFX: {fileID: 1392470267553788056}
   _vergenBattleShoutSFX: {fileID: 8024046590650465717}
   _vergenTpSFX: {fileID: 7654809047793789120}
+  _vergenAttackTrans: {fileID: 453614585309822113}
+  _normalAttackAmount: 10
   VergenGhostTriggers: []
   DeadExplosion: {fileID: 3407860988812979177, guid: 3616393fa1b7eec439c3211aa4035173, type: 3}
   CurrentPhase: 1
   AlwaysEnterRageMode: 0
+  Pepe: {fileID: 0}
 --- !u!114 &3281195805794630574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,6 +931,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &4026937025760200158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453614585309822113}
+  m_Layer: 10
+  m_Name: NormalAttacc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &453614585309822113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026937025760200158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.88, y: -0.58, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3281195805794630570}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4343306737107358221
 GameObject:
   m_ObjectHideFlags: 0
