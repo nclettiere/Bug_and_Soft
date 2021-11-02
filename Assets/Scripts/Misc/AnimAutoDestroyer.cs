@@ -8,7 +8,7 @@ namespace Misc
 
         public void PlayAudio()
         {
-            onEndedAudio.Play();
+            GameManager.Instance.GetSoundManager().PlaySoundAtLocation(onEndedAudio.clip, transform.position);
         }
         
         public void OnAnimEnded()

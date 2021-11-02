@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3869d7207f8245938adcd12d5e274b5d, type: 3}
+  m_Name: SuperFroggy_JumpStateData
+  m_EditorClassIdentifier: 
+  jumpingForce: {x: 8, y: 20}
+  jumpingCooldownRandomRangeFrom: 2.5
+  jumpingCooldownRandomRangeTo: 5
+  jumpSFX: {fileID: 8300000, guid: 963910b15916a1f4e8e3f839c6d8ab29, type: 3}
+  landSFX: {fileID: 8300000, guid: 5ce8134cc79ab314ba1d183ecd5d15b4, type: 3}

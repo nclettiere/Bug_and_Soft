@@ -9,6 +9,8 @@ namespace Input
 
         private bool firstTimeHealing;
 
+        private float pauseCooldownSeconds = float.NegativeInfinity;
+
         public void SetupInputs()
         {
             playerControls = new PlayerControls();
@@ -28,14 +30,24 @@ namespace Input
 
         private void SetupMiscInput()
         {
-            playerControls.Gameplay.Pause.performed += ctx =>
+            playerControls.Gameplay.PauseL.performed += ctx =>
             {
-                if (GameManager.Instance.isMainMenuOn) return;
-
+                if (GameManager.Instance.GetMainMenuOn() || GameManager.Instance.isGameOver ||
+                    GameManager.Instance.isDialogueMode || GameManager.Instance.isLevelingUp ||
+                    GameManager.Instance.GetUIManager().IsShopOpened) return;
+                
                 if (GameManager.Instance.isGamePaused)
+                {
+                    Debug.Log("Resuming");
+                    GameManager.Instance.GetUIManager().ClosePauseMenu();
                     GameManager.Instance.ResumeGame();
+                }
                 else
+                {
+                    Debug.Log("Pausing");
+                    GameManager.Instance.GetUIManager().OpenPauseMenu();
                     GameManager.Instance.PauseGame();
+                }
             };
 
             playerControls.Gameplay.QuickSave.performed += ctx => { GameManager.Instance.QuickSave(); };

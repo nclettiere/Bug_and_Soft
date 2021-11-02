@@ -38,6 +38,7 @@ namespace Inventory
                 currentItem = null;
                 itemEjected = true;
             }
+            GameManager.Instance.GetHUD().RemoveItem();
         }
 
         public void UseItem()
@@ -55,5 +56,6 @@ namespace Inventory
                 itemEjected = true;
             }
         }
+
     }
 }

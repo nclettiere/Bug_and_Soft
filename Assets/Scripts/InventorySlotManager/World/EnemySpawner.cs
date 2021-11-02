@@ -16,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.AddEnemySpawner(this);
+        GameManager.Instance.OnLevelReset.AddListener(Respawn);
     }
 
     public void Spawn()

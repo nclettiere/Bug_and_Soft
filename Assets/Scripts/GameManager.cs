@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using CameraManagement;
 using Controllers;
 using Controllers.Characters.Vergen;
+using Controllers.Damage;
 using Input;
 using Inventory;
 using Managers;
 using Player;
 using SaveSystem.Data;
+using Scripts.SoundManager;
 using UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -180,11 +182,13 @@ public class GameManager : MonoBehaviour
 
     public void KillPlayer(Transform deathTransf)
     {
-        LastDeathPosition = deathTransf.position;
-        playerDeathCount++;
-        SetInputEnabled(false);
-        isPlayerAlive = false;
-        SetCameraFollowTarget(false);
+        //LastDeathPosition = deathTransf.position;
+        //playerDeathCount++;
+        //SetInputEnabled(false);
+        //isPlayerAlive = false;
+        //SetCameraFollowTarget(false);
+        
+        PlayerController.Damage(new DamageInfo(999, 0));
     }
 
     public void RespawnPlayer(bool isFirstRespawn = false)
@@ -342,6 +346,11 @@ public class GameManager : MonoBehaviour
     public UIManager GetUIManager()
     {
         return GameObject.Find("/UIManager").GetComponent<UIManager>();
+    }    
+    
+    public SoundManager GetSoundManager()
+    {
+        return GameObject.Find("/SoundManager").GetComponent<SoundManager>();
     }
 
     public static Canvas GetHUDCanvas()
@@ -431,6 +440,8 @@ public class GameManager : MonoBehaviour
         Instance.SetCameraSize(6.5f, 0.5f);
         isDialogueMode = true;
         PauseGame();
+
+        Instance.GetUIManager().EnableDialoguePanel();
     }
     
     public void ExitDialogueMode()
@@ -441,10 +452,13 @@ public class GameManager : MonoBehaviour
         
         if(!Instance.GetUIManager().IsShopOpened)
             ResumeGame();
+
+        Instance.GetUIManager().DisableDialoguePanel();
     }
 
     public void SetSpawnPoint(Vector3 point)
     {
+        Debug.Log($"new spawnpoint {point}");
         spawnPoint = point;
     }
 
@@ -516,6 +530,7 @@ public class GameManager : MonoBehaviour
     {
         currentLevel = 1;
         yield return new WaitForSeconds(1);
+        isGamePaused = false;
         Instance.SetMainMenuOn(true);
         Instance.SetInputEnabled(false);
         Instance.GetUIManager().ShowMainMenu();
@@ -588,16 +603,26 @@ public class GameManager : MonoBehaviour
         PlayerController.RefillHealth();
         PlayerKrowns = 0;
         currentExp = 0;
-        
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-            SetSpawnPoint(GetLvlOnePosition());
-        else if(SceneManager.GetActiveScene().buildIndex == 1)
-            SetSpawnPoint(GetLvlTwoPosition());
-        
+
+        //if (SceneManager.GetActiveScene().buildIndex == 0)
+        //{
+        //    SetSpawnPoint(GetLvlOnePosition());
+//
+        //}
+        //else if (SceneManager.GetActiveScene().buildIndex == 1)
+        //{
+        //    SetSpawnPoint(GetLvlTwoPosition());
+        //}
+        //
+        //SetSpawnPoint(GetLvlTwoPosition());
+
+        GetInventorySlotManager().RemoveItem();
+        SetPlayerKrones(0);
+
         PlayerController.RespawnNow();
         
-        foreach (var spawner in enemies)
-            spawner.Respawn();
+        //foreach (var spawner in enemies)
+        //    spawner.Respawn();
         
         OnLevelReset.Invoke();
     }

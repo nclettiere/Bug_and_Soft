@@ -39,7 +39,7 @@ namespace Controllers
 
         public override bool Interact(PlayerController controller, EInteractionKind interactionKind)
         {
-            if (!_dialogueFinished)
+            if (!_dialogueFinished && GameManager.Instance.GetSceneIndex() != 3)
             {
                 dialogueBubble.gameObject.SetActive(false);
                 FindObjectOfType<NewDialogueManager>().StartDialogue(NewDialogues);

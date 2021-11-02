@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &3229109244323304219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6330432586759226540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a6c2e3104774711a5509e4c33645bb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items: []
 --- !u!82 &1408559873665964618
 AudioSource:
   m_ObjectHideFlags: 0
@@ -109,6 +96,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3229109244323304219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330432586759226540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6c2e3104774711a5509e4c33645bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!1001 &6090680369007156589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 242146970851519633, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.54
+      value: 0.92
       objectReference: {fileID: 0}
     - target: {fileID: 242146971895896512, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_RootOrder
@@ -215,6 +215,14 @@ PrefabInstance:
     - target: {fileID: 242146971895896517, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 242146971993299171, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.555
+      objectReference: {fileID: 0}
+    - target: {fileID: 242146971993299171, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.343
       objectReference: {fileID: 0}
     - target: {fileID: 3248455979720267423, guid: f779f60852a2c3343bf984a19b29a20a, type: 3}
       propertyPath: m_LocalScale.x

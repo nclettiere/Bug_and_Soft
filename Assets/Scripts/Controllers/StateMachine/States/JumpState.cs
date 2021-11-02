@@ -27,14 +27,17 @@ namespace Controllers.StateMachine.States
             {
                 if (!controller.IsDead())
                 {
-                    AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
+                    //AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
+                    GameManager.Instance.GetSoundManager().PlaySoundAtLocation(stateData.landSFX, controller.transform.position);
                     CheckForFlip();
                     stateMachine.ChangeState(froggyController._idleState);
                 }
             });
             
             controller.GetAnimator().SetBool(animBoolName, true);
-            AudioSource.PlayClipAtPoint(stateData.jumpSFX, controller.GetTransfrom().position);
+            
+            GameManager.Instance.GetSoundManager().PlaySoundAtLocation(stateData.jumpSFX, controller.transform.position);
+            //AudioSource.PlayClipAtPoint(stateData.jumpSFX, controller.GetTransfrom().position);
             controller.AddForce(stateData.jumpingForce, true);
         }
 

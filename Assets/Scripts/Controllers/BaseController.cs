@@ -133,58 +133,64 @@ namespace Controllers
 
         protected virtual void Update()
         {
-            if (GameManager.Instance.IsGamePaused())
+            if (IsCharacterOnScreen)
             {
-                if (!savedRigidData)
+                if (GameManager.Instance.IsGamePaused())
                 {
-                    lastVelocity = rBody.velocity;
-                    lastAngularVelocity = rBody.angularVelocity;
-                    rBody.bodyType = RigidbodyType2D.Static;
-                    rBody.Sleep();
+                    if (!savedRigidData)
+                    {
+                        lastVelocity = rBody.velocity;
+                        lastAngularVelocity = rBody.angularVelocity;
+                        rBody.bodyType = RigidbodyType2D.Static;
+                        rBody.Sleep();
 
-                    savedRigidData = true;
+                        savedRigidData = true;
+                    }
+
+                    return;
                 }
 
-                return;
-            }
-
-            if (savedRigidData)
-            {
-                rBody.bodyType = RigidbodyType2D.Dynamic;
-                rBody.velocity = lastVelocity;
-                rBody.angularVelocity = lastAngularVelocity;
-                rBody.WakeUp();
-                savedRigidData = false;
-            }
-
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
-            {
-                if (!dead && characterKind != ECharacterKind.Pepe)
+                if (savedRigidData)
                 {
-                    CheckPlayerInNearRange();
-                    CheckPlayerInLongRange();
+                    rBody.bodyType = RigidbodyType2D.Dynamic;
+                    rBody.velocity = lastVelocity;
+                    rBody.angularVelocity = lastAngularVelocity;
+                    rBody.WakeUp();
+                    savedRigidData = false;
                 }
 
-                StateMachine.CurrentState?.UpdateState();
+                if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+                {
+                    if (!dead && characterKind != ECharacterKind.Pepe)
+                    {
+                        CheckPlayerInNearRange();
+                        CheckPlayerInLongRange();
+                    }
 
-                if (!cachedGroundCheck && CheckGround())
-                    OnLandEvent.Invoke();
+                    StateMachine.CurrentState?.UpdateState();
 
-                cachedGroundCheck = CheckGround();                
-                
-                if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
-                    OnBodyGroundCheckEvent.Invoke();
+                    if (!cachedGroundCheck && CheckGround())
+                        OnLandEvent.Invoke();
 
-                cachedBodyGroundCheck = CheckGround();
+                    cachedGroundCheck = CheckGround();
+
+                    if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
+                        OnBodyGroundCheckEvent.Invoke();
+
+                    cachedBodyGroundCheck = CheckGround();
+                }
             }
         }
 
         protected virtual void FixedUpdate()
         {
-            if (GameManager.Instance.IsGamePaused() || dead) return;
+            if (IsCharacterOnScreen)
+            {
+                if (GameManager.Instance.IsGamePaused() || dead) return;
 
-            if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
-                StateMachine.CurrentState.UpdatePhysics();
+                if (characterKind != ECharacterKind.Dummy && characterKind != ECharacterKind.Njord)
+                    StateMachine.CurrentState.UpdatePhysics();
+            }
         }
 
         
@@ -339,12 +345,14 @@ namespace Controllers
 
         private void OnBecameVisible()
         {
+            IsCharacterOnScreen = true;
             GameManager.Instance.EnemiesInScreen
                 .Add(this);
         }
 
         private void OnBecameInvisible()
         {
+            IsCharacterOnScreen = false;
             GameManager.Instance.EnemiesInScreen
                 .Remove(this);
         }
@@ -566,6 +574,8 @@ namespace Controllers
             damagedTimeCD = float.NegativeInfinity,
             lastAngularVelocity,
             lastTouchDamageTime;
+
+        protected bool IsCharacterOnScreen;
 
         #endregion
 

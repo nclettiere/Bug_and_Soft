@@ -13,9 +13,6 @@ public class DeathBoundsComponent : MonoBehaviour
             deathSFX.Play();
         }else if (other.CompareTag("Enemy"))
         {
-            Debug.Log("GOT AN ENEMY");
-            // Kill ... TODO
-            // Then, destroy
             Destroy(other.gameObject);
         }
     }

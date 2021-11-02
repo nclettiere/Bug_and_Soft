@@ -21,10 +21,14 @@ namespace Managers
         [SerializeField] private UI_LevelInfo levelInfo;
         [SerializeField] private MainMenu mainMenu;
         [SerializeField] private GameObject mainMenuObject;
+        [SerializeField] private GameObject pauseMenu;
+        [SerializeField] private GameObject DialoguePanel;
 
         public EPowerUpKind CurrentPowerUp { get; private set; }
         public uint PowerUpState { get; private set; }
         public bool IsShopOpened { get; private set; }
+        public bool IsPauseMenuOpened { get; private set; }
+        public bool IsDialoguePanelEnabled { get; set; }
 
         private bool isBlindnessActive;
 
@@ -133,8 +137,9 @@ namespace Managers
         public void CloseShop()
         {
             IsShopOpened = false;
-            GameManager.Instance.ResumeGame();
             UIShop.SetActive(false);
+            GameManager.Instance.ExitDialogueMode();
+            GameManager.Instance.ResumeGame();
         }
 
         public void ShowTransitionOne()
@@ -223,6 +228,30 @@ namespace Managers
         public void HideMainMenu()
         {
             mainMenuObject.SetActive(false);
+        }
+
+        public void OpenPauseMenu()
+        {
+            IsPauseMenuOpened = true;
+            pauseMenu.SetActive(true);
+        }
+        
+        public void ClosePauseMenu()
+        {
+            IsPauseMenuOpened = false;
+            pauseMenu.SetActive(false);
+        }
+
+        public void EnableDialoguePanel()
+        {
+            IsDialoguePanelEnabled = true;
+            DialoguePanel.SetActive(true);
+        }
+        
+        public void DisableDialoguePanel()
+        {
+            IsDialoguePanelEnabled = false;
+            DialoguePanel.SetActive(false);
         }
     }
 }

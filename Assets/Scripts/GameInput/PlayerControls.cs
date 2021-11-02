@@ -83,7 +83,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Pause"",
+                    ""name"": ""PauseL"",
                     ""type"": ""Button"",
                     ""id"": ""46c3b3ab-4557-4e85-886d-51ab520e42ed"",
                     ""expectedControlType"": ""Button"",
@@ -647,7 +647,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": ""PauseL"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -658,7 +658,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": ""PauseL"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -798,7 +798,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_MenuMovement = m_Gameplay.FindAction("MenuMovement", throwIfNotFound: true);
         m_Gameplay_MenuInteract = m_Gameplay.FindAction("MenuInteract", throwIfNotFound: true);
-        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+        m_Gameplay_PauseL = m_Gameplay.FindAction("PauseL", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_MenuInteractMouse = m_Gameplay.FindAction("MenuInteractMouse", throwIfNotFound: true);
         m_Gameplay_SpecialMove = m_Gameplay.FindAction("SpecialMove", throwIfNotFound: true);
@@ -864,7 +864,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_MenuMovement;
     private readonly InputAction m_Gameplay_MenuInteract;
-    private readonly InputAction m_Gameplay_Pause;
+    private readonly InputAction m_Gameplay_PauseL;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_MenuInteractMouse;
     private readonly InputAction m_Gameplay_SpecialMove;
@@ -885,7 +885,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @MenuMovement => m_Wrapper.m_Gameplay_MenuMovement;
         public InputAction @MenuInteract => m_Wrapper.m_Gameplay_MenuInteract;
-        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+        public InputAction @PauseL => m_Wrapper.m_Gameplay_PauseL;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @MenuInteractMouse => m_Wrapper.m_Gameplay_MenuInteractMouse;
         public InputAction @SpecialMove => m_Wrapper.m_Gameplay_SpecialMove;
@@ -927,9 +927,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MenuInteract.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
                 @MenuInteract.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
                 @MenuInteract.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenuInteract;
-                @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @PauseL.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPauseL;
+                @PauseL.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPauseL;
+                @PauseL.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPauseL;
                 @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
@@ -982,9 +982,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @MenuInteract.started += instance.OnMenuInteract;
                 @MenuInteract.performed += instance.OnMenuInteract;
                 @MenuInteract.canceled += instance.OnMenuInteract;
-                @Pause.started += instance.OnPause;
-                @Pause.performed += instance.OnPause;
-                @Pause.canceled += instance.OnPause;
+                @PauseL.started += instance.OnPauseL;
+                @PauseL.performed += instance.OnPauseL;
+                @PauseL.canceled += instance.OnPauseL;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
@@ -1023,7 +1023,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnCamera(InputAction.CallbackContext context);
         void OnMenuMovement(InputAction.CallbackContext context);
         void OnMenuInteract(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
+        void OnPauseL(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMenuInteractMouse(InputAction.CallbackContext context);
         void OnSpecialMove(InputAction.CallbackContext context);
