@@ -2,6 +2,7 @@
 using System.Collections;
 using CameraManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace Cutscenes.Cutscene1
@@ -21,6 +22,8 @@ namespace Cutscenes.Cutscene1
         private void Start()
         {
             _animator = GetComponent<Animator>();
+            
+            //SceneManager.MoveGameObjectToScene(GameObject.Find("/Managers"), SceneManager.GetActiveScene());
         }
 
         public void OnWalkEnded()

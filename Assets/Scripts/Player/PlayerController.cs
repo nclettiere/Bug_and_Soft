@@ -184,10 +184,7 @@ namespace Player
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();
             combatCtrl = GetComponent<PlayerCombatController>();
-
             UnlockedPowerUps = new List<PlayerPowerUp>();
-            
-            //DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
@@ -433,11 +430,53 @@ namespace Player
             onKrownRemove.Play();
         }
 
-        public void SetData(PlayerData playerData)
+        public void SetData(GameData gameData)
         {
-            transform.position = playerData.GetPosition();
-            currentHealth = playerData.Health;
-            GameManager.Instance.SetPlayerKrones(playerData.Krones);
+            maxHealth = gameData.PlayerMaxHealth;
+            currentHealth = gameData.PlayerHealth;
+            
+            if(powerUps == null)
+                Debug.LogWarning("Power ups turns out to be null");
+            
+            // powerups
+            if (gameData.unlockedPowerUps[0] == 1)
+            {
+                UnlockPowerUp(EPowerUpKind.TELEPORT, 0);
+            }
+            if (gameData.unlockedPowerUps[1] == 1)
+            {
+                UnlockPowerUp(EPowerUpKind.SHIELD, 0);
+            }
+            if (gameData.unlockedPowerUps[2] == 1)
+            {
+                UnlockPowerUp(EPowerUpKind.GODLIKE, 0);
+            }
+
+            if (gameData.currentPowerUp != -1)
+            {
+                if (gameData.currentPowerUp == 0)
+                {
+                    Debug.Log("Setting Teleport as current");
+                    powerUps.Initialize(teleportPowerUp);
+                    powerUps.ChangePowerUp(teleportPowerUp);
+                }
+                if (gameData.currentPowerUp == 1)
+                {
+                    Debug.Log("Setting SHield as current");
+                    powerUps.Initialize(shieldPowerUp);
+                    powerUps.ChangePowerUp(shieldPowerUp);
+                }
+                if (gameData.currentPowerUp == 2)
+                {
+                    Debug.Log("Setting GODLIKE as current");
+                    powerUps.Initialize(godLikePowerUp);
+                    powerUps.ChangePowerUp(godLikePowerUp);
+                }
+            }
+            else
+            {
+                Debug.Log("Current pw is -1");
+            }
         }
 
         public void Rollear()

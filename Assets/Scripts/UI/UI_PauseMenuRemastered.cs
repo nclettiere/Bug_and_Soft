@@ -1,4 +1,5 @@
-﻿using SaveSystem.Data;
+﻿using System;
+using SaveSystem.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace UI
         private GameObject SaveLoadSlotsPanel;
         private GameObject SaveLoadSlotsOptionsPanel;
         [SerializeField] private GameObject[] SaveLoadSlotsOptionsButtons;
+        [SerializeField] private GameObject ConfirmationPanel;
         
         private GameObject ReturnButton;
         private GameObject ReturnButtonSelector;
@@ -23,6 +25,12 @@ namespace UI
             SaveLoadSlotsOptionsPanel = transform.Find("PauseMenuPanel/Content/SlotOptionsPanel").gameObject;
             ReturnButton = transform.Find("PauseMenuPanel/ReturnButton").gameObject;
             ReturnButtonSelector = transform.Find("PauseMenuPanel/ReturnButtonSelector").gameObject;
+        }
+
+        private void OnEnable()
+        {
+            ConfirmationPanel.SetActive(false);
+            ButtonPanels.SetActive(true);
         }
 
         public void OpenSaveLoadMenu()
@@ -50,6 +58,28 @@ namespace UI
             SaveLoadSlotsOptionsPanel.SetActive(false);
             ReturnButton.SetActive(false);
             ReturnButtonSelector.SetActive(false);
+        }
+
+        public void SaveGameNow()
+        {
+            GameManager.Instance.QuickSave();
+        }
+
+        public void OpenLoadConfirmationPanel()
+        {
+            ButtonPanels.SetActive(false);
+            ConfirmationPanel.SetActive(true);
+        }
+        
+        public void CloseConfirmationPanel()
+        {
+            ButtonPanels.SetActive(true);
+            ConfirmationPanel.SetActive(false);
+        }
+        
+        public void LoadGameNow()
+        {
+            GameManager.Instance.QuickLoad();
         }
         
         public void GoBack()

@@ -4,9 +4,6 @@ namespace Player
 {
     public class PlayerPowerUpsProgression
     {
-        // TODO: Serializable, CurrentPowerUp, CurrentProgressionTree, Switch PowerUp, Increment Progression Tree 
-        //                       (que habilidades sube)
-        
         public PlayerPowerUp currentPowerUp { get; private set; }
 
         public void Initialize(PlayerPowerUp powerUp)

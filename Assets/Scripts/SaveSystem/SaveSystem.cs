@@ -26,13 +26,21 @@ namespace SaveSystem
             return true;
         }
         
-        public static bool QuickSaveGame(ref PlayerData playerData)
+        public static bool QuickSaveGame(ref GameData gameData)
         {
-            EnsureDirs();
-            var binaryFormatter = new BinaryFormatter();
-            var fileStream = new FileStream(QuickSavePath, FileMode.Create);
-            binaryFormatter.Serialize(fileStream, playerData);
-            fileStream.Close();
+            try
+            {
+                EnsureDirs();
+                var binaryFormatter = new BinaryFormatter();
+                var fileStream = new FileStream(QuickSavePath, FileMode.Create);
+                binaryFormatter.Serialize(fileStream, gameData);
+                fileStream.Close();
+            }
+            catch(Exception e)
+            {
+                Debug.LogError($"Could not save the game\n{e.Message}");
+            }
+
             return true;
         }
         
@@ -53,18 +61,18 @@ namespace SaveSystem
             return null;
         }
         
-        public static PlayerData LoadQuickSaveGame()
+        public static GameData LoadQuickSaveGame()
         {
             EnsureDirs();
             if (File.Exists(QuickSavePath))
             {
                 var binaryFormatter = new BinaryFormatter();
                 var fileStream = new FileStream(QuickSavePath, FileMode.Open);
-                var playerData = binaryFormatter.Deserialize(fileStream) as PlayerData;
+                var gameData = binaryFormatter.Deserialize(fileStream) as GameData;
                 fileStream.Close();
 
                 Debug.Log("Cargando save desde: " + QuickSavePath);
-                return playerData;
+                return gameData;
             }
             
             Debug.LogError("Savegame no existe;");

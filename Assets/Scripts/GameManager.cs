@@ -29,15 +29,12 @@ public delegate void OnStateChangeHandler();
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    
+
     public GameInput gameInput { get; private set; }
 
     public static GameManager Instance
     {
-        get
-        {
-            return _instance;
-        }
+        get { return _instance; }
         set => _instance = value;
     }
 
@@ -57,7 +54,7 @@ public class GameManager : MonoBehaviour
     public bool isLevelingUp;
 
     public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
-    
+
     public List<BaseController> EnemiesInScreen { get; private set; }
 
     public int PlayerKrowns { get; private set; }
@@ -86,7 +83,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver { get; private set; }
 
     public float MasterVolume { get; private set; } = 0.2f;
-    
+
     public UnityEvent OnLevelReset { get; private set; }
     public UnityEvent OnVergenTrappedPlayer { get; private set; }
 
@@ -94,28 +91,23 @@ public class GameManager : MonoBehaviour
     {
         if (_instance != null)
         {
-           Instance.GetUIManager().HideMainMenu();
-           Instance.ShowHUD();
-           Instance.RespawnPlayer();
-           Destroy(gameObject.transform.root.gameObject);
+            Instance.GetUIManager().HideMainMenu();
+            Instance.ShowHUD();
+            Instance.RespawnPlayer();
+            Destroy(gameObject.transform.root.gameObject);
         }
         else
         {
             _instance = this;
             DontDestroyOnLoad(transform.root.gameObject);
         }
-        
+
         if (OnLevelReset == null)
             OnLevelReset = new UnityEvent();
-        
+
         if (OnVergenTrappedPlayer == null)
             OnVergenTrappedPlayer = new UnityEvent();
-        
-        gameInput = new GameInput();
-        gameInput.SetupInputs();
 
-        enemies = new List<EnemySpawner>();
-        
         DontDestroyOnLoad(transform.root.gameObject);
     }
 
@@ -127,13 +119,19 @@ public class GameManager : MonoBehaviour
         else if (_instance != this)
             Destroy(gameObject.GetComponent(_instance.GetType()));
 
+        enemies = new List<EnemySpawner>();
         EnemiesInScreen = new List<BaseController>();
+
+        Debug.Log("GameManager Started");
+
+        gameInput = new GameInput();
+        gameInput.SetupInputs();
 
         SetupGame();
 
         isGamePaused = true;
         PauseGame();
-        
+
         Instance.GetUIManager().ShowMainMenu();
 
         DontDestroyOnLoad(transform.root.gameObject);
@@ -187,7 +185,7 @@ public class GameManager : MonoBehaviour
         //SetInputEnabled(false);
         //isPlayerAlive = false;
         //SetCameraFollowTarget(false);
-        
+
         PlayerController.Damage(new DamageInfo(999, 0));
     }
 
@@ -337,7 +335,7 @@ public class GameManager : MonoBehaviour
     {
         return GameObject.Find("UI/UI_HUD").GetComponent<UI_HUD>();
     }
-    
+
     public InventorySlotManager GetInventorySlotManager()
     {
         return GameObject.Find("Managers/InvetoryManager").GetComponent<InventorySlotManager>();
@@ -346,8 +344,8 @@ public class GameManager : MonoBehaviour
     public UIManager GetUIManager()
     {
         return GameObject.Find("/UIManager").GetComponent<UIManager>();
-    }    
-    
+    }
+
     public SoundManager GetSoundManager()
     {
         return GameObject.Find("/SoundManager").GetComponent<SoundManager>();
@@ -371,7 +369,6 @@ public class GameManager : MonoBehaviour
         }
 
         currentLevel++;
-        QuickSave();
     }
 
     private Vector3 GetLvlOnePosition()
@@ -379,7 +376,7 @@ public class GameManager : MonoBehaviour
         return GameObject.Find("SpawnPoints/LevelOneDefaultSpawn")
             .transform.position;
     }
-    
+
     private Vector3 GetLvlTwoPosition()
     {
         return GameObject.Find("SpawnPoints/LevelTwoDefaultSpawn")
@@ -392,31 +389,58 @@ public class GameManager : MonoBehaviour
         return SaveSystem.SaveSystem.SaveGame(ref playerData, slot);
     }
 
+    // deprecated
     public bool LoadSave(int slot)
     {
         var playerData = SaveSystem.SaveSystem.LoadSaveGame(slot);
         if (playerData == null) return false;
 
         // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
-        PlayerController.SetData(playerData);
+       // PlayerController.SetData(playerData);
 
         return true;
     }
 
     public bool QuickSave()
     {
-        var playerData = new PlayerData(PlayerController);
-        return SaveSystem.SaveSystem.QuickSaveGame(ref playerData);
+        GameData gd = new GameData();
+        gd.Level = GetSceneIndex();
+        gd.PlayerHealth = PlayerController.currentHealth;
+        gd.PlayerMaxHealth = PlayerController.maxHealth;
+        gd.SetPlayerPosition(PlayerController.transform.position);
+        gd.SetPowerUps(PlayerController.UnlockedPowerUps);
+        gd.SetCurrentPowerUp(PlayerController.powerUps.currentPowerUp);
+        gd.currentKrones = PlayerKrowns;
+        gd.currentExp = currentExp;
+
+        return SaveSystem.SaveSystem.QuickSaveGame(ref gd);
     }
 
     public bool QuickLoad()
     {
-        var playerData = SaveSystem.SaveSystem.LoadQuickSaveGame();
-        if (playerData == null) return false;
+        var gameData = SaveSystem.SaveSystem.LoadQuickSaveGame();
+        if (gameData == null) return false;
 
-        // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
-        PlayerController.SetData(playerData);
+        switch (gameData.Level)
+        {
+            case 0:
+                LoadLevel1();
+                break;
+            case 1:
+                LoadLevel2();
+                break;
+            case 2:
+                LoadLevel21();
+                break;
+            case 3:
+                LoadLevel3();
+                break;
+        }
 
+        PlayerKrowns = gameData.currentKrones;
+        currentExp = gameData.currentExp;
+        
+        PlayerController.SetData(gameData);
         return true;
     }
 
@@ -424,7 +448,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerKrowns = playerDataKrones;
     }
-    
+
     public void ApplyBlindness(float howLong = 1f)
     {
         GetUIManager().ApplyBlindness(howLong);
@@ -443,14 +467,14 @@ public class GameManager : MonoBehaviour
 
         Instance.GetUIManager().EnableDialoguePanel();
     }
-    
+
     public void ExitDialogueMode()
     {
         Instance.SetCameraSize(10f, 0.3f);
         PlayerController.ExitInteractionMode();
         isDialogueMode = false;
-        
-        if(!Instance.GetUIManager().IsShopOpened)
+
+        if (!Instance.GetUIManager().IsShopOpened)
             ResumeGame();
 
         Instance.GetUIManager().DisableDialoguePanel();
@@ -481,37 +505,37 @@ public class GameManager : MonoBehaviour
 
     public void AumentHealth()
     {
-        int newHealth = PlayerController.maxHealth + (int)(0.15f * PlayerController.maxHealth);
+        int newHealth = PlayerController.maxHealth + (int) (0.15f * PlayerController.maxHealth);
         PlayerController.maxHealth = newHealth;
-        
+
         PlayerController.RefillHealth();
-        
+
         ResumeGame();
-        isLevelingUp = true;
+        isLevelingUp = false;
     }
 
     public void AumentDamage()
-    {        
+    {
         PlayerController.RefillHealth();
         PlayerController.combatCtrl.IncreseDamage();
         ResumeGame();
-        isLevelingUp = true;
+        isLevelingUp = false;
     }
 
     public void Aumentagicka()
-    {        
+    {
         PlayerController.RefillHealth();
-        
+
         ResumeGame();
-        isLevelingUp = true;
+        isLevelingUp = false;
     }
 
     public void AumentCdr()
-    {        
+    {
         PlayerController.RefillHealth();
-        
+
         ResumeGame();
-        isLevelingUp = true;
+        isLevelingUp = false;
     }
 
     public void LoadLevel1()
@@ -519,7 +543,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Level1", LoadSceneMode.Single);
         StartCoroutine(LoadLevel1Delayed());
     }
-    
+
     public void LoadLevel1Full()
     {
         SceneManager.LoadScene("Level1", LoadSceneMode.Single);
@@ -555,11 +579,12 @@ public class GameManager : MonoBehaviour
     {
         foreach (var spawner in enemies)
         {
-            if(spawner != null)
+            if (spawner != null)
                 spawner.Kill();
         }
+
         enemies.Clear();
-        
+
         currentLevel = 2;
         SceneManager.LoadScene("Level2", LoadSceneMode.Single);
         Instance.GetUIManager().HideMainMenu();
@@ -567,14 +592,14 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator LoadLevel2Delayed()
-    {        
+    {
         yield return new WaitForSeconds(1);
-        
+
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
-        
+
         Instance.SetMainMenuOn(false);
         Instance.SetInputEnabled(true);
         Instance.SetCameraOffsetX(1.3f);
@@ -599,7 +624,7 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         ResumeGame();
         GetUIManager().HideGameOver();
-        
+
         PlayerController.RefillHealth();
         PlayerKrowns = 0;
         currentExp = 0;
@@ -620,10 +645,10 @@ public class GameManager : MonoBehaviour
         SetPlayerKrones(0);
 
         PlayerController.RespawnNow();
-        
+
         //foreach (var spawner in enemies)
         //    spawner.Respawn();
-        
+
         OnLevelReset.Invoke();
     }
 
@@ -636,7 +661,7 @@ public class GameManager : MonoBehaviour
     {
         OnVergenTrappedPlayer.Invoke();
     }
-    
+
     public VergenController GetVergenController()
     {
         return GameObject.Find("/Characters/Enemigos/Vergen")
@@ -664,7 +689,6 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShowTransitionOne()
     {
         currentLevel++;
-        QuickSave();
         yield return new WaitForSeconds(15);
         LevelWon();
         Instance.GetUIManager().ShowTransitionOne();
@@ -674,46 +698,45 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShowTransitionTwo()
     {
         currentLevel++;
-        QuickSave();
         yield return new WaitForSeconds(20);
         LevelWon();
         Instance.GetUIManager().ShowTransitionTwo();
-        yield return 0; 
+        yield return 0;
     }
-    
+
     public IEnumerator ShowTransitionThree()
     {
         currentLevel++;
-        QuickSave();
         yield return new WaitForSeconds(3);
         LevelWon();
         Instance.GetUIManager().ShowTransitionTwo();
-        yield return 0; 
+        yield return 0;
     }
 
     public void LoadLevel21()
-    {        
+    {
         foreach (var spawner in enemies)
         {
-            if(spawner != null)
+            if (spawner != null)
                 spawner.Kill();
         }
+
         enemies.Clear();
-        
+
         currentLevel = 3;
         SceneManager.LoadScene("Level2.1", LoadSceneMode.Single);
         StartCoroutine(LoadLevel21Delayed());
     }
 
     private IEnumerator LoadLevel21Delayed()
-    {        
+    {
         yield return new WaitForSeconds(1);
-        
+
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
-        
+
         Instance.SetMainMenuOn(false);
         Instance.SetInputEnabled(true);
         Instance.SetCameraOffsetX(1.3f);
@@ -731,11 +754,12 @@ public class GameManager : MonoBehaviour
     {
         foreach (var spawner in enemies)
         {
-            if(spawner != null)
+            if (spawner != null)
                 spawner.Kill();
         }
+
         enemies.Clear();
-        
+
         currentLevel = 3;
         SceneManager.LoadScene("Level3", LoadSceneMode.Single);
         Instance.GetUIManager().HideMainMenu();
@@ -743,14 +767,14 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator LoadLevel3Delayed()
-    {        
+    {
         yield return new WaitForSeconds(1);
-        
+
         SetSpawnPoint(GetLvlTwoPosition());
         RespawnPlayer(true);
         PlayerController.RespawnNow();
         PlayerController.transform.position = new Vector3(-17f, -0.6f, 0);
-        
+
         Instance.SetMainMenuOn(false);
         Instance.SetInputEnabled(true);
         Instance.SetCameraOffsetX(1.3f);

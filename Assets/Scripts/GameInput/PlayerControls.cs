@@ -88,7 +88,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""46c3b3ab-4557-4e85-886d-51ab520e42ed"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=1)""
                 },
                 {
                     ""name"": ""Interact"",

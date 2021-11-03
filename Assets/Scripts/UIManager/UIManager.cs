@@ -240,6 +240,7 @@ namespace Managers
         {
             IsPauseMenuOpened = false;
             pauseMenu.SetActive(false);
+            GameManager.Instance.ResumeGame();
         }
 
         public void EnableDialoguePanel()
@@ -252,6 +253,11 @@ namespace Managers
         {
             IsDialoguePanelEnabled = false;
             DialoguePanel.SetActive(false);
+        }
+
+        public void UpdatePauseMenu()
+        {
+            pauseMenu.SetActive(GameManager.Instance.isGamePaused);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Input
 {
@@ -13,7 +14,8 @@ namespace Input
 
         public void SetupInputs()
         {
-            playerControls = new PlayerControls();
+            if(playerControls == null)
+                playerControls = new PlayerControls();
             playerControls.Enable();
 
             SetupAbilitiesInput();
@@ -32,22 +34,25 @@ namespace Input
         {
             playerControls.Gameplay.PauseL.performed += ctx =>
             {
-                if (GameManager.Instance.GetMainMenuOn() || GameManager.Instance.isGameOver ||
+                if (ctx.action.phase == InputActionPhase.Started ||
+                    ctx.action.phase == InputActionPhase.Canceled ||
+                    ctx.action.phase == InputActionPhase.Disabled ||
+                    ctx.action.phase == InputActionPhase.Waiting ||
+                    GameManager.Instance.GetSceneIndex() == 4 ||
+                    GameManager.Instance.GetSceneIndex() == 5 ||
+                    GameManager.Instance.GetSceneIndex() == 6 ||
+                    GameManager.Instance.GetMainMenuOn() || GameManager.Instance.isGameOver ||
                     GameManager.Instance.isDialogueMode || GameManager.Instance.isLevelingUp ||
-                    GameManager.Instance.GetUIManager().IsShopOpened) return;
+                    GameManager.Instance.GetUIManager().IsShopOpened)
+                    {
+                        Debug.Log("Cant open pause menu");
+                        return;
+                    }
                 
-                if (GameManager.Instance.isGamePaused)
-                {
-                    Debug.Log("Resuming");
-                    GameManager.Instance.GetUIManager().ClosePauseMenu();
-                    GameManager.Instance.ResumeGame();
-                }
-                else
-                {
-                    Debug.Log("Pausing");
-                    GameManager.Instance.GetUIManager().OpenPauseMenu();
-                    GameManager.Instance.PauseGame();
-                }
+                Debug.Log("Pause Event Triggered");
+
+                GameManager.Instance.isGamePaused = !GameManager.Instance.isGamePaused;
+                GameManager.Instance.GetUIManager().UpdatePauseMenu();
             };
 
             playerControls.Gameplay.QuickSave.performed += ctx => { GameManager.Instance.QuickSave(); };
