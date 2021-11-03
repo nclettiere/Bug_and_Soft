@@ -343,14 +343,14 @@ namespace Controllers
             rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
         }
 
-        private void OnBecameVisible()
+        protected virtual void OnBecameVisible()
         {
             IsCharacterOnScreen = true;
             GameManager.Instance.EnemiesInScreen
                 .Add(this);
         }
 
-        private void OnBecameInvisible()
+        protected virtual void OnBecameInvisible()
         {
             IsCharacterOnScreen = false;
             GameManager.Instance.EnemiesInScreen

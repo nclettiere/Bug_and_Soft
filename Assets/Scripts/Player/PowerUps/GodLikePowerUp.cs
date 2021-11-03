@@ -29,13 +29,16 @@ namespace Player
         {
             if (Time.time >= tpCooldownTime)
             {
+                onCooldown = false;
                 GameManager.Instance.GetUIManager().ChangePowerUpState(0);
             }
+            
             if (activated)
             {
                 if (Time.time >= tpCooldownTime)
                 {
                     BurnEnemies();
+                    onCooldown = true;
                     tpCooldownTime = Time.time + tpCooldown;
                 }
 

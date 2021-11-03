@@ -113,8 +113,14 @@ namespace Input
             playerControls.Gameplay.SwitchAbility.performed += ctx =>
 
             {
-                if (GameManager.Instance.PlayerController != null)
-                    GameManager.Instance.PlayerController.CyclePowerUps();
+                if (GameManager.Instance.PlayerController != null &&
+                    GameManager.Instance.PlayerController.powerUps.currentPowerUp != null)
+                {
+                    if (!GameManager.Instance.PlayerController.powerUps.currentPowerUp.onCooldown)
+                    {
+                        GameManager.Instance.PlayerController.CyclePowerUps();
+                    }
+                }
             };
         }
 

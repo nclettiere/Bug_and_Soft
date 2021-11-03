@@ -198,5 +198,19 @@ namespace Controllers.Froggy
             GameManager.Instance.ShowBossHealth("Odinn's Lost Crow - Fase 1", this);
             OLCisActive = true;
         }
+        
+        protected override void OnBecameVisible()
+        {
+            IsCharacterOnScreen = true;
+            GameManager.Instance.EnemiesInScreen
+                .Add(this);
+        }
+
+        protected override void OnBecameInvisible()
+        {
+            IsCharacterOnScreen = true;
+            GameManager.Instance.EnemiesInScreen
+                .Remove(this);
+        }
     }
 }

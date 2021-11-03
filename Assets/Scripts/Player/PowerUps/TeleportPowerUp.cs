@@ -46,6 +46,7 @@ namespace Player
 
             if (Time.time >= tpCooldownTime)
             {
+                onCooldown = false;
                 if (currentPhase == 0)
                     GameManager.Instance.GetUIManager().ChangePowerUpState(0);
             }
@@ -61,10 +62,12 @@ namespace Player
                 tpMaxWaitTime = float.NegativeInfinity;
                 currentPhase = 0;
                 awaitingConfirmation = false;
+                onCooldown = true;
             }
             
             if (currentPhase == 0 && Time.time >= tpCooldownTime)
             {
+                onCooldown = false;
                 GameManager.Instance.GetUIManager().ChangePowerUpState(0);
             }
 
@@ -74,6 +77,7 @@ namespace Player
                 {
                     if (currentPhase == 0)
                     {
+                        onCooldown = true;
                         targetWarp = GameManager.Instance.PlayerController.transform.position;
                         tpCooldownTime = Time.time + tpCooldownFirstPhase;
                         tpMaxWaitTime = Time.time + tpCooldown;
@@ -84,6 +88,7 @@ namespace Player
                     }
                     else if (currentPhase == 1)
                     {
+                        onCooldown = true;
                         GameManager.Instance.PlayerController.transform.position = targetWarp;
                         tpCooldownTime = Time.time + tpCooldown;
                         awaitingConfirmation = false;

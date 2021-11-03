@@ -36,8 +36,13 @@ namespace Player
             if (Time.time >= shieldCooldownTime)
             {
                 isActive = true;
+                onCooldown = false;
                 GameManager.Instance.GetUIManager().ChangePowerUpState(0);
                 shieldPlayerIndicator.SetActive(true);
+            }
+            else
+            {
+                onCooldown = true;
             }
         }
 

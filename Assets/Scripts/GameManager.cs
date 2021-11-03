@@ -107,6 +107,9 @@ public class GameManager : MonoBehaviour
 
         if (OnVergenTrappedPlayer == null)
             OnVergenTrappedPlayer = new UnityEvent();
+        
+        enemies = new List<EnemySpawner>();
+        EnemiesInScreen = new List<BaseController>();
 
         DontDestroyOnLoad(transform.root.gameObject);
     }
@@ -118,9 +121,6 @@ public class GameManager : MonoBehaviour
             _instance = this;
         else if (_instance != this)
             Destroy(gameObject.GetComponent(_instance.GetType()));
-
-        enemies = new List<EnemySpawner>();
-        EnemiesInScreen = new List<BaseController>();
 
         Debug.Log("GameManager Started");
 
@@ -437,11 +437,19 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+        StartCoroutine(SetGameDataDelayed(gameData));
+        return true;
+    }
+
+    private IEnumerator SetGameDataDelayed(GameData gameData)
+    {
+        yield return new WaitForSeconds(1);
         PlayerKrowns = gameData.currentKrones;
         currentExp = gameData.currentExp;
         
         PlayerController.SetData(gameData);
-        return true;
+        
+        yield return 0;
     }
 
     public void SetPlayerKrones(int playerDataKrones)

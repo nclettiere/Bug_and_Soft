@@ -1704,7 +1704,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ALL YOUR UNSAVED DATA WILL BE LOST. DO YOU WAN'T TO CONTINUE ANYWAY?
+  m_text: Si cargas la partida perderas todo el progreso hasta ahora, desea proceder?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2848386b8d54542b64b62e4a086b92, type: 2}
   m_sharedMaterial: {fileID: -7597627139092801985, guid: 7a2848386b8d54542b64b62e4a086b92, type: 2}
@@ -11771,7 +11771,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2422522845296318001}
         m_TargetAssemblyTypeName: UI.UI_PauseMenuRemastered, Scripts
-        m_MethodName: LoadGameNow
+        m_MethodName: OpenLoadConfirmationPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17716,7 +17716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6384325766279325528, guid: be7b6377676710844a155d5d01842f18, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -14.02063
+      value: -14.020645
       objectReference: {fileID: 0}
     - target: {fileID: 6384325766375063125, guid: be7b6377676710844a155d5d01842f18, type: 3}
       propertyPath: m_AnchorMax.x

@@ -85,6 +85,8 @@ namespace Controllers.Characters.Vergen
                 ResetVergen();
             });
 
+            IsCharacterOnScreen = true;
+            
             StateMachine.Initialize(vergenIdleState);
         }
 
@@ -261,6 +263,20 @@ namespace Controllers.Characters.Vergen
                 dInfo.MoveOnAttackForce = new Vector2(200, 10);
                 pCtrl.Damage(dInfo);
             }
+        }
+        
+        protected override void OnBecameVisible()
+        {
+            IsCharacterOnScreen = true;
+            GameManager.Instance.EnemiesInScreen
+                .Add(this);
+        }
+
+        protected override void OnBecameInvisible()
+        {
+            IsCharacterOnScreen = true;
+            GameManager.Instance.EnemiesInScreen
+                .Remove(this);
         }
     }
 }

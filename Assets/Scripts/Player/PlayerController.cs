@@ -441,6 +441,8 @@ namespace Player
             // powerups
             if (gameData.unlockedPowerUps[0] == 1)
             {
+                if(teleportPowerUp == null)
+                    Debug.Log("tp is null");
                 UnlockPowerUp(EPowerUpKind.TELEPORT, 0);
             }
             if (gameData.unlockedPowerUps[1] == 1)
@@ -459,18 +461,22 @@ namespace Player
                     Debug.Log("Setting Teleport as current");
                     powerUps.Initialize(teleportPowerUp);
                     powerUps.ChangePowerUp(teleportPowerUp);
+                    GameManager.Instance.GetUIManager().ChangePowerUpKind(EPowerUpKind.TELEPORT);
+                    
                 }
                 if (gameData.currentPowerUp == 1)
                 {
                     Debug.Log("Setting SHield as current");
                     powerUps.Initialize(shieldPowerUp);
                     powerUps.ChangePowerUp(shieldPowerUp);
+                    GameManager.Instance.GetUIManager().ChangePowerUpKind(EPowerUpKind.SHIELD);
                 }
                 if (gameData.currentPowerUp == 2)
                 {
                     Debug.Log("Setting GODLIKE as current");
                     powerUps.Initialize(godLikePowerUp);
                     powerUps.ChangePowerUp(godLikePowerUp);
+                    GameManager.Instance.GetUIManager().ChangePowerUpKind(EPowerUpKind.GODLIKE);
                 }
             }
             else

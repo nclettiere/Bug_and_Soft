@@ -5,7 +5,8 @@ namespace Player
     public class PlayerPowerUp
     {
         public EPowerUpKind powerUpKind { get; protected set; } = EPowerUpKind.NONE;
-        protected bool activated;
+        public bool activated;
+        public bool onCooldown;
         
         public PlayerPowerUp(EPowerUpKind powerUpKind)
         {

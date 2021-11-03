@@ -19,6 +19,23 @@ namespace UI
         private void OnEnable()
         {
             GameManager.Instance.PauseGame();
+
+            foreach (var powerUp in GameManager.Instance.PlayerController.UnlockedPowerUps)
+            {
+                if (powerUp.powerUpKind == EPowerUpKind.TELEPORT)
+                {
+                    warpyButton.interactable = false;
+                    warpyText.text = "SOLD OUT";
+                }else if (powerUp.powerUpKind == EPowerUpKind.SHIELD)
+                {
+                    shieldButton.interactable = false;
+                    shieldText.text = "SOLD OUT"; 
+                }else if (powerUp.powerUpKind == EPowerUpKind.GODLIKE)
+                {
+                    godlikeButton.interactable = false;
+                    godlikeText.text = "SOLD OUT";
+                }
+            }
         }
 
         public void UnlockWarpy()
