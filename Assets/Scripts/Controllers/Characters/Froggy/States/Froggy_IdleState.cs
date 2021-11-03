@@ -21,10 +21,10 @@ public class Froggy_IdleState : State
     {
         base.UpdateState();
 
-        if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
-        {
-            froggyController.EnterPhaseTwo();
-        }
+        //if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+        //{
+        //    froggyController.EnterPhaseTwo();
+        //}
 
         if (controller.CheckPlayerInLongRange())
         {

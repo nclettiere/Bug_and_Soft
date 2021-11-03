@@ -7,7 +7,7 @@ namespace Controllers.Froggy
 {
     public class SuperFroggy_SecondPhase : State
     {
-        private FroggyController froggyController;
+        private SuperFroggyController froggyController;
         
         protected SuperFroggy_SecondPhaseStateData stateData;
 
@@ -22,7 +22,7 @@ namespace Controllers.Froggy
         private int initialFacingPos;
         private float bombPlacementWaitTime = float.NegativeInfinity;
         
-        public SuperFroggy_SecondPhase(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, SuperFroggy_SecondPhaseStateData stateData, FroggyController froggyController) 
+        public SuperFroggy_SecondPhase(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, SuperFroggy_SecondPhaseStateData stateData, SuperFroggyController froggyController) 
             : base(controller, stateMachine, animBoolName)
         {
             this.froggyController = froggyController;

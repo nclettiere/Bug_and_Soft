@@ -56,7 +56,7 @@ namespace Controllers.Froggy
             _deadState = new Froggy_DeadState(this, StateMachine, "Dead", _deadStateData, this);
             _damageState = new Froggy_DamageState(this, StateMachine, "Dead", _damageStateData, this);
             _nearAttackState = new Froggy_NearAttackState(this, StateMachine, "Idle", _jumpStateData, this);
-            _superFroggySecondPhase = new SuperFroggy_SecondPhase(this, StateMachine, "Idle", _superFroggySecondPhaseStateData, this);
+            //_superFroggySecondPhase = new SuperFroggy_SecondPhase(this, StateMachine, "Idle", _superFroggySecondPhaseStateData, this);
             
             StateMachine.Initialize(_idleState);
 
@@ -112,28 +112,6 @@ namespace Controllers.Froggy
             yield return new WaitForSeconds(1);
             
             Destroy(gameObject);
-        }
-
-        // SuperFroggy : MiniBoss => SecondPhase
-        public void EnterPhaseTwo()
-        {
-            if (controllerKind == EControllerKind.Boss && currentPhase == 1)
-            {
-                transforming = true;
-                currentPhase++;
-                StateMachine.ChangeState(_superFroggySecondPhase);
-            }
-        }
-
-        public void Explode()
-        {
-            Instantiate(_farty, transform.position, Quaternion.Euler(0f, 0f, 0f));
-            Destroy(gameObject);
-        }
-
-        public void PlaceBomb()
-        {
-            Instantiate(_superFroggySecondPhaseStateData.bombs, transform.position + new Vector3(0f, 2f), Quaternion.Euler(0f, 0f, 0f));
         }
     }
 }

@@ -52,9 +52,9 @@ public class Froggy_DeadState : DeadState
         }
 
         // SuperFroggy
-        LookAtPlayer();
-        if (Time.time > enterPhaseTwoWaitTime)
-            _froggyController.Explode();
+        //LookAtPlayer();
+        //if (Time.time > enterPhaseTwoWaitTime)
+        //    _froggyController.Explode();
     }
         
     protected virtual void LookAtPlayer()
