@@ -12,7 +12,7 @@ namespace Controllers.Characters.SuperFroggy.States
         private SuperFroggyController froggyController;
         private float attackCooldown = float.NegativeInfinity;
         private bool attacking;
-        private bool tongueFinished;
+        private bool tongueFinished = true;
         public bool attackStarted;
 
         public SuperFroggyLongAttackState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName, SuperFroggyController froggyController) 
@@ -24,39 +24,46 @@ namespace Controllers.Characters.SuperFroggy.States
         public override void Enter()
         {
             base.Enter();
-
-            if (Time.time >= attackCooldown)
-            {
-                froggyController.SpecialAttack();
-                controller.GetAnimator().SetBool("IsReadyToAttack", true);
-                attackCooldown = Time.time + 3f;
-            }
-            else
-                stateMachine.ChangeState(froggyController._idleState);
+            
         }
 
         public override void Exit()
         {
             base.Exit();
-            attackStarted = false;
             attacking = false;
-            tongueFinished = false;
+            tongueFinished = true;
         }
 
         public override void UpdateState()
         {
-            if (controller.CheckPlayerInNearRange())
+            if (controller.CheckPlayerInNearRange() && tongueFinished)
             {
                 Debug.Log("NEAR RANGE DETECTED");
                 froggyController.StateMachine.ChangeState(froggyController._nearAttackState);
             }
+            
+            if (!controller.CheckPlayerInNearRange() && !controller.CheckPlayerInLongRange() && tongueFinished)
+            {
+                Debug.Log("NEAR RANGE DETECTED");
+                froggyController.StateMachine.ChangeState(froggyController._nearAttackState);
+            }
+            
+            if (Time.time >= attackCooldown)
+            {
+                controller.GetAnimator().SetBool("Attacking", true);
+                tongueFinished = false;
+                froggyController.SpecialAttack();
+                attackCooldown = Time.time + 3f;
+            }
+            //else
+            //    stateMachine.ChangeState(froggyController._idleState);
         }
 
         public void OnTongeFinished()
         {
             tongueFinished = true;
             controller.GetAnimator().SetBool("Attacking", false);
-            froggyController.StateMachine.ChangeState(froggyController._idleState);
+            //froggyController.StateMachine.ChangeState(froggyController._idleState);
         }
     }
 }

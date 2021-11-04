@@ -131,4 +131,8 @@ public class SuperFroggyController : BaseController
         Instantiate(_superFroggySecondPhaseStateData.bombs, transform.position + new Vector3(0f, 2f),
             Quaternion.Euler(0f, 0f, 0f));
     }
+    
+    public void Anim_OnAttackingAnimStarted()
+    {
+    }
 }
