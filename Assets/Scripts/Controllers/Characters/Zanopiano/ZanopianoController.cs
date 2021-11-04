@@ -30,15 +30,21 @@ namespace Controllers.Characters.Zanopiano
         {
             base.Start();
 
-            //_agent = GetComponent<NavMeshAgent>();
-            //_agent.updateRotation = false;
-            //_agent.updateUpAxis = false;
-
             WalkState = new Zanopiano_WalkState(this, StateMachine, "Walk", this);
             AttackState = new Zanopiano_AttackState(this, StateMachine, "Attacking", this);
             DeadState = new Zanopiano_DeadState(this, StateMachine, "Dead", this);
 
             StateMachine.Initialize(WalkState);
+        }
+
+        protected override void Update()
+        {
+            if (currentHealth <= 0)
+            {
+                StateMachine.ChangeState(DeadState);
+            }
+            
+            base.Update();
         }
 
         public void SetTargetDestination(Vector3 target)

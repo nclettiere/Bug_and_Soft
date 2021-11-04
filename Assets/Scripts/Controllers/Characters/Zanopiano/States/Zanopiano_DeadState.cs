@@ -8,7 +8,7 @@ namespace Controllers.Characters.Zanopiano.States
     {
         private ZanopianoController zController;
 
-        private bool alerting;
+        private bool itemsgiven;
 
         public Zanopiano_DeadState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             ZanopianoController zController)
@@ -20,18 +20,22 @@ namespace Controllers.Characters.Zanopiano.States
         public override void Enter()
         {
             base.Enter();
-            controller.GetAnimator().SetBool("Alerting", false);
-            controller.GetAnimator().SetBool("Alerting_Completed", false);
-            controller.GetAnimator().SetBool("Attacking", false);
-            controller.GetAnimator().SetBool("Attacking_Cooldown", false);
-            controller.GetAnimator().SetBool(animBoolName, true);
-            zController.DropItems();
+            
+            if (!itemsgiven)
+            {
+                zController.DropItems();
+                itemsgiven = true;
+            }
         }
 
         public override void UpdateState()
         {
             base.UpdateState();
-
+            controller.GetAnimator().SetBool("Alerting", false);
+            controller.GetAnimator().SetBool("Alerting_Completed", false);
+            controller.GetAnimator().SetBool("Attacking", false);
+            controller.GetAnimator().SetBool("Attacking_Cooldown", false);
+            controller.GetAnimator().SetBool(animBoolName, true);
             zController.GetMovementController<BaseMovementController>()
                 .Speed = 0f;
         }

@@ -65,13 +65,13 @@ namespace Assets.Scripts.Controllers.Characters.SuperFroggy.States
             {
                 controller.GetAnimator().SetBool(animBoolName, true);
                 controller.AddForce(jumpStateData.jumpingForce, true);
-                lastJumpTime = Time.time + 1f;
+                lastJumpTime = Time.time + 0.8f;
             }
 
             if (!controller.CheckGround() && Time.time >= attackCooldown)
             {
                 controller.CheckTouchDamage();
-                attackCooldown = Time.time + 1f;
+                attackCooldown = Time.time + 0.8f;
             }
         }
 

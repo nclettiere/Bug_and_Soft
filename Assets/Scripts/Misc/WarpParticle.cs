@@ -22,11 +22,14 @@ public class WarpParticle : MonoBehaviour
 
         if (hit != null)
         {
-            PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
-            if (bctrl != null && (bctrl is IDamageable))
+            if (hit.transform != null)
             {
-                DamageInfo damageInfo = new DamageInfo(damageAmount, transform.position.x, true);
-                bctrl.Damage(damageInfo);
+                PlayerController bctrl = hit.transform.GetComponent<PlayerController>();
+                if (bctrl != null && (bctrl is IDamageable))
+                {
+                    DamageInfo damageInfo = new DamageInfo(damageAmount, transform.position.x, true);
+                    bctrl.Damage(damageInfo);
+                }
             }
         }
     }

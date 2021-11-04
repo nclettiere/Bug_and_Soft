@@ -56,6 +56,9 @@ namespace Controllers.Characters.Vergen.States
             {
                 attackOnCourse = false;
             }
+
+
+            _attackKind = 0;
         }
 
         public override void Exit()

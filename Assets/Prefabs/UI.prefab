@@ -6225,9 +6225,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2422522844463475124}
-        m_TargetAssemblyTypeName: UI.UI_GameButton, Assembly-CSharp
-        m_MethodName: OnClick
+      - m_Target: {fileID: 2422522845296318001}
+        m_TargetAssemblyTypeName: UI.UI_PauseMenuRemastered, Scripts
+        m_MethodName: CloseConfirmationPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15370,9 +15370,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2422522845889721740}
-        m_TargetAssemblyTypeName: UI.UI_GameButton, Assembly-CSharp
-        m_MethodName: OnClick
+      - m_Target: {fileID: 2422522845296318001}
+        m_TargetAssemblyTypeName: UI.UI_PauseMenuRemastered, Scripts
+        m_MethodName: BtnQuitCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

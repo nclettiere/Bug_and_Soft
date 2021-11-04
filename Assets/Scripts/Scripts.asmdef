@@ -18,7 +18,9 @@
         "Unity.InternalAPIEditorBridge.013",
         "Unity.InternalAPIEngineBridge.013",
         "UnityEngine.UI",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "AstarPathfindingProject",
+        "AstarPathfindingProjectEditor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

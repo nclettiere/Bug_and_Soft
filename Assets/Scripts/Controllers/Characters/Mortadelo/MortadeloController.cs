@@ -6,6 +6,7 @@ using Controllers.StateMachine.States.Data;
 using UnityEngine;
 using UnityEngine.AI;
 using Controllers.Characters.Mortadelo.States;
+using Pathfinding;
 
 public class MortadeloController : BaseController
 {
@@ -13,8 +14,10 @@ public class MortadeloController : BaseController
     private AttackStateData _attackStateData;
     [SerializeField]
     private DeadStateData _deadStateData;
+    [SerializeField]
+    private GameObject _explosion;
 
-    private NavMeshAgent _agent;
+    private AIDestinationSetter _destination;
     
     public Mortadelo_IdleState IdleState { get; private set; }
     public Mortadelo_AttackState AttackState { get; private set; }
@@ -24,9 +27,7 @@ public class MortadeloController : BaseController
     {
         base.Start();
         
-        _agent = GetComponent<NavMeshAgent>();
-        _agent.updateRotation = false;
-        _agent.updateUpAxis = false;
+        _destination = GetComponent<AIDestinationSetter>();
 
         IdleState = new Mortadelo_IdleState(this, StateMachine, "Idle", this);
         AttackState = new Mortadelo_AttackState(this, StateMachine, "Dash", _attackStateData, this);
@@ -35,9 +36,18 @@ public class MortadeloController : BaseController
         StateMachine.Initialize(IdleState);
     }
 
-    public void SetTargetDestination(Vector3 target)
+    private void Update()
     {
-        _agent.SetDestination(target);
+        if (currentHealth <= 0)
+        {
+            StateMachine.ChangeState(DeadState);
+        }
+        base.Update();
+    }
+
+    public void SetTargetDestination()
+    {
+        _destination.target = GameManager.Instance.PlayerController.transform;
     }
 
     protected override void OnDrawGizmos()
@@ -46,5 +56,10 @@ public class MortadeloController : BaseController
         
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, 1f);
+    }
+
+    public void Suicidar()
+    {
+        Instantiate(_explosion, transform.position, Quaternion.identity);
     }
 }

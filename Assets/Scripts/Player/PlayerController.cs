@@ -97,6 +97,8 @@ namespace Player
 
                 onPlayerHurtSFX.Play();
 
+                StartCoroutine(DamageEffect());
+
                 if (damageInfo.MoveOnAttack)
                     MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
 
@@ -129,7 +131,8 @@ namespace Player
                 currentHealth -= damageInfo.DamageAmount;
 
                 onPlayerHurtSFX.Play();
-
+                StartCoroutine(DamageEffect());
+                
                 if (damageInfo.MoveOnAttack)
                     MoveOnDamaged(direction, damageInfo.MoveOnAttackForce);
 
@@ -144,6 +147,16 @@ namespace Player
                     effectController.SetEffectSlowDownActive(damageInfo.slowDuration);
                 }
             }
+        }
+
+        private IEnumerator DamageEffect()
+        {
+            GetComponent<SpriteRenderer>()
+                .color = Color.red;
+            yield return new WaitForSeconds(0.15f);
+            GetComponent<SpriteRenderer>()
+                .color = Color.white;
+            yield return 0;
         }
 
         private void Start()
@@ -441,8 +454,6 @@ namespace Player
             // powerups
             if (gameData.unlockedPowerUps[0] == 1)
             {
-                if(teleportPowerUp == null)
-                    Debug.Log("tp is null");
                 UnlockPowerUp(EPowerUpKind.TELEPORT, 0);
             }
             if (gameData.unlockedPowerUps[1] == 1)
@@ -483,6 +494,8 @@ namespace Player
             {
                 Debug.Log("Current pw is -1");
             }
+            
+            RefillHealth();
         }
 
         public void Rollear()

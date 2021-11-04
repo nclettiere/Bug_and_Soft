@@ -31,6 +31,9 @@ namespace Controllers.Characters.Mortadelo.States
 
             mController.GetTransfrom().localScale = new Vector3(0.8f, 0.8f);
             mController.GetAnimator().SetBool(animBoolName, true);
+            mController.SetTargetDestination();
+            LookAtPlayer();
+            //DashNow();
         }
 
 
@@ -41,17 +44,15 @@ namespace Controllers.Characters.Mortadelo.States
                 stateMachine.ChangeState(mController.DeadState);
             }
             
-            CheckForDash();
+            //CheckForDash();
             CheckForDamage();
         }
 
         public override void UpdatePhysics()
         {
             base.UpdatePhysics();
-
             LookAtPlayer();
-
-            mController.SetTargetDestination(GameManager.Instance.GetPlayerTransform().position);
+            mController.SetTargetDestination();
         }
 
         private void CheckForDash()

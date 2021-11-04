@@ -116,7 +116,8 @@ namespace Controllers
         {
             baseMovementController = GetComponent<BaseMovementController>();
             characterAnimator = GetComponent<Animator>();
-            rBody = GetComponent<Rigidbody2D>();
+            if(characterKind != ECharacterKind.Mortadelo)
+                rBody = GetComponent<Rigidbody2D>();
             renderer = GetComponent<SpriteRenderer>();
             playerController = GameObject.Find("Player").GetComponent<PlayerController>();
             currentHealth = ctrlData.maxHealth;
@@ -137,7 +138,7 @@ namespace Controllers
             {
                 if (GameManager.Instance.IsGamePaused())
                 {
-                    if (!savedRigidData)
+                    if (!savedRigidData && characterKind != ECharacterKind.Mortadelo)
                     {
                         lastVelocity = rBody.velocity;
                         lastAngularVelocity = rBody.angularVelocity;
@@ -150,7 +151,7 @@ namespace Controllers
                     return;
                 }
 
-                if (savedRigidData)
+                if (savedRigidData && characterKind != ECharacterKind.Mortadelo)
                 {
                     rBody.bodyType = RigidbodyType2D.Dynamic;
                     rBody.velocity = lastVelocity;
@@ -274,19 +275,26 @@ namespace Controllers
 
         public void SetVelocity(float velocity)
         {
-            velocityStorage.Set(velocity * FacingDirection, rBody.velocity.y);
-            rBody.velocity = velocityStorage;
+            if (characterKind != ECharacterKind.Mortadelo)
+            {
+                velocityStorage.Set(velocity * FacingDirection, rBody.velocity.y);
+                rBody.velocity = velocityStorage;
+            }
         }
 
         public void AddForce(Vector2 newForce, bool isImpulse)
         {
-            forceStorage.Set(newForce.x * FacingDirection, newForce.y);
-            rBody.AddForce(forceStorage, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
+            if (characterKind != ECharacterKind.Mortadelo)
+            {
+                forceStorage.Set(newForce.x * FacingDirection, newForce.y);
+                rBody.AddForce(forceStorage, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
+            }
         }
 
         public void AddTorque(float newTorque, bool isImpulse)
         {
-            rBody.AddTorque(newTorque * FacingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
+            if(characterKind != ECharacterKind.Mortadelo)
+                rBody.AddTorque(newTorque * FacingDirection, (isImpulse ? ForceMode2D.Impulse : ForceMode2D.Force));
         }
 
         public T GetMovementController<T>() where T : BaseMovementController
@@ -338,9 +346,12 @@ namespace Controllers
 
         protected void MoveOnDamaged(int direction, Vector2 moveOnDamagedForce)
         {
-            moveOnDamaged = true;
-            moveOnDamagedStartTime = Time.time;
-            rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
+            if (characterKind != ECharacterKind.Mortadelo)
+            {
+                moveOnDamaged = true;
+                moveOnDamagedStartTime = Time.time;
+                rBody.AddForce(new Vector2(moveOnDamagedForce.x * direction, moveOnDamagedForce.y));
+            }
         }
 
         protected virtual void OnBecameVisible()
@@ -445,10 +456,12 @@ namespace Controllers
             if (itemDrops != null && itemDrops.Length > 0)
             {
                 // TODO: Luck factor !!!
-                int random = Random.Range(0, 35);
+                // MEN TI RA -> UNA MIERDA VA A VER LUCK
+                // ALSO..
+                int random = Random.Range(0, 100);
 
                 // Dropea algo random
-                if (random <= 5)
+                if (random <= 45)
                 {
                     int item = Random.Range(0, itemDrops.Length - 1);
                     Instantiate(itemDrops[item], transform.position, Quaternion.Euler(0f, 0f, 0f));
@@ -484,7 +497,7 @@ namespace Controllers
         public int KrownReward = 5;
 
         public EControllerKind controllerKind = EControllerKind.NPC;
-        [SerializeField] protected ECharacterKind characterKind;
+        public ECharacterKind characterKind;
         [SerializeField] private protected float interactionRadius = 4f;
         [SerializeField] private float moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
         [SerializeField] private int touchDamage = 12;

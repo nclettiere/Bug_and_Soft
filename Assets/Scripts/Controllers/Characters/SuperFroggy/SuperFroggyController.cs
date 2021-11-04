@@ -5,6 +5,7 @@ using Controllers;
 using Controllers.Characters.SuperFroggy.States;
 using Controllers.Froggy;
 using Controllers.StateMachine.States.Data;
+using Items;
 using UnityEngine;
 
 public class SuperFroggyController : BaseController
@@ -13,10 +14,11 @@ public class SuperFroggyController : BaseController
     public SuperFroggyJumpState _jumpState { get; private set; }
     public SuperFroggyNearAttackState _nearAttackState { get; private set; }
     public SuperFroggyLongAttackState _longAttackState { get; private set; }
+    public SuperFroggyDeadState _deadState { get; private set; }
 
     [SerializeField] private JumpStateData _jumpStateData;
 
-    // Super Froggy
+    private float bombPlacementTime = float.NegativeInfinity;
     public bool transforming;
     public int currentPhase = 1;
     public bool transformed;
@@ -26,6 +28,7 @@ public class SuperFroggyController : BaseController
     public int hallPosition = 0;
 
     [SerializeField] private GameObject _farty;
+    [SerializeField] private GameObject _bombs;
     [SerializeField] private FroggyTongueController tongueControllerongue;
     public GameObject _superFroggyNuke;
 
@@ -35,6 +38,7 @@ public class SuperFroggyController : BaseController
         _idleState = new SuperFroggyIdleState(this, StateMachine, "Idle", this);
         _nearAttackState = new SuperFroggyNearAttackState(this, StateMachine, "Jumping", _jumpStateData, this);
         _longAttackState = new SuperFroggyLongAttackState(this, StateMachine, "Idle", this);
+        _deadState = new SuperFroggyDeadState(this, StateMachine, "Idle", this);
         IsCharacterOnScreen = true;
         
         base.Start();
@@ -94,6 +98,15 @@ public class SuperFroggyController : BaseController
             if (GameManager.Instance.IsGamePaused() || dead) return;
 
             StateMachine.CurrentState.UpdatePhysics();
+
+            if (currentHealth <= ctrlData.maxHealth / 2.5f)
+            {
+                if (Time.time >= bombPlacementTime)
+                {
+                    PlaceBomb();
+                    bombPlacementTime = Time.time + 1.5f;
+                }
+            }
         }
     }
     
@@ -128,8 +141,33 @@ public class SuperFroggyController : BaseController
 
     public void PlaceBomb()
     {
-        Instantiate(_superFroggySecondPhaseStateData.bombs, transform.position + new Vector3(0f, 2f),
+        Instantiate(_bombs, transform.position + new Vector3(0f, 2f),
             Quaternion.Euler(0f, 0f, 0f));
+    }
+    
+    public override void Die()
+    {
+        dead = true;
+        StateMachine.ChangeState(_deadState);
+        GameManager.Instance.HideBossHealth();
+        
+        //_froggyController.DropItems();
+
+        if (GetComponent<ItemGiver>() != null)
+        {
+            GetComponent<ItemGiver>().Run();
+        }
+    }
+    
+    public override IEnumerator OnDie()
+    {
+        Debug.Log("OnDie called");
+        GameManager.Instance.AddPlayerKrowns(KrownReward);
+            
+        AddForce(new Vector2(20f * -FacingDirection, 10f), true);
+        yield return new WaitForSeconds(1);
+            
+        Destroy(gameObject);
     }
     
     public void Anim_OnAttackingAnimStarted()

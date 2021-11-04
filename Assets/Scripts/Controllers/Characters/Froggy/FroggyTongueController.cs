@@ -17,6 +17,7 @@ namespace Controllers.Froggy
         private DamageInfo damageInfo;
         private BaseController froggyController;
         private bool firstSlap;
+        public bool isBoss;
 
         private void Start()
         {
@@ -51,7 +52,10 @@ namespace Controllers.Froggy
         {
             if (firstSlap || !other.transform.CompareTag("Player")) return;
             
-            damageInfo = new DamageInfo(5, froggyController.transform.position.x, true, false, true);
+            if(!isBoss)
+                damageInfo = new DamageInfo(5, froggyController.transform.position.x, true, false, true);
+            else
+                damageInfo = new DamageInfo(15, froggyController.transform.position.x, true, false, true);
             damageInfo.MoveOnAttackForce = new Vector2(1000f, 500f);
             damageInfo.slowDuration = 3f;
                     

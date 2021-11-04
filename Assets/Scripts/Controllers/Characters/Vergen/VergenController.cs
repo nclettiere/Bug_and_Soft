@@ -163,6 +163,7 @@ namespace Controllers.Characters.Vergen
 
         public void RestorePhaseTwo()
         {
+            GetAnimator().SetBool("DisappearWait", false);
             StateMachine.ChangeState(vergenPhaseTwoState);
         }
 
@@ -190,6 +191,9 @@ namespace Controllers.Characters.Vergen
             _vergenBattleShoutSFX.Play();
             yield return new WaitForSeconds(0.15f);
 
+            DamageInfo damageInfo = new DamageInfo(9999, transform.position.x);
+            GameManager.Instance.PlayerController.Damage(damageInfo);
+            GameManager.Instance.PauseGame();
             yield return 0;
         }
 

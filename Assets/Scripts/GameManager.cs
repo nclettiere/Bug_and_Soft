@@ -566,6 +566,7 @@ public class GameManager : MonoBehaviour
         Instance.SetMainMenuOn(true);
         Instance.SetInputEnabled(false);
         Instance.GetUIManager().ShowMainMenu();
+        Instance.gameInput.EnableInput();
     }
 
     private IEnumerator LoadLevel1Delayed()
@@ -580,6 +581,7 @@ public class GameManager : MonoBehaviour
         Instance.ShowHUD();
         Instance.GetUIManager()
             .ShowLevelInfo();
+        Instance.gameInput.EnableInput();
         yield return 0;
     }
 
@@ -618,6 +620,7 @@ public class GameManager : MonoBehaviour
             .ShowLevelInfo();
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
+        Instance.gameInput.EnableInput();
         yield return 0;
     }
 
@@ -630,34 +633,20 @@ public class GameManager : MonoBehaviour
     public void ReloadLevel()
     {
         isGameOver = false;
-        ResumeGame();
         GetUIManager().HideGameOver();
 
         PlayerController.RefillHealth();
         PlayerKrowns = 0;
         currentExp = 0;
 
-        //if (SceneManager.GetActiveScene().buildIndex == 0)
-        //{
-        //    SetSpawnPoint(GetLvlOnePosition());
-//
-        //}
-        //else if (SceneManager.GetActiveScene().buildIndex == 1)
-        //{
-        //    SetSpawnPoint(GetLvlTwoPosition());
-        //}
-        //
-        //SetSpawnPoint(GetLvlTwoPosition());
-
         GetInventorySlotManager().RemoveItem();
         SetPlayerKrones(0);
 
         PlayerController.RespawnNow();
-
-        //foreach (var spawner in enemies)
-        //    spawner.Respawn();
-
         OnLevelReset.Invoke();
+        
+        Instance.ResumeGame();
+        Instance.gameInput.EnableInput();
     }
 
     public int GetSceneIndex()
@@ -793,6 +782,7 @@ public class GameManager : MonoBehaviour
             .ShowLevelInfo();
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
+        Instance.gameInput.EnableInput();
         yield return 0;
     }
 }

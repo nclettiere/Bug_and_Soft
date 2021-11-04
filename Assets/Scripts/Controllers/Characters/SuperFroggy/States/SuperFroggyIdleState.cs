@@ -21,30 +21,17 @@ namespace Controllers.Characters.SuperFroggy.States
         public override void UpdateState()
         {
             base.UpdateState();
-
-            //if (controller.controllerKind == EControllerKind.Boss &&
-            //    controller.currentHealth <= controller.ctrlData.maxHealth / 2)
-            //{
-            //    froggyController.EnterPhaseTwo();
-            //}
-//
-            //if (controller.CheckPlayerInLongRange())
-            //{
-            //    controller.ShowTauntIndicator();
-            //    stateMachine.ChangeState(froggyController._attackState);
-            //}
-//
-
+            
            
             if (controller.CheckPlayerInNearRange())
             {
-                Debug.Log("NEAR RANGE DETECTED");
+                GameManager.Instance.ShowBossHealth("SuperFroggy", froggyController);
                 froggyController.StateMachine.ChangeState(froggyController._nearAttackState);
             }
             
             if (controller.CheckPlayerInLongRange())
             {
-                Debug.Log("LONG RANGE DETECTED");
+                GameManager.Instance.ShowBossHealth("SuperFroggy", froggyController);
                 froggyController.StateMachine.ChangeState(froggyController._longAttackState);
             }
 

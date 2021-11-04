@@ -16,21 +16,25 @@ namespace Controllers.StateMachine.States
 
         public override void Enter()
         {
-            base.Enter();
 
-            GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
+                base.Enter();
 
-            controller.GetAnimator().SetBool(animBoolName, true);
+                GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
 
-            controller.rBody.constraints = RigidbodyConstraints2D.None;
+                controller.GetAnimator().SetBool(animBoolName, true);
 
-            if (stateData.applyTorque)
-            {
-                controller.AddForce(new Vector2(3f * -controller.FacingDirection, 3f), true);
-                controller.AddTorque(10f * -controller.FacingDirection, false);
-            }
+                if (controller.characterKind != ECharacterKind.Mortadelo)
+                {
+                    controller.rBody.constraints = RigidbodyConstraints2D.None;
 
-            deadWaitTime = Time.time + controller.deadMaxWait;
+                    if (stateData.applyTorque)
+                    {
+                        controller.AddForce(new Vector2(3f * -controller.FacingDirection, 3f), true);
+                        controller.AddTorque(10f * -controller.FacingDirection, false);
+                    }
+                }
+
+                deadWaitTime = Time.time + controller.deadMaxWait;
         }
 
         public override void UpdateState()

@@ -12,6 +12,7 @@ public class Mortadelo_DeadState : DeadState
     private MortadeloController mController;
 
     private float enterPhaseTwoWaitTime = float.NegativeInfinity;
+    private bool deadEntered;
 
     public Mortadelo_DeadState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
         DeadStateData stateData, MortadeloController mController)
@@ -22,9 +23,15 @@ public class Mortadelo_DeadState : DeadState
 
     public override void Enter()
     {
-        mController.rBody.gravityScale = 8f;
-        base.Enter();
-        mController.DropItems();
+        if (!deadEntered)
+        {
+            //mController.rBody.gravityScale = 8f;
+            GameManager.Instance.AddPlayerKrowns(controller.KrownReward);
+            mController.DropItems();
+            mController.Suicidar();
+            deadEntered = true;
+            GameObject.Destroy(mController);
+        }
     }
 
     protected virtual void LookAtPlayer()

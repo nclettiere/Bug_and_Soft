@@ -99,12 +99,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 722093468931476388}
-  - component: {fileID: 722093468931476384}
   - component: {fileID: 722093468931476387}
   - component: {fileID: 722093468931476386}
   - component: {fileID: 722093468931476389}
   - component: {fileID: 722093468931476385}
-  - component: {fileID: 722093468931476382}
+  - component: {fileID: 5718321896181707792}
+  - component: {fileID: 1122975135502317329}
+  - component: {fileID: 4462610428745770794}
   m_Layer: 10
   m_Name: Mortadelo
   m_TagString: Enemy
@@ -120,7 +121,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722093468931476391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.82, y: 8.4, z: 0}
+  m_LocalPosition: {x: 24.856, y: 8.429, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 1}
   m_Children:
   - {fileID: 722093469538203747}
@@ -129,27 +130,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &722093468931476384
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722093468931476391}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!114 &722093468931476387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,7 +145,7 @@ MonoBehaviour:
   ctrlData: {fileID: 11400000, guid: cddc418db0ff81d4a907f0696879f302, type: 2}
   deadMaxWait: 5
   currentHealth: 0
-  KrownReward: 5
+  KrownReward: 15
   controllerKind: 2
   characterKind: 5
   interactionRadius: 4
@@ -184,6 +164,7 @@ MonoBehaviour:
   hitAttackSFX2: {fileID: 722093469834880909}
   deathSFX: {fileID: 722093469834880910}
   dialogueBubble: {fileID: 0}
+  enemyTauntIndicator: {fileID: 0}
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
@@ -205,8 +186,15 @@ MonoBehaviour:
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnBodyGroundCheckEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLifeTimeEnded:
+    m_PersistentCalls:
+      m_Calls: []
   _attackStateData: {fileID: 11400000, guid: 42804122a9d6e8c4fa8a199c4b82e17f, type: 2}
   _deadStateData: {fileID: 11400000, guid: e5e527f48ed47514ba801bc4253b679d, type: 2}
+  _explosion: {fileID: 5945163026814109207, guid: 6bd399f1d282f6c49bc92d18500f135f, type: 3}
 --- !u!212 &722093468931476386
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -293,28 +281,84 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.36, y: 0.29}
   m_Direction: 1
---- !u!195 &722093468931476382
-NavMeshAgent:
+--- !u!114 &5718321896181707792
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722093468931476391}
   m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.16
-  m_Speed: 10
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 1.25
-  m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 0.64
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  drawGizmos: 1
+  detailedGizmos: 0
+  startEndModifier:
+    addPoints: 0
+    exactStartPoint: 3
+    exactEndPoint: 3
+    useRaycasting: 0
+    mask:
+      serializedVersion: 2
+      m_Bits: 4294967295
+    useGraphRaycasting: 0
+  traversableTags: -1
+  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  graphMask:
+    value: -1
+--- !u!114 &1122975135502317329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722093468931476391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radius: 0.59
+  height: 2
+  repathRate: 0.5
+  canSearch: 1
+  canMove: 1
+  maxSpeed: 15
+  gravity: {x: 0, y: 0, z: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  centerOffsetCompatibility: NaN
+  orientation: 1
+  enableRotation: 0
+  targetCompatibility: {fileID: 0}
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 10
+  pickNextWaypointDist: 1.2
+  endReachedDistance: 1
+  alwaysDrawGizmos: 1
+  slowWhenNotFacingTarget: 1
+  whenCloseToDestination: 1
+  constrainInsideGraph: 0
+--- !u!114 &4462610428745770794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722093468931476391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  target: {fileID: 0}
 --- !u!1 &722093468954778338
 GameObject:
   m_ObjectHideFlags: 0

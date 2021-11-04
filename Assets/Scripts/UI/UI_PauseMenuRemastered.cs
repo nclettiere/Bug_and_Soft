@@ -90,5 +90,14 @@ namespace UI
                 return;
             }
         }
+        
+        public void BtnQuitCallback()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+        }
     }
 }

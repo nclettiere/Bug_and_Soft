@@ -34,11 +34,13 @@ public class Mortadelo_IdleState : State
         
         // (Aviso) seteo la pos Z a 0 pq a veces hay un que el mortadelo
         // se va al carajo en ese eje
-        if (mController.GetTransfrom().position.z != 0f)
-        {
-            mController.GetTransfrom().position.Set(mController.GetTransfrom().position.x,
-                mController.GetTransfrom().position.y, 0f);
-        }
+        // Bugueadisima esta libreria no la recomiendo xd
+        
+        //if (mController.GetTransfrom().position.z != 0f)
+        //{
+        //    mController.GetTransfrom().position.Set(mController.GetTransfrom().position.x,
+        //        mController.GetTransfrom().position.y, 0f);
+        //}
     }
 
     public override void UpdatePhysics()

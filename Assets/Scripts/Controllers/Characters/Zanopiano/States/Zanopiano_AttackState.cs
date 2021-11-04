@@ -23,6 +23,10 @@ namespace Controllers.Characters.Zanopiano.States
 
         public override void Enter()
         {
+            if (zController.currentHealth <= 0)
+            {
+                zController.StateMachine.ChangeState(zController.DeadState);
+            }
             base.Enter();
             controller.GetAnimator().SetBool("Alerting", false);
             controller.GetAnimator().SetBool("Alerting_Completed", false);
@@ -42,11 +46,9 @@ namespace Controllers.Characters.Zanopiano.States
 
         public override void UpdateState()
         {
-            base.UpdateState();
-            
             if (zController.currentHealth <= 0)
             {
-                stateMachine.ChangeState(zController.DeadState);
+                zController.StateMachine.ChangeState(zController.DeadState);
             }
 
             if (attackFinished)
