@@ -15,7 +15,7 @@ namespace Controllers.Froggy
 
         private List<Transform> damagedObjects;
         private DamageInfo damageInfo;
-        private FroggyController froggyController;
+        private BaseController froggyController;
         private bool firstSlap;
 
         private void Start()
@@ -31,7 +31,8 @@ namespace Controllers.Froggy
 
         public void Anim_OnTongueAnimEnded()
         {
-            attackState.OnTongeFinished();
+            //attackState.OnTongeFinished();
+            froggyController.SendMessage("OnTongueFinish");
             Deactivate();
         }
 
@@ -40,10 +41,10 @@ namespace Controllers.Froggy
             firstSlap = true;
         }
 
-        public void SetProps(FroggyController froggyController, Froggy_AttackState attackState)
+        public void SetProps(BaseController controller)//, Froggy_AttackState attackState)
         {
-            this.froggyController = froggyController;
-            this.attackState = attackState;
+            froggyController = controller; 
+            //this.attackState = attackState;
         }
 
         private void OnTriggerEnter2D(Collider2D other)

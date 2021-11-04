@@ -77,8 +77,13 @@ namespace Controllers.Froggy
         public void SpecialAttack()
         {
             tongueControllerongue.gameObject.SetActive(true);
-            tongueControllerongue.SetProps(this, _attackState);
+            tongueControllerongue.SetProps(this);
             tongueControllerongue.Activate();
+        }
+
+        public void OnTongueFinish()
+        {
+            _attackState.OnTongeFinished();
         }
 
         private void MoveCejas()

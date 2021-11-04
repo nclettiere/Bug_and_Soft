@@ -484,7 +484,7 @@ namespace Controllers
         public int KrownReward = 5;
 
         public EControllerKind controllerKind = EControllerKind.NPC;
-        [SerializeField] private ECharacterKind characterKind;
+        [SerializeField] protected ECharacterKind characterKind;
         [SerializeField] private protected float interactionRadius = 4f;
         [SerializeField] private float moveOnAttackDuration, touchDamageCooldown, generalSpeed = 40f;
         [SerializeField] private int touchDamage = 12;
@@ -562,8 +562,12 @@ namespace Controllers
             savedRigidData;
 
         private Vector2
-            movement,
-            lastVelocity,
+            movement;
+
+        protected Vector2
+            lastVelocity;
+
+        private Vector2
             touchDamageBottomLeft,
             touchDamageTopRight,
             velocityStorage,

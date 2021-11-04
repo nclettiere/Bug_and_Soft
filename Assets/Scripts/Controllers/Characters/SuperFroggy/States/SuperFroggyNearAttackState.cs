@@ -3,6 +3,7 @@ using Controllers.StateMachine;
 using Controllers.StateMachine.States;
 using Controllers.StateMachine.States.Data;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.Controllers.Characters.SuperFroggy.States
 {
@@ -12,7 +13,10 @@ namespace Assets.Scripts.Controllers.Characters.SuperFroggy.States
 
         protected JumpStateData jumpStateData;
 
+        private UnityAction onLandAction;
+        
         private float lastJumpTime = float.NegativeInfinity;
+        private float attackCooldown = float.NegativeInfinity;
         private float jumpCooldownTime;
 
         protected bool isDetectingGround;
@@ -22,68 +26,59 @@ namespace Assets.Scripts.Controllers.Characters.SuperFroggy.States
         {
             this.froggyController = froggyController;
             this.jumpStateData = jumpStateData;
+            
+            onLandAction += () =>
+            {
+                if (!controller.IsDead())
+                {
+                    GameManager.Instance.GetSoundManager().PlaySoundAtLocation(jumpStateData.landSFX, controller.transform.position);
+                }
+                controller.GetAnimator().SetBool(animBoolName, false);
+            };
         }
 
         public override void Enter()
         {
             base.Enter();
-
-            jumpCooldownTime = 1f;
-            isDetectingGround = controller.CheckGround();
+            controller.OnLandEvent.AddListener(onLandAction);
+            GameManager.Instance.GetSoundManager().PlaySoundAtLocation(jumpStateData.jumpSFX, controller.transform.position);
         }
 
         public override void Exit()
         {
             base.Exit();
-            controller.SetVelocity(0f);
-            lastJumpTime = float.NegativeInfinity;
-            froggyController.GetAnimator().SetBool("NearAttackAlert", false);
-            froggyController.GetAnimator().SetBool("Idle", true);
-            froggyController.GetAnimator().SetBool("Jumping", false);
+            controller.OnLandEvent.RemoveListener(onLandAction);
+            controller.GetAnimator().SetBool(animBoolName, false);
         }
 
         public override void UpdateState()
         {
-            if (controller.controllerKind == EControllerKind.Boss && controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            if (controller.CheckPlayerInLongRange())
             {
-                froggyController.EnterPhaseTwo();
+                Debug.Log("LONG RANGE DETECTED");
+                froggyController.StateMachine.ChangeState(froggyController._longAttackState);
             }
-
+            
             LookAtPlayer();
-
-            if (Time.time >= lastJumpTime && !controller.IsDead())
+            
+            if (Time.time >= lastJumpTime)
             {
                 controller.GetAnimator().SetBool(animBoolName, true);
-                // SFX de saltar !!!
-                AudioSource.PlayClipAtPoint(jumpStateData.jumpSFX, controller.GetTransfrom().position);
-
-                controller.AddForce(new Vector2(4, 5), true);
-
-                lastJumpTime = Time.time + 1.25f;
+                controller.AddForce(jumpStateData.jumpingForce, true);
+                lastJumpTime = Time.time + 1f;
             }
-            else if ((lastJumpTime - Time.time) < jumpCooldownTime)
+
+            if (!controller.CheckGround() && Time.time >= attackCooldown)
             {
-                froggyController.GetAnimator().SetBool("NearAttackAlert", true);
+                controller.CheckTouchDamage();
+                attackCooldown = Time.time + 1f;
             }
-            else
-            {
-                if (!isDetectingGround)
-                {
-                    // Hace que danie al player si lo toca
-                    controller.CheckTouchDamage();
-                }
-            }
+        }
 
-            // OnLand
-            if (!isDetectingGround && controller.CheckGround())
-            {
-                controller.SetVelocity(0f);
-                AudioSource.PlayClipAtPoint(jumpStateData.landSFX, controller.GetTransfrom().position);
-                controller.GetAnimator().SetBool(animBoolName, false);
-            }
-
-
-            isDetectingGround = controller.CheckGround();
+        private void CheckForFlip()
+        {
+            if (controller.CheckWall() || !controller.CheckLedge())
+                controller.Flip();
         }
 
         protected virtual void LookAtPlayer()

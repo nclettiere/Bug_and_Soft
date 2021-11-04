@@ -8,6 +8,7 @@ namespace Controllers.Characters.SuperFroggy.States
         private SuperFroggyController froggyController;
         private float jumpRatio;
         private float jumpTimeWait;
+        private float attackTimeWait = float.NegativeInfinity;
         private Vector2 jumpForce;
 
         public SuperFroggyIdleState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
@@ -21,11 +22,11 @@ namespace Controllers.Characters.SuperFroggy.States
         {
             base.UpdateState();
 
-            if (controller.controllerKind == EControllerKind.Boss &&
-                controller.currentHealth <= controller.ctrlData.maxHealth / 2)
-            {
-                froggyController.EnterPhaseTwo();
-            }
+            //if (controller.controllerKind == EControllerKind.Boss &&
+            //    controller.currentHealth <= controller.ctrlData.maxHealth / 2)
+            //{
+            //    froggyController.EnterPhaseTwo();
+            //}
 //
             //if (controller.CheckPlayerInLongRange())
             //{
@@ -33,11 +34,19 @@ namespace Controllers.Characters.SuperFroggy.States
             //    stateMachine.ChangeState(froggyController._attackState);
             //}
 //
+
+           
             if (controller.CheckPlayerInNearRange())
             {
-                stateMachine.ChangeState(froggyController._nearAttackState);
+                Debug.Log("NEAR RANGE DETECTED");
+                froggyController.StateMachine.ChangeState(froggyController._nearAttackState);
             }
-
+            
+            if (controller.CheckPlayerInLongRange())
+            {
+                Debug.Log("LONG RANGE DETECTED");
+                froggyController.StateMachine.ChangeState(froggyController._longAttackState);
+            }
 
             if (Time.time >= jumpTimeWait && !controller.IsDead())
             {

@@ -1,6 +1,7 @@
 ﻿using Controllers.StateMachine;
 using Controllers.StateMachine.States.Data;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Controllers.Characters.SuperFroggy.States
 {
@@ -9,7 +10,7 @@ namespace Controllers.Characters.SuperFroggy.States
         private SuperFroggyController froggyController;
         private JumpStateData stateData;
         private float lastJumpTime = float.NegativeInfinity;
-
+        private UnityAction onLandAction;
 
         public SuperFroggyJumpState(BaseController controller, ControllerStateMachine stateMachine, string animBoolName,
             JumpStateData stateData, SuperFroggyController froggyController)
@@ -17,23 +18,24 @@ namespace Controllers.Characters.SuperFroggy.States
         {
             this.stateData = stateData;
             this.froggyController = froggyController;
+            
+            onLandAction += () =>
+            {
+                if (!controller.IsDead())
+                {
+                    GameManager.Instance.GetSoundManager().PlaySoundAtLocation(stateData.landSFX, controller.transform.position);
+                    CheckForFlip();
+                }
+                controller.GetAnimator().SetBool(animBoolName, false);
+            };
         }
 
         public override void Enter()
         {
             base.Enter();
             
-            controller.OnLandEvent.AddListener(() =>
-            {
-                if (!controller.IsDead())
-                {
-                    //AudioSource.PlayClipAtPoint(stateData.landSFX, controller.GetTransfrom().position);
-                    GameManager.Instance.GetSoundManager().PlaySoundAtLocation(stateData.landSFX, controller.transform.position);
-                    CheckForFlip();
-                    stateMachine.ChangeState(froggyController._idleState);
-                }
-            });
-            
+            controller.OnLandEvent.AddListener(onLandAction);
+
             controller.GetAnimator().SetBool(animBoolName, true);
             
             GameManager.Instance.GetSoundManager().PlaySoundAtLocation(stateData.jumpSFX, controller.transform.position);
@@ -44,6 +46,7 @@ namespace Controllers.Characters.SuperFroggy.States
         public override void Exit()
         {
             base.Exit();
+            controller.OnLandEvent.RemoveListener(onLandAction);
             controller.GetAnimator().SetBool(animBoolName, false);
         }
 
