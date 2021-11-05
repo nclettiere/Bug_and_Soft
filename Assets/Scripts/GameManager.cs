@@ -570,6 +570,7 @@ public class GameManager : MonoBehaviour
         Instance.SetInputEnabled(false);
         Instance.GetUIManager().ShowMainMenu();
         Instance.gameInput.EnableInput();
+        //GetLogoObject().SetActive(false);
     }
 
     private IEnumerator LoadLevel1Delayed()
@@ -585,7 +586,8 @@ public class GameManager : MonoBehaviour
         Instance.GetUIManager()
             .ShowLevelInfo();
         Instance.gameInput.EnableInput();
-        
+
+        GetLogoObject().SetActive(false);
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
         
@@ -628,6 +630,8 @@ public class GameManager : MonoBehaviour
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
         Instance.gameInput.EnableInput();
+
+        GetLogoObject().SetActive(false);
         
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
@@ -639,6 +643,11 @@ public class GameManager : MonoBehaviour
     {
         enemies.Add(enemySpawner);
         enemySpawner.Spawn();
+    }
+
+    public GameObject GetLogoObject()
+    {
+        return GameObject.Find("/UI/UI_Logo");
     }
 
     public void ReloadLevel()
@@ -756,6 +765,7 @@ public class GameManager : MonoBehaviour
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
         
+        GetLogoObject().SetActive(false);
         
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
@@ -800,6 +810,7 @@ public class GameManager : MonoBehaviour
         Instance.GetUIManager().HideMainMenu();
         Instance.gameInput.EnableInput();
         
+        GetLogoObject().SetActive(false);
         
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;

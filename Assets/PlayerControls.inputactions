@@ -140,6 +140,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "DialoguesBack",
+                    "type": "Button",
+                    "id": "98e841e6-d02d-420a-8379-54cf96f7e253",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -789,6 +797,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8fc0a7c-fb33-4aa8-b5f0-24e2f17950be",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DialoguesBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

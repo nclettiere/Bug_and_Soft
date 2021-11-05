@@ -22,6 +22,8 @@ namespace UI
         public Vector2[] OrderedButtonsLocalPositions;
         public GameObject ButtonSelector;
 
+        private bool isEnabled;
+        
         private void Start()
         {
             OrderedButtonsTransfroms[0].onClick.AddListener(RemoveJoystickEvents);
@@ -29,14 +31,20 @@ namespace UI
 
         private void OnEnable()
         {
-            
+            isEnabled = true;
             GameInput.playerControls.Gameplay.MenuInteract.performed += OnJoystickInteract;
             GameManager.Instance.gameInput.SetMenuJoystickInput(OnJoystickMovement);
         }
 
+        private void OnDisable()
+        {
+            isEnabled = true;
+            RemoveJoystickEvents();
+        }
+
         public void OnJoystickMovement(InputAction.CallbackContext context)
         {            
-            if (Time.time >= inputCooldown)
+            if (Time.time >= inputCooldown && isEnabled && enabled && transform.gameObject.activeSelf)
             {
                 Vector2 requestedPos = context.ReadValue<Vector2>();
                 float newX = UIControlPosition.x + requestedPos.x;

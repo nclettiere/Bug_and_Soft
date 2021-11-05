@@ -48,11 +48,7 @@ public class MainMenu : MonoBehaviour, IJoystickInput
     public Button[] OrderedButtonsTransfroms;
     public Vector2[] OrderedButtonsLocalPositions;
     public GameObject ButtonSelector;
-    
-    private void Awake()
-    {
-        //DontDestroyOnLoad(transform.root.gameObject);
-    }
+    public GameObject Logo;
 
     private void Start()
     {
@@ -200,6 +196,7 @@ public class MainMenu : MonoBehaviour, IJoystickInput
     {
         if (GameManager.Instance.GetSceneIndex() == 0)
         {
+            Logo.SetActive(false);
             GameManager.Instance.LoadCutscene(1);
         }
         else
@@ -216,6 +213,8 @@ public class MainMenu : MonoBehaviour, IJoystickInput
 
             GameManager.Instance.GetUIManager()
                 .ShowLevelInfo();
+            
+            Logo.SetActive(false);
         }
     }
 
@@ -359,6 +358,7 @@ public class MainMenu : MonoBehaviour, IJoystickInput
 
     public void Hide()
     {
+        Logo.SetActive(false);
         panelButtonsAnimGroup.alpha = 0;
         OnPlay();
         panelButtonsAnimGroup.alpha = 0;

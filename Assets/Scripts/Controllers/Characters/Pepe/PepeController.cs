@@ -35,6 +35,9 @@ namespace Controllers
         public Sprite[] VergenDeadQC;
         public Sprite randomQC;
         public AudioSource Nievel2_1SFX;
+        
+        
+        public Sprite[] LevelUpQC;
         public bool isCompanion { get; private set; }
 
         public Pepe_IdleState IdleState { get; private set; }
@@ -171,6 +174,11 @@ namespace Controllers
         public void ShowRandomQC()
         {
             ShowQuickChat(new Tuple<Sprite, int>(randomQC, 1));
+        }
+
+        public void ShowLevelUpQC(int i)
+        {
+            ShowQuickChat(new Tuple<Sprite, int>(LevelUpQC[i], 1));
         }
     }
 }

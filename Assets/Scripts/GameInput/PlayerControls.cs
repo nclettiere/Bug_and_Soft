@@ -153,6 +153,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""DialoguesBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""98e841e6-d02d-420a-8379-54cf96f7e253"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -804,6 +812,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""UseItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8fc0a7c-fb33-4aa8-b5f0-24e2f17950be"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DialoguesBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -829,6 +848,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_SwitchAbility = m_Gameplay.FindAction("SwitchAbility", throwIfNotFound: true);
         m_Gameplay_ViewStats = m_Gameplay.FindAction("ViewStats", throwIfNotFound: true);
         m_Gameplay_UseItem = m_Gameplay.FindAction("UseItem", throwIfNotFound: true);
+        m_Gameplay_DialoguesBack = m_Gameplay.FindAction("DialoguesBack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -895,6 +915,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_SwitchAbility;
     private readonly InputAction m_Gameplay_ViewStats;
     private readonly InputAction m_Gameplay_UseItem;
+    private readonly InputAction m_Gameplay_DialoguesBack;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -916,6 +937,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @SwitchAbility => m_Wrapper.m_Gameplay_SwitchAbility;
         public InputAction @ViewStats => m_Wrapper.m_Gameplay_ViewStats;
         public InputAction @UseItem => m_Wrapper.m_Gameplay_UseItem;
+        public InputAction @DialoguesBack => m_Wrapper.m_Gameplay_DialoguesBack;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -976,6 +998,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @UseItem.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUseItem;
                 @UseItem.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUseItem;
                 @UseItem.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUseItem;
+                @DialoguesBack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDialoguesBack;
+                @DialoguesBack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDialoguesBack;
+                @DialoguesBack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDialoguesBack;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -1031,6 +1056,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @UseItem.started += instance.OnUseItem;
                 @UseItem.performed += instance.OnUseItem;
                 @UseItem.canceled += instance.OnUseItem;
+                @DialoguesBack.started += instance.OnDialoguesBack;
+                @DialoguesBack.performed += instance.OnDialoguesBack;
+                @DialoguesBack.canceled += instance.OnDialoguesBack;
             }
         }
     }
@@ -1054,5 +1082,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSwitchAbility(InputAction.CallbackContext context);
         void OnViewStats(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
+        void OnDialoguesBack(InputAction.CallbackContext context);
     }
 }

@@ -42,6 +42,16 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es
+  - m_GUID: 3ff2ce62073d2fe44a31f7c70fe95783
+    m_Address: Pepe2_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+  - m_GUID: d1d40c236adf98f429c194fb76a85822
+    m_Address: Paco3_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: dac00cbf13a36cc4a860be303f5402e2, type: 2}
   m_SchemaSet:

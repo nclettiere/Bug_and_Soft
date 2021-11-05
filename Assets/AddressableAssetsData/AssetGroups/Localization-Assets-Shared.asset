@@ -37,6 +37,14 @@ MonoBehaviour:
     m_Address: Assets/Locales/Tables/Pepe_LevelTwo Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 45c231ea23143da4fb77be247360c154
+    m_Address: Assets/Locales/Tables/Pepe2 Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: e2d5c19e14bc93d438a2f8596da0f862
+    m_Address: Assets/Locales/Tables/Paco3 Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: dac00cbf13a36cc4a860be303f5402e2, type: 2}
   m_SchemaSet:

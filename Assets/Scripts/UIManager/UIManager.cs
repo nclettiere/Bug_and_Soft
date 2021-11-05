@@ -188,18 +188,21 @@ namespace Managers
         {
             HideLevelUpScreen();
             GameManager.Instance.AumentHealth();
+            GameManager.Instance.GetPepeController().ShowLevelUpQC(0);
         }
         
         public void LevelUpDamage()
         {
             HideLevelUpScreen();
             GameManager.Instance.AumentDamage();
+            GameManager.Instance.GetPepeController().ShowLevelUpQC(1);
         }
         
         public void LevelUpMagicka()
         {
             HideLevelUpScreen();
             GameManager.Instance.Aumentagicka();
+            GameManager.Instance.GetPepeController().ShowLevelUpQC(2);
         }
         
         public void LevelUpCdr()

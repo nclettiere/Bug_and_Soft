@@ -314,6 +314,10 @@ MonoBehaviour:
   VergenDeadQC: []
   randomQC: {fileID: 21300000, guid: 47d4d48985669344496c71fef642fe33, type: 3}
   Nievel2_1SFX: {fileID: 0}
+  LevelUpQC:
+  - {fileID: 21300000, guid: dbc10341084670d41ae504d2afae7c3f, type: 3}
+  - {fileID: 21300000, guid: 3ffc8a2929072b3469ea4b4e63b31560, type: 3}
+  - {fileID: 21300000, guid: 898c0d0d5d47d3f4086bc82e4f684ac7, type: 3}
 --- !u!114 &6721567057156535203
 MonoBehaviour:
   m_ObjectHideFlags: 0

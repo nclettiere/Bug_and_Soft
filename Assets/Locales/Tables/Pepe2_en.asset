@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Pepe2_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 45c231ea23143da4fb77be247360c154, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 7653642240
+    m_Localized: 'Pepe: Sabes?,Este sitio, antes era una simple ruina, no se de quien
+      o de hace cuanto tiempo , pero lo que si esta claro, es que el objetivo de
+      su construccion era proteger la espada'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 155410583552
+    m_Localized: "Pepe: Que como podras ver, no cumplio muy bien... sin duda los
+      arquitectos de anta\xF1o no eran los mas capacitados..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 257797738496
+    m_Localized: 'Pepe: Aunque tal vez eso se lo debamos al deterioro de esta pocilga
+      , hace mucho tiempo, un par de exploradores encontraron este sitio , simplemente
+      parecia una ruina mas'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 317457518592
+    m_Localized: 'Pepe: Sin dudas lo era, a simple vista, pero cuanto mas se adentraban
+      , mas entendian que no era asi, habia algo distinto , temible... hasta poderoso'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320242536448
+    m_Localized: 'Pepe: Al final de el trayecto , cuando ya habian descendido unos
+      tres profundos pisos , llegaron a la fuente de tal temible y poderosa aura'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 322989805568
+    m_Localized: "Pepe: La fuente de tal poder emanaba de una llameante espada, clavada
+      en un altar de piedra , demasiado cuidado para pertenecer a aquel lugar, casi
+      como si el tiempo no la \tafectara"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 327444156416
+    m_Localized: 'Paco: Evig Brann?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 329688109056
+    m_Localized: 'Pepe: Exacto...el explorador mas joven, se lanzo sobre la misma
+      sin pensarlo y la desenterro de aquel altar'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 331441328128
+    m_Localized: 'Pepe: Y aparecio... Un monstruo amorfo , pero con una aprariencia
+      algo humana en algun lugar, asi como salio aquel ser, salieron cientos por
+      todo el lugar'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 332754145280
+    m_Localized: 'Pepe: Al desenterrar la espada, habian desatado una maldicion que
+      cobraria sus vidas como precio de tal inmenso poder...'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 587478421504
+    m_Localized: 'Pepe: Uno fue maldecido con una vida eterna... pero encerrado en
+      aquel infierno'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 652599185408
+    m_Localized: 'Pepe: Y de el otro nunca mas se supo nada..'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 692185026560
+    m_Localized: 'Pepe: ...'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 721016672256
+    m_Localized: 'Paco: Si no estuviera encerrado aqui contigo seguramente pensaria
+      que tienes algun tornillo suelto por ahi, lo preferiria'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 795025166336
+    m_Localized: 'Pepe: Pensaba que el olor putrefacto salia de este sitio no de
+      tus pantalones!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 853783171072
+    m_Localized: 'Paco: Callate!'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

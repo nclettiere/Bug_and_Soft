@@ -19,26 +19,141 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 10719678464
-    m_Localized: Hola Paco! Mi nombre es Pepe, soy un elegido como tu. Mi mision
-      era devolver esa misma espada.
+    m_Localized: 'Pepe: ESA ESPADA!'
     m_Metadata:
       m_Items: []
   - m_Id: 311858122752
-    m_Localized: Pero no pude lograr mi objetivo, fui una deshonra para mi pueblo
-      y me converti en esto que ves ahora.
+    m_Localized: 'Paco: Ahhhhg!'
     m_Metadata:
       m_Items: []
   - m_Id: 676284420096
-    m_Localized: Si quieres, puedo acompanarte en tu aventura y darte consejos en
-      el camino. Quieres?
+    m_Localized: 'Pepe: Fulgencio Quiroga Hakon!, has vuelto a remediar tus errores!?'
     m_Metadata:
       m_Items: []
   - m_Id: 819020779520
-    m_Localized: Estupendo! Vamos!
+    m_Localized: 'Paco: Fulgencio Quir...? Ese es el nombre de mi padre, estoy aqui
+      por su peticion.'
     m_Metadata:
       m_Items: []
   - m_Id: 875337699328
-    m_Localized: Ojala te mueras paco.
+    m_Localized: 'Paco: Aunque no creo que deba dar esta informacion a un fantasma,
+      y mucho menos que acabo de conocer, nada personal.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 657237647650816
+    m_Localized: "Pepe: No es como que pueda hacer algo malo con esa informacion
+      ni\xF1o , es mas , supongo que si estas aqui y traes la\r legendaria Evig Brann
+      , sera con el objetivo de destruir esta maldicion."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658154518310912
+    m_Localized: 'Paco: Maldicion? , mi padre nunca menciono nada sobre una maldicion'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658308956778496
+    m_Localized: 'Pepe: Me temo que tu padre no te conto todo lo que tenias que saber...
+      Por cierto, como esta el?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658406470152192
+    m_Localized: 'Paco: Muy enfermo actualmente, desde antes de que naciera sufria
+      una enfermedad que lo hizo envejecer muy rapido, --lo  conocias?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658517749231616
+    m_Localized: 'Pepe: Fuimos muy cercanos hace mucho  tiempo , acaso sabes que
+      sucede aqui?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658786021109760
+    m_Localized: 'Paco: Mas o menos,  mi padre dijo que devolviera esta "cosa" a
+      su altar, parecia simple, hasta que decidio soltar llamas por toda la hoja
+      al pisar los escalones al bajar'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658885241565184
+    m_Localized: 'Paco: Supongo que ahora entiendo por que la llamaste "Evig Brann"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 658972097212416
+    m_Localized: 'Pepe: Si planeas cumplir la mision que tu padre te encomendo ,
+      deberia ayudarte , como ultimo favor para tu padre'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659060743827456
+    m_Localized: 'Paco: No creo que haga falta...'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659107376099328
+    m_Localized: 'Pepe: Insisto , me nescesitas mas de lo que crees , y no creo que
+      llegues a estar vivo para descubrirlo por tu cuenta'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659167484669952
+    m_Localized: 'Paco: Hagamos un trato , tu me explicas que sucede aqui abajo y
+      te permito ayudarme'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659260120068096
+    m_Localized: 'Pepe: A simple vista no parece el trato mas justo... pero lo acepto'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659317489758208
+    m_Localized: 'Pepe: Este sitio, antes era una simple ruina, no se de quien o
+      de hace cuanto tiempo , pero lo que si esta claro, es que el objetivo de su
+      construccion era proteger la espada'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659425010741248
+    m_Localized: 'Pepe: Aunque tal vez eso se lo debamos al deterioro de esta pocilga,
+      hace mucho tiempo, un par de exploradores encontraron este sitio, simplemente
+      parecia una ruina mas.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659608960331776
+    m_Localized: 'Pepe: Sin dudas lo era, a simple vista, pero cuanto mas se adentraban
+      , mas entendian que no era asi, habia algo distinto , temible... hasta poderoso'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659701805445120
+    m_Localized: 'Pepe: Pero eso no detuvo al par de intrepidos exploradores, solo
+      aumento su sed de hayar reliquias'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659783300771840
+    m_Localized: 'Pepe: "Al final de el trayecto , cuando ya habian descendido unos
+      tres profundos pisos , llegaron a la fuente de tal temible y poderosa aura'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659837499568128
+    m_Localized: 'Pepe: La fuente de tal poder emanaba de una llameante espada, clavada
+      en un altar de piedra , demasiado cuidado para pertenecer a aquel lugar, casi
+      como si el tiempo no la  afectara'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 659942118092800
+    m_Localized: 'Paco: Evig Brann?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 660011022118912
+    m_Localized: 'Pepe: Exacto...el explorador mas joven, se lanzo sobre la misma
+      sin pensarlo y la desenterro de aquel altar'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 660646501117952
+    m_Localized: 'Pepe: Pocos segundos despues de aquella accion , toda la mazmorra
+      empezo a agitarse, como si algo intentara salir de su subsuelo'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 660798108430336
+    m_Localized: 'Pepe: Y aparecio... Un monstruo amorfo , pero con una aprariencia
+      algo humana en algun lugar, asi como salio aquel ser, salieron cientos por
+      todo el lugar'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 660863459880960
+    m_Localized: 'Pepe: Los exploradores sin pensarlo dos veces, hecharon a correr
+      hacia la salida de tal infierno , pero solo uno logro salir'
     m_Metadata:
       m_Items: []
   references:
