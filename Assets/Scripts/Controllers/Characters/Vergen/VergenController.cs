@@ -165,6 +165,21 @@ namespace Controllers.Characters.Vergen
         {
             GetAnimator().SetBool("DisappearWait", false);
             StateMachine.ChangeState(vergenPhaseTwoState);
+            GameManager.Instance.GetDynamicCamera().UpdateSize(10);
+            StartCoroutine(HotfixPlayerHealth());
+        }
+
+        private IEnumerator HotfixPlayerHealth()
+        {
+            int i = 0;
+            while (i < 4)
+            {
+                yield return new WaitForSeconds(1);
+                GameManager.Instance.PlayerController.RefillHealth();
+                i++;
+            }
+
+            yield return 0;
         }
 
         private void VergenTrapStart()

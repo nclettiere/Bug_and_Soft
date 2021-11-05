@@ -44,15 +44,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 13080107219505152
-    m_Localized: TEST DIALOGO 2
+    m_Localized: HOLA PACO! DE AHORA EN ADELANTE, PODRAS HACER COMPAS CONMIGO!
     m_Metadata:
       m_Items: []
   - m_Id: 13080219538771968
-    m_Localized: TEST DIALOGO 2 OTRA VEZ XD
+    m_Localized: REUNE CUANTOS KRONES PUEDAS Y PODRAS ADQUIRIR HABILIDADES Y MUCHAS
+      OTRAS COSAS!
     m_Metadata:
       m_Items: []
   - m_Id: 13080281169874944
-    m_Localized: TODO FUNCA DE MARAVILLA
+    m_Localized: ESTARE AL PRINCIPIO DE CADA NIVEL! RECUERDA, SI MUERES PERDERAS
+      TODAS TU KRONES!
     m_Metadata:
       m_Items: []
   - m_Id: 14080132012929024
