@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
@@ -23,6 +24,8 @@ public class MortadeloController : BaseController
     public Mortadelo_AttackState AttackState { get; private set; }
     public Mortadelo_DeadState DeadState { get; private set; }
     
+    [SerializeField] private Sprite deathQC;
+    
     protected override void Start()
     {
         base.Start();
@@ -41,6 +44,13 @@ public class MortadeloController : BaseController
         if (currentHealth <= 0)
         {
             StateMachine.ChangeState(DeadState);
+
+            if (!GameManager.Instance.HasKilledMortadelo)
+            {
+                GameManager.Instance.GetPepeController()
+                    .ShowQuickChat(new Tuple<Sprite, int>(deathQC, 1));
+                GameManager.Instance.HasKilledMortadelo = true;
+            }
         }
         base.Update();
     }

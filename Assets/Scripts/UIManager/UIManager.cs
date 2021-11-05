@@ -171,7 +171,7 @@ namespace Managers
         public void ShowLevelInfo()
         {
             levelInfo.gameObject.SetActive(true);
-            levelInfo.ShowInfo(GameManager.Instance.currentLevel, 4f);
+            levelInfo.ShowInfo(GameManager.Instance.GetSceneIndex(), 4f);
         }        
         
         public void ShowLevelUpScreen()

@@ -18,6 +18,8 @@ namespace Controllers.Characters.Zanopiano
         public Transform attackPosition;
         public float attackRadius = 1f;
         
+        public Sprite PepeQC;
+        
         //[SerializeField] private DeadStateData _deadStateData;
 
         //private NavMeshAgent _agent;

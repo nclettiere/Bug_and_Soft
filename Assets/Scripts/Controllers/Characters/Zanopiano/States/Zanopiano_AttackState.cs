@@ -1,4 +1,5 @@
-﻿using Controllers.Damage;
+﻿using System;
+using Controllers.Damage;
 using Controllers.Movement;
 using Controllers.StateMachine;
 using UnityEngine;
@@ -85,6 +86,8 @@ namespace Controllers.Characters.Zanopiano.States
             {
                 dInfo = new DamageInfo(35, zController.GetTransfrom().position.x, true);
                 GameManager.Instance.PlayerController.Damage(dInfo);
+                GameManager.Instance.GetPepeController().ShowQuickChat(
+                    new Tuple<Sprite, int>(zController.PepeQC, 2));
             }
         }
     }

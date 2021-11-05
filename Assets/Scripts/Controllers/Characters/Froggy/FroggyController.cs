@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
@@ -24,6 +25,7 @@ namespace Controllers.Froggy
         [SerializeField] private DamageStateData _damageStateData;
         [SerializeField] private GameObject _farty;
         [SerializeField] private FroggyTongueController tongueControllerongue;
+        [SerializeField] private Sprite visiblePepeQC;
         public GameObject _superFroggyNuke;
         private bool canFroggyDie = false;
 
@@ -117,6 +119,18 @@ namespace Controllers.Froggy
             yield return new WaitForSeconds(1);
             
             Destroy(gameObject);
+        }
+
+        protected override void OnBecameVisible()
+        {
+            base.OnBecameVisible();
+
+            if (!GameManager.Instance.HasSeenFroggy)
+            {
+                GameManager.Instance.GetPepeController()
+                    .ShowQuickChat(new Tuple<Sprite, int>(visiblePepeQC, 1));
+                GameManager.Instance.HasSeenFroggy = true;
+            }
         }
     }
 }

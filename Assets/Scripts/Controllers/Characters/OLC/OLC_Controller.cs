@@ -37,7 +37,8 @@ namespace Controllers.Froggy
         public Transform secondPhasePos;
         public Transform[] arrowsPos;
 
-        // Super Froggy
+        [SerializeField] private Sprite visiblePepeQC;
+        
         public int currentPhase = 1;
         public Vector3 initialPos;
 
@@ -204,6 +205,14 @@ namespace Controllers.Froggy
             IsCharacterOnScreen = true;
             GameManager.Instance.EnemiesInScreen
                 .Add(this);
+            
+            if (!GameManager.Instance.HasSeenOLC &&
+                GameManager.Instance.GetSceneIndex() == 0)
+            {
+                GameManager.Instance.GetPepeController()
+                    .ShowQuickChat(new Tuple<Sprite, int>(visiblePepeQC, 2));
+                GameManager.Instance.HasSeenOLC = true;
+            }
         }
 
         protected override void OnBecameInvisible()

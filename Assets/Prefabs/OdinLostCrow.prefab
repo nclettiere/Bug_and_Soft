@@ -268,6 +268,7 @@ MonoBehaviour:
   _idleStateData: {fileID: 11400000, guid: c60fb426da3c8d24b89fd2eeb135671f, type: 2}
   _olcAttackStateData: {fileID: 11400000, guid: 0ca4284d7d861994099b815aab6f2a06, type: 2}
   _miniOLC: {fileID: 0}
+  _pepeController: {fileID: 0}
   projectilePos: {fileID: 565982228224051666}
   secondPhasePos: {fileID: 565982227490464679}
   arrowsPos:
@@ -277,10 +278,8 @@ MonoBehaviour:
   - {fileID: 565982227378299988}
   - {fileID: 565982227707365101}
   - {fileID: 565982227422793431}
-  transforming: 0
+  visiblePepeQC: {fileID: 21300000, guid: 617fec752cf7f70449cfdaa53ab6df29, type: 3}
   currentPhase: 1
-  transformed: 0
-  hallPosition: 0
   initialPos: {x: 0, y: 0, z: 0}
   OLCisActive: 0
 --- !u!50 &565982226393907821

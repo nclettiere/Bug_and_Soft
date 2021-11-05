@@ -1,5 +1,8 @@
-﻿using Player;
+﻿using System;
+using Player;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Input
@@ -11,6 +14,8 @@ namespace Input
         private bool firstTimeHealing;
 
         private float pauseCooldownSeconds = float.NegativeInfinity;
+
+        private Action<InputAction.CallbackContext> MenuJoystickMovement;
 
         public void SetupInputs()
         {
@@ -37,15 +42,21 @@ namespace Input
                 if (ctx.action.phase == InputActionPhase.Started ||
                     ctx.action.phase == InputActionPhase.Canceled ||
                     ctx.action.phase == InputActionPhase.Disabled ||
-                    ctx.action.phase == InputActionPhase.Waiting ||
-                    GameManager.Instance.GetSceneIndex() == 4 ||
+                    ctx.action.phase == InputActionPhase.Waiting)
+                {
+                 
+                    Debug.Log("Cant open pause menu 1");
+                    return;   
+                }
+                
+                if(GameManager.Instance.GetSceneIndex() == 4 ||
                     GameManager.Instance.GetSceneIndex() == 5 ||
                     GameManager.Instance.GetSceneIndex() == 6 ||
                     GameManager.Instance.GetMainMenuOn() || GameManager.Instance.isGameOver ||
                     GameManager.Instance.isDialogueMode || GameManager.Instance.isLevelingUp ||
                     GameManager.Instance.GetUIManager().IsShopOpened)
                     {
-                        Debug.Log("Cant open pause menu");
+                        Debug.Log("Cant open pause menu 0");
                         return;
                     }
                 
@@ -201,6 +212,17 @@ namespace Input
                 if (GameManager.Instance.PlayerController != null)
                     GameManager.Instance.PlayerController.combatCtrl.AttackPerformed();
             };
+        }
+
+        public void SetMenuJoystickInput(Action<InputAction.CallbackContext> action)
+        {
+            RemoveJoystickInput();
+            playerControls.Gameplay.MenuMovement.performed += action;
+        }
+        
+        public void RemoveJoystickInput()
+        {
+            playerControls.Gameplay.MenuMovement.performed -= MenuJoystickMovement;
         }
 
         public void DisableInput()

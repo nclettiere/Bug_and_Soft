@@ -2970,6 +2970,15 @@ MonoBehaviour:
   - {fileID: 6618623635554582958}
   selectedButton: {fileID: 5431046028703835396}
   onPlaySFX: {fileID: 7452505009368560234}
+  OrderedButtonsTransfroms:
+  - {fileID: 5431046028703835396}
+  - {fileID: 6384325766011932515}
+  - {fileID: 6384325764405321925}
+  OrderedButtonsLocalPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  ButtonSelector: {fileID: 3352841631816733057}
 --- !u!114 &2884972869313087772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2992,7 +3001,7 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 0, y: 2}
   SelectorChangeSFX: {fileID: 8556169767589333594}
-  SelectedButton: {fileID: 0}
+  SelectedButton: {fileID: 5431046028703835396}
   IsMainMenu: 1
   MainMenuPhase: 0
 --- !u!82 &8556169767589333594

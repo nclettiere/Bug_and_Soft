@@ -119,7 +119,7 @@ namespace Player
         {
             if (!rollAnim)
             {
-                if (shieldPowerUp.IsActive() && powerUps.currentPowerUp == shieldPowerUp)
+                if (!damageInfo.isLava && shieldPowerUp.IsActive() && powerUps.currentPowerUp == shieldPowerUp)
                 {
                     shieldPowerUp.BrokeShield();
                     return;

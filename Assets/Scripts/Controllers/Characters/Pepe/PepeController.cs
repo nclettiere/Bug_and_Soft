@@ -33,6 +33,7 @@ namespace Controllers
         public Sprite[] OLCFlyQC;
         public Sprite[] Nievel2_1QC;
         public Sprite[] VergenDeadQC;
+        public Sprite randomQC;
         public AudioSource Nievel2_1SFX;
         public bool isCompanion { get; private set; }
 
@@ -69,12 +70,14 @@ namespace Controllers
             {
                 ShowQuickChat(new Tuple<Sprite, int>(FirstHealQC, 3));
             });
+            
+            // Comentario random
+            InvokeRepeating(nameof(ShowRandomQC), 40f, 40f);
         }
 
         private IEnumerator StartLevel21QuickChats()
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsGamePaused());
-            yield return new WaitForSeconds(4);
             //Nievel2_1SFX.Play();
             yield return new WaitForSeconds(1);
             ShowQuickChat(new Tuple<Sprite, int>(Nievel2_1QC[0], 1));
@@ -163,6 +166,11 @@ namespace Controllers
         {
             ShowQuickChat(new Tuple<Sprite, int>(VergenDeadQC[0], 2));
             ShowQuickChat(new Tuple<Sprite, int>(VergenDeadQC[1], 2));
+        }
+
+        public void ShowRandomQC()
+        {
+            ShowQuickChat(new Tuple<Sprite, int>(randomQC, 1));
         }
     }
 }

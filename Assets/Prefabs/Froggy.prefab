@@ -643,6 +643,9 @@ MonoBehaviour:
   OnBodyGroundCheckEvent:
     m_PersistentCalls:
       m_Calls: []
+  OnLifeTimeEnded:
+    m_PersistentCalls:
+      m_Calls: []
   _froggyTongue: {fileID: 8149177669826357495, guid: 3dd4e4c15b0c71245b40b3d3d712a27e, type: 3}
   _attackStateData: {fileID: 11400000, guid: 07bb7250f9abb0d4b9f957e706a4c3e7, type: 2}
   _deadStateData: {fileID: 11400000, guid: 93d2ed74cc5fdcd4fbd638be62e8f68f, type: 2}
@@ -652,6 +655,7 @@ MonoBehaviour:
   _damageStateData: {fileID: 0}
   _farty: {fileID: 0}
   tongueControllerongue: {fileID: 4175008825729574679}
+  visiblePepeQC: {fileID: 21300000, guid: 01e4a16217f43014f8b2cedee30cc0b3, type: 3}
   _superFroggyNuke: {fileID: 0}
   transforming: 0
   currentPhase: 1

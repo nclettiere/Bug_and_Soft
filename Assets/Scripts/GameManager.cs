@@ -52,6 +52,12 @@ public class GameManager : MonoBehaviour
     public int currentExp { get; private set; }
     public int currentLevel { get; private set; } = 1;
     public bool isLevelingUp;
+    
+    public bool HasSeenFroggy;
+    public bool HasSeenMortadelo;
+    public bool HasSeenZanopiano;
+    public bool HasSeenOLC;
+    public bool HasKilledMortadelo;
 
     public Vector3 spawnPoint { get; private set; } = new Vector3(-6.03999996f, -1.51999998f, 0);
 
@@ -107,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         if (OnVergenTrappedPlayer == null)
             OnVergenTrappedPlayer = new UnityEvent();
-        
+
         enemies = new List<EnemySpawner>();
         EnemiesInScreen = new List<BaseController>();
 
@@ -180,13 +186,9 @@ public class GameManager : MonoBehaviour
 
     public void KillPlayer(Transform deathTransf)
     {
-        //LastDeathPosition = deathTransf.position;
-        //playerDeathCount++;
-        //SetInputEnabled(false);
-        //isPlayerAlive = false;
-        //SetCameraFollowTarget(false);
-
-        PlayerController.Damage(new DamageInfo(999, 0));
+        var dInfo = new DamageInfo(999, 0);
+        dInfo.isLava = true;
+        PlayerController.Damage(dInfo);
     }
 
     public void RespawnPlayer(bool isFirstRespawn = false)
@@ -322,7 +324,7 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit ();
+        Application.Quit();
 #endif
     }
 
@@ -396,7 +398,7 @@ public class GameManager : MonoBehaviour
         if (playerData == null) return false;
 
         // TODO: 1. loading screen 2. Reespawn enemies/bosses 3. Set player data
-       // PlayerController.SetData(playerData);
+        // PlayerController.SetData(playerData);
 
         return true;
     }
@@ -446,9 +448,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         PlayerKrowns = gameData.currentKrones;
         currentExp = gameData.currentExp;
-        
+
         PlayerController.SetData(gameData);
-        
+        isGameOver = false;
+        isMainMenuOn = false;
         yield return 0;
     }
 
@@ -582,6 +585,10 @@ public class GameManager : MonoBehaviour
         Instance.GetUIManager()
             .ShowLevelInfo();
         Instance.gameInput.EnableInput();
+        
+        Instance.isGameOver = false;
+        Instance.isMainMenuOn = false;
+        
         yield return 0;
     }
 
@@ -621,6 +628,10 @@ public class GameManager : MonoBehaviour
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
         Instance.gameInput.EnableInput();
+        
+        Instance.isGameOver = false;
+        Instance.isMainMenuOn = false;
+        
         yield return 0;
     }
 
@@ -644,7 +655,7 @@ public class GameManager : MonoBehaviour
 
         PlayerController.RespawnNow();
         OnLevelReset.Invoke();
-        
+
         Instance.ResumeGame();
         Instance.gameInput.EnableInput();
     }
@@ -744,6 +755,11 @@ public class GameManager : MonoBehaviour
             .ShowLevelInfo();
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
+        
+        
+        Instance.isGameOver = false;
+        Instance.isMainMenuOn = false;
+        
         yield return 0;
     }
 
@@ -783,6 +799,21 @@ public class GameManager : MonoBehaviour
         ResumeGame();
         Instance.GetUIManager().HideMainMenu();
         Instance.gameInput.EnableInput();
+        
+        
+        Instance.isGameOver = false;
+        Instance.isMainMenuOn = false;
+        
         yield return 0;
+    }
+
+    public PepeController GetPepeController()
+    {
+        if (Instance.GetSceneIndex() == 0)
+            return GameObject.Find("/NPCs and Enemies/Pepe")
+                .GetComponent<PepeController>();
+        else
+            return GameObject.Find("/Characters/NPC/Pepe")
+                .GetComponent<PepeController>();
     }
 }

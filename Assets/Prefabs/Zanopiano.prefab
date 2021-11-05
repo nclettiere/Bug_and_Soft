@@ -282,6 +282,7 @@ MonoBehaviour:
       m_Calls: []
   attackPosition: {fileID: 5051913118363800251}
   attackRadius: 0.75
+  PepeQC: {fileID: 21300000, guid: 84ec42069defff74389e27f9af116c84, type: 3}
 --- !u!1 &5051913118467969459
 GameObject:
   m_ObjectHideFlags: 0

@@ -447,8 +447,8 @@ MonoBehaviour:
   canWalk: 0
   canJump: 0
   canBeDamaged: 0
-  touchDamageWidth: 2.87
-  touchDamageHeight: 2.2
+  touchDamageWidth: 4.33
+  touchDamageHeight: 2.98
   groundCheck: {fileID: 6605655948109520190}
   wallCheck: {fileID: 6605655949209634833}
   topCheck: {fileID: 6605655948710490847}
@@ -479,6 +479,7 @@ MonoBehaviour:
   _bombs: {fileID: 7715772144459612849, guid: 1c98bbb4e3807574aa099eab19390c43, type: 3}
   tongueControllerongue: {fileID: 6718901154889334032}
   _superFroggyNuke: {fileID: 0}
+  PepeQC: {fileID: 21300000, guid: cf9b2c3a9a8ee404386519070328036b, type: 3}
 --- !u!70 &6605655949318185017
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

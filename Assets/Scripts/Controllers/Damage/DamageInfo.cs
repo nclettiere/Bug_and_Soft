@@ -7,6 +7,7 @@ namespace Controllers.Damage
         private int damageAmount;
         private float attackXPosition;
         private bool moveOnAttack, stun, slow;
+        public bool isLava;
         public float stunDuration, slowDuration;
         private Vector2 moveOnAttackForce;
 

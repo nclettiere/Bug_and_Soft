@@ -311,6 +311,8 @@ MonoBehaviour:
   Nievel2_1QC:
   - {fileID: -3841149507335508781, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
   - {fileID: -8463752095263698356, guid: 0ab3c16bb4245fa4f9c4aa6b2c59021e, type: 3}
+  VergenDeadQC: []
+  randomQC: {fileID: 21300000, guid: 47d4d48985669344496c71fef642fe33, type: 3}
   Nievel2_1SFX: {fileID: 0}
 --- !u!114 &6721567057156535203
 MonoBehaviour:

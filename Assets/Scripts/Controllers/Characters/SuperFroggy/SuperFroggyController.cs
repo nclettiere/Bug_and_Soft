@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Controllers.Characters.SuperFroggy.States;
@@ -32,6 +33,10 @@ public class SuperFroggyController : BaseController
     [SerializeField] private FroggyTongueController tongueControllerongue;
     public GameObject _superFroggyNuke;
 
+    public Sprite PepeQC;
+    
+    private bool shownPepeQC;
+
     protected override void Start()
     {
         _jumpState = new SuperFroggyJumpState(this, StateMachine, "Jumping", _jumpStateData, this);
@@ -46,53 +51,54 @@ public class SuperFroggyController : BaseController
         StateMachine.Initialize(_idleState);
     }
 
-    protected override void Update()
-    {
-        if (GameManager.Instance.IsGamePaused())
-        {
-            if (!savedRigidData)
-            {
-                lastVelocity = rBody.velocity;
-                lastAngularVelocity = rBody.angularVelocity;
-                rBody.bodyType = RigidbodyType2D.Static;
-                rBody.Sleep();
-
-                savedRigidData = true;
-            }
-
-            return;
-        }
-
-        if (savedRigidData)
-        {
-            rBody.bodyType = RigidbodyType2D.Dynamic;
-            rBody.velocity = lastVelocity;
-            rBody.angularVelocity = lastAngularVelocity;
-            rBody.WakeUp();
-            savedRigidData = false;
-        }
-
-        if (!dead)
-        {
-            CheckPlayerInNearRange();
-            CheckPlayerInLongRange();
-        }
-
-        StateMachine.CurrentState.UpdateState();
-
-        if (!cachedGroundCheck && CheckGround())
-            OnLandEvent.Invoke();
-
-        cachedGroundCheck = CheckGround();
-
-        if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
-            OnBodyGroundCheckEvent.Invoke();
-
-        cachedBodyGroundCheck = CheckGround();
-    }
-
+    //protected override void Update()
+    //{
+    //    if (GameManager.Instance.IsGamePaused())
+    //    {
+    //        if (!savedRigidData)
+    //        {
+    //            lastVelocity = rBody.velocity;
+    //            lastAngularVelocity = rBody.angularVelocity;
+    //            rBody.bodyType = RigidbodyType2D.Static;
+    //            rBody.Sleep();
+//
+    //            savedRigidData = true;
+    //        }
+//
+    //        return;
+    //    }
+//
+    //    if (savedRigidData)
+    //    {
+    //        rBody.bodyType = RigidbodyType2D.Dynamic;
+    //        rBody.velocity = lastVelocity;
+    //        rBody.angularVelocity = lastAngularVelocity;
+    //        rBody.WakeUp();
+    //        savedRigidData = false;
+    //    }
+//
+    //    if (!dead)
+    //    {
+    //        CheckPlayerInNearRange();
+    //        CheckPlayerInLongRange();
+    //    }
+//
+    //    StateMachine.CurrentState.UpdateState();
+//
+    //    if (!cachedGroundCheck && CheckGround())
+    //        OnLandEvent.Invoke();
+//
+    //    cachedGroundCheck = CheckGround();
+//
+    //    if (!cachedBodyGroundCheck && CheckOnBodyTouchGround())
+    //        OnBodyGroundCheckEvent.Invoke();
+//
+    //    cachedBodyGroundCheck = CheckGround();
+    //}
+//
     protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (IsCharacterOnScreen)
         {
             if (GameManager.Instance.IsGamePaused() || dead) return;
@@ -172,5 +178,17 @@ public class SuperFroggyController : BaseController
     
     public void Anim_OnAttackingAnimStarted()
     {
+    }
+
+    protected override void OnBecameVisible()
+    {
+        base.OnBecameVisible();
+
+        if (!shownPepeQC)
+        {
+            GameManager.Instance.GetPepeController()
+                .ShowQuickChat(new Tuple<Sprite, int>(PepeQC, 1));
+            shownPepeQC = true;
+        }
     }
 }
