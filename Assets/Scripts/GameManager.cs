@@ -86,12 +86,14 @@ public class GameManager : MonoBehaviour
 
     public static bool IsFirstStart = true;
 
-    public bool isGameOver { get; private set; }
+    public bool isGameOver;
 
     public float MasterVolume { get; private set; } = 0.2f;
 
     public UnityEvent OnLevelReset { get; private set; }
     public UnityEvent OnVergenTrappedPlayer { get; private set; }
+
+    public List<PlayerPowerUp> UnlockedPowerUps { get; private set; }
 
     public void Awake()
     {
@@ -116,6 +118,7 @@ public class GameManager : MonoBehaviour
 
         enemies = new List<EnemySpawner>();
         EnemiesInScreen = new List<BaseController>();
+        UnlockedPowerUps = new List<PlayerPowerUp>();
 
         DontDestroyOnLoad(transform.root.gameObject);
     }
@@ -410,7 +413,7 @@ public class GameManager : MonoBehaviour
         gd.PlayerHealth = PlayerController.currentHealth;
         gd.PlayerMaxHealth = PlayerController.maxHealth;
         gd.SetPlayerPosition(PlayerController.transform.position);
-        gd.SetPowerUps(PlayerController.UnlockedPowerUps);
+        gd.SetPowerUps(UnlockedPowerUps);
         gd.SetCurrentPowerUp(PlayerController.powerUps.currentPowerUp);
         gd.currentKrones = PlayerKrowns;
         gd.currentExp = currentExp;
@@ -590,6 +593,15 @@ public class GameManager : MonoBehaviour
         GetLogoObject().SetActive(false);
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
+
+        var unlockedPowerUpsCopy = UnlockedPowerUps;
+        UnlockedPowerUps.Clear();
+
+        foreach (var powerUp in unlockedPowerUpsCopy)
+        {
+            PlayerController.UnlockPowerUp(powerUp.powerUpKind, 0);
+            Instance.GetUIManager().ChangePowerUpKind(powerUp.powerUpKind);
+        }
         
         yield return 0;
     }
@@ -636,6 +648,22 @@ public class GameManager : MonoBehaviour
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
         
+
+        var unlockedPowerUpsCopy = UnlockedPowerUps;
+        UnlockedPowerUps.Clear();
+
+        foreach (var powerUp in unlockedPowerUpsCopy)
+        {
+            PlayerController.UnlockPowerUp(powerUp.powerUpKind, 0);
+            Instance.GetUIManager().ChangePowerUpKind(powerUp.powerUpKind);
+            Debug.Log($"Setting upp {powerUp.powerUpKind}");
+        }
+
+        if (UnlockedPowerUps.Count > 0)
+        {
+            PlayerController.powerUps.Initialize(UnlockedPowerUps[0]);
+        }
+        
         yield return 0;
     }
 
@@ -652,7 +680,6 @@ public class GameManager : MonoBehaviour
 
     public void ReloadLevel()
     {
-        isGameOver = false;
         GetUIManager().HideGameOver();
 
         PlayerController.RefillHealth();
@@ -667,6 +694,8 @@ public class GameManager : MonoBehaviour
 
         Instance.ResumeGame();
         Instance.gameInput.EnableInput();
+
+        isGameOver = false;
     }
 
     public int GetSceneIndex()
@@ -770,6 +799,16 @@ public class GameManager : MonoBehaviour
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
         
+
+        var unlockedPowerUpsCopy = UnlockedPowerUps;
+        UnlockedPowerUps.Clear();
+
+        foreach (var powerUp in unlockedPowerUpsCopy)
+        {
+            PlayerController.UnlockPowerUp(powerUp.powerUpKind, 0);
+            Instance.GetUIManager().ChangePowerUpKind(powerUp.powerUpKind);
+        }
+        
         yield return 0;
     }
 
@@ -814,6 +853,15 @@ public class GameManager : MonoBehaviour
         
         Instance.isGameOver = false;
         Instance.isMainMenuOn = false;
+        
+        var unlockedPowerUpsCopy = UnlockedPowerUps;
+        UnlockedPowerUps.Clear();
+
+        foreach (var powerUp in unlockedPowerUpsCopy)
+        {
+            PlayerController.UnlockPowerUp(powerUp.powerUpKind, 0);
+            Instance.GetUIManager().ChangePowerUpKind(powerUp.powerUpKind);
+        }
         
         yield return 0;
     }

@@ -32,7 +32,7 @@ namespace Player
         [SerializeField] private AudioSource onRewardAdded;
         [SerializeField] private AudioSource onKrownRemove;
         [SerializeField] private AudioSource onPlayerHurtSFX;
-        [SerializeField] private GameObject shieldPlayerIndicator;
+        public GameObject shieldPlayerIndicator;
         [SerializeField] private Transform pepeTarget;
         public Transform VergenTrapTarget;
 
@@ -77,8 +77,6 @@ namespace Player
 
         // GODLIKE
         public GodLikePowerUp godLikePowerUp { get; private set; }
-        
-        public List<PlayerPowerUp> UnlockedPowerUps { get; private set; }
 
         public void Damage(BaseController controller, DamageInfo damageInfo)
         {
@@ -177,7 +175,13 @@ namespace Player
 
             // A implementar en el tercer sprint
             // Cargar el savegame e inicializar con la habilidad guardada
-            //powerUps.Initialize(godLikePowerUp);
+
+            if (GameManager.Instance.UnlockedPowerUps.Count > 0)
+            {
+                powerUps.Initialize(GameManager.Instance.UnlockedPowerUps[0]);
+            }
+
+            GameManager.Instance.isGameOver = false;
             
             GameManager.Instance.OnLevelReset.AddListener(ResetStats);
             GameManager.Instance.OnVergenTrappedPlayer.AddListener(VergenTrapStart);
@@ -197,7 +201,6 @@ namespace Player
         {
             playerMovementCtrl = GetComponent<PlayerMovementController>();
             combatCtrl = GetComponent<PlayerCombatController>();
-            UnlockedPowerUps = new List<PlayerPowerUp>();
         }
 
         private void Update()
@@ -569,6 +572,9 @@ namespace Player
             if (!playerMovementCtrl.FacingRight)
                 playerMovementCtrl.Flip();
             transform.position = GameManager.Instance.spawnPoint;
+            
+            
+            GameManager.Instance.isGameOver = false;
         }
 
         public void UnlockPowerUp(EPowerUpKind kind, int krones)
@@ -576,15 +582,15 @@ namespace Player
             switch (kind)
             {
                 case EPowerUpKind.SHIELD:
-                    UnlockedPowerUps.Add(shieldPowerUp);
+                    GameManager.Instance.UnlockedPowerUps.Add(shieldPowerUp);
                     powerUps.ChangePowerUp(shieldPowerUp);
                     break;
                 case EPowerUpKind.TELEPORT:
-                    UnlockedPowerUps.Add(teleportPowerUp);
+                    GameManager.Instance.UnlockedPowerUps.Add(teleportPowerUp);
                     powerUps.ChangePowerUp(teleportPowerUp);
                     break;
                 case EPowerUpKind.GODLIKE:
-                    UnlockedPowerUps.Add(godLikePowerUp);
+                    GameManager.Instance.UnlockedPowerUps.Add(godLikePowerUp);
                     powerUps.ChangePowerUp(godLikePowerUp);
                     break;
             }
@@ -595,26 +601,25 @@ namespace Player
         public void CyclePowerUps()
         {
             bool isNext = false;
-            Debug.Log("UnlockedPowerUps Len> "+ UnlockedPowerUps.Count);
-            for (int i = 0; i < UnlockedPowerUps.Count; i++)
+            for (int i = 0; i < GameManager.Instance.UnlockedPowerUps.Count; i++)
             {
                 if (isNext)
                 {
-                    powerUps.ChangePowerUp(UnlockedPowerUps[i]);
+                    powerUps.ChangePowerUp(GameManager.Instance.UnlockedPowerUps[i]);
                     break;
                 }
 
-                if (powerUps.currentPowerUp.powerUpKind == UnlockedPowerUps[i].powerUpKind)
+                if (powerUps.currentPowerUp.powerUpKind == GameManager.Instance.UnlockedPowerUps[i].powerUpKind)
                 {
-                    if (i == UnlockedPowerUps.Count - 1)
+                    if (i == GameManager.Instance.UnlockedPowerUps.Count - 1)
                     {
-                        powerUps.ChangePowerUp(UnlockedPowerUps[0]);
+                        powerUps.ChangePowerUp(GameManager.Instance.UnlockedPowerUps[0]);
                         break;
                     }
                     isNext = true;
                 }
             }
-            foreach (PlayerPowerUp powerUp in UnlockedPowerUps)
+            foreach (PlayerPowerUp powerUp in GameManager.Instance.UnlockedPowerUps)
             {
             }
         }

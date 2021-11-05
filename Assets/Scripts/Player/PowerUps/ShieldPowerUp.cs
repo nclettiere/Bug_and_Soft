@@ -22,6 +22,7 @@ namespace Player
             base.Enter();
             shieldCooldownTime = float.NegativeInfinity;
             isActive = true;
+            shieldPlayerIndicator = GameManager.Instance.PlayerController.shieldPlayerIndicator;
             shieldPlayerIndicator.SetActive(true);
         }
 

@@ -20,7 +20,7 @@ namespace UI
         {
             GameManager.Instance.PauseGame();
 
-            foreach (var powerUp in GameManager.Instance.PlayerController.UnlockedPowerUps)
+            foreach (var powerUp in GameManager.Instance.UnlockedPowerUps)
             {
                 if (powerUp.powerUpKind == EPowerUpKind.TELEPORT)
                 {

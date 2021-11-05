@@ -33,6 +33,9 @@ public class OLC_Projectile : MonoBehaviour
 
         xStartPos = transform.position.x;
         isGravityOn = false;
+        
+        
+        Destroy(gameObject, 10);
     }
 
     private void Update()
