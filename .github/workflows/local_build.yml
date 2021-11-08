@@ -1,4 +1,4 @@
-name: Build project
+name: Local Build
 
 on: 
   push:
@@ -24,4 +24,4 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
-          .\build_win64.ps1 $GIT_TAG_NAME
+          .\build_win64.ps1 ${GIT_TAG_NAME}
