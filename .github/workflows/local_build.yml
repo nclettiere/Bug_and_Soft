@@ -22,9 +22,9 @@ jobs:
       - uses: olegtarasov/get-tag@v2.1
           id: tagName
       - uses: actions/cache@v2
-          with:
-            path: |
-              .\Bug_And_Soft
+        with:
+          path: |
+            .\Bug_And_Soft
           key: ${{ steps.tagName.outputs.tag }}
       - name: Build
           shell: pwsh
