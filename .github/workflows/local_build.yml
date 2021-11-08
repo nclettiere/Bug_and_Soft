@@ -1,4 +1,4 @@
-name: Local Build
+name: Build y publicar release
 
 on: 
   push:

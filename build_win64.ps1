@@ -38,7 +38,7 @@ Start-Sleep -Seconds 3.0; Write-Host -NoNewLine 'Generando instalador...'; while
 
 Write-Host ""
 Write-Host "==========================================================="
-Write-Host "Subir Artifacts a Github Actions"
+Write-Host "Crear nueva release"
 Write-Host "==========================================================="
 
 
