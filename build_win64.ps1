@@ -11,11 +11,12 @@ $version = $args[0]
 
 Install-Module -Name PowerShellForGitHub
 
+$unityProject = -join([Environment]::GetFolderPath("MyDocuments"), "\Projects\Bug_And_Soft");
 $pacoBuildOutput = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Win64");
 $pacoinstallerBase = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores\PacoSetup-Win64-");
 $pacoinstallerBaseDir = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores");
 $logfile = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\log.txt");
-$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath . -executeMethod Builder.build');
+$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath ', $unityProject, ' -executeMethod Builder.build');
 $innoArguments = -join('/DInstallerOutput=', $pacoinstallerBaseDir,' /DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildOutput, " paco_installer_inno_compiler.iss");
 
 Write-Host "==========================================================="
