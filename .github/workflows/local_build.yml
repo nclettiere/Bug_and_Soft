@@ -25,3 +25,18 @@ jobs:
         shell: pwsh
         run: |
           .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
+  publish_page:
+    name: Actualizar Pagina
+    needs: buildForAllSupportedPlatforms
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: false
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
+      - name: Build
+        shell: pwsh
+        run: |
+          .\actualizar_pagina.ps1 ${{ steps.tagName.outputs.tag }}
