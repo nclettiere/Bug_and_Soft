@@ -7,17 +7,18 @@
 	!!!> Una vez compilado el juego, usamos el programa InnoSetup para crear el hermoso instalador paquense
 #>
 
-$version=$args[0]
+$version = $args[0]
 
 Install-Module -Name PowerShellForGitHub
 
 $pacoBuildOutput = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Win64");
+$pacoinstallerBase = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores\PacoSetup-Win64-");
 $logfile = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\log.txt");
-$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath C:\Users\Nicolini\Documents\Projects\Bug_and_Soft -executeMethod Builder.build');
+$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath . -executeMethod Builder.build');
 $innoArguments = -join('/DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildOutput, " paco_installer_inno_compiler.iss");
 
 Write-Host "==========================================================="
-Write-Host "Action ejectutado para la version: $version"
+Write-Host "GAction ejectutado para la version: $version"
 Write-Host "==========================================================="
 
 Write-Host ""
@@ -41,8 +42,7 @@ Write-Host "==========================================================="
 Write-Host "Crear nueva release"
 Write-Host "==========================================================="
 
-
-$installerPath = -join('C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-', $version, ".exe");
+$installerPath = -join($pacoinstallerBase, $version, ".exe");
 
 #$cmdOutput = Get-GitHubRelease | Select-Object -First 1 | Get-GitHubRelease;
 #$id = Out-String -InputObject $cmdOutput.ID;
