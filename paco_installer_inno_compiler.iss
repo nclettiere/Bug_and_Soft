@@ -45,7 +45,7 @@ Source: "{#PacoFiles}\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#PacoFiles}\UnityCrashHandler64.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#PacoFiles}\UnityPlayer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#PacoFiles}\MonoBleedingEdge\*"; DestDir: "{app}\MonoBleedingEdge"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#PacoFiles}\PacoGame_Data\*"; DestDir: "{app}\Paco  An Adventure Begins_Data"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PacoFiles}\PacoGame_Data\*"; DestDir: "{app}\PacoGame_Data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
