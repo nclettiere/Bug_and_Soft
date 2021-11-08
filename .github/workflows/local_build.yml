@@ -21,13 +21,13 @@ jobs:
           lfs: false
       - uses: olegtarasov/get-tag@v2.1
         id: tagName
-      - name: Cache Project
-        uses: actions/cache@v2
-        with:
-            path: |
-            .\Bug_And_Soft
-            key: ${{ steps.tagName.outputs.tag }}
+      - name: Cache Buggy
+      uses: actions/cache@v2
+      with:
+          path: |
+          .\Bug_And_Soft
+          key: ${{ steps.tagName.outputs.tag }}
       - name: Build
-        shell: pwsh
-        run: |
-          .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
+          shell: pwsh
+          run: |
+            .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
