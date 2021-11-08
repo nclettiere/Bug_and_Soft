@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
           lfs: false
       - uses: olegtarasov/get-tag@v2.1
-          id: tagName
+        id: tagName
       - uses: actions/cache@v2
         with:
           path: |
