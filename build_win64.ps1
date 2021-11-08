@@ -21,15 +21,22 @@ $innoArguments = -join('/DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildO
 #$unity = Start-Process -FilePath "C:\Program Files\Unity\Hub\Editor\2020.3.12f1\Editor\Unity.exe" -ArgumentList $unityArguments -PassThru; 
 #Start-Sleep -Seconds 3.0; Write-Host -NoNewLine 'Buildeando PACO...'; while ((Get-WmiObject -Class Win32_Process | Where-Object {$_.ParentProcessID -eq $unity.Id -and $_.Name -ne 'VBCSCompiler.exe'}).count -gt 0) { Start-Sleep -Seconds 1.0; Write-Host -NoNewLine '.' }; if (!$unity.HasExited) { Wait-Process -Id $unity.Id };
 
+#Write-Host ""
+#Write-Host "==========================================================="
+#Write-Host "Instalador Inno 6"
+#Write-Host "==========================================================="
+#
+#$inno = Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList $innoArguments -PassThru;
+#Start-Sleep -Seconds 3.0; Write-Host -NoNewLine 'Generando instalador...'; while ((Get-WmiObject -Class Win32_Process | Where-Object {$_.ParentProcessID -eq $inno.Id -and $_.Name -ne 'VBCSCompiler.exe'}).count -gt 0) { Start-Sleep -Seconds 1.0; Write-Host -NoNewLine '.' }; if (!$inno.HasExited) { Wait-Process -Id $inno.Id };
+#
+#Write-Host "Done."
+
 Write-Host ""
 Write-Host "==========================================================="
-Write-Host "Instalador Inno 6"
+Write-Host "Subir Artifacts a Github Actions"
 Write-Host "==========================================================="
 
-$inno = Start-Process -FilePath "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" -ArgumentList $innoArguments -PassThru;
-Start-Sleep -Seconds 3.0; Write-Host -NoNewLine 'Generando instalador...'; while ((Get-WmiObject -Class Win32_Process | Where-Object {$_.ParentProcessID -eq $inno.Id -and $_.Name -ne 'VBCSCompiler.exe'}).count -gt 0) { Start-Sleep -Seconds 1.0; Write-Host -NoNewLine '.' }; if (!$inno.HasExited) { Wait-Process -Id $inno.Id };
 
-Write-Host "Done."
 
-exit $inno.ExitCode
+#exit $inno.ExitCode
 #exit $unity.ExitCode || $inno.ExitCode
