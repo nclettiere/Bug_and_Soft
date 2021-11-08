@@ -19,7 +19,9 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Build
         shell: pwsh
         run: |
-          .\build_win64.ps1
+          .\build_win64.ps1 ${RELEASE_VERSION}
