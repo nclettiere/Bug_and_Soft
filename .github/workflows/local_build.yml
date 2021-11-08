@@ -24,5 +24,4 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
-          .\build_win64.ps1 
-          ${{ steps.tagName.outputs.tag }}
+          .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
