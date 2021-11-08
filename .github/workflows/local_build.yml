@@ -25,3 +25,7 @@ jobs:
         shell: pwsh
         run: |
           .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
+      - uses: actions/upload-artifact@v2
+        with:
+            name: Instalador-${{ steps.tagName.outputs.tag }}
+            path: C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-${{ steps.tagName.outputs.tag }}
