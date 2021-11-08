@@ -15,10 +15,6 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          lfs: false
       - uses: olegtarasov/get-tag@v2.1
         id: tagName
       - name: Build
