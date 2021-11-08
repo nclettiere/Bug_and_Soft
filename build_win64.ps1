@@ -13,9 +13,10 @@ Install-Module -Name PowerShellForGitHub
 
 $pacoBuildOutput = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Win64");
 $pacoinstallerBase = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores\PacoSetup-Win64-");
+$pacoinstallerBaseDir = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores");
 $logfile = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\log.txt");
 $unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath . -executeMethod Builder.build');
-$innoArguments = -join('/DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildOutput, " paco_installer_inno_compiler.iss");
+$innoArguments = -join('/DInstallerOutput=', $pacoinstallerBaseDir,' /DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildOutput, " paco_installer_inno_compiler.iss");
 
 Write-Host "==========================================================="
 Write-Host "GAction ejectutado para la version: $version"

@@ -1,15 +1,20 @@
 Install-Module powershell-yaml
 
 $version=$args[0]
-$installerPath = -join('C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-', $version, ".exe");
+
+$installerPath = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Instaladores\PacoSetup-Win64-", $version, ".exe");
 $installerDwnl = -join('https://bugnsoft.github.io/PacoSetup-Win64-', $version, ".exe");
 
-Set-Location -Path "C:\Users\Nicolini\Documents\Projects\bugnsoft.github.io" -PassThru
+
+$repoPath = -join([Environment]::GetFolderPath("MyDocuments"), "\Projects\bugnsoft.github.io");
+$configFile = -join([Environment]::GetFolderPath("MyDocuments"), "\Projects\bugnsoft.github.io\", "_config.yml");
+
+Set-Location -Path $repoPath -PassThru
 
 Start-Process -FilePath "C:\Program Files\Git\bin\git.exe" -ArgumentList "pull"
-Copy-Item $installerPath -Destination "C:\Users\Nicolini\Documents\Projects\bugnsoft.github.io"
+Copy-Item $installerPath -Destination $repoPath
 
-$fileContent = Get-Content -Path "C:\Users\Nicolini\Documents\Projects\bugnsoft.github.io\_config.yml"
+$fileContent = Get-Content -Path $configFile
 $content = ''
 foreach ($line in $fileContent) { $content = $content + "`n" + $line }
 $yaml = ConvertFrom-YAML $content
@@ -21,6 +26,3 @@ Write-Host $yaml
 #{
 #       $line
 #}
-
-
-Set-Location -Path "C:\Users\Nicolini\Documents\Projects\Bug_and_Soft" -PassThru

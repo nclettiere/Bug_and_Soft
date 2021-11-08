@@ -27,7 +27,7 @@ AllowNoIcons=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline
-OutputDir=C:\Users\Nicolini\Documents\PacoBuilds\Instaladores
+OutputDir={#InstallerOutput}
 OutputBaseFilename=PacoSetup-Win64-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
