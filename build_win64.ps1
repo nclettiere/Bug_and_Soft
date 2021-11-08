@@ -11,7 +11,7 @@ $version=$args[0]
 
 $pacoBuildOutput = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Win64");
 $logfile = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\log.txt");
-$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath . -executeMethod Builder.build');
+$unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath C:\Users\Nicolini\Documents\Projects\Bug_and_Soft -executeMethod Builder.build');
 $innoArguments = -join('/DMyAppVersion=', $version, " /DPacoFiles=", $pacoBuildOutput, " paco_installer_inno_compiler.iss");
 
 Write-Host "==========================================================="
@@ -39,4 +39,4 @@ Write-Host "==========================================================="
 Write-Host "Subir Artifacts a Github Actions"
 Write-Host "==========================================================="
 
-exit $unity.ExitCode || $inno.ExitCode
+exit $inno.ExitCode
