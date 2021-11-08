@@ -27,6 +27,6 @@ jobs:
             .\Bug_And_Soft
           key: ${{ steps.tagName.outputs.tag }}
       - name: Build
-          shell: pwsh
-          run: |
-            .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
+        shell: pwsh
+        run: |
+          .\build_win64.ps1 ${{ steps.tagName.outputs.tag }}
