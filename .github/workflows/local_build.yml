@@ -27,7 +27,6 @@ jobs:
             path: |
             .\Bug_And_Soft
             key: ${{ steps.tagName.outputs.tag }}
-        
       - name: Build
         shell: pwsh
         run: |
