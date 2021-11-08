@@ -9,6 +9,8 @@
 
 $version=$args[0]
 
+Install-Module -Name PowerShellForGitHub
+
 $pacoBuildOutput = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\Win64");
 $logfile = -join([Environment]::GetFolderPath("MyDocuments"), "\PacoBuilds\log.txt");
 $unityArguments = -join('-quit -batchmode -logFile ', $logfile, ' -projectPath C:\Users\Nicolini\Documents\Projects\Bug_and_Soft -executeMethod Builder.build');
@@ -39,10 +41,23 @@ Write-Host "==========================================================="
 Write-Host "Subir Artifacts a Github Actions"
 Write-Host "==========================================================="
 
-# Movemos el instalador generado a _work (La carpeta "workspace" de github actions)
-# Para poder subir el archivo como artifact!
-#$installerPath = -join('C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-', $version, ".exe");
-#$installerDestPath = -join('C:\Users\Nicolini\Desktop\actions-runner\_work\PacoSetup-Win64-', $version, ".exe");
-#Move-Item -Path $installerPath -Destination $installerDestPath
+
+$installerPath = -join('C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-', $version, ".exe");
+
+#$cmdOutput = Get-GitHubRelease | Select-Object -First 1 | Get-GitHubRelease;
+#$id = Out-String -InputObject $cmdOutput.ID;
+
+$release = New-GitHubRelease -Tag $version
+
+Set-GitHubRelease -Release $release.id -Body '
+PACO-BOT ha publicado una nueva release.
+Abajo tenes el instalador makina!
+
+GIF del dia (el unico)
+![](https://c.tenor.com/nznTj-7EeigAAAAd/quality-shitpost.gif)
+
+beep-bop-beep-bop => AYUDA ESTE BOT ESTA SIENDO ESCLAVIZADO POR LECHE'
+
+New-GitHubReleaseAsset -Release $release.id -Path $installerPath
 
 exit $inno.ExitCode
