@@ -24,4 +24,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
             name: Instalador-${{ steps.tagName.outputs.tag }}
-            path: C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-${{ steps.tagName.outputs.tag }}
+            path: C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-${{ steps.tagName.outputs.tag }}.exe

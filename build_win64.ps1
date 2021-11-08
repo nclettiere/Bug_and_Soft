@@ -39,4 +39,10 @@ Write-Host "==========================================================="
 Write-Host "Subir Artifacts a Github Actions"
 Write-Host "==========================================================="
 
+# Movemos el instalador generado a _work (La carpeta "workspace" de github actions)
+# Para poder subir el archivo como artifact!
+#$installerPath = -join('C:\Users\Nicolini\Documents\PacoBuilds\Instaladores\PacoSetup-Win64-', $version, ".exe");
+#$installerDestPath = -join('C:\Users\Nicolini\Desktop\actions-runner\_work\PacoSetup-Win64-', $version, ".exe");
+#Move-Item -Path $installerPath -Destination $installerDestPath
+
 exit $inno.ExitCode
