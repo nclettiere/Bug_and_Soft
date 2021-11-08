@@ -14,15 +14,20 @@ Set-Location -Path $repoPath -PassThru
 Start-Process -FilePath "C:\Program Files\Git\bin\git.exe" -ArgumentList "pull"
 Copy-Item $installerPath -Destination $repoPath
 
-$fileContent = Get-Content -Path $configFile
+$fileContent = Get-Content -Path $configFile;
 $content = ''
 foreach ($line in $fileContent) { $content = $content + "`n" + $line }
-$yaml = ConvertFrom-YAML $content
+$yaml = ConvertFrom-YAML $content;
 
-Write-Host $yaml
+$yaml.github.instalador = $installerDwnl;
+$yaml.github.version = $version;
 
-#$config_obj.github.instalador = $installerDwnl;
-#foreach($line in [System.IO.File]::ReadLines("C:\path\to\file.txt"))
-#{
-#       $line
-#}
+$modifiedYaml = ConvertTo-Yaml $yaml;
+
+Set-Content -Path $configFile -Value $modifiedYaml;
+
+# comiteamos los cambios y subimos
+
+Start-Process -FilePath "C:\Program Files\Git\bin\git.exe" -ArgumentList "add *" -NoNewWindow -Wait;
+Start-Process -FilePath "C:\Program Files\Git\bin\git.exe" -ArgumentList "commit -m `"Actualizacion pagina para la $version`"" -NoNewWindow -Wait;
+Start-Process -FilePath "C:\Program Files\Git\bin\git.exe" -ArgumentList "push origin master" -NoNewWindow -Wait;
