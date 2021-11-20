@@ -14,6 +14,7 @@ Herramientas Utilizadas:
  - Jetbrains Rider 2021
  - Git, Github Actions, Github Pages
  - C#, HLSL
+ - Aseprite, Photoshop
 
 #### Participantes del Proyecto:
 - Bruno Baz
