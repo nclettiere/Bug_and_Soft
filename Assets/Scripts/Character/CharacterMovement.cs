@@ -5,8 +5,9 @@ namespace Character
 {
     public class CharacterMovement : MonoBehaviour
     {
-        [SerializeField] private float JumpForce = 400f;
-        [Range(0, 1)] [SerializeField] private float CrouchSpeed = .36f;
+        [SerializeField] private bool Cagando;  
+        [SerializeField] private float JumpForce = 1f;
+        [Range(0, 1)] [SerializeField] private float CrouchSpeed = .1000f;
         [Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;
         [SerializeField] private LayerMask GroundLayers;
         [SerializeField] private LayerMask ClimableLayers;
@@ -288,6 +289,10 @@ namespace Character
         {
             Gizmos.DrawLine(WallCheck.position, new Vector3(WallCheck.position.x + WallCheckDistance, WallCheck.position.y, WallCheck.position.z));
             Gizmos.DrawLine(LedgeCheck.position, new Vector3(LedgeCheck.position.x + WallCheckDistance, LedgeCheck.position.y, LedgeCheck.position.z));
+        }
+        void TeTiroCACA ()
+        {
+        bool Cagando = true;
         }
     }
 }
